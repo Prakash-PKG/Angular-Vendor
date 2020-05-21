@@ -17,7 +17,8 @@ export class AppService {
     constructor(private _datePipe: DatePipe) { }
 
     readonly routingConstants: any = {
-        login: "/"
+        login: "/",
+        posearch: "/posearch"
     };
 
     readonly pageConstants: any = {

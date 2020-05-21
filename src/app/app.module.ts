@@ -56,6 +56,21 @@ import { HeaderComponent } from './header/header.component';
 import { SidebarComponent } from './sidebar/sidebar.component';
 import { ConfirmDialogComponent } from './confirm-dialog/confirm-dialog.component';
 import { MessageDialogComponent } from './message-dialog/message-dialog.component';
+import { PoSearchComponent } from './po-search/po-search.component';
+import { InvoiceSearchComponent } from './invoice-search/invoice-search.component';
+import { EmpanelmentComponent } from './empanelment/empanelment.component';
+import { PendingApprovalsComponent } from './pending-approvals/pending-approvals.component';
+import { PoDetailsComponent } from './po-details/po-details.component';
+import { InvoiceApprovalsComponent } from './invoice-approvals/invoice-approvals.component';
+import { InvoiceDetailsComponent } from './invoice-details/invoice-details.component';
+import { VendorDetailsComponent } from './vendor-details/vendor-details.component';
+import { VendorAddressComponent } from './vendor-address/vendor-address.component';
+import { VendorBankDetailsComponent } from './vendor-bank-details/vendor-bank-details.component';
+import { VendorDocumentsComponent } from './vendor-documents/vendor-documents.component';
+import { VendorRegistrationComponent } from './vendor-registration/vendor-registration.component';
+import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
+import { VendorApprovalComponent } from './vendor-approval/vendor-approval.component';
+import { InvoiceUploadComponent } from './invoice-upload/invoice-upload.component';
 
 
 @NgModule({
@@ -66,7 +81,22 @@ import { MessageDialogComponent } from './message-dialog/message-dialog.componen
         HeaderComponent,
         SidebarComponent,
         ConfirmDialogComponent,
-        MessageDialogComponent
+        MessageDialogComponent,
+        PoSearchComponent,
+        InvoiceSearchComponent,
+        EmpanelmentComponent,
+        PendingApprovalsComponent,
+        PoDetailsComponent,
+        InvoiceApprovalsComponent,
+        InvoiceDetailsComponent,
+        VendorDetailsComponent,
+        VendorAddressComponent,
+        VendorBankDetailsComponent,
+        VendorDocumentsComponent,
+        VendorRegistrationComponent,
+        ForgotPasswordComponent,
+        VendorApprovalComponent,
+        InvoiceUploadComponent
     ],
     imports: [
         BrowserModule,

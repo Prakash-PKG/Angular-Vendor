@@ -83,22 +83,22 @@ export class LoginComponent implements OnInit {
     }
 
     OnLoginClick() {
-        // this._router.navigate([this._appService.routingConstants.timesheet]);
-        // return false;
+        this._router.navigate([this._appService.routingConstants.posearch]);
+        return false;
 
-        this.isFormSubmitted = true;
-        this.loading = true;
-        if (this.loginForm.valid) {
-            let userId: string = this.loginForm.get("userId").value;
-            let password: string = this.loginForm.get("password").value;
+        // this.isFormSubmitted = true;
+        // this.loading = true;
+        // if (this.loginForm.valid) {
+        //     let userId: string = this.loginForm.get("userId").value;
+        //     let password: string = this.loginForm.get("password").value;
 
-            if (this._appService.isForProduction) {
-                this.checkLdapAuthentication(userId, password);
-            }
-            else {
-                this.checkTravelAuthentication(userId, password);
-            }
-        }
+        //     if (this._appService.isForProduction) {
+        //         this.checkLdapAuthentication(userId, password);
+        //     }
+        //     else {
+        //         this.checkTravelAuthentication(userId, password);
+        //     }
+        // }
     }
 
     ngOnInit() {
