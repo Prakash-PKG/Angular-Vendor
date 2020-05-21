@@ -1,0 +1,51 @@
+<div class="main">
+  <div class="container">
+    <div class="logo">mVendor</div>
+
+    <form [formGroup]="loginForm" class="login-form" (ngSubmit)="OnLoginClick()">
+
+      <!-- userId Column -->
+
+      <div class="form-group">
+        <mat-form-field class="example-full-width">
+          <mat-label>Enter Email </mat-label>
+          <input matInput type="email" class="form-control" placeholder="Enter Email" formControlName="userId">
+        </mat-form-field>
+
+          <small id="emailHelp" class="form-text text-muted text-description">(Enter Marlabs System Login Email)</small>
+          <div *ngIf="(isFormSubmitted || f.userId.touched ) && f.userId.errors?.required" class="errortxt">
+            Employee Email is required
+          </div>
+        
+      </div>
+
+      <!-- password Column -->
+
+      <div class="form-group">
+        <mat-form-field class="example-full-width">
+          <mat-label>Enter Password </mat-label>
+          <input matInput type="password" class="form-control" placeholder="Enter Password" formControlName="password">
+        </mat-form-field>
+
+          <small id="emailHelp" class="form-text text-muted text-description">(Enter Marlabs System Password)</small>
+          <div *ngIf="(isFormSubmitted || f.password.touched ) && f.password.errors?.required" class="errortxt">
+            Password is required
+          </div>
+          <div *ngIf="(isFormSubmitted || f.password.touched ) && f.password.errors?.minlength" class="errortxt">
+            Password must contains at least 4 characters</div>
+        
+      </div>
+      <!-- errors -->
+      <div class="errortxt loginerror">{{ errorMessage }}</div>
+
+      <!--  login button -->
+      <div class="actions">
+        <button mat-raised-button type="submit" class=" footer-actions mat-elevation-z8"
+          [disabled]="f.userId.invalid || f.password.invalid || loading">
+          <i *ngIf="loading" class="fa fa-spin fa-spinner pull-right" style="padding:10px" aria-hidden="true"></i>Sign
+          In</button>
+      </div>
+    </form>
+
+  </div>
+</div>

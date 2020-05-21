@@ -1,0 +1,297 @@
+/* You can add global styles to this file, and also import other style files */
+// Custom Theming for Angular Material
+// For more information: https://material.angular.io/guide/theming
+@import "~@angular/material/theming";
+// Plus imports for other components in your app.
+
+// Include the common styles for Angular Material. We include this here so that you only
+// have to load a single css file for Angular Material in your app.
+// Be sure that you only ever include this mixin once!
+@include mat-core();
+
+// Define the palettes for your theme using the Material Design palettes available in palette.scss
+// (imported above). For each palette, you can optionally specify a default, lighter, and darker
+// hue. Available color palettes: https://material.io/design/color/
+$mTime-primary: mat-palette($mat-indigo);
+$mTime-accent: mat-palette($mat-pink, A200, A100, A400);
+
+// The warn palette is optional (defaults to red).
+$mTime-warn: mat-palette($mat-red);
+
+// Create the theme object (a Sass map containing all of the palettes).
+$mTime-theme: mat-light-theme($mTime-primary, $mTime-accent, $mTime-warn);
+
+// Include theme styles for core and each component used in your app.
+// Alternatively, you can import and @include the theme mixins for each component
+// that you are using.
+@include angular-material-theme($mTime-theme);
+
+/* You can add global styles to this file, and also import other style files */
+
+html,
+body {
+  height: 100%;
+}
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+:focus {
+  outline: none !important;
+}
+/*--------------------------custom css------------------------------------*/
+.background {
+  width: 100%;
+  height: 100vh;
+  background-image: url(../src/assets/bg.png);
+  background-attachment: fixed;
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+}
+
+.full-width {
+  width: 100%;
+}
+.errortxt {
+  color: #ce2a0e;
+  font-size: 11px;
+  font-style: italic;
+}
+
+.clsFailureMsg {
+  color: #ce2a0e;
+  font-size: 13px;
+  font-style: italic;
+}
+
+.clsSuccessMsg {
+  color: blue;
+  font-size: 13px;
+  font-style: italic;
+}
+
+.login-card .mat-form-field .mat-form-field-infix {
+  padding: 0px !important;
+}
+.login-card .mat-form-field .mat-form-field-wrapper {
+  padding: 0px !important;
+}
+.margin-unset {
+  margin: 0px;
+}
+.padding-unset {
+  padding: 0px;
+}
+.info-container {
+  overflow: auto;
+  padding: 0px 10px;
+  margin: unset;
+}
+// --------------------------------------------------------------css for data table starts here-----------------------------------------------------
+
+.data-card {
+  margin: 1.5em 0px 0px;
+  overflow: auto;
+}
+.dataTable {
+  overflow: auto;
+  margin-top: 10px;
+}
+.dataTable thead tr th {
+  font-size: 1.2em;
+  color: black;
+
+  text-align: center;
+}
+.dataTable thead tr th.tableheadcustm:not(:first-child) {
+  max-width: 2em;
+}
+.dataTable thead tr th div button {
+  text-align: left;
+}
+.dataTable tbody tr td {
+  text-align: center;
+  font-size: 1em;
+}
+.dataTable thead tr th:first-child,
+.dataTable tbody tr td:first-child {
+  text-align: left;
+  padding-left: 10px;
+}
+.dataTable tbody tr td input {
+  width: 3.2em;
+  border: none;
+  text-align: center;
+  height: 1.7em;
+  background-color: rgba(255, 255, 255, 0.7);
+}
+.dataTable thead tr th {
+  margin-right: 10px;
+  font-size: 1em;
+}
+
+.dataTable tr {
+  height: 3em;
+}
+.dataTable .mat-icon-button .mat-icon,
+.mat-icon-button i {
+  line-height: 1.5em;
+}
+.dataTable .mat-icon {
+  height: 1.5em;
+  width: 1.5em;
+  font-size: 1.5em;
+  margin: auto;
+  line-height: 1.5em;
+}
+.dataTable .mat-icon-button {
+  height: 2.2em;
+  width: 2.2em;
+  line-height: 2.2em;
+}
+.action-btn-div {
+  text-align: right;
+  padding: 1.5em 0px;
+}
+.footer-actions {
+  background-color: #3e9cdc85;
+  margin: 0px 15px;
+  height: 2em;
+  line-height: 2em;
+  border-radius: 0px;
+  min-width: 7em;
+  font-size: 1em;
+}
+.footer-actions.red {
+  background-color: #fbaed7c7;
+}
+
+button {
+  cursor: pointer;
+}
+// --------------------------------------------------------------css for mat-dialog starts here-----------------------------------------------------
+.dialog-box {
+  background: #ffffff;
+  border: none;
+  border-radius: 0px;
+}
+.dialog-container {
+  overflow: auto;
+}
+mat-dialog-container {
+  max-height: 85vh !important;
+}
+.dialog-header {
+  color: #00a9c4;
+  font-size: 2em;
+  text-align: center;
+  margin-bottom: 0.5em;
+}
+.dialog-header-icon {
+  color: #000000;
+}
+
+// --------------------------------------------------------------media queries starts here-----------------------------------------------------
+
+/* Extra small devices (phones, 600px and down) */
+@media only screen and (max-width: 599px) {
+  .search-icon {
+    vertical-align: unset;
+  }
+  .create-btn-div {
+    margin: 10px 0px;
+  }
+  .mat-card {
+    padding-bottom: 0.8em !important;
+  }
+  .dataTable thead tr th.mat-header-cell:first-of-type,
+  .dataTable thead tr th.mat-header-cell:last-of-type,
+  .dataTable tbody tr td.mat-cell:first-of-type,
+  .dataTable tbody tr td.mat-cell:last-of-type {
+    padding: unset;
+  }
+  .dataTable .mat-icon-button .mat-icon,
+  .mat-icon-button i {
+    line-height: 1em;
+  }
+  .dataTable .mat-icon {
+    height: 1em;
+    width: 1em;
+    font-size: 1em;
+    margin: auto;
+    line-height: 1em;
+  }
+  .dataTable .mat-icon-button {
+    height: 1.2em;
+    width: 1.2em;
+    line-height: 1.2em;
+  }
+  .mat-dialog-container {
+    padding: 12px !important;
+  }
+  .mat-dialog-container .mat-form-field .mat-icon {
+    font-size: small;
+  }
+  .dialog-header-icon {
+    font-size: 1.2em;
+  }
+  .dialog-header .mat-icon {
+    font-size: 1em;
+    margin: auto;
+  }
+
+  .dialog-header .mat-button {
+    width: 1.5em;
+    height: 1.5em;
+    line-height: 1.5em;
+  }
+  .dialog-header {
+    font-size: 1.2em;
+    margin-bottom: unset;
+  }
+}
+
+/* Smartphones (portrait and landscape) ----------- */
+@media only screen and (max-device-width: 320px) {
+  body {
+    font-size: 10px;
+  }
+}
+
+/* Extra small devices (phones, 600px and 320px) */
+@media only screen and (min-device-width: 320px) and (max-width: 599px) {
+  body {
+    font-size: 10px;
+  }
+}
+
+/* Small devices (portrait tablets and large phones, 600px and up) */
+@media only screen and (min-width: 600px) and (max-width: 767px) {
+  body {
+    font-size: 12px;
+  }
+  .create-btn-div {
+    margin: 10px 0px;
+  }
+}
+
+/* Medium devices (landscape tablets, 768px and up) */
+@media only screen and (min-width: 768px) and (max-width: 991px) {
+  body {
+    font-size: 12px;
+  }
+}
+
+/* Large devices (laptops/desktops, 992px and up) */
+@media only screen and (min-width: 992px) and (max-width: 1199px) {
+  body {
+    font-size: 12px;
+  }
+}
+
+/* Extra large devices (large laptops and desktops, 1200px and up) */
+@media only screen and (min-width: 1200px) {
+  body {
+    font-size: 14px;
+  }
+}
