@@ -6,7 +6,7 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./invoice-upload.component.scss']
 })
 export class InvoiceUploadComponent implements OnInit {
-
+  headerArr: string[] = ['Item No.', 'Item Desc', 'Order Qty', 'Supplied Qty', 'Balance Qty', 'Invoive Qty', 'Rate', 'Amount'];
   constructor() { }
 
   ngOnInit() {

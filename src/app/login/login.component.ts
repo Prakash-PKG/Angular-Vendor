@@ -83,7 +83,8 @@ export class LoginComponent implements OnInit {
     }
 
     OnLoginClick() {
-        this._router.navigate([this._appService.routingConstants.posearch]);
+        // this._router.navigate([this._appService.routingConstants.posearch]);
+        this._router.navigate([this._appService.routingConstants.invupload]);
         return false;
 
         // this.isFormSubmitted = true;
