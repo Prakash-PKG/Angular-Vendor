@@ -1,3 +1,106 @@
-<p>
-  vendor-address works!
-</p>
+<div class="main">
+  <div class="title">
+    <h3>Vendor Address</h3>
+  </div>
+
+  <!-- <form [formGroup]=""> -->
+  <div class="row field">
+    <div class="col-4 label">
+      <mat-label>Address Line 1:</mat-label>
+    </div>
+    <div class="col-8 form-group">
+      <mat-form-field class="full-width">
+        <input type="text" matInput placeholder="Address Line 1">
+      </mat-form-field>
+      <div class="errortxt">
+        Address is required
+      </div>
+    </div>
+  </div>
+  <div class="row field">
+    <div class="col-4 label">
+      <mat-label>Address Line 2:</mat-label>
+    </div>
+    <div class="col-8 form-group">
+      <mat-form-field class="full-width">
+        <input type="text" matInput placeholder="Address Line 2">
+      </mat-form-field>
+    </div>
+  </div>
+  <div class="row field">
+    <div class="col-4 label">
+      <mat-label>Street:</mat-label>
+    </div>
+    <div class="col-8 form-group">
+      <mat-form-field class="full-width">
+        <input type="text" matInput placeholder="Street">
+      </mat-form-field>
+    </div>
+  </div>
+  <div class="row field">
+    <div class="col-4 label">
+      <mat-label>City:</mat-label>
+    </div>
+    <div class="col-8 form-group">
+      <mat-form-field class="full-width">
+        <input type="text" #autoCompleteInput placeholder="Type/Choose City " matInput [matAutocomplete]="auto">
+      </mat-form-field>
+      <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
+        <mat-option>
+          cities
+        </mat-option>
+      </mat-autocomplete>
+      <mat-icon class="arrow_drop_down">arrow_drop_down</mat-icon>
+      <div class="errortxt">
+        City is required
+      </div>
+    </div>
+  </div>
+  <div class="row field">
+    <div class="col-4 label">
+      <mat-label>Pincode:</mat-label>
+    </div>
+    <div class="col-8 form-group">
+    Pincode
+    </div>
+  </div>
+  <div class="row field">
+    <div class="col-4 label">
+      <mat-label>State:</mat-label>
+    </div>
+    <div class="col-8 form-group">
+      <mat-form-field class="full-width">
+        <input type="text" #autoCompleteInput placeholder="Type/Choose State " matInput [matAutocomplete]="auto">
+      </mat-form-field>
+      <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
+        <mat-option>
+          states
+        </mat-option>
+      </mat-autocomplete>
+      <mat-icon class="arrow_drop_down">arrow_drop_down</mat-icon>
+      <div class="errortxt">
+        State is required
+      </div>
+    </div>
+  </div>
+  <div class="row field">
+    <div class="col-4 label">
+      <mat-label>Country:</mat-label>
+    </div>
+    <div class="col-8 form-group">
+      <mat-form-field class="full-width">
+        <input type="text" #autoCompleteInput placeholder="Type/Choose Country " matInput [matAutocomplete]="auto">
+      </mat-form-field>
+      <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
+        <mat-option>
+          Countries
+        </mat-option>
+      </mat-autocomplete>
+      <mat-icon class="arrow_drop_down">arrow_drop_down</mat-icon>
+      <div class="errortxt">
+        Country is required
+      </div>
+    </div>
+  </div>
+
+</div>
