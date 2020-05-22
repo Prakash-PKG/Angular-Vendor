@@ -19,7 +19,8 @@ export class AppService {
     readonly routingConstants: any = {
         login: "/",
         posearch: "/posearch",
-        invupload: "/invupload"
+        invupload: "/invupload",
+        vendetails: "/vendetails"
     };
 
     readonly pageConstants: any = {
