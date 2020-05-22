@@ -35,11 +35,9 @@ body {
 body {
   margin: 0;
   font-family: Roboto, "Helvetica Neue", sans-serif;
-  padding:20px;
+  padding:0;
 }
-:focus {
-  outline: none !important;
-}
+
 /*--------------------------custom css------------------------------------*/
 .background {
   width: 100%;
@@ -53,41 +51,14 @@ body {
 .full-width {
   width: 100%;
 }
-.errortxt {
-  color: #ce2a0e;
-  font-size: 11px;
-  font-style: italic;
-}
 
-.clsFailureMsg {
-  color: #ce2a0e;
-  font-size: 13px;
-  font-style: italic;
-}
-
-.clsSuccessMsg {
-  color: blue;
-  font-size: 13px;
-  font-style: italic;
-}
-
-.login-card .mat-form-field .mat-form-field-infix {
-  padding: 0px !important;
-}
-.login-card .mat-form-field .mat-form-field-wrapper {
-  padding: 0px !important;
-}
 .margin-unset {
   margin: 0px;
 }
 .padding-unset {
   padding: 0px;
 }
-.info-container {
-  overflow: auto;
-  padding: 0px 10px;
-  margin: unset;
-}
+
 // --------------------------------------------------------------css for data table starts here-----------------------------------------------------
 
 
@@ -115,32 +86,30 @@ body {
 .dataTable tr {
   height: 3em;
 }
-
-
 button {
   cursor: pointer;
 }
 // --------------------------------------------------------------css for mat-dialog starts here-----------------------------------------------------
-.dialog-box {
-  background: #ffffff;
-  border: none;
-  border-radius: 0px;
-}
-.dialog-container {
-  overflow: auto;
-}
-mat-dialog-container {
-  max-height: 85vh !important;
-}
-.dialog-header {
-  color: #00a9c4;
-  font-size: 2em;
-  text-align: center;
-  margin-bottom: 0.5em;
-}
-.dialog-header-icon {
-  color: #000000;
-}
+// .dialog-box {
+//   background: #ffffff;
+//   border: none;
+//   border-radius: 0px;
+// }
+// .dialog-container {
+//   overflow: auto;
+// }
+// mat-dialog-container {
+//   max-height: 85vh !important;
+// }
+// .dialog-header {
+//   color: #00a9c4;
+//   font-size: 2em;
+//   text-align: center;
+//   margin-bottom: 0.5em;
+// }
+// .dialog-header-icon {
+//   color: #000000;
+// }
 
 // --------------------------------------------------------------media queries starts here-----------------------------------------------------
 
@@ -148,29 +117,29 @@ mat-dialog-container {
 @media only screen and (max-width: 599px) {
  
 
-  .mat-dialog-container {
-    padding: 12px !important;
-  }
-  .mat-dialog-container .mat-form-field .mat-icon {
-    font-size: small;
-  }
-  .dialog-header-icon {
-    font-size: 1.2em;
-  }
-  .dialog-header .mat-icon {
-    font-size: 1em;
-    margin: auto;
-  }
+  // .mat-dialog-container {
+  //   padding: 12px !important;
+  // }
+  // .mat-dialog-container .mat-form-field .mat-icon {
+  //   font-size: small;
+  // }
+  // .dialog-header-icon {
+  //   font-size: 1.2em;
+  // }
+  // .dialog-header .mat-icon {
+  //   font-size: 1em;
+  //   margin: auto;
+  // }
 
-  .dialog-header .mat-button {
-    width: 1.5em;
-    height: 1.5em;
-    line-height: 1.5em;
-  }
-  .dialog-header {
-    font-size: 1.2em;
-    margin-bottom: unset;
-  }
+  // .dialog-header .mat-button {
+  //   width: 1.5em;
+  //   height: 1.5em;
+  //   line-height: 1.5em;
+  // }
+  // .dialog-header {
+  //   font-size: 1.2em;
+  //   margin-bottom: unset;
+  // }
 }
 
 /* Smartphones (portrait and landscape) ----------- */
@@ -192,9 +161,7 @@ mat-dialog-container {
   body {
     font-size: 12px;
   }
-  .create-btn-div {
-    margin: 10px 0px;
-  }
+
 }
 
 /* Medium devices (landscape tablets, 768px and up) */
@@ -249,4 +216,7 @@ mat-dialog-container {
 }
 .actions-left{
   justify-content: flex-start;
+}
+.main{
+padding: 20px;
 }
