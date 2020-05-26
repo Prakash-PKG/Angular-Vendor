@@ -8,3 +8,8 @@ export class BusyDataModel {
 export class PageDetailsModel {
     pageName: string;
 }
+
+export class Empanelment {
+    vendorMailId: string;
+    emplId: string;
+}
