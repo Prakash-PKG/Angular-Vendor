@@ -7,10 +7,12 @@ import { MatSort, MatTableDataSource } from '@angular/material';
   styleUrls: ['./po-search.component.scss']
 })
 export class PoSearchComponent implements OnInit {
+
   headerArr: string[] = ['po', 'vendorid', 'vendorname', 'podate','currency','totalamt','billedamt','payrec','status'];
   poData = new MatTableDataSource(DATA);
  
   @ViewChild(MatSort) sort: MatSort;
+  
   constructor() { }
 
   ngOnInit() {

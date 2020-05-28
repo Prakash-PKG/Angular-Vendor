@@ -46,25 +46,21 @@
   <div class="container my-container margin-unset full-width">
   <table mat-table [dataSource]="dataSource" matSort class="dataTable full-width">
 
-    <!-- Position Column -->
     <ng-container matColumnDef="po">
       <th mat-header-cell *matHeaderCellDef mat-sort-header>PO No.</th>
       <td mat-cell *matCellDef="let element"></td>
     </ng-container>
   
-    <!-- Name Column -->
     <ng-container matColumnDef="vendorid">
       <th mat-header-cell *matHeaderCellDef mat-sort-header> Vendor Id </th>
       <td mat-cell *matCellDef="let element"></td>
     </ng-container>
   
-    <!-- Weight Column -->
     <ng-container matColumnDef="vendorname">
       <th mat-header-cell *matHeaderCellDef mat-sort-header> Vendor Name </th>
       <td mat-cell *matCellDef="let element"> </td>
     </ng-container>
   
-    <!-- Symbol Column -->
     <ng-container matColumnDef="podate">
       <th mat-header-cell *matHeaderCellDef mat-sort-header> PO Date </th>
       <td mat-cell *matCellDef="let element"> </td>
