@@ -17,3 +17,12 @@ div.actions{
 .amount{
     text-align:right;
 }
+.head-row, .search-section, .action-section{
+    display: flex;
+}
+.head-row{
+    justify-content: space-between;
+}
+.mat-form-field.field{
+margin-right: 2em;
+}

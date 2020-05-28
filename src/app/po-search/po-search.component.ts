@@ -9,7 +9,7 @@ import { MatSort, MatTableDataSource } from '@angular/material';
 export class PoSearchComponent implements OnInit {
 
   headerArr: string[] = ['po', 'vendorid', 'vendorname', 'podate','currency','totalamt','billedamt','payrec','status'];
-  poData = new MatTableDataSource(DATA);
+  poData = new MatTableDataSource(PODATA);
  
   @ViewChild(MatSort) sort: MatSort;
   
@@ -25,5 +25,5 @@ export interface PODataModel {
 
 }
 
-const DATA: PODataModel[] = [
+const PODATA: PODataModel[] = [
 ];
