@@ -31,11 +31,10 @@ $mTime-theme: mat-light-theme($mTime-primary, $mTime-accent, $mTime-warn);
 html,
 body {
   height: 100%;
-}
-body {
   margin: 0;
   font-family: Roboto, "Helvetica Neue", sans-serif;
   padding:0;
+  font-size: 12px;
 }
 
 /*--------------------------custom css------------------------------------*/
@@ -58,7 +57,9 @@ body {
 .padding-unset {
   padding: 0px;
 }
-
+textarea{
+ height: 15px;
+}
 // --------------------------------------------------------------css for data table starts here-----------------------------------------------------
 
 
@@ -69,7 +70,7 @@ body {
 
 .dataTable tbody tr td {
   text-align: left;
-  font-size: 1em;
+  // font-size: 1em;
 }
 .dataTable tbody tr td input {
   width: 3.2em;
@@ -80,7 +81,13 @@ body {
 }
 .dataTable thead tr th {
   margin-right: 10px;
-  font-size: 1em;
+  // font-size: 1em;
+}
+.dataTable thead tr th:last-child {
+  text-align: right;
+}
+.amount{
+text-align: right;
 }
 
 .dataTable tr {
@@ -203,8 +210,12 @@ button {
 }
 .actions .footer-actions {
   background-color: blueviolet;
-  color:white;
-  margin: 10px;
+  color: white;
+  margin: .5em;
+  min-width: 6em;
+  font-size: inherit;
+  line-height: inherit;
+  padding: .5em 1.5em;
 }
 .actions  .footer-actions-green{
   background-color: #24F4D5;
@@ -222,6 +233,6 @@ padding: 20px;
 }
 .errortxt {
   color: #ce2a0e;
-  font-size: 11px;
+  font-size: smaller;
   font-style: italic;
 }

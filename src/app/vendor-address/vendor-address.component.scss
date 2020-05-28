@@ -1,12 +1,16 @@
-.arrow_drop_down{  
-    position: absolute;
-  right: .7em;
-  bottom: 1.5em;
-  cursor:pointer;
+.arrow_drop_down {
+  position: absolute;
+  right: 0.7em;
+  bottom: 1.2em;
+  cursor: pointer;
+  @media only screen and (max-width: 599px) {
+    right: 0.5em;
+    bottom: 0.9em;
+  }
 }
-.field{
-    align-items: baseline;
+.field {
+  align-items: baseline;
 }
-.label{
-    text-align: right;
+.label {
+  text-align: right;
 }

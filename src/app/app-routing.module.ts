@@ -20,6 +20,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { LoginComponent } from './login/login.component';
 import { AuthGuardLogin } from './login/authguard.login';
 import { HomeComponent } from './home/home.component';
+import { VendorOthersComponent } from './vendor-others/vendor-others.component';
 
 
 const routes: Routes = [
@@ -90,6 +91,11 @@ const routes: Routes = [
     {
         path: 'vendocs',
         component: VendorDocumentsComponent,
+        //canActivate: [AuthGuardLogin]
+    },
+    {
+        path: 'venothers',
+        component: VendorOthersComponent,
         //canActivate: [AuthGuardLogin]
     },
     {

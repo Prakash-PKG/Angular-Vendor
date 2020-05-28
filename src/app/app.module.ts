@@ -71,6 +71,7 @@ import { VendorRegistrationComponent } from './vendor-registration/vendor-regist
 import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
 import { VendorApprovalComponent } from './vendor-approval/vendor-approval.component';
 import { InvoiceUploadComponent } from './invoice-upload/invoice-upload.component';
+import { VendorOthersComponent } from './vendor-others/vendor-others.component';
 
 
 @NgModule({
@@ -96,7 +97,8 @@ import { InvoiceUploadComponent } from './invoice-upload/invoice-upload.componen
         VendorRegistrationComponent,
         ForgotPasswordComponent,
         VendorApprovalComponent,
-        InvoiceUploadComponent
+        InvoiceUploadComponent,
+        VendorOthersComponent
     ],
     imports: [
         BrowserModule,

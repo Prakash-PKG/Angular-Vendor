@@ -2,20 +2,26 @@
   <div class="title">
     <h3>Invoice Creation</h3>
   </div>
-  <div class="row">
+  <div class="row search">
     <div class="col-2">
       <mat-form-field class="full-width">
         <mat-label>PO No.</mat-label>
-        <select matNativeControl required>
-          <option>PO list</option>
-        </select>
+        <mat-select matNativeControl required>
+          <mat-option>PO list</mat-option>
+        </mat-select>
       </mat-form-field>
+      <div class="errortxt">
+        PO No. is required
+      </div>
     </div>
     <div class="col-2">
       <mat-form-field class="full-width">
         <mat-label>Invoice No.</mat-label>
         <input matInput placeholder="Invoice No.">
       </mat-form-field>
+      <div class="errortxt">
+        Invoice No. is required
+      </div>
     </div>
     <div class="col-2">
       <mat-form-field class="full-width">
@@ -24,11 +30,14 @@
         <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
         <mat-datepicker #picker disabled="false"></mat-datepicker>
       </mat-form-field>
+      <div class="errortxt">
+        Invoice Date is required
+      </div>
     </div>
     <div class="col-6">
       <mat-form-field class="full-width">
         <mat-label>Remarks</mat-label>
-        <textarea matInput placeholder="Remarks" style="height: 15px;"></textarea>
+        <textarea matInput placeholder="Remarks"></textarea>
       </mat-form-field>
     </div>
   </div>
@@ -63,7 +72,24 @@
           <td>
           </td>
         </tr>
-
+        <tr>
+          <td colspan="7" class="title"> Invoice Net Amount
+          </td>
+          <td class="amount">
+          </td>
+        </tr>
+        <tr>
+          <td colspan="7" class="title"> Freight Amount
+          </td>
+          <td class="amount">
+          </td>
+        </tr>
+        <tr>
+          <td colspan="7" class="title"> Invoice Total Amount
+          </td>
+          <td class="amount">
+          </td>
+        </tr>
       </tbody>
     </table>
     <div class="row actions actions-left">

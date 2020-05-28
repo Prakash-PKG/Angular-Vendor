@@ -5,10 +5,8 @@
 
   <!-- <form [formGroup]=""> -->
   <div class="row field">
-    <div class="col-4 label">
-      <mat-label>Address Line 1:</mat-label>
-    </div>
-    <div class="col-8 form-group">
+
+    <div class="col-6 form-group">
       <mat-form-field class="full-width">
         <input type="text" matInput placeholder="Address Line 1">
       </mat-form-field>
@@ -16,32 +14,8 @@
         Address is required
       </div>
     </div>
-  </div>
-  <div class="row field">
-    <div class="col-4 label">
-      <mat-label>Address Line 2:</mat-label>
-    </div>
-    <div class="col-8 form-group">
-      <mat-form-field class="full-width">
-        <input type="text" matInput placeholder="Address Line 2">
-      </mat-form-field>
-    </div>
-  </div>
-  <div class="row field">
-    <div class="col-4 label">
-      <mat-label>Street:</mat-label>
-    </div>
-    <div class="col-8 form-group">
-      <mat-form-field class="full-width">
-        <input type="text" matInput placeholder="Street">
-      </mat-form-field>
-    </div>
-  </div>
-  <div class="row field">
-    <div class="col-4 label">
-      <mat-label>City:</mat-label>
-    </div>
-    <div class="col-8 form-group">
+
+    <div class="col-4 form-group">
       <mat-form-field class="full-width">
         <input type="text" #autoCompleteInput placeholder="Type/Choose City " matInput [matAutocomplete]="auto">
       </mat-form-field>
@@ -55,20 +29,22 @@
         City is required
       </div>
     </div>
+
+    <div class="col-2 form-group">
+      Pincode
+    </div>
+
   </div>
+
   <div class="row field">
-    <div class="col-4 label">
-      <mat-label>Pincode:</mat-label>
+
+    <div class="col-6 form-group">
+      <mat-form-field class="full-width">
+        <input type="text" matInput placeholder="Address Line 2">
+      </mat-form-field>
     </div>
-    <div class="col-8 form-group">
-    Pincode
-    </div>
-  </div>
-  <div class="row field">
-    <div class="col-4 label">
-      <mat-label>State:</mat-label>
-    </div>
-    <div class="col-8 form-group">
+
+    <div class="col-6 form-group">
       <mat-form-field class="full-width">
         <input type="text" #autoCompleteInput placeholder="Type/Choose State " matInput [matAutocomplete]="auto">
       </mat-form-field>
@@ -82,12 +58,18 @@
         State is required
       </div>
     </div>
+
   </div>
+
   <div class="row field">
-    <div class="col-4 label">
-      <mat-label>Country:</mat-label>
+
+    <div class="col-6 form-group">
+      <mat-form-field class="full-width">
+        <input type="text" matInput placeholder="Street">
+      </mat-form-field>
     </div>
-    <div class="col-8 form-group">
+
+    <div class="col-6 form-group">
       <mat-form-field class="full-width">
         <input type="text" #autoCompleteInput placeholder="Type/Choose Country " matInput [matAutocomplete]="auto">
       </mat-form-field>
@@ -101,6 +83,12 @@
         Country is required
       </div>
     </div>
+
+  </div>
+  <div class="row actions">
+    <button mat-raised-button class="footer-actions">Previous</button>
+
+    <button mat-raised-button class="footer-actions ">Next</button>
   </div>
 
 </div>
