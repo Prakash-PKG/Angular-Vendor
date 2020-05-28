@@ -1,14 +1,12 @@
 
-.search-btn{    border: 5px #24F4D5 solid;
-    height: 40px;
-    width: 40px;
+.search-btn{  
+    border: .15em #24f4d5 solid;
+    height: 1.5em;
+    width: 1.5em;
     border-radius: 50%;
-    padding: 3px;
+    padding: .1em;
 }
 div.actions{
-    padding: 0px;
-}
-.my-container{
     padding: 0px;
 }
 .dataTable{
@@ -17,12 +15,38 @@ div.actions{
 .amount{
     text-align:right;
 }
-.head-row, .search-section, .action-section{
+.search-row {
     display: flex;
-}
-.head-row{
+    flex-wrap: wrap;
     justify-content: space-between;
-}
+    align-items: center;
+  }
+  
+  .search-row-element {
+    flex-grow: 1;
+  }
+  .search-row-element.search-btn{
+      flex-grow: 0;
+      flex-shrink: 0;
+  }
+  .search-row-element.actions {
+    flex: 0 0 3em;
+  }
 .mat-form-field.field{
 margin-right: 2em;
+}
+td.mat-cell:first-of-type,
+th.mat-header-cell:first-of-type,
+td.mat-cell:first-of-type,
+th.mat-header-cell:first-of-type {
+  padding-left: 0px;
+}
+td.mat-cell:last-of-type,
+th.mat-header-cell:last-of-type,
+td.mat-cell:last-of-type,
+th.mat-header-cell:last-of-type{
+    padding-right: 0px;
+}
+.material-icons{
+    font-size: 1.25em;
 }

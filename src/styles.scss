@@ -35,6 +35,7 @@ body {
   font-family: Roboto, "Helvetica Neue", sans-serif;
   padding:0;
   font-size: 12px;
+  color: rgba(0, 0, 0, 0.54);
 }
 
 /*--------------------------custom css------------------------------------*/
@@ -50,7 +51,6 @@ body {
 .full-width {
   width: 100%;
 }
-
 .margin-unset {
   margin: 0px;
 }
@@ -60,17 +60,18 @@ body {
 textarea{
  height: 15px;
 }
-// --------------------------------------------------------------css for data table starts here-----------------------------------------------------
 
+// --------------------------------------------------------------css for data table starts here-----------------------------------------------------
 
 .dataTable {
   overflow: auto;
   margin-top: 10px;
+  background: transparent;
 }
 
 .dataTable tbody tr td {
   text-align: left;
-  // font-size: 1em;
+  font-size: inherit;
 }
 .dataTable tbody tr td input {
   width: 3.2em;
@@ -81,7 +82,8 @@ textarea{
 }
 .dataTable thead tr th {
   margin-right: 10px;
-  // font-size: 1em;
+  font-size: inherit;
+  font-weight: 500;
 }
 .dataTable thead tr th:last-child {
   text-align: right;
@@ -120,34 +122,6 @@ button {
 
 // --------------------------------------------------------------media queries starts here-----------------------------------------------------
 
-/* Extra small devices (phones, 600px and down) */
-@media only screen and (max-width: 599px) {
- 
-
-  // .mat-dialog-container {
-  //   padding: 12px !important;
-  // }
-  // .mat-dialog-container .mat-form-field .mat-icon {
-  //   font-size: small;
-  // }
-  // .dialog-header-icon {
-  //   font-size: 1.2em;
-  // }
-  // .dialog-header .mat-icon {
-  //   font-size: 1em;
-  //   margin: auto;
-  // }
-
-  // .dialog-header .mat-button {
-  //   width: 1.5em;
-  //   height: 1.5em;
-  //   line-height: 1.5em;
-  // }
-  // .dialog-header {
-  //   font-size: 1.2em;
-  //   margin-bottom: unset;
-  // }
-}
 
 /* Smartphones (portrait and landscape) ----------- */
 @media only screen and (max-device-width: 320px) {
@@ -205,8 +179,9 @@ button {
   border-bottom-right-radius: 0px;
   border-bottom-left-radius: 0px;
   text-align: left;
-  padding: 1em;
+  padding: 0em 1em 1em;
   max-width: unset;
+  overflow: auto;
 }
 .actions .footer-actions {
   background-color: blueviolet;
@@ -216,20 +191,19 @@ button {
   font-size: inherit;
   line-height: inherit;
   padding: .5em 1.5em;
+  max-height: 3em;
 }
 .actions  .footer-actions-green{
   background-color: #24F4D5;
-  color: black;
+  color: #3c3c3c;
 }
 .actions{
-  text-align: right;
   justify-content: flex-end;
 }
-.actions-left{
-  justify-content: flex-start;
-}
+
 .main{
 padding: 20px;
+padding-bottom: 0px;
 }
 .errortxt {
   color: #ce2a0e;
