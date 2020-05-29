@@ -3,7 +3,7 @@
         <span *ngIf="isSidebarCollapsed === false">
             <mat-icon>close</mat-icon>
         </span>
-        <span *ngIf="isSidebarCollapsed === true" >
+        <span *ngIf="isSidebarCollapsed === true">
             <mat-icon>compare_arrows</mat-icon>
         </span>
     </div>
@@ -45,13 +45,13 @@
             <div class="navtxt">Vendor</div>
         </li>
         <ul class="childdash">
-            <li>
+            <li [ngStyle]="{'padding-left': isSidebarCollapsed === true ? '1em': '2em' }">
                 <div class="side-icon">
                     <mat-icon>how_to_reg</mat-icon>
                 </div>
                 <div class="navtxt">Vendor Registration</div>
             </li>
-            <li>
+            <li [ngStyle]="{'padding-left': isSidebarCollapsed === true ? '1em': '2em' }">
                 <div class="side-icon">
                     <mat-icon>person</mat-icon>
                 </div>
