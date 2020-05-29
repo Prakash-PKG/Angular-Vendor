@@ -24,7 +24,7 @@ import { transition, animate, state, style, trigger } from '@angular/animations'
         trigger('collapseChanged', [
             state('true', style({
                 overflow: 'hidden',
-                width: '6%',
+                width: '4em',
                 opacity: 1
             })),
             state('false', style({

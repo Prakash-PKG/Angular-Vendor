@@ -7,7 +7,17 @@
             <mat-icon>compare_arrows</mat-icon>
         </span>
     </div>
+
     <ul class="menu">
+        <li class="removehover" style="padding:0px;">
+            <div class="creation-btn actions">
+                    <button mat-raised-button class="footer-actions" [ngClass]="{' btn-collapsed': isSidebarCollapsed ==  true }">
+                        <span *ngIf="isSidebarCollapsed === false">Invoice Creation</span>
+                        <span *ngIf="isSidebarCollapsed === true"><mat-icon>create</mat-icon></span>
+                    </button>
+            
+            </div>
+        </li>
         <li [ngClass]="{' tabactive': selecteMenu == 'projectsDashboard', '': selecteMenu != 'projectsDashboard' }">
             <div class="side-icon">
                 <mat-icon>dashboard</mat-icon>

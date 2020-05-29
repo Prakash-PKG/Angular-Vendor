@@ -76,22 +76,24 @@
     cursor: auto;
     color:rgba(0, 0, 0, 0.54);
 }
-// @media only screen and (min-width: 500px) and (max-width: 1150px) {
-//     .commonleftnav{
-//         width: 207px;
-//     }
-// }
 
 @media only screen and (max-width: 499px) {
     .commonleftnav{
     width: 100%!important;
     }
 }
-//     .navexpandcollapse{
-//         visibility: hidden;
-//     }
-
-//     .navtxt{
-//         display: none!important;
-//     }
-// }
+.creation-btn{
+    background: #F2EBFD;
+    width: 100%;
+    margin-bottom: 2em;
+}
+.footer-actions{
+    margin:  20px 10px;
+    width: 90%;
+}
+.btn-collapsed{
+    margin:20px 0px;
+    border-radius: 0px;
+    text-align: left;
+    padding-left: 1em;
+}
