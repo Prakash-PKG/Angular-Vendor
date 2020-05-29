@@ -1,0 +1,97 @@
+
+.commonleftnav{
+    min-height: 100%;
+    height: 100%;
+    float: left;
+    background-color: #FAFAFA;
+    white-space: nowrap;
+}
+
+.clsSidebarExpand {
+    width: 200px;
+}
+
+.clsSidebarCollapse {
+    width: 4%;
+}
+
+.commonleftnav ul{
+    list-style-type: none;
+    padding-left: 0;
+    margin-top: 2.9rem;
+    width: 100%;
+}
+
+.commonleftnav ul li{
+    cursor: pointer;
+    padding: 7px 10px;
+    display: flex;
+    padding-left: 1em;
+    font-size: 1.25em;
+    align-content: center;
+}
+
+.commonleftnav ul li:hover{
+  box-shadow: inset 4px 0px 0px 0px blueviolet;
+  background-color: #ECCFFF;
+  color:blueviolet
+}
+.side-icon{
+    margin-right: 1em;
+}
+.navexpandcollapse{
+    height: 38px;
+    cursor: pointer;
+}
+
+.navexpandcollapse span{
+    float: right;
+    padding: 1em;
+    cursor: pointer;
+}
+
+.childdash{
+        margin-top: 0px!important;
+}
+
+.childdash li{
+    // padding: 0px 0px 0px 2em!important;
+    align-items: center;
+    white-space: normal;
+} 
+
+.tabactive{
+    box-shadow: inset 4px 0px 0px 0px blueviolet;
+    background-color: #ECCFFF;
+    color:blueviolet
+}
+.childdash li:hover{
+    box-shadow: inset 4px 0px 0px 0px blueviolet;
+    background-color: #ECCFFF;
+    color:blueviolet
+}
+.commonleftnav ul li.removehover:hover{
+    box-shadow: none;
+    background: transparent;
+    cursor: auto;
+    color:rgba(0, 0, 0, 0.54);
+}
+// @media only screen and (min-width: 500px) and (max-width: 1150px) {
+//     .commonleftnav{
+//         width: 207px;
+//     }
+// }
+
+@media only screen and (max-width: 499px) {
+    .commonleftnav{
+    width: 100%!important;
+    }
+}
+//     .navexpandcollapse{
+//         visibility: hidden;
+//     }
+
+//     .navtxt{
+//         display: none!important;
+//     }
+// }

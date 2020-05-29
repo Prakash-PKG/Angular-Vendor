@@ -8,7 +8,6 @@ import { Component, OnInit } from '@angular/core';
 export class EmpanelmentComponent implements OnInit {
 
   constructor() { }
-  OnEmpanelmentClick(){}
   ngOnInit() {
   }
 
