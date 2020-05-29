@@ -51,24 +51,7 @@ export class LoginComponent implements OnInit {
                 this.loading = false;
                 this._loginService.storeUserData(response);
 
-                let user = localStorage.getItem('user');
-                user = this._cryptoService.decrypt(user);
-                const userDetails = JSON.parse(user);
-                let userRoles = userDetails.userRoles;
-                let isFinanceUser: boolean = false;
-                if(userRoles && userRoles.length > 0) {
-                    let financeRoles = userRoles.filter(r => r.name == "Finance");
-                    if(financeRoles && financeRoles.length > 0) {
-                        isFinanceUser = true;
-                    }
-                }
-
-                if(isFinanceUser) {
-                    this._router.navigate([this._appService.routingConstants.invoice]);
-                }
-                else {
-                    this._router.navigate([this._appService.routingConstants.timesheet]);
-                }
+                this._router.navigate([this._appService.routingConstants.posearch]);
             },
             (error) => {
                 this.loading = false;
@@ -83,22 +66,22 @@ export class LoginComponent implements OnInit {
     }
 
     OnLoginClick() {
-        this._router.navigate([this._appService.routingConstants.posearch]);
-        return false;
+        // this._router.navigate([this._appService.routingConstants.posearch]);
+        // return false;
 
-        // this.isFormSubmitted = true;
-        // this.loading = true;
-        // if (this.loginForm.valid) {
-        //     let userId: string = this.loginForm.get("userId").value;
-        //     let password: string = this.loginForm.get("password").value;
+        this.isFormSubmitted = true;
+        this.loading = true;
+        if (this.loginForm.valid) {
+            let userId: string = this.loginForm.get("userId").value;
+            let password: string = this.loginForm.get("password").value;
 
-        //     if (this._appService.isForProduction) {
-        //         this.checkLdapAuthentication(userId, password);
-        //     }
-        //     else {
-        //         this.checkTravelAuthentication(userId, password);
-        //     }
-        // }
+            if (this._appService.isForProduction) {
+                this.checkLdapAuthentication(userId, password);
+            }
+            else {
+                this.checkTravelAuthentication(userId, password);
+            }
+        }
     }
 
     ngOnInit() {
