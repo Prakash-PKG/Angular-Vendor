@@ -23,14 +23,10 @@ import { transition, animate, state, style, trigger } from '@angular/animations'
         ]),
         trigger('collapseChanged', [
             state('true', style({
-                overflow: 'hidden',
                 width: '4em',
-                opacity: 1
             })),
             state('false', style({
-                opacity: 1,
-                overflow: 'hidden',
-                width: '24%'
+                width: '20%'
             })),
             transition('true <=> false', animate('0.5s ease-in-out'))
         ])

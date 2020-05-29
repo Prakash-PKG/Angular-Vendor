@@ -24,9 +24,9 @@ div.actions {
 .search-row-element {
   flex-grow: 1;
 }
-.search-row-element.search-btn{
-    flex-grow: 0;
-    flex-shrink: 0;
+.search-row-element.search-btn {
+  flex-grow: 0;
+  flex-shrink: 0;
 }
 .search-row-element.actions {
   flex: 0 0 3em;
@@ -50,3 +50,4 @@ th.mat-header-cell:last-of-type {
 .material-icons {
   font-size: 1.25em;
 }
+

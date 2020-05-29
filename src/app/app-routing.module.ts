@@ -37,11 +37,7 @@ const routes: Routes = [
                 component: PoSearchComponent,
                 //canActivate: [AuthGuardLogin]
             },
-            {
-                path: 'empanelment',
-                component: EmpanelmentComponent,
-                //canActivate: [AuthGuardLogin]
-            },
+
             {
                 path: 'fp',
                 component: ForgotPasswordComponent,
@@ -77,6 +73,27 @@ const routes: Routes = [
                 component: PoDetailsComponent,
                 //canActivate: [AuthGuardLogin]
             },
+
+            {
+                path: 'venapproval',
+                component: VendorApprovalComponent,
+                //canActivate: [AuthGuardLogin]
+            },
+            {
+                path: 'venreg',
+                component: VendorRegistrationComponent,
+                //canActivate: [AuthGuardLogin]
+            }
+        ]
+    },
+    {
+        path: 'empanelment',
+        component: EmpanelmentComponent,
+        //canActivate: [AuthGuardLogin]
+    },
+    {
+        path: 'vendor',
+        children: [
             {
                 path: 'vendetails',
                 component: VendorDetailsComponent,
@@ -100,16 +117,6 @@ const routes: Routes = [
             {
                 path: 'venothers',
                 component: VendorOthersComponent,
-                //canActivate: [AuthGuardLogin]
-            },
-            {
-                path: 'venapproval',
-                component: VendorApprovalComponent,
-                //canActivate: [AuthGuardLogin]
-            },
-            {
-                path: 'venreg',
-                component: VendorRegistrationComponent,
                 //canActivate: [AuthGuardLogin]
             }
         ]

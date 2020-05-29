@@ -175,6 +175,7 @@ button {
   line-height: inherit;
   padding: .5em 1.5em;
   max-height: 3em;
+  height: 3em;
 }
 .actions  .footer-actions-green{
   background-color: #24F4D5;
@@ -187,6 +188,8 @@ button {
 .main{
 padding: 20px;
 padding-bottom: 0px;
+display: flex;
+flex-direction: column;
 }
 .errortxt {
   color: #ce2a0e;

@@ -5,6 +5,8 @@
     float: left;
     background-color: #FAFAFA;
     white-space: nowrap;
+    float: left;
+    overflow:hidden;
 }
 
 .clsSidebarExpand {
@@ -55,7 +57,6 @@
 }
 
 .childdash li{
-    // padding: 0px 0px 0px 2em!important;
     align-items: center;
     white-space: normal;
 } 
