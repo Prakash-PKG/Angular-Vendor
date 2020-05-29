@@ -1,3 +1,69 @@
-<div>
-   Sidebar
+<div class="commonleftnav mat-elevation-z8" [@collapseChanged]="isSidebarCollapsed">
+    <div class="navexpandcollapse" (click)="onCollapseClick()">
+        <span *ngIf="isSidebarCollapsed === false">
+            <mat-icon>close</mat-icon>
+        </span>
+        <span *ngIf="isSidebarCollapsed === true" >
+            <mat-icon>compare_arrows</mat-icon>
+        </span>
+    </div>
+    <ul class="menu">
+        <li [ngClass]="{' tabactive': selecteMenu == 'projectsDashboard', '': selecteMenu != 'projectsDashboard' }">
+            <div class="side-icon">
+                <mat-icon>dashboard</mat-icon>
+            </div>
+            <div class="navtxt">Dashboard</div>
+        </li>
+        <li>
+            <div class="side-icon">
+                <mat-icon>done_outline</mat-icon>
+            </div>
+            <div class="navtxt">Approvals</div>
+        </li>
+        <li>
+            <div class="side-icon">
+                <mat-icon>pageview</mat-icon>
+            </div>
+            <div class="navtxt">PO Search</div>
+        </li>
+        <li>
+            <div class="side-icon">
+                <mat-icon>local_offer</mat-icon>
+            </div>
+            <div class="navtxt">Invoice Search</div>
+        </li>
+        <li>
+            <div class="side-icon">
+                <mat-icon>description</mat-icon>
+            </div>
+            <div class="navtxt">Reports</div>
+        </li>
+        <li class="removehover">
+            <div class="side-icon">
+                <mat-icon>person</mat-icon>
+            </div>
+            <div class="navtxt">Vendor</div>
+        </li>
+        <ul class="childdash">
+            <li>
+                <div class="side-icon">
+                    <mat-icon>how_to_reg</mat-icon>
+                </div>
+                <div class="navtxt">Vendor Registration</div>
+            </li>
+            <li>
+                <div class="side-icon">
+                    <mat-icon>person</mat-icon>
+                </div>
+                <div class="navtxt">Vendor Empanelment</div>
+            </li>
+
+        </ul>
+        <li>
+            <div class="side-icon">
+                <mat-icon>exit_to_app</mat-icon>
+            </div>
+            <div class="navtxt">Log Out</div>
+        </li>
+    </ul>
 </div>

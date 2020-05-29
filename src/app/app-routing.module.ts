@@ -29,97 +29,103 @@ const routes: Routes = [
         component: LoginComponent
     },
     {
-        path: 'posearch',
-        component: PoSearchComponent,
-        //canActivate: [AuthGuardLogin]
-    },
-    {
-        path: 'empanelment',
-        component: EmpanelmentComponent,
-        //canActivate: [AuthGuardLogin]
-    },
-    {
-        path: 'fp',
-        component: ForgotPasswordComponent,
-        //canActivate: [AuthGuardLogin]
-    },
-    {
-        path: 'invapproval',
-        component: InvoiceApprovalsComponent,
-        //canActivate: [AuthGuardLogin]
-    },
-    {
-        path: 'invdetails',
-        component: InvoiceDetailsComponent,
-        //canActivate: [AuthGuardLogin]
-    },
-    {
-        path: 'invsearch',
-        component: InvoiceSearchComponent,
-        //canActivate: [AuthGuardLogin]
-    },
-    {
-        path: 'invupload',
-        component: InvoiceUploadComponent,
-        //canActivate: [AuthGuardLogin]
-    },
-    {
-        path: 'pendingapprovals',
-        component: PendingApprovalsComponent,
-        //canActivate: [AuthGuardLogin]
-    },
-    {
-        path: 'podetails',
-        component: PoDetailsComponent,
-        //canActivate: [AuthGuardLogin]
-    },
-    {
-        path: 'vendetails',
-        component: VendorDetailsComponent,
-        //canActivate: [AuthGuardLogin]
-    },
-    {
-        path: 'venaddr',
-        component: VendorAddressComponent,
-        //canActivate: [AuthGuardLogin]
-    },
-    {
-        path: 'venbank',
-        component: VendorBankDetailsComponent,
-        //canActivate: [AuthGuardLogin]
-    },
-    {
-        path: 'vendocs',
-        component: VendorDocumentsComponent,
-        //canActivate: [AuthGuardLogin]
-    },
-    {
-        path: 'venothers',
-        component: VendorOthersComponent,
-        //canActivate: [AuthGuardLogin]
-    },
-    {
-        path: 'venapproval',
-        component: VendorApprovalComponent,
-        //canActivate: [AuthGuardLogin]
-    },
-    {
-        path: 'venreg',
-        component: VendorRegistrationComponent,
-        //canActivate: [AuthGuardLogin]
-    },
-    {
         path: 'home',
         component: HomeComponent,
         children: [
-            // {
-            //     path: 'timesheet',
-            //     component: TimesheetComponent,
-            //     canActivate: [AuthGuardLogin],
-            //     canDeactivate: [CanExitGuard]
-            // },
+            {
+                path: 'posearch',
+                component: PoSearchComponent,
+                //canActivate: [AuthGuardLogin]
+            },
+            {
+                path: 'empanelment',
+                component: EmpanelmentComponent,
+                //canActivate: [AuthGuardLogin]
+            },
+            {
+                path: 'fp',
+                component: ForgotPasswordComponent,
+                //canActivate: [AuthGuardLogin]
+            },
+            {
+                path: 'invapproval',
+                component: InvoiceApprovalsComponent,
+                //canActivate: [AuthGuardLogin]
+            },
+            {
+                path: 'invdetails',
+                component: InvoiceDetailsComponent,
+                //canActivate: [AuthGuardLogin]
+            },
+            {
+                path: 'invsearch',
+                component: InvoiceSearchComponent,
+                //canActivate: [AuthGuardLogin]
+            },
+            {
+                path: 'invupload',
+                component: InvoiceUploadComponent,
+                //canActivate: [AuthGuardLogin]
+            },
+            {
+                path: 'pendingapprovals',
+                component: PendingApprovalsComponent,
+                //canActivate: [AuthGuardLogin]
+            },
+            {
+                path: 'podetails',
+                component: PoDetailsComponent,
+                //canActivate: [AuthGuardLogin]
+            },
+            {
+                path: 'vendetails',
+                component: VendorDetailsComponent,
+                //canActivate: [AuthGuardLogin]
+            },
+            {
+                path: 'venaddr',
+                component: VendorAddressComponent,
+                //canActivate: [AuthGuardLogin]
+            },
+            {
+                path: 'venbank',
+                component: VendorBankDetailsComponent,
+                //canActivate: [AuthGuardLogin]
+            },
+            {
+                path: 'vendocs',
+                component: VendorDocumentsComponent,
+                //canActivate: [AuthGuardLogin]
+            },
+            {
+                path: 'venothers',
+                component: VendorOthersComponent,
+                //canActivate: [AuthGuardLogin]
+            },
+            {
+                path: 'venapproval',
+                component: VendorApprovalComponent,
+                //canActivate: [AuthGuardLogin]
+            },
+            {
+                path: 'venreg',
+                component: VendorRegistrationComponent,
+                //canActivate: [AuthGuardLogin]
+            }
         ]
     },
+    // {
+    //     path: 'home',
+    //     component: HomeComponent,
+    //     children: [
+    //         // {
+    //         //     path: 'timesheet',
+    //         //     component: TimesheetComponent,
+    //         //     canActivate: [AuthGuardLogin],
+    //         //     canDeactivate: [CanExitGuard]
+    //         // },
+    //     ]
+    // },
     {
         path: '',
         redirectTo: 'login',
