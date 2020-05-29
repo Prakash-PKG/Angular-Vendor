@@ -64,6 +64,7 @@ export class LoginService {
         let body = new FormData();
         body.append('username', userId);
         body.append('password', password);
+        body.append('usertype', "vendor");
 
         return this._http.post(this._appService.baseUrl + 'login', body);
     };
