@@ -1,0 +1,74 @@
+.search-btn {
+  border: 0.15em #24f4d5 solid;
+  height: 1.5em;
+  width: 1.5em;
+  border-radius: 50%;
+  padding: 0.1em;
+  cursor: pointer;
+}
+div.actions {
+  padding: 0px;
+}
+
+.search-row,.card {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.search-row-element {
+  flex-grow: 1;
+}
+.search-row-element.search-btn {
+  flex-grow: 0;
+  flex-shrink: 0;
+}
+.search-row-element.actions {
+  flex: 0 0 3em;
+}
+.search-row .mat-form-field.field {
+  margin-right: 1em;
+  flex-grow: 0;
+}
+.card>div{
+    display: inline;
+}
+.material-icons {
+  font-size: 1.25em;
+}
+
+::ng-deep .mat-tab-body-content {
+  overflow: hidden!important;
+  padding: 20px 5px !important;
+}
+
+
+
+.flex-container{
+    display: flex;
+    justify-content: space-between;
+    align-items: stretch;
+}
+
+.flex-item{
+    display: flex;
+}
+.description{
+    justify-content: space-between;
+    align-items: center;
+}
+.description .flex-container{
+    flex-direction: column;
+    align-items:flex-start;
+}
+.card{
+    border-radius: 10px;
+}
+.ven-tab-container .card{
+    border-left: 10px solid #4397F6;
+}
+.inv-tab-container .card{
+    border-left: 10px solid #F60BF6;
+}
+
