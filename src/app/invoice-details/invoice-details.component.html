@@ -1,3 +1,164 @@
-<p>
-  invoice-details works!
-</p>
+<div class="main">
+  <div class="title">
+    <h3>Invoice Details</h3>
+  </div>
+  <!-- -----------------------------------stepper---------------------------------------------- -->
+  <ul class="stepper">
+    <li class="step completed">
+      <span class="upper-text">06 Feb 2020</span>
+      <span class="dot"></span>
+      <span class="lower-text">
+        Invoice Upload
+      </span>
+    </li>
+
+    <li class="step completed">
+      <span class="upper-text">15 Feb 2020</span>
+      <span class="dot"></span>
+      <span class="lower-text">
+        Invoice Validation
+      </span>
+    </li>
+    <li class="step completed">
+      <span class="upper-text">27 Feb 2020</span>
+      <span class="dot"></span>
+      <span class="lower-text">
+        Buyer Approval
+      </span>
+    </li>
+
+    <li class="step">
+      <span class="upper-text"></span>
+      <span class="dot"></span>
+      <span class="lower-text">
+        Business Head Approval
+      </span>
+    </li>
+
+    <li class="step">
+      <span class="upper-text"></span>
+      <span class="dot"></span>
+      <span class="lower-text">
+        Finance Approval
+      </span>
+    </li>
+
+    <li class="step">
+      <span class="upper-text"></span>
+      <span class="dot"></span>
+      <span class="lower-text">
+        Payment
+      </span>
+    </li>
+  </ul>
+
+  <div class="flex-container full-width details">
+    <div class="description flex-item">
+      <div class="flex-container">
+        <div class="flex-item">
+          PO No:xcgfh
+        </div>
+        <div class="flex-item">
+          Invoice No:zxgdfhfgh
+        </div>
+        <div class="flex-item">
+          Invoice Date:
+        </div>
+        <div class="flex-item">
+          Total Inv Amt:
+          <small>(inc tax) </small>
+        </div>
+        <div class="flex-item">
+          Remarks: description about invoice vcbvnjk  hdfgyud ui idgf yudg
+        </div>
+        <div class="flex-item actions">
+          <button mat-raised-button class="footer-actions footer-actions-green">Invoice Attachments</button>
+          <button mat-raised-button class="footer-actions footer-actions-green">Supporting Attachments</button>
+        </div>
+      </div>
+      <div class="flex-item" style="height:100%;">
+        <mat-card class="card mat-elevation-z3 full-width">
+          <table mat-table [dataSource]="POData" matSort class="dataTable full-width">
+
+            <ng-container matColumnDef="po">
+              <th mat-header-cell *matHeaderCellDef>Step</th>
+              <td mat-cell *matCellDef="let element"></td>
+            </ng-container>
+      
+            <ng-container matColumnDef="vendorid">
+              <th mat-header-cell *matHeaderCellDef>Status</th>
+              <td mat-cell *matCellDef="let element"></td>
+            </ng-container>
+      
+            <ng-container matColumnDef="vendorname">
+              <th mat-header-cell *matHeaderCellDef>Date </th>
+              <td mat-cell *matCellDef="let element"> </td>
+            </ng-container>
+      
+            <ng-container matColumnDef="podate">
+              <th mat-header-cell *matHeaderCellDef>Remarks </th>
+              <td mat-cell *matCellDef="let element"> </td>
+            </ng-container>
+      
+            <tr mat-header-row *matHeaderRowDef="statusHeaderArr"></tr>
+            <tr mat-row *matRowDef="let row; columns: statusHeaderArr;"></tr>
+          </table>
+      
+        </mat-card>
+      </div>
+    </div>
+  </div>
+
+  <!-- table details -->
+  <div class="container my-container margin-unset full-width">
+    <table mat-table [dataSource]="POData" matSort class="dataTable full-width">
+
+      <ng-container matColumnDef="po">
+        <th mat-header-cell *matHeaderCellDef>Item No.</th>
+        <td mat-cell *matCellDef="let element"></td>
+      </ng-container>
+
+      <ng-container matColumnDef="vendorid">
+        <th mat-header-cell *matHeaderCellDef>Item Description</th>
+        <td mat-cell *matCellDef="let element"></td>
+      </ng-container>
+
+      <ng-container matColumnDef="vendorname">
+        <th mat-header-cell *matHeaderCellDef>Order Qty </th>
+        <td mat-cell *matCellDef="let element"> </td>
+      </ng-container>
+
+      <ng-container matColumnDef="podate">
+        <th mat-header-cell *matHeaderCellDef>Invoice Qty </th>
+        <td mat-cell *matCellDef="let element"> </td>
+      </ng-container>
+
+      <ng-container matColumnDef="currency">
+        <th mat-header-cell *matHeaderCellDef>Paid Qty </th>
+        <td mat-cell *matCellDef="let element"> </td>
+      </ng-container>
+
+      <ng-container matColumnDef="totalamt">
+        <th mat-header-cell *matHeaderCellDef> Rate </th>
+        <td mat-cell class="amount" *matCellDef="let element"> </td>
+      </ng-container>
+
+      <ng-container matColumnDef="billedamt">
+        <th mat-header-cell *matHeaderCellDef> Amount </th>
+        <td mat-cell class="amount" *matCellDef="let element"> </td>
+      </ng-container>
+
+      <ng-container matColumnDef="payrec">
+        <th mat-header-cell *matHeaderCellDef> Total Paid Amount </th>
+        <td mat-cell class="amount" *matCellDef="let element"> </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="headerArr"></tr>
+      <tr mat-row *matRowDef="let row; columns: headerArr;"></tr>
+    </table>
+
+  </div>
+  <div class="row actions margin-unset">
+    <button mat-raised-button class="footer-actions">Back</button>
+  </div>
+</div>
