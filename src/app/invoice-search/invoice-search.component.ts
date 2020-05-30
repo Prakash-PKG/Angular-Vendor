@@ -7,17 +7,6 @@ import { trigger, state, style, transition, animate } from '@angular/animations'
   selector: 'app-invoice-search',
   templateUrl: './invoice-search.component.html',
   styleUrls: ['./invoice-search.component.scss'],
-  animations: [
-  trigger('collapseChanged', [
-    state('true', style({
-      // width: '82%'
-    })),
-    state('false', style({
-      // width: '96%'
-    })),
-    transition('true <=> false', animate('0.5s ease-in-out'))
-  ])
-]
 })
 export class InvoiceSearchComponent implements OnInit {
 

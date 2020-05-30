@@ -8,19 +8,6 @@ import { transition, animate, state, style, trigger } from '@angular/animations'
     templateUrl: './sidebar.component.html',
     styleUrls: ['./sidebar.component.scss'],
     animations: [
-        trigger('visibilityChanged', [
-            state('true', style({
-                overflow: 'hidden',
-                height: '*',
-                opacity: 1
-            })),
-            state('false', style({
-                opacity: 0,
-                overflow: 'hidden',
-                height: '0px'
-            })),
-            transition('true <=> false', animate('0.5s ease-in-out'))
-        ]),
         trigger('collapseChanged', [
             state('true', style({
                 width: '4em',

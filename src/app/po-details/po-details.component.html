@@ -1,3 +1,86 @@
-<p>
-  po-details works!
-</p>
+<div class="main">
+  <div class="title">
+    <h3>PO Details</h3>
+  </div>
+  <div class="search-row">
+
+    <div class="search-row-element">
+      <mat-label>PO No.</mat-label>
+      <div class="value"></div>
+    </div>
+
+    <div class="search-row-element">
+      <mat-label>PO Date</mat-label>
+      <div class="value"></div>
+    </div>
+
+    <div class="search-row-element">
+      <mat-label>Total Amount</mat-label>
+      <div class="value"></div>
+    </div>
+
+    <div class="search-row-element">
+      <mat-label>Total Amount Paid</mat-label>
+      <div class="value"></div>
+    </div>
+    
+    <div class="search-row-element">
+      <mat-label>Status</mat-label>
+      <div class="value"></div>
+    </div>
+
+    <div class="actions search-row-element">
+      <button mat-raised-button class="footer-actions">Export Excel</button>
+    </div>
+  </div>
+
+  <!-- table details -->
+  <div class="container my-container margin-unset full-width">
+    <table mat-table [dataSource]="POData" matSort class="dataTable full-width">
+
+      <ng-container matColumnDef="po">
+        <th mat-header-cell *matHeaderCellDef  >Item No.</th>
+        <td mat-cell *matCellDef="let element"></td>
+      </ng-container>
+
+      <ng-container matColumnDef="vendorid">
+        <th mat-header-cell *matHeaderCellDef  >Item Description</th>
+        <td mat-cell *matCellDef="let element"></td>
+      </ng-container>
+
+      <ng-container matColumnDef="vendorname">
+        <th mat-header-cell *matHeaderCellDef  >Order Qty </th>
+        <td mat-cell *matCellDef="let element"> </td>
+      </ng-container>
+
+      <ng-container matColumnDef="podate">
+        <th mat-header-cell *matHeaderCellDef  >Invoice Qty </th>
+        <td mat-cell *matCellDef="let element"> </td>
+      </ng-container>
+
+      <ng-container matColumnDef="currency">
+        <th mat-header-cell *matHeaderCellDef  >Paid Qty </th>
+        <td mat-cell *matCellDef="let element"> </td>
+      </ng-container>
+
+      <ng-container matColumnDef="totalamt">
+        <th mat-header-cell *matHeaderCellDef  > Rate </th>
+        <td mat-cell class="amount" *matCellDef="let element"> </td>
+      </ng-container>
+
+      <ng-container matColumnDef="billedamt">
+        <th mat-header-cell *matHeaderCellDef  > Amount </th>
+        <td mat-cell class="amount" *matCellDef="let element"> </td>
+      </ng-container>
+
+      <ng-container matColumnDef="payrec">
+        <th mat-header-cell *matHeaderCellDef  > Total Paid Amount </th>
+        <td mat-cell class="amount" *matCellDef="let element"> </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="headerArr"></tr>
+      <tr mat-row *matRowDef="let row; columns: headerArr;"></tr>
+    </table>
+
+  </div>
+</div>
