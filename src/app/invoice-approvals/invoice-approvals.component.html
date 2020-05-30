@@ -1,3 +1,145 @@
-<p>
-  invoice-approvals works!
-</p>
+<div class="main">
+  <div class="title">
+    <h3>Invoice Details</h3>
+  </div>
+  <!-- -----------------------------------stepper---------------------------------------------- -->
+  <ul class="stepper">
+    <li class="step completed">
+      <span class="upper-text">06 Feb 2020</span>
+      <span class="dot"></span>
+      <span class="lower-text">
+        Invoice Upload
+      </span>
+    </li>
+
+    <li class="step completed">
+      <span class="upper-text">15 Feb 2020</span>
+      <span class="dot"></span>
+      <span class="lower-text">
+        Invoice Validation
+      </span>
+    </li>
+    <li class="step completed">
+      <span class="upper-text">27 Feb 2020</span>
+      <span class="dot"></span>
+      <span class="lower-text">
+        Buyer Approval
+      </span>
+    </li>
+
+    <li class="step">
+      <span class="upper-text"></span>
+      <span class="dot"></span>
+      <span class="lower-text">
+        Business Head Approval
+      </span>
+    </li>
+
+    <li class="step">
+      <span class="upper-text"></span>
+      <span class="dot"></span>
+      <span class="lower-text">
+        Finance Approval
+      </span>
+    </li>
+
+    <li class="step">
+      <span class="upper-text"></span>
+      <span class="dot"></span>
+      <span class="lower-text">
+        Payment
+      </span>
+    </li>
+  </ul>
+
+
+  <div class="search-row">
+    <div class="search-row-element">
+      <div class="search-row-element">
+        <mat-label>PO No.</mat-label>
+        <div class="value"></div>
+      </div>
+
+      <div class="search-row-element">
+        <mat-label>Invoice No.</mat-label>
+        <div class="value"></div>
+      </div>
+
+      <div class="search-row-element">
+        <mat-label>Invoice Date</mat-label>
+        <div class="value"></div>
+      </div>
+    </div>
+    <div class="search-row-element">
+      <div class="search-row-element">
+        <mat-label>Total Invoice Amount<div class="smaller-text">Including Tax</div>
+        </mat-label>
+        <div class="value"></div>
+      </div>
+
+      <div class="search-row-element">
+        <mat-label>Remarks</mat-label>
+        <div class="value"></div>
+      </div>
+    </div>
+    <div class="actions search-row-element">
+      <button mat-raised-button class="footer-actions footer-actions-green">Invoice Attachments</button>
+      <button mat-raised-button class="footer-actions footer-actions-green">Supporting Attachments</button>
+    </div>
+  </div>
+
+  <!-- table details -->
+  <div class="container my-container margin-unset full-width">
+    <table mat-table [dataSource]="POData" matSort class="dataTable full-width">
+
+      <ng-container matColumnDef="po">
+        <th mat-header-cell *matHeaderCellDef>Item No.</th>
+        <td mat-cell *matCellDef="let element"></td>
+      </ng-container>
+
+      <ng-container matColumnDef="vendorid">
+        <th mat-header-cell *matHeaderCellDef>Item Description</th>
+        <td mat-cell *matCellDef="let element"></td>
+      </ng-container>
+
+      <ng-container matColumnDef="vendorname">
+        <th mat-header-cell *matHeaderCellDef>Order Qty </th>
+        <td mat-cell *matCellDef="let element"> </td>
+      </ng-container>
+
+      <ng-container matColumnDef="podate">
+        <th mat-header-cell *matHeaderCellDef>Invoice Qty </th>
+        <td mat-cell *matCellDef="let element"> </td>
+      </ng-container>
+
+      <ng-container matColumnDef="currency">
+        <th mat-header-cell *matHeaderCellDef>Paid Qty </th>
+        <td mat-cell *matCellDef="let element"> </td>
+      </ng-container>
+
+      <ng-container matColumnDef="totalamt">
+        <th mat-header-cell *matHeaderCellDef> Rate </th>
+        <td mat-cell class="amount" *matCellDef="let element"> </td>
+      </ng-container>
+
+      <ng-container matColumnDef="billedamt">
+        <th mat-header-cell *matHeaderCellDef> Amount </th>
+        <td mat-cell class="amount" *matCellDef="let element"> </td>
+      </ng-container>
+
+      <ng-container matColumnDef="payrec">
+        <th mat-header-cell *matHeaderCellDef> Total Paid Amount </th>
+        <td mat-cell class="amount" *matCellDef="let element"> </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="headerArr"></tr>
+      <tr mat-row *matRowDef="let row; columns: headerArr;"></tr>
+    </table>
+
+  </div>
+  <div class="row actions margin-unset">
+    <button mat-raised-button class="footer-actions">Cancel</button>
+    <button mat-raised-button class="footer-actions">Reject</button>
+    <button mat-raised-button class="footer-actions footer-actions-green">Approve</button>
+  </div>
+</div>
