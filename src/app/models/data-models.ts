@@ -15,7 +15,7 @@ export class CountryDataModel {
 }
 
 export class EmpanelmentInitDataModel {
-    countryDetails: CountryDataModel[];
+    countryDataVOList: CountryDataModel[];
 }
 
 export class EmpanelmentSubmitReqModel {
@@ -23,13 +23,19 @@ export class EmpanelmentSubmitReqModel {
     sentBy: string;
 }
 
+export class EmpanelmentSubmitResultModel {
+    status: StatusModel;
+}
+
 export class InvoiceUploadReqModel {
     vendorId: string;
+    approvalLevels: string[];
+    departments: string[];
 }
 
 export class InvoiceUploadResultModel {
-    PODetails: PODetailsModel[];
-    StatusDetails: StatusvOModel;
+    pODetailsVO: PODetailsModel[];
+    statusVO: StatusModel;
 }
 
 export class PODetailsModel {
@@ -39,17 +45,22 @@ export class PODetailsModel {
     vendorId: string;
 }
 
-export class StatusvOModel {
-  
+export class StatusModel {
+    status: number;
+    isSuccess: boolean;
+    message: string;
+    exceptionMsg: string;
 }
 
 export class POSearchReqModel {
     employeeId: string;
+    approvalLevels: string[];
+    departments: string[];
 }
 
 export class POSearchResultModel {
-    PODetails: PODetailsModel[];
-    StatusDetails: StatusvOModel;
+    pODetailsVO: PODetailsModel[];
+    statusVO: StatusModel;
 }
 
 export class VendorMasterDetailsModel {
@@ -99,3 +110,57 @@ export class VendorRegistrationInitDataModel {
     countryDetails: CountryDataModel[];
     vendorMasterDocumentDetails: VendorMasterDocumentModel[];
 }
+
+export class InvoiceSearchResultModel {
+    statusDetails: StatusModel;
+    invoiceList: InvoiceSearchModel[];
+}
+
+export class InvoiceSearchModel {
+    rowNumber: number;
+    poNumber: string;
+    vendorId: string;
+    vendorName: string;
+    invoiceNumber: string;
+    invoiceDate: string;
+    invTotalAmt: string;
+    departmentId: string;
+    approverId: string;
+    approvalLevel: string;
+    statusCode: string;
+    statusDescription: string;
+    submittedDate: string;
+  
+}
+
+export class InvoiceSearchRequestModel {
+    employeeId: string;
+    approvalLevels: string[];
+    departments: string[];
+}
+
+export class PendingApprovalResultModel {
+    statusDetails: StatusModel;
+    pendingApprovals: PendingApprovalsModel[];
+}
+
+export class PendingApprovalRequestModel {
+    employeeId: string;
+    approvalLevels: string[];
+    departments: string[];
+}
+
+export class PendingApprovalsModel {
+    purchaseOrderId: number;
+    invoiceId: number;
+    poNumber: string;
+    invoiceNumber: string;
+    vendorId: string;
+    vendorName: string;
+    departmentId: string;
+    approverId: string;
+    approvalLevel: string;
+    statusCode: string;
+    submittedDate: string;
+}
+
