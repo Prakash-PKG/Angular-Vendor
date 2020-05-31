@@ -2,30 +2,27 @@
   <div class="container my-container">
     <div class="logo">mVendor</div>
 
-    <form [formGroup]="loginForm" class="login-form" >
+    <form [formGroup]="empanelmentForm" class="login-form" >
 
       <!-- userId Column -->
 
       <div class="form-group">
         <mat-form-field class="full-width">
           <mat-label>Enter Vendor Email </mat-label>
-          <input matInput type="email" class="form-control" placeholder="Enter Email" formControlName="userId">
+          <input matInput type="email" class="form-control" placeholder="Enter Email" formControlName="emailId">
         </mat-form-field>
 
-          <small id="emailHelp" class="form-text text-muted text-description">(Enter vendor empanelment login email)</small>
-          <div *ngIf="(isFormSubmitted || f.userId.touched ) && f.userId.errors?.required" class="errortxt">
-            Vendor email is required
-          </div>
+          <small class="form-text text-muted text-description">(Enter vendor empanelment login email)</small>
+
         
       </div>
       <!-- errors -->
-      <div class="errortxt loginerror">{{ errorMessage }}</div>
+      <div class="errortxt loginerror">{{ message }}</div>
 
       <!--  login button -->
       <div class="row actions margin-unset">
-        <button mat-raised-button type="submit" class=" footer-actions mat-elevation-z8"
-          [disabled]="f.userId.invalid || loading">
-          <i *ngIf="loading" class="fa fa-spin fa-spinner pull-right" style="padding:10px" aria-hidden="true"></i>Vendor Empanelment</button>
+        <button mat-raised-button type="submit" class=" footer-actions mat-elevation-z8" (click)="onEmpanelmentClick()">
+          Vendor Empanelment</button>
       </div>
     </form>
 

@@ -83,13 +83,13 @@ const routes: Routes = [
                 path: 'venreg',
                 component: VendorRegistrationComponent,
                 //canActivate: [AuthGuardLogin]
+            },
+            {
+                path: 'empanelment',
+                component: EmpanelmentComponent,
+                //canActivate: [AuthGuardLogin]
             }
         ]
-    },
-    {
-        path: 'empanelment',
-        component: EmpanelmentComponent,
-        //canActivate: [AuthGuardLogin]
     },
     {
         path: 'vendor',

@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { AppService } from '../app.service';
 import { HomeService } from '../home/home.service';
 import { transition, animate, state, style, trigger } from '@angular/animations';
+import { Router } from '@angular/router';
 
 @Component({
     selector: 'app-sidebar',
@@ -24,6 +25,7 @@ export class SidebarComponent implements OnInit {
     isMenuTextVisible: boolean = true;
 
     constructor(private _appService: AppService,
+        private _router: Router,
         private _homeService: HomeService) { }
 
     onCollapseClick() {
@@ -41,8 +43,11 @@ export class SidebarComponent implements OnInit {
         this._homeService.updateSidebarDetails(this.isSidebarCollapsed);
     }
 
-    ngOnInit() {
+    onEmpanelmentClick() {
+        this._router.navigate([this._appService.routingConstants.empanelment]);
+    }
 
+    ngOnInit() {
         this.isSidebarCollapsed = false;
         this._homeService.updateSidebarDetails(this.isSidebarCollapsed);
     }

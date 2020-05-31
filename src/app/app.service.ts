@@ -18,6 +18,7 @@ export class AppService {
 
     readonly routingConstants: any = {
         login: "/",
+        empanelment: "/home/empanelment",
         posearch: "/home/posearch",
         invupload: "/home/invupload",
         vendetails: "/home/vendetails"

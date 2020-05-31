@@ -61,7 +61,7 @@
                 </div>
                 <div class="navtxt">Vendor Registration</div>
             </li>
-            <li [ngStyle]="{'padding-left': isSidebarCollapsed === true ? '1em': '2em' }">
+            <li [ngStyle]="{'padding-left': isSidebarCollapsed === true ? '1em': '2em' }" (click) = "onEmpanelmentClick()">
                 <div class="side-icon">
                     <mat-icon>person</mat-icon>
                 </div>

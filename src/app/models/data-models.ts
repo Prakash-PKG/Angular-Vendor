@@ -9,11 +9,6 @@ export class PageDetailsModel {
     pageName: string;
 }
 
-export class Empanelment {
-    vendorMailId: string;
-    emplId: string;
-}
-
 export class CountryDataModel {
     CountryCode: string;
     CountryName: string;
@@ -24,10 +19,8 @@ export class EmpanelmentInitDataModel {
 }
 
 export class EmpanelmentSubmitReqModel {
-    vendorName: string;
     emailId: string;
     sentBy: string;
-    countryCode: string;
 }
 
 export class InvoiceUploadReqModel {
