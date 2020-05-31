@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { HomeService } from '../home/home.service';
 
 @Component({
   selector: 'app-vendor-approval',
@@ -6,10 +7,22 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./vendor-approval.component.scss']
 })
 export class VendorApprovalComponent implements OnInit {
+  isDashboardCollapsed: boolean = true;
+  _sidebarExpansionSubscription: any = null;
 
-  constructor() { }
+  constructor(private _homeService: HomeService) { }
 
-  ngOnInit() {
+  ngOnDestroy() {
+    if (this._sidebarExpansionSubscription) {
+      this._sidebarExpansionSubscription.unsubscribe();
+    }
   }
 
+  ngOnInit() {
+    this.isDashboardCollapsed = true;
+
+    this._sidebarExpansionSubscription = this._homeService.isSidebarCollapsed.subscribe(data => {
+      this.isDashboardCollapsed = !data;
+    });
+  }
 }
