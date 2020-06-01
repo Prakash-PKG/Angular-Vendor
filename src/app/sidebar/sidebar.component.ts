@@ -3,6 +3,7 @@ import { AppService } from '../app.service';
 import { HomeService } from '../home/home.service';
 import { transition, animate, state, style, trigger } from '@angular/animations';
 import { Router } from '@angular/router';
+import { LoginService } from '../login/login.service';
 
 @Component({
     selector: 'app-sidebar',
@@ -26,6 +27,7 @@ export class SidebarComponent implements OnInit {
 
     constructor(private _appService: AppService,
         private _router: Router,
+        private _loginService: LoginService,
         private _homeService: HomeService) { }
 
     onCollapseClick() {
@@ -45,6 +47,37 @@ export class SidebarComponent implements OnInit {
 
     onEmpanelmentClick() {
         this._router.navigate([this._appService.routingConstants.empanelment]);
+    }
+
+    onPendingApprovalClick() {
+        this._router.navigate([this._appService.routingConstants.pendingApprovals]);
+    }
+
+    onPoSearchClick() {
+        this._router.navigate([this._appService.routingConstants.posearch]);
+    }
+
+    onInvoiceSearchClick() {
+        this._router.navigate([this._appService.routingConstants.invoiceSearch]);
+    }
+
+    onVendorRegistrationClickClick() {
+        this._router.navigate([this._appService.routingConstants.vendorDetails]);
+    }
+
+    onLogoutClick() {
+        this._loginService.logout().subscribe(
+            (response) => {
+                localStorage.clear();
+                this._router.navigate([this._appService.routingConstants.login]);
+                
+            },
+            (error) => {
+                console.log("logout Falied");
+                console.log(error);
+                localStorage.clear();
+            }
+        )
     }
 
     ngOnInit() {

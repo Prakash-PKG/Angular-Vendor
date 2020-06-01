@@ -18,10 +18,21 @@ export class AppService {
 
     readonly routingConstants: any = {
         login: "/",
-        empanelment: "/home/empanelment",
         posearch: "/home/posearch",
-        invupload: "/home/invupload",
-        vendetails: "/home/vendetails"
+        forgotPassword: "/home/fp",
+        invoiceApproval: "/home/invapproval",
+        invoiceDetails: "/home/invdetails",
+        invoiceSearch:"/home/invsearch",
+        invUpload: "/home/invupload",
+        pendingApprovals: "/home/pendingapprovals",
+        poDetails: "/home/podetails",
+        vendorApproval: "/home/venapproval",
+        empanelment: "/home/empanelment",
+        vendorDetails: "/home/vendor/vendetails",
+        vendorAddressDetails: "/home/vendor/venaddr",
+        vendorBankDetails: "/home/vendor/venbank",
+        vendorDocuments: "/home/vendor/vendocs",
+        vendorOther: "/home/vendor/venothers"
     };
 
     readonly pageConstants: any = {

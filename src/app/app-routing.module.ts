@@ -37,7 +37,6 @@ const routes: Routes = [
                 component: PoSearchComponent,
                 //canActivate: [AuthGuardLogin]
             },
-
             {
                 path: 'fp',
                 component: ForgotPasswordComponent,
@@ -80,59 +79,48 @@ const routes: Routes = [
                 //canActivate: [AuthGuardLogin]
             },
             {
-                path: 'venreg',
-                component: VendorRegistrationComponent,
-                //canActivate: [AuthGuardLogin]
-            },
-            {
                 path: 'empanelment',
                 component: EmpanelmentComponent,
                 //canActivate: [AuthGuardLogin]
+            },
+            {
+                path: 'vendor',
+                component: VendorRegistrationComponent,
+                children: [
+                    {
+                        path: 'vendetails',
+                        component: VendorDetailsComponent,
+                        //canActivate: [AuthGuardLogin]
+                    },
+                    {
+                        path: 'venaddr',
+                        component: VendorAddressComponent,
+                        //canActivate: [AuthGuardLogin]
+                    },
+                    {
+                        path: 'venbank',
+                        component: VendorBankDetailsComponent,
+                        //canActivate: [AuthGuardLogin]
+                    },
+                    {
+                        path: 'vendocs',
+                        component: VendorDocumentsComponent,
+                        //canActivate: [AuthGuardLogin]
+                    },
+                    {
+                        path: 'venothers',
+                        component: VendorOthersComponent,
+                        //canActivate: [AuthGuardLogin]
+                    },
+                    {
+                        path: '',
+                        redirectTo: 'vendetails',
+                        pathMatch: 'full'
+                    }
+                ]
             }
         ]
     },
-    {
-        path: 'vendor',
-        children: [
-            {
-                path: 'vendetails',
-                component: VendorDetailsComponent,
-                //canActivate: [AuthGuardLogin]
-            },
-            {
-                path: 'venaddr',
-                component: VendorAddressComponent,
-                //canActivate: [AuthGuardLogin]
-            },
-            {
-                path: 'venbank',
-                component: VendorBankDetailsComponent,
-                //canActivate: [AuthGuardLogin]
-            },
-            {
-                path: 'vendocs',
-                component: VendorDocumentsComponent,
-                //canActivate: [AuthGuardLogin]
-            },
-            {
-                path: 'venothers',
-                component: VendorOthersComponent,
-                //canActivate: [AuthGuardLogin]
-            }
-        ]
-    },
-    // {
-    //     path: 'home',
-    //     component: HomeComponent,
-    //     children: [
-    //         // {
-    //         //     path: 'timesheet',
-    //         //     component: TimesheetComponent,
-    //         //     canActivate: [AuthGuardLogin],
-    //         //     canDeactivate: [CanExitGuard]
-    //         // },
-    //     ]
-    // },
     {
         path: '',
         redirectTo: 'login',
