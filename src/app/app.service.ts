@@ -64,7 +64,7 @@ export class AppService {
         emailId: null,
         password: null,
         contactPerson: null,
-        contactNum: null,
+        // contactNum: null,
         buildingNum: null,
         buildingName: null,
         floorNum: null,
@@ -74,7 +74,7 @@ export class AppService {
         countryCode: null,
         countryName: null,
         pincode: null,
-        bankAddress: null,
+        // bankAddress: null,
         accountNum: null,
         accountType: null,
         accountName: null,
@@ -97,7 +97,14 @@ export class AppService {
         createdBy: null,
         updatedBy: null,
         createdDate: null,
-        updatedDate: null
+        updatedDate: null,   
+         mobileNum: null,
+        telephoneNum: null,
+        bankName: null,
+        bankBranch: null,
+        bankCity: null,
+        bankRegion: null,
+        bankCountry: null
     };
 
     resetVendorRegistrationDetails() {
@@ -107,7 +114,7 @@ export class AppService {
             emailId: null,
             password: null,
             contactPerson: null,
-            contactNum: null,
+            // contactNum: null,
             buildingNum: null,
             buildingName: null,
             floorNum: null,
@@ -117,7 +124,7 @@ export class AppService {
             countryCode: null,
             countryName: null,
             pincode: null,
-            bankAddress: null,
+            // bankAddress: null,
             accountNum: null,
             accountType: null,
             accountName: null,
@@ -140,7 +147,14 @@ export class AppService {
             createdBy: null,
             updatedBy: null,
             createdDate: null,
-            updatedDate: null
+            updatedDate: null,
+            mobileNum: null,
+            telephoneNum: null,
+            bankName: null,
+            bankBranch: null,
+            bankCity: null,
+            bankRegion: null,
+            bankCountry: null
         };
 
         return regDetails;
