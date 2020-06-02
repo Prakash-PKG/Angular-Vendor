@@ -1,89 +1,95 @@
 <div class="main">
 
-  <div class="search-row">
-    <div class="title search-row-element">
-      <h3>Pending Approvals</h3>
+    <div class="search-row">
+        <div class="title search-row-element">
+            <h3>Pending Approvals</h3>
+        </div>
+        <mat-form-field class="field search-row-element">
+            <!-- <mat-label>Search Pending Approvals</mat-label> -->
+            <input matInput placeholder="Search Pending Approvals">
+        </mat-form-field>
+        <mat-icon class="search-btn mat-elevation-z3 search-row-element">search</mat-icon>
     </div>
-    <mat-form-field class="field search-row-element">
-      <!-- <mat-label>Search Pending Approvals</mat-label> -->
-      <input matInput placeholder="Search Pending Approvals">
-    </mat-form-field>
-    <mat-icon class="search-btn mat-elevation-z3 search-row-element">search</mat-icon>
-  </div>
 
 
-  <div class="tabs full-width">
-    <mat-tab-group mat-align-tabs="start">
+    <div class="tabs full-width">
+        <mat-tab-group mat-align-tabs="start">
 
-      <mat-tab label="All Pending approvals">
-        <div class="ven-tab-container">
-          <mat-card class="card mat-elevation-z3">
-            <div class="flex-container full-width">
-              <div class="description flex-item">
-                <div class="flex-container">
-                  <div class="flex-item">
-                    Vendor Name / Invoice No :
-                  </div>
-                  <div class="flex-item">
-                    Submitted On:
-                  </div>
+            <mat-tab label="All Pending approvals">
+                <div class="ven-tab-container">
+                    <mat-card class="card mat-elevation-z3">
+                        <div class="flex-container full-width">
+                            <div class="description flex-item">
+                                <div class="flex-container">
+                                    <div class="flex-item">
+                                        Vendor Name / Invoice No :
+                                    </div>
+                                    <div class="flex-item">
+                                        Submitted On:
+                                    </div>
+                                </div>
+                                <div class="flex-item">
+                                    <div class="title">
+                                        <h3>Approval Type</h3>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </mat-card>
                 </div>
-                <div class="flex-item">
-                  <div class="title"><h3>Approval Type</h3></div>
+            </mat-tab>
+
+
+            <mat-tab label="Vendor Pending approvals">
+                <div class="ven-tab-container">
+                    <mat-card class="card mat-elevation-z3">
+                        <div class="flex-container full-width">
+                            <div class="description flex-item">
+                                <div class="flex-container">
+                                    <div class="flex-item">
+                                        Vendor Name:
+                                    </div>
+                                    <div class="flex-item">
+                                        Submitted On:
+                                    </div>
+                                </div>
+                                <div class="flex-item">
+                                    <div class="title">
+                                        <h3>Vendor Approval</h3>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </mat-card>
                 </div>
-              </div>
-            </div>
-          </mat-card>
-        </div>
-      </mat-tab>
+            </mat-tab>
 
 
-      <mat-tab label="Vendor Pending approvals">
-        <div class="ven-tab-container">
-          <mat-card class="card mat-elevation-z3">
-            <div class="flex-container full-width">
-              <div class="description flex-item">
-                <div class="flex-container">
-                  <div class="flex-item">
-                    Vendor Name:
-                  </div>
-                  <div class="flex-item">
-                    Submitted On:
-                  </div>
+            <mat-tab label="Invoice Pending approvals">
+                <div class="inv-tab-container">
+                    <mat-card class="card mat-elevation-z3">
+                        <div class="flex-container full-width">
+                            <div class="description flex-item">
+                                <div class="flex-container">
+                                    <div class="flex-item">
+                                        Invoice No:
+                                    </div>
+                                    <div class="flex-item">
+                                        Submitted On:
+                                    </div>
+                                </div>
+                                <div class="flex-item">
+                                    <div class="title">
+                                        <h3>Invoice Approval</h3>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </mat-card>
                 </div>
-                <div class="flex-item">
-                  <div class="title"><h3>Vendor Approval</h3></div>
-                </div>
-              </div>
-            </div>
-          </mat-card>
-        </div>
-      </mat-tab>
+            </mat-tab>
 
 
-      <mat-tab label="Invoice Pending approvals">
-        <div class="inv-tab-container">
-          <mat-card class="card mat-elevation-z3">
-            <div class="flex-container full-width">
-              <div class="description flex-item">
-                <div class="flex-container">
-                  <div class="flex-item">
-                    Invoice No:
-                  </div>
-                  <div class="flex-item">
-                    Submitted On:
-                  </div>
-                </div>
-                <div class="flex-item">
-                  <div class="title"><h3>Invoice Approval</h3></div>
-                </div>
-              </div>
-            </div>
-          </mat-card>
-        </div>
-      </mat-tab>
-
-
-    </mat-tab-group>
-  </div>
+        </mat-tab-group>
+    </div>
 </div>
