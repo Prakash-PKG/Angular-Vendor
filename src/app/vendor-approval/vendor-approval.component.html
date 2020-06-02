@@ -1,7 +1,32 @@
 <div class="main">
     <div class="title">
-        <h3>Pending Approvals - Invoice Approvals</h3>
+        <h3>Pending Approvals - Vendor Approvals</h3>
     </div>
+    <div class="search-row">
+        <mat-form-field class="field search-row-element">
+          <mat-label>Account Group</mat-label>
+          <mat-select >
+            <mat-option>Account Group</mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field class="field search-row-element">
+            <mat-label>Company Code</mat-label>
+            <mat-select >
+              <mat-option>Company Code</mat-option>
+            </mat-select>
+          </mat-form-field>
+          <mat-form-field class="field search-row-element">
+            <mat-label>Currency</mat-label>
+            <mat-select >
+              <mat-option>Currency</mat-option>
+            </mat-select>
+          </mat-form-field>
+      <div class="actions search-row-element">
+        <button mat-raised-button class="footer-actions">Attach MSA</button>
+      </div>
+    </div>
+
+
     <div class="container my-container margin-unset full-width">
         <!--------------- vendor details -------------------------->
         <div class="vendor-detail-section">

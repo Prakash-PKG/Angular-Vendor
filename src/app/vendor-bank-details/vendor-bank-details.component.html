@@ -4,13 +4,14 @@
     </div>
 
     <form [formGroup]="vendorBankForm">
-        <div class="row field">
+        <!-- <div class="row field">
             <div class="col-12 form-group">
                 <mat-form-field class="full-width">
                     <textarea matInput placeholder="Beneficiary Bank Name and Bank Address" formControlName="bankAddress" autocomplete="off"></textarea>
                 </mat-form-field>
             </div>
-        </div>
+        </div> -->
+
 
         <div class="row field">
             <div class="col-6 form-group">
@@ -34,6 +35,40 @@
             <div class="col-6 form-group">
                 <mat-form-field class="full-width">
                     <input type="text" matInput placeholder="IFSC code" formControlName="ifscCode" autocomplete="off">
+                </mat-form-field>
+            </div>
+        </div>
+
+        
+        <div class="row field">
+            <div class="col-6 form-group">
+                <mat-form-field class="full-width">
+                    <input type="number" matInput placeholder="Bank Name" autocomplete="off">
+                </mat-form-field>
+            </div>
+            <div class="col-6 form-group">
+                <mat-form-field class="full-width">
+                    <input type="text" matInput placeholder="Bank Branch Name" autocomplete="off">
+                </mat-form-field>
+            </div>
+        </div>
+        
+        <div class="row field">
+            <div class="col-6 form-group">
+                <mat-form-field class="full-width">
+                    <input type="number" matInput placeholder="City"  autocomplete="off">
+                </mat-form-field>
+            </div>
+            <div class="col-6 form-group">
+                <mat-form-field class="full-width">
+                    <input type="text" matInput placeholder="Region"  autocomplete="off">
+                </mat-form-field>
+            </div>
+        </div>
+        <div class="row field">
+            <div class="col-6 form-group">
+                <mat-form-field class="full-width">
+                    <input type="number" matInput placeholder="Country"  autocomplete="off">
                 </mat-form-field>
             </div>
         </div>

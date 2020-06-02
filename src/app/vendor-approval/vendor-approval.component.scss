@@ -15,6 +15,29 @@
 .vendor-detail-section {
   margin-bottom: 2em;
 }
+
+.search-row {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.search-row-element {
+  flex-grow: 1;
+}
+.search-row-element.search-btn {
+  flex-grow: 0;
+  flex-shrink: 0;
+}
+.search-row-element.actions {
+  flex: 0 0 3em;
+}
+
+.mat-form-field.field {
+  margin-right: 2em;
+  width: 7em;
+}
 // ================css for table=================== */
 .Rtable {
   position: relative;
@@ -46,6 +69,7 @@
   overflow: hidden;
   list-style: none;
 }
+
 @media screen and (max-width: 499px) {
   .Rtable--collapse {
     display: block;
