@@ -1,162 +1,174 @@
 <div class="main">
-  <div class="title">
-    <h3>Pending Approvals - Invoice Approvals</h3>
-  </div>
-  <div class="container my-container margin-unset full-width">
-    <!--------------- vendor details -------------------------->
-    <div class="vendor-detail-section">
-      <div class="section-title">
-        <span class="side-icon">
+    <div class="title">
+        <h3>Pending Approvals - Invoice Approvals</h3>
+    </div>
+    <div class="container my-container margin-unset full-width">
+        <!--------------- vendor details -------------------------->
+        <div class="vendor-detail-section">
+            <div class="section-title">
+                <span class="side-icon">
           <mat-icon>person</mat-icon>
         </span>
-        <span>Vendor Details</span>
-      </div>
+                <span>Vendor Details</span>
+            </div>
 
-      <div class="Rtable Rtable--2cols Rtable--collapse">
+            <div class="Rtable Rtable--2cols Rtable--collapse">
 
-        <div class="Rtable-cell Rtable-cell--head">Supplier Name</div>
-        <div class="Rtable-cell ">khadija Bohra</div>
+                <div class="Rtable-cell Rtable-cell--head">Supplier Name</div>
+                <div class="Rtable-cell ">{{ vendorDetails.vendorName }}</div>
 
-        <div class="Rtable-cell Rtable-cell--head">Contact Person</div>
-        <div class="Rtable-cell">Khadija Bohra</div>
+                <div class="Rtable-cell Rtable-cell--head">Contact Person</div>
+                <div class="Rtable-cell">{{ vendorDetails.contactPerson }}</div>
 
-        <div class="Rtable-cell Rtable-cell--head">Contact No.</div>
-        <div class="Rtable-cell">khadija Bohra</div>
+                <div class="Rtable-cell Rtable-cell--head">Contact No.</div>
+                <div class="Rtable-cell">{{ vendorDetails.contactNum }}</div>
 
-        <div class="Rtable-cell Rtable-cell--head">Email Id</div>
-        <div class="Rtable-cell">khadija Bohra</div>
+                <div class="Rtable-cell Rtable-cell--head">Email Id</div>
+                <div class="Rtable-cell">{{ vendorDetails.emailId }}</div>
 
-      </div>
-    </div>
+            </div>
+        </div>
 
-    <!--------------- vendor address -------------------------->
-    <div class="vendor-detail-section">
-      <div class="section-title">
-        <span class="side-icon">
+        <!--------------- vendor address -------------------------->
+        <div class="vendor-detail-section">
+            <div class="section-title">
+                <span class="side-icon">
           <mat-icon>perm_phone_msg</mat-icon>
         </span>
-        <span>Vendor Address</span>
-      </div>
+                <span>Vendor Address</span>
+            </div>
 
-      <div class="Rtable Rtable--2cols Rtable--collapse">
-        <div class="Rtable-cell Rtable-cell--head">Address Line 1</div>
-        <div class="Rtable-cell ">khadija Bohra</div>
+            <div class="Rtable Rtable--2cols Rtable--collapse">
+                <div class="Rtable-cell Rtable-cell--head">Address Line 1</div>
+                <div class="Rtable-cell ">khadija Bohra</div>
 
-        <div class="Rtable-cell Rtable-cell--head">City</div>
-        <div class="Rtable-cell">khadija Bohra - Pincode</div>
+                <div class="Rtable-cell Rtable-cell--head">City</div>
+                <div class="Rtable-cell">{{ vendorDetails.city }}</div>
 
-        <div class="Rtable-cell Rtable-cell--head">Address Line 2</div>
-        <div class="Rtable-cell">Khadija Bohra</div>
+                <div class="Rtable-cell Rtable-cell--head">Address Line 2</div>
+                <div class="Rtable-cell">Khadija Bohra</div>
 
-        <div class="Rtable-cell Rtable-cell--head">State</div>
-        <div class="Rtable-cell">khadija Bohra</div>
+                <div class="Rtable-cell Rtable-cell--head">State</div>
+                <div class="Rtable-cell">{{ vendorDetails.stateName }}</div>
 
-        <div class="Rtable-cell Rtable-cell--head">Street</div>
-        <div class="Rtable-cell">khadija Bohra</div>
+                <div class="Rtable-cell Rtable-cell--head">Street</div>
+                <div class="Rtable-cell">{{ vendorDetails.street }}</div>
 
-        <div class="Rtable-cell Rtable-cell--head">Country</div>
-        <div class="Rtable-cell">khadija Bohra</div>
-      </div>
+                <div class="Rtable-cell Rtable-cell--head">Country</div>
+                <div class="Rtable-cell">{{ vendorDetails.countryName }}</div>
+            </div>
 
-    </div>
+        </div>
 
-    <!--------------- vendor Bank Details -------------------------->
-    <div class="vendor-detail-section">
-      <div class="section-title">
-        <span class="side-icon">
+        <!--------------- vendor Bank Details -------------------------->
+        <div class="vendor-detail-section">
+            <div class="section-title">
+                <span class="side-icon">
           <mat-icon>account_balance_wallet</mat-icon>
         </span>
-        <span>Vendor Bank Details</span>
-      </div>
+                <span>Vendor Bank Details</span>
+            </div>
 
-      <div class="Rtable Rtable--2cols Rtable--collapse">
-        <div class="Rtable-cell Rtable-cell--head">Beneficiary Bank & Address</div>
-        <div class="Rtable-cell" style=" width: 75%;">khadija Bohra</div>
+            <div class="Rtable Rtable--2cols Rtable--collapse">
+                <div class="Rtable-cell Rtable-cell--head">Beneficiary Bank & Address</div>
+                <div class="Rtable-cell" style=" width: 75%;">{{ vendorDetails.bankAddress }}</div>
 
-        <div class="Rtable-cell Rtable-cell--head">Account No.</div>
-        <div class="Rtable-cell">khadija Bohra - Pincode</div>
+                <div class="Rtable-cell Rtable-cell--head">Account No.</div>
+                <div class="Rtable-cell">{{ vendorDetails.accountNum }}</div>
 
-        <div class="Rtable-cell Rtable-cell--head">Account Name</div>
-        <div class="Rtable-cell">Khadija Bohra</div>
+                <div class="Rtable-cell Rtable-cell--head">Account Name</div>
+                <div class="Rtable-cell">{{ vendorDetails.accountName }}</div>
 
-        <div class="Rtable-cell Rtable-cell--head">Account Type</div>
-        <div class="Rtable-cell">khadija Bohra</div>
+                <div class="Rtable-cell Rtable-cell--head">Account Type</div>
+                <div class="Rtable-cell">{{ vendorDetails.accountType }}</div>
 
-        <div class="Rtable-cell Rtable-cell--head">IFSC Code</div>
-        <div class="Rtable-cell">khadija Bohra</div>
-      </div>
+                <div class="Rtable-cell Rtable-cell--head">IFSC Code</div>
+                <div class="Rtable-cell">{{ vendorDetails.ifscCode }}</div>
+            </div>
 
-      <div class="section-title" style="margin-top:1em">
-        <span class="side-icon">
+            <div class="section-title" style="margin-top:1em">
+                <span class="side-icon">
           <mat-icon></mat-icon>
         </span>
-        <span>For International Bank Details</span>
-      </div>
+                <span>For International Bank Details</span>
+            </div>
 
-      <div class="Rtable Rtable--2cols Rtable--collapse">
+            <div class="Rtable Rtable--2cols Rtable--collapse">
 
-        <div class="Rtable-cell Rtable-cell--head">Intermediatry/routing Bank</div>
-        <div class="Rtable-cell" style=" width: 75%;">khadija Bohra</div>
+                <div class="Rtable-cell Rtable-cell--head">Intermediatry/routing Bank</div>
+                <div class="Rtable-cell" style=" width: 75%;">{{ vendorDetails.routingBank }}</div>
 
-        <div class="Rtable-cell Rtable-cell--head">Swift Code/BAN</div>
-        <div class="Rtable-cell">khadija Bohra - Pincode</div>
+                <div class="Rtable-cell Rtable-cell--head">Swift Code/BAN</div>
+                <div class="Rtable-cell">{{ vendorDetails.swiftIbanCode }}</div>
 
-        <div class="Rtable-cell Rtable-cell--head">Swift Code of Intermediatry/routing Bank</div>
-        <div class="Rtable-cell">Khadija Bohra</div>
+                <div class="Rtable-cell Rtable-cell--head">Swift Code of Intermediatry/routing Bank</div>
+                <div class="Rtable-cell">{{ vendorDetails.swiftInterm }}</div>
 
-      </div>
+            </div>
 
-    </div>
+        </div>
 
-    <!--------------- vendor Documents Details -------------------------->
-    <div class="vendor-detail-section">
-      <div class="section-title">
-        <span class="side-icon">
+        <!--------------- vendor Documents Details -------------------------->
+        <div class="vendor-detail-section">
+            <div class="section-title">
+                <span class="side-icon">
           <mat-icon>attachment</mat-icon>
         </span>
-        <span>Vendor Documents Details</span>
-      </div>
+                <span>Vendor Documents Details</span>
+            </div>
 
-      <div class="Rtable Rtable--2cols Rtable--collapse">
-        <div class="Rtable-cell Rtable-cell--head">GST No.</div>
-        <div class="Rtable-cell"> GST No - Filename.pdf</div>
+            <div class="Rtable Rtable--2cols Rtable--collapse">
+                <div class="Rtable-cell Rtable-cell--head">GST No.</div>
+                <div class="Rtable-cell"> {{ vendorDetails.gstNum }} - Filename.pdf</div>
 
-        <div class="Rtable-cell Rtable-cell--head">Incorporation Certificate</div>
-        <div class="Rtable-cell">Filename.pdf</div>
+                <div class="Rtable-cell Rtable-cell--head">Incorporation Certificate</div>
+                <div class="Rtable-cell">Filename.pdf</div>
 
-        <div class="Rtable-cell Rtable-cell--head">Cancelled Cheque</div>
-        <div class="Rtable-cell">Filename.pdf</div>
+                <div class="Rtable-cell Rtable-cell--head">Cancelled Cheque</div>
+                <div class="Rtable-cell">Filename.pdf</div>
 
-        <div class="Rtable-cell Rtable-cell--head">Utilities Bill</div>
-        <div class="Rtable-cell">Filename.pdf</div>
+                <div class="Rtable-cell Rtable-cell--head">Utilities Bill</div>
+                <div class="Rtable-cell">Filename.pdf</div>
 
-        <div class="Rtable-cell Rtable-cell--head">Pan No.</div>
-        <div class="Rtable-cell">Filename.pdf</div>
+                <div class="Rtable-cell Rtable-cell--head">Pan No.</div>
+                <div class="Rtable-cell">{{ vendorDetails.panNum }} - Filename.pdf</div>
 
-        <div class="Rtable-cell Rtable-cell--head">MSME No.</div>
-        <div class="Rtable-cell"> MSME No - Filename.pdf</div>
+                <div class="Rtable-cell Rtable-cell--head">MSME No.</div>
+                <div class="Rtable-cell"> MSME No - Filename.pdf</div>
 
-        <div class="Rtable-cell Rtable-cell--head">Other (if any) </div>
-        <div class="Rtable-cell" style="width: 75%;">khadija Bohra</div>
+                <div class="Rtable-cell Rtable-cell--head">Other (if any) </div>
+                <div class="Rtable-cell" style="width: 75%;">khadija Bohra</div>
 
-      </div>
-    </div>
+            </div>
+        </div>
 
-     <!--------------- vendor Other Documents -------------------------->
-     <div class="vendor-detail-section">
-      <div class="section-title">
-        <span class="side-icon">
+        <!--------------- vendor Other Documents -------------------------->
+        <div class="vendor-detail-section">
+            <div class="section-title">
+                <span class="side-icon">
           <mat-icon>add_box</mat-icon>
         </span>
-        <span>Vendor Other Documents</span>
-      </div>
+                <span>Vendor Other Documents</span>
+            </div>
 
-      <div class="Rtable Rtable--2cols Rtable--collapse">
-        <div class="Rtable-cell Rtable-cell--head">Other (if any) </div>
-        <div class="Rtable-cell" style="width: 75%;">khadija Bohra</div>
-      </div>
+            <div class="Rtable Rtable--2cols Rtable--collapse">
+                <div class="Rtable-cell Rtable-cell--head">Other (if any) </div>
+                <div class="Rtable-cell" style="width: 75%;">khadija Bohra</div>
+            </div>
+
+        </div>
 
     </div>
+    <div>
+        <input [(ngModel)]="remarks" type="text" matInput placeholder="Remarks" autocomplete="off">
+    </div>
 
-  </div>
+    <div>
+        {{ msg }}
+    </div>
+
+    <div class="row actions margin-unset">
+        <button mat-raised-button class="footer-actions" (click)="onRejectClick()">Reject</button>
+        <button mat-raised-button class="footer-actions footer-actions-green" (click)="onApproveClick()">Approve</button>
+    </div>
 </div>

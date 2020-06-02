@@ -1,91 +1,74 @@
 <div class="main">
-  <div class="title">
-    <h3>Bank Details</h3>
-  </div>
-
-  <!-- <form [formGroup]=""> -->
-  <div class="row field">
-    <div class="col-12 form-group">
-      <mat-form-field class="full-width">
-        <textarea matInput placeholder="Beneficiary Bank Name and Bank Address"></textarea>
-      </mat-form-field>
-      <div class="errortxt">
-        Beneficiary Bank Name and Bank Address is required
-      </div>
-    </div>
-  </div>
-
-  <div class="row field">
-    <div class="col-6 form-group">
-      <mat-form-field class="full-width">
-        <input type="number" matInput placeholder="Account Number">
-      </mat-form-field>
-      <div class="errortxt">
-        Account Number is required
-      </div>
-    </div>
-    <div class="col-6 form-group">
-      <mat-form-field class="full-width">
-        <input type="text" matInput placeholder="Account Name">
-      </mat-form-field>
-      <div class="errortxt">
-        Account Name is required
-      </div>
-    </div>
-  </div>
-
-  <div class="row field">
-    <div class="col-6 form-group">
-      <mat-form-field class="full-width">
-        <mat-label>Account Type</mat-label>
-        <mat-select matNativeControl required>
-          <mat-option>Savings</mat-option>
-          <mat-option>Current</mat-option>
-        </mat-select>
-      </mat-form-field>
-      <div class="errortxt">
-        Account Type is required
-      </div>
-    </div>
-    <div class="col-6 form-group">
-      <mat-form-field class="full-width">
-        <input type="text" matInput placeholder="IFSC code">
-      </mat-form-field>
-      <div class="errortxt">
-        IFSC code is required
-      </div>
-    </div>
-  </div>
-
-  <div class="partition-note">For International Bank Details
-    <mat-divider></mat-divider>
-  </div>
-
-  <div class="row field">
-    <div class="col-12 form-group">
-      <mat-form-field class="full-width">
-        <textarea matInput placeholder="Intermidiary/routing Bank Name and Bank Address"></textarea>
-      </mat-form-field>
+    <div class="title">
+        <h3>Bank Details</h3>
     </div>
 
-  </div>
-  <div class="row field">
-    <div class="col-6 form-group">
-      <mat-form-field class="full-width">
-        <input type="text" matInput placeholder="SWIFT Code/IBAN">
-      </mat-form-field>
-    </div>
-    <div class="col-6 form-group">
-      <mat-form-field class="full-width">
-        <input type="text" matInput placeholder="SWIFT Code of Intermidiary/routing Bank">
-      </mat-form-field>
-    </div>
-  </div>
+    <form [formGroup]="vendorBankForm">
+        <div class="row field">
+            <div class="col-12 form-group">
+                <mat-form-field class="full-width">
+                    <textarea matInput placeholder="Beneficiary Bank Name and Bank Address" formControlName="bankAddress" autocomplete="off"></textarea>
+                </mat-form-field>
+            </div>
+        </div>
 
-  <div class="row actions margin-unset">
-    <button mat-raised-button class="footer-actions">Previous</button>
+        <div class="row field">
+            <div class="col-6 form-group">
+                <mat-form-field class="full-width">
+                    <input type="number" matInput placeholder="Account Number" formControlName="accountNum" autocomplete="off">
+                </mat-form-field>
+            </div>
+            <div class="col-6 form-group">
+                <mat-form-field class="full-width">
+                    <input type="text" matInput placeholder="Account Name" formControlName="accountName" autocomplete="off">
+                </mat-form-field>
+            </div>
+        </div>
 
-    <button mat-raised-button class="footer-actions ">Next</button>
-  </div>
+        <div class="row field">
+            <div class="col-6 form-group">
+                <mat-form-field class="full-width">
+                    <input type="text" matInput placeholder="Account Type" formControlName="accountType" autocomplete="off">
+                </mat-form-field>
+            </div>
+            <div class="col-6 form-group">
+                <mat-form-field class="full-width">
+                    <input type="text" matInput placeholder="IFSC code" formControlName="ifscCode" autocomplete="off">
+                </mat-form-field>
+            </div>
+        </div>
+
+        <div class="partition-note">For International Bank Details
+            <mat-divider></mat-divider>
+        </div>
+
+        <div class="row field">
+            <div class="col-12 form-group">
+                <mat-form-field class="full-width">
+                    <textarea matInput placeholder="Intermidiary/routing Bank Name and Bank Address" formControlName="routingBank" autocomplete="off"></textarea>
+                </mat-form-field>
+            </div>
+
+        </div>
+        <div class="row field">
+            <div class="col-6 form-group">
+                <mat-form-field class="full-width">
+                    <input type="text" matInput placeholder="SWIFT Code/IBAN" formControlName="swiftIbanCode" autocomplete="off">
+                </mat-form-field>
+            </div>
+            <div class="col-6 form-group">
+                <mat-form-field class="full-width">
+                    <input type="text" matInput placeholder="SWIFT Code of Intermidiary/routing Bank" formControlName="swiftInterm" autocomplete="off">
+                </mat-form-field>
+            </div>
+        </div>
+    </form>
+    <div class="errortxt">
+        {{ failureMsg }}
+    </div>
+    <div class="row actions margin-unset">
+        <button mat-raised-button class="footer-actions" (click)="onPrevClick()">Previous</button>
+        <button mat-raised-button class="footer-actions" (click)="onNextClick()">Next</button>
+    </div>
 
 </div>

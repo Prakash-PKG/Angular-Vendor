@@ -65,6 +65,14 @@ export class SidebarComponent implements OnInit {
         this._router.navigate([this._appService.routingConstants.vendorDetails]);
     }
 
+    onVenApp1Click() {
+        this._router.navigate([this._appService.routingConstants.vendorApproval]);
+    }
+
+    onVenApp2Click() {
+        this._router.navigate([this._appService.routingConstants.vendorApproval]);
+    }
+
     onLogoutClick() {
         this._loginService.logout().subscribe(
             (response) => {

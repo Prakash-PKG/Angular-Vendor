@@ -10,8 +10,8 @@ export class PageDetailsModel {
 }
 
 export class CountryDataModel {
-    CountryCode: string;
-    CountryName: string;
+    countryCode: string;
+    countryName: string;
 }
 
 export class EmpanelmentInitDataModel {
@@ -63,9 +63,21 @@ export class POSearchResultModel {
     statusVO: StatusModel;
 }
 
+export class VendorRegistrationRequestModel {
+    action: string;
+    vendorMasterDetails: VendorMasterDetailsModel;
+}
+
+export class VendorRegistrationResultModel {
+    status: StatusModel;
+    vendorMasterDetails: VendorMasterDetailsModel;
+}
+
 export class VendorMasterDetailsModel {
+    vendorMasterId: number;
     vendorName: string;
     emailId: string;
+    password: string;
     contactPerson: string;
     contactNum: string;
     buildingNum: string;
@@ -75,6 +87,7 @@ export class VendorMasterDetailsModel {
     city: string;
     stateName: string;
     countryCode: string;
+    countryName: string;
     pincode: string;
     bankAddress: string;
     accountNum: string;
@@ -97,7 +110,9 @@ export class VendorMasterDetailsModel {
     esiNum: string;
     hasTdsLower: boolean;
     createdBy: string;
+    createdDate: string;
     updatedBy: string;
+    updatedDate: string;
 }
 
 export class VendorMasterDocumentModel {
@@ -107,8 +122,8 @@ export class VendorMasterDocumentModel {
 }
 
 export class VendorRegistrationInitDataModel {
-    countryDetails: CountryDataModel[];
-    vendorMasterDocumentDetails: VendorMasterDocumentModel[];
+    countriesList: CountryDataModel[];
+    documentDetailsList: VendorMasterDocumentModel[];
 }
 
 export class InvoiceSearchResultModel {
@@ -130,7 +145,7 @@ export class InvoiceSearchModel {
     statusCode: string;
     statusDescription: string;
     submittedDate: string;
-  
+
 }
 
 export class InvoiceSearchRequestModel {
@@ -162,5 +177,35 @@ export class PendingApprovalsModel {
     approvalLevel: string;
     statusCode: string;
     submittedDate: string;
+}
+
+export class VendorMasterFilesModel {
+    vendorMasterFilesId: number;
+    vendorMasterId: number;
+    vendorMasterDocumentsId: number;
+    actualFileName: string;
+    uniqFileName: string;
+    documentDescription: string;
+}
+
+export class VendorApprovalInitResultModel {
+    statusDetails: StatusModel;
+    filesList: VendorMasterFilesModel[];
+    vendorMasterDetails: VendorMasterDetailsModel;
+}
+
+export class VendorApprovalInitReqModel {
+    vendorMasterId: number;
+}
+
+export class VendorApprovalReqModel {
+    action: string;
+	vendorApprovalID: number;
+    vendorMasterId: number;
+    departmentCode: string;
+    approverId: string;
+    remarks: string;
+	createdBy: string;
+    createDate: string;
 }
 
