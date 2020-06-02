@@ -1,49 +1,74 @@
 <div class="main">
-  <div class="title">
-    <h3>Vendor Details</h3>
-  </div>
-
-  <!-- <form [formGroup]=""> -->
-  <div class="row field">
-    <div class="col-6 form-group" >
-      <mat-form-field class="full-width">
-        <input type="text" matInput placeholder="Supplier Name">
-      </mat-form-field>
-      <div class="errortxt">
-        Supplier name is required
-      </div>
+    <div class="title">
+        <h3>Vendor Details</h3>
     </div>
 
-    <div class="col-6 form-group">
-      <mat-form-field class="full-width">
-        <input type="text" matInput placeholder="Contact Person">
-      </mat-form-field>
-    </div>
-  </div>
-  <div class="row field">
+    <form [formGroup]="vendorDetailsForm">
+        <div class="row field">
+            <div class="col-6 form-group">
+                <mat-form-field class="full-width">
+                    <input type="text" matInput placeholder="Supplier Name" formControlName="vendorName"
+                        autocomplete="off">
+                </mat-form-field>
+            </div>
 
-    <div class="col-6 form-group">
-      <mat-form-field class="full-width">
-        <input type="number" matInput placeholder="Contact No.">
-      </mat-form-field>
-      <div class="errortxt">
-        Contact Number is required
-      </div>
-    </div>
+            <div class="col-6 form-group">
+                <mat-form-field class="full-width">
+                    <input type="text" matInput placeholder="Contact Person" formControlName="contactPerson"
+                        autocomplete="off">
+                </mat-form-field>
+            </div>
+        </div>
+        <!-- <div class="row field">
+            <div class="col-6 form-group">
+                <mat-form-field class="full-width">
+                    <input type="text" matInput placeholder="Contact No." formControlName="contactNum" autocomplete="off">
+                </mat-form-field> -->
+        <!--<div class="errortxt">
+                    Contact Number is required
+                </div>-->
 
-    <div class="col-6 form-group">
-      <mat-form-field class="full-width">
-        <input type="email" matInput placeholder="Email Id">
-      </mat-form-field>
-      <div class="errortxt">
-        Email Id is required
-      </div>
-      <div class="errortxt">
-        Please enter valid Email Id
-      </div>
+
+        <div class="row field">
+            <div class="col-6 form-group">
+                <mat-form-field class="full-width">
+                    <input type="text" matInput placeholder="Telephone No." autocomplete="off">
+                </mat-form-field>
+            </div>
+            <div class="col-6 form-group">
+                <mat-form-field class="full-width">
+                    <input type="text" matInput placeholder="Mobile No." autocomplete="off">
+                </mat-form-field>
+            </div>
+
+        </div>
+        <div class="row field">
+            <div class="col-6 form-group">
+                <mat-form-field class="full-width">
+                    <input type="email" matInput placeholder="Email Id" formControlName="emailId" autocomplete="off">
+                </mat-form-field>
+            </div>
+        </div>
+        <div class="row field">
+            <div class="col-6 form-group">
+                <mat-form-field class="full-width">
+                    <input matInput type="password" class="form-control" placeholder="Password"
+                        formControlName="password" autocomplete="off">
+                </mat-form-field>
+            </div>
+
+            <div class="col-6 form-group">
+                <mat-form-field class="full-width">
+                    <input matInput type="password" class="form-control" placeholder="Confirm Password"
+                        formControlName="confirmPassword" autocomplete="off">
+                </mat-form-field>
+            </div>
+        </div>
+    </form>
+    <div class="errortxt">
+        {{ failureMsg }}
     </div>
-  </div>
-  <div class="row actions margin-unset">
-    <button mat-raised-button class="footer-actions ">Next</button>
-  </div>
+    <div class="row actions margin-unset">
+        <button mat-raised-button class="footer-actions" (click)="onNextClick()">Next</button>
+    </div>
 </div>

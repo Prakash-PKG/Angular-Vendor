@@ -1,15 +1,101 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+
+import { HomeService } from './../home/home.service';
+import { AppService } from '../app.service';
+import { VendorRegistrationService } from './../vendor-registration/vendor-registration.service';
+
+import { BusyDataModel, VendorRegistrationRequestModel, VendorRegistrationResultModel, CountryDataModel } from './../models/data-models';
 
 @Component({
-  selector: 'app-vendor-bank-details',
-  templateUrl: './vendor-bank-details.component.html',
-  styleUrls: ['./vendor-bank-details.component.scss']
+    selector: 'app-vendor-bank-details',
+    templateUrl: './vendor-bank-details.component.html',
+    styleUrls: ['./vendor-bank-details.component.scss']
 })
 export class VendorBankDetailsComponent implements OnInit {
+    
+    vendorBankForm: FormGroup;
+    failureMsg: string = "";
+    countryList: CountryDataModel[] = [];
 
-  constructor() { }
+    constructor(private _appService: AppService,
+        private _homeService: HomeService,
+        private _vendorRegistrationService: VendorRegistrationService,
+        private _router: Router,
+        private _formBuilder: FormBuilder) { }
 
-  ngOnInit() {
-  }
+    onPrevClick() {
+        this._router.navigate([this._appService.routingConstants.vendorAddressDetails]);
+    }
+
+    onNextClick() {
+        this._router.navigate([this._appService.routingConstants.vendorDocuments]);
+
+        this.failureMsg = "";
+
+        if (this.vendorBankForm.valid) {
+
+            this._appService.vendorRegistrationDetails.bankAddress = this.vendorBankForm.get("bankAddress").value;
+            this._appService.vendorRegistrationDetails.accountNum = this.vendorBankForm.get("accountNum").value;
+            this._appService.vendorRegistrationDetails.accountType = this.vendorBankForm.get("accountType").value;
+            this._appService.vendorRegistrationDetails.accountName = this.vendorBankForm.get("accountName").value;
+            this._appService.vendorRegistrationDetails.ifscCode = this.vendorBankForm.get("ifscCode").value;
+            this._appService.vendorRegistrationDetails.swiftIbanCode = this.vendorBankForm.get("swiftIbanCode").value;
+            this._appService.vendorRegistrationDetails.routingBank = this.vendorBankForm.get("routingBank").value;
+            this._appService.vendorRegistrationDetails.swiftInterm = this.vendorBankForm.get("swiftInterm").value;
+
+            let req: VendorRegistrationRequestModel = {
+                action: this._appService.updateOperations.save,
+                vendorMasterDetails: this._appService.vendorRegistrationDetails
+            }
+            this._homeService.updateBusy(<BusyDataModel>{ isBusy: true, msg: null });
+            this._vendorRegistrationService.updateVendorRegistrationDetails(req)
+                .subscribe(response => {
+                    this._homeService.updateBusy(<BusyDataModel>{ isBusy: false, msg: null });
+
+                    if (response.body) {
+                        let result: VendorRegistrationResultModel = response.body as VendorRegistrationResultModel;
+                        if (result.status.status == 200 && result.status.isSuccess) {
+                            this._appService.vendorRegistrationDetails = result.vendorMasterDetails;
+                            this._router.navigate([this._appService.routingConstants.vendorDocuments]);
+                        }
+                        else {
+                            this.failureMsg = this._appService.messages.vendorRegistrationSaveFailure;
+                        }
+                    }
+                },
+                (error) => {
+                    this._homeService.updateBusy(<BusyDataModel>{ isBusy: false, msg: null });
+                    console.log(error);
+                });
+        }
+    }
+
+    updateVendorDetails() {
+        this.vendorBankForm.get("bankAddress").setValue(this._appService.vendorRegistrationDetails.bankAddress);
+        this.vendorBankForm.get("accountNum").setValue(this._appService.vendorRegistrationDetails.accountNum);
+        this.vendorBankForm.get("accountType").setValue(this._appService.vendorRegistrationDetails.accountType);
+        this.vendorBankForm.get("accountName").setValue(this._appService.vendorRegistrationDetails.accountName);
+        this.vendorBankForm.get("ifscCode").setValue(this._appService.vendorRegistrationDetails.ifscCode);
+        this.vendorBankForm.get("swiftIbanCode").setValue(this._appService.vendorRegistrationDetails.swiftIbanCode);
+        this.vendorBankForm.get("routingBank").setValue(this._appService.vendorRegistrationDetails.routingBank);
+        this.vendorBankForm.get("swiftInterm").setValue(this._appService.vendorRegistrationDetails.swiftInterm);
+    }
+
+    ngOnInit() {
+        this.vendorBankForm = this._formBuilder.group({
+            bankAddress: [null, [Validators.required]],
+            accountNum: [null, [Validators.required]],
+            accountType: [null, [Validators.required]],
+            accountName: [null, [Validators.required]],
+            ifscCode: [null, [Validators.required]],
+            swiftIbanCode: [null, [Validators.required]],
+            routingBank: [null, [Validators.required]],
+            swiftInterm: [null, [Validators.required]],
+        });
+
+        this.updateVendorDetails();
+    }
 
 }

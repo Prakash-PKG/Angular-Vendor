@@ -24,19 +24,19 @@
             </div>
             <div class="navtxt">Dashboard</div>
         </li>
-        <li>
+        <li (click) = "onPendingApprovalClick()">
             <div class="side-icon">
                 <mat-icon>done_outline</mat-icon>
             </div>
             <div class="navtxt">Approvals</div>
         </li>
-        <li>
+        <li (click) = "onPoSearchClick()">
             <div class="side-icon">
                 <mat-icon>pageview</mat-icon>
             </div>
             <div class="navtxt">PO Search</div>
         </li>
-        <li>
+        <li (click) = "onInvoiceSearchClick()">
             <div class="side-icon">
                 <mat-icon>local_offer</mat-icon>
             </div>
@@ -55,13 +55,13 @@
             <div class="navtxt">Vendor</div>
         </li>
         <ul class="childdash">
-            <li [ngStyle]="{'padding-left': isSidebarCollapsed === true ? '1em': '2em' }">
+            <li [ngStyle]="{'padding-left': isSidebarCollapsed === true ? '1em': '2em' }" (click) = "onVendorRegistrationClickClick()">
                 <div class="side-icon">
                     <mat-icon>how_to_reg</mat-icon>
                 </div>
                 <div class="navtxt">Vendor Registration</div>
             </li>
-            <li [ngStyle]="{'padding-left': isSidebarCollapsed === true ? '1em': '2em' }">
+            <li [ngStyle]="{'padding-left': isSidebarCollapsed === true ? '1em': '2em' }" (click) = "onEmpanelmentClick()">
                 <div class="side-icon">
                     <mat-icon>person</mat-icon>
                 </div>
@@ -69,7 +69,7 @@
             </li>
 
         </ul>
-        <li>
+        <li (click) = "onLogoutClick()">
             <div class="side-icon">
                 <mat-icon>exit_to_app</mat-icon>
             </div>

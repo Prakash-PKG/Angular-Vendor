@@ -1,3 +1,4 @@
+import { VendorMasterDetailsModel, VendorRegistrationInitDataModel } from './models/data-models';
 
 import { Injectable } from '@angular/core';
 import { DatePipe } from '@angular/common';
@@ -19,12 +20,31 @@ export class AppService {
     readonly routingConstants: any = {
         login: "/",
         posearch: "/home/posearch",
-        invupload: "/home/invupload",
-        vendetails: "/home/vendetails"
+        forgotPassword: "/home/fp",
+        invoiceApproval: "/home/invapproval",
+        invoiceDetails: "/home/invdetails",
+        invoiceSearch:"/home/invsearch",
+        invUpload: "/home/invupload",
+        pendingApprovals: "/home/pendingapprovals",
+        poDetails: "/home/podetails",
+        vendorApproval: "/home/venapproval",
+        empanelment: "/home/empanelment",
+        vendorDetails: "/home/vendor/vendetails",
+        vendorAddressDetails: "/home/vendor/venaddr",
+        vendorBankDetails: "/home/vendor/venbank",
+        vendorDocuments: "/home/vendor/vendocs",
+        vendorOther: "/home/vendor/venothers"
     };
 
     readonly pageConstants: any = {
         login: "Login"
+    };
+
+    readonly updateOperations: any = {
+        save: "save",
+        submit: "submit",
+        approve: "approve",
+        reject: "reject"
     };
 
     readonly dbDateFormat: string = "yyyy-MM-dd"; // Server and DB expects this format, by changing this it will reflect in all places
@@ -37,5 +57,101 @@ export class AppService {
         
         return "";
     }
+
+    vendorRegistrationDetails: VendorMasterDetailsModel = {
+        vendorMasterId: null,
+        vendorName: null,
+        emailId: null,
+        password: null,
+        contactPerson: null,
+        contactNum: null,
+        buildingNum: null,
+        buildingName: null,
+        floorNum: null,
+        street: null,
+        city: null,
+        stateName: null,
+        countryCode: null,
+        countryName: null,
+        pincode: null,
+        bankAddress: null,
+        accountNum: null,
+        accountType: null,
+        accountName: null,
+        ifscCode: null,
+        swiftIbanCode: null,
+        routingBank: null,
+        swiftInterm: null,
+        panNum: null,
+        gstNum: null,
+        isSez: false,
+        isRcmApplicable: false,
+        lutNum: null,
+        lut_date: null,
+        paymentTerms: null,
+        cinNum: null,
+        isMsmedRegistered: false,
+        pfNum: null,
+        esiNum: null,
+        hasTdsLower: false,
+        createdBy: null,
+        updatedBy: null,
+        createdDate: null,
+        updatedDate: null
+    };
+
+    resetVendorRegistrationDetails() {
+        let regDetails: VendorMasterDetailsModel = {
+            vendorMasterId: null,
+            vendorName: null,
+            emailId: null,
+            password: null,
+            contactPerson: null,
+            contactNum: null,
+            buildingNum: null,
+            buildingName: null,
+            floorNum: null,
+            street: null,
+            city: null,
+            stateName: null,
+            countryCode: null,
+            countryName: null,
+            pincode: null,
+            bankAddress: null,
+            accountNum: null,
+            accountType: null,
+            accountName: null,
+            ifscCode: null,
+            swiftIbanCode: null,
+            routingBank: null,
+            swiftInterm: null,
+            panNum: null,
+            gstNum: null,
+            isSez: false,
+            isRcmApplicable: false,
+            lutNum: null,
+            lut_date: null,
+            paymentTerms: null,
+            cinNum: null,
+            isMsmedRegistered: false,
+            pfNum: null,
+            esiNum: null,
+            hasTdsLower: false,
+            createdBy: null,
+            updatedBy: null,
+            createdDate: null,
+            updatedDate: null
+        };
+
+        return regDetails;
+    }
+
+    vendorRegistrationInitDetails: VendorRegistrationInitDataModel = null;
+
+    readonly messages: any = {
+        vendorRegistrationSaveFailure: "Due to technical problems not able to proceed further. Please try later.",
+        vendorRegistrationSubmitSuccessMsg: "Vendor details submitted successful",
+        vendorApprovalFailure: "Vendor approval is failed"
+    };
 
 }

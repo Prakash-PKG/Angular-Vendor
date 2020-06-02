@@ -1,0 +1,95 @@
+.side-icon {
+  margin-right: 1em;
+  vertical-align: middle;
+}
+.my-container {
+  padding-top: 1em;
+}
+.title{
+    margin-bottom: 1em;
+}
+.section-title {
+    font-size: larger;
+    font-weight: bolder;
+}
+.vendor-detail-section {
+  margin-bottom: 2em;
+}
+
+.search-row {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.search-row-element {
+  flex-grow: 1;
+}
+.search-row-element.search-btn {
+  flex-grow: 0;
+  flex-shrink: 0;
+}
+.search-row-element.actions {
+  flex: 0 0 3em;
+}
+
+.mat-form-field.field {
+  margin-right: 2em;
+  width: 7em;
+}
+// ================css for table=================== */
+.Rtable {
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  padding: 0;
+  padding-left: 2.75em;
+}
+
+.Rtable--2cols > .Rtable-cell {
+  width: 25%;
+}
+.Rtable--2cols > .Rtable-cell:nth-child(odd) {
+  width: 18.5%;
+}
+.Rtable--2cols > .Rtable-cell::nth-child(even) {
+  width: 33.5%;
+}
+.Rtable-cell--head {
+  color: black;
+}
+.Rtable-cell {
+  margin: -3px 0 0 -3px;
+  box-sizing: border-box;
+  -webkit-box-flex: 1;
+  flex-grow: 1;
+  width: 100%;
+  padding: 0.2em 1em;
+  overflow: hidden;
+  list-style: none;
+}
+
+@media screen and (max-width: 499px) {
+  .Rtable--collapse {
+    display: block;
+    > .Rtable-cell {
+      width: 100% !important;
+    }
+    > .Rtable-cell--foot {
+      margin-bottom: 1em;
+    }
+  }
+}
+@media screen and (max-width: 499px) {
+  .Rtable {
+    padding-left: 3.5em;
+  }
+  .Rtable--collapse {
+    display: block;
+    > .Rtable-cell {
+      width: 50% !important;
+      display: inline-flex !important;
+    }
+  }
+}
