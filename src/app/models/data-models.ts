@@ -79,7 +79,7 @@ export class VendorMasterDetailsModel {
     emailId: string;
     password: string;
     contactPerson: string;
-    contactNum: string;
+    // contactNum: string;
     buildingNum: string;
     buildingName: string;
     floorNum: string;
@@ -89,7 +89,7 @@ export class VendorMasterDetailsModel {
     countryCode: string;
     countryName: string;
     pincode: string;
-    bankAddress: string;
+    // bankAddress: string;
     accountNum: string;
     accountType: string;
     accountName: string;
@@ -113,6 +113,13 @@ export class VendorMasterDetailsModel {
     createdDate: string;
     updatedBy: string;
     updatedDate: string;
+    mobileNum: string;
+    telephoneNum: string;
+    bankName: string;
+    bankBranch: string;
+    bankCity: string;
+    bankRegion: string;
+    bankCountry: string;
 }
 
 export class VendorMasterDocumentModel {
@@ -192,6 +199,9 @@ export class VendorApprovalInitResultModel {
     statusDetails: StatusModel;
     filesList: VendorMasterFilesModel[];
     vendorMasterDetails: VendorMasterDetailsModel;
+    accGroupMasterList: AccGroupMasterList[];
+    companyCodeMasterList: CompanyCodeMasterList[];
+    currencyMasterList: currencyMasterList[];
 }
 
 export class VendorApprovalInitReqModel {
@@ -200,12 +210,24 @@ export class VendorApprovalInitReqModel {
 
 export class VendorApprovalReqModel {
     action: string;
-	vendorApprovalID: number;
+    vendorApprovalID: number;
     vendorMasterId: number;
     departmentCode: string;
     approverId: string;
     remarks: string;
-	createdBy: string;
+    createdBy: string;
     createDate: string;
 }
+export class CompanyCodeMasterList {
+    companyCode: string;
+    companyDesc: string;
+}
+export class AccGroupMasterList {
+    groupCode: string;
+    groupDesc: string;
 
+}
+export class currencyMasterList {
+	 currencyCode:string;	
+	 currencyDesc:string;
+}

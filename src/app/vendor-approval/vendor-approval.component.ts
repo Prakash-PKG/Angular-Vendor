@@ -1,8 +1,13 @@
 import { VendorApprovalService } from './vendor-approval.service';
 import { AppService } from './../app.service';
-import { BusyDataModel, VendorApprovalInitResultModel, StatusModel, 
-        VendorApprovalInitReqModel, VendorMasterDetailsModel,
-        VendorApprovalReqModel } from './../models/data-models';
+import {
+    BusyDataModel, VendorApprovalInitResultModel, StatusModel,
+    VendorApprovalInitReqModel, VendorMasterDetailsModel,
+    VendorApprovalReqModel,
+    AccGroupMasterList,
+    CompanyCodeMasterList,
+    currencyMasterList
+} from './../models/data-models';
 import { Component, OnInit } from '@angular/core';
 import { HomeService } from '../home/home.service';
 
@@ -16,12 +21,15 @@ export class VendorApprovalComponent implements OnInit {
     _sidebarExpansionSubscription: any = null;
     vendorApprovalDetails: VendorApprovalInitResultModel = null;
     vendorDetails: VendorMasterDetailsModel = null;
+    vendoraccGroupList: AccGroupMasterList[] = [];
+    companyCodeList: CompanyCodeMasterList[] = [];
+    currencyList: currencyMasterList[] = [];
     remarks: string = "";
     msg: string = "";
 
     constructor(private _homeService: HomeService,
-                private _appService: AppService,
-                private _vendorApprovalService: VendorApprovalService) { }
+        private _appService: AppService,
+        private _vendorApprovalService: VendorApprovalService) { }
 
     onApproveClick() {
         let req: VendorApprovalReqModel = {
@@ -36,20 +44,20 @@ export class VendorApprovalComponent implements OnInit {
         }
 
         this._homeService.updateBusy(<BusyDataModel>{ isBusy: true, msg: null });
-            this._vendorApprovalService.updateVendorApprovalDetails(req)
-                .subscribe(response => {
-                    this._homeService.updateBusy(<BusyDataModel>{ isBusy: false, msg: null });
+        this._vendorApprovalService.updateVendorApprovalDetails(req)
+            .subscribe(response => {
+                this._homeService.updateBusy(<BusyDataModel>{ isBusy: false, msg: null });
 
-                    if (response.body) {
-                        let result: StatusModel = response.body as StatusModel;
-                        if (result.status == 200 && result.isSuccess) {
-                            this.msg = "Vendor approval is success";
-                        }
-                        else {
-                            this.msg = this._appService.messages.vendorApprovalFailure;
-                        }
+                if (response.body) {
+                    let result: StatusModel = response.body as StatusModel;
+                    if (result.status == 200 && result.isSuccess) {
+                        this.msg = "Vendor approval is success";
                     }
-                },
+                    else {
+                        this.msg = this._appService.messages.vendorApprovalFailure;
+                    }
+                }
+            },
                 (error) => {
                     this._homeService.updateBusy(<BusyDataModel>{ isBusy: false, msg: null });
                     this.msg = this._appService.messages.vendorApprovalFailure;
@@ -60,6 +68,9 @@ export class VendorApprovalComponent implements OnInit {
     onRejectClick() {
 
     }
+    onAttachMSAClick() {
+
+    }
 
     async loadInitData() {
         let req: VendorApprovalInitReqModel = {
@@ -68,6 +79,9 @@ export class VendorApprovalComponent implements OnInit {
         this._homeService.updateBusy(<BusyDataModel>{ isBusy: true, msg: "Loading..." });
         this.vendorApprovalDetails = await this._vendorApprovalService.getVendorApprovalInitData(req);
         this.vendorDetails = this.vendorApprovalDetails.vendorMasterDetails;
+        this.vendoraccGroupList = this.vendorApprovalDetails.accGroupMasterList;
+        this.companyCodeList = this.vendorApprovalDetails.companyCodeMasterList;
+        this.currencyList = this.vendorApprovalDetails.currencyMasterList;
         this._homeService.updateBusy(<BusyDataModel>{ isBusy: false, msg: null });
     }
 
@@ -85,7 +99,7 @@ export class VendorApprovalComponent implements OnInit {
         });
 
         setTimeout(() => {
-           this.loadInitData();
+            this.loadInitData();
         }, 100);
     }
 }

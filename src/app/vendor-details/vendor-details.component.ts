@@ -32,7 +32,8 @@ export class VendorDetailsComponent implements OnInit {
 
             this._appService.vendorRegistrationDetails.vendorName = this.vendorDetailsForm.get("vendorName").value;
             this._appService.vendorRegistrationDetails.contactPerson = this.vendorDetailsForm.get("contactPerson").value;
-            this._appService.vendorRegistrationDetails.contactNum = this.vendorDetailsForm.get("contactNum").value;
+            this._appService.vendorRegistrationDetails.mobileNum = this.vendorDetailsForm.get("mobileNum").value;
+            this._appService.vendorRegistrationDetails.telephoneNum = this.vendorDetailsForm.get("telephoneNum").value;
             this._appService.vendorRegistrationDetails.emailId = this.vendorDetailsForm.get("emailId").value;
             this._appService.vendorRegistrationDetails.password = this.vendorDetailsForm.get("password").value;
 
@@ -66,7 +67,8 @@ export class VendorDetailsComponent implements OnInit {
     updateVendorDetails() {
         this.vendorDetailsForm.get("vendorName").setValue(this._appService.vendorRegistrationDetails.vendorName);
         this.vendorDetailsForm.get("contactPerson").setValue(this._appService.vendorRegistrationDetails.contactPerson);
-        this.vendorDetailsForm.get("contactNum").setValue(this._appService.vendorRegistrationDetails.contactNum);
+        this.vendorDetailsForm.get("mobileNum").setValue(this._appService.vendorRegistrationDetails.mobileNum);
+        this.vendorDetailsForm.get("telephoneNum").setValue(this._appService.vendorRegistrationDetails.telephoneNum);
         this.vendorDetailsForm.get("emailId").setValue(this._appService.vendorRegistrationDetails.emailId);
         this.vendorDetailsForm.get("password").setValue(this._appService.vendorRegistrationDetails.password);
         this.vendorDetailsForm.get("confirmPassword").setValue(this._appService.vendorRegistrationDetails.password);
@@ -76,7 +78,8 @@ export class VendorDetailsComponent implements OnInit {
         this.vendorDetailsForm = this._formBuilder.group({
             vendorName: [null, [Validators.required]],
             contactPerson: [null],
-            contactNum: [null, [Validators.required]],
+            // contactNum: [null, [Validators.required]],
+            mobileNum: [null, [Validators.required]],
             emailId: [null, [Validators.required, Validators.email]],
             password: [null, [Validators.required]],
             confirmPassword: [null, [Validators.required]]

@@ -29,6 +29,9 @@ export class VendorApprovalService {
             detailsModel.statusDetails = data["status"];
             detailsModel.filesList = data["filesList"];
             detailsModel.vendorMasterDetails = data["vendorMasterDetails"];
+            detailsModel.accGroupMasterList = data ["AccGroupMasterList"];
+            detailsModel.companyCodeMasterList =data["companyCodeMasterList"];
+            detailsModel.currencyMasterList = data["currencyMasterList"];
         }
 
         return detailsModel;

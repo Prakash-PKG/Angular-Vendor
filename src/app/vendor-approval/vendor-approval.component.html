@@ -6,23 +6,23 @@
         <mat-form-field class="field search-row-element">
           <mat-label>Account Group</mat-label>
           <mat-select >
-            <mat-option>Account Group</mat-option>
+            <mat-option *ngFor="let accGrp of vendoraccGroupList" [value]="accGrp.groupCode">{{accGrp.groupDesc}}</mat-option>
           </mat-select>
         </mat-form-field>
         <mat-form-field class="field search-row-element">
             <mat-label>Company Code</mat-label>
             <mat-select >
-              <mat-option>Company Code</mat-option>
+              <mat-option *ngFor="let cocode of companyCodeList" [value]="cocode.companyCode">{{cocode.companyDesc}}</mat-option>
             </mat-select>
           </mat-form-field>
           <mat-form-field class="field search-row-element">
             <mat-label>Currency</mat-label>
             <mat-select >
-              <mat-option>Currency</mat-option>
+              <mat-option *ngFor="let currency of currencyList" [value]="currency.currencyCode">{{currency.currencyDesc}}</mat-option>
             </mat-select>
           </mat-form-field>
       <div class="actions search-row-element">
-        <button mat-raised-button class="footer-actions">Attach MSA</button>
+        <button mat-raised-button class="footer-actions" (click)="onAttachMSAClick()">Attach MSA</button>
       </div>
     </div>
 

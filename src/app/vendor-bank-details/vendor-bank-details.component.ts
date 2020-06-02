@@ -36,15 +36,20 @@ export class VendorBankDetailsComponent implements OnInit {
 
         if (this.vendorBankForm.valid) {
 
-            this._appService.vendorRegistrationDetails.bankAddress = this.vendorBankForm.get("bankAddress").value;
+            // this._appService.vendorRegistrationDetails.bankAddress = this.vendorBankForm.get("bankAddress").value;
             this._appService.vendorRegistrationDetails.accountNum = this.vendorBankForm.get("accountNum").value;
             this._appService.vendorRegistrationDetails.accountType = this.vendorBankForm.get("accountType").value;
             this._appService.vendorRegistrationDetails.accountName = this.vendorBankForm.get("accountName").value;
             this._appService.vendorRegistrationDetails.ifscCode = this.vendorBankForm.get("ifscCode").value;
+            this._appService.vendorRegistrationDetails.bankName = this.vendorBankForm.get("bankName").value;
+            this._appService.vendorRegistrationDetails.bankBranch = this.vendorBankForm.get("bankBranch").value;
+            this._appService.vendorRegistrationDetails.bankCity = this.vendorBankForm.get("bankCity").value;
+            this._appService.vendorRegistrationDetails.bankRegion = this.vendorBankForm.get("bankRegion").value;
+            this._appService.vendorRegistrationDetails.bankCountry = this.vendorBankForm.get("bankCountry").value;
             this._appService.vendorRegistrationDetails.swiftIbanCode = this.vendorBankForm.get("swiftIbanCode").value;
             this._appService.vendorRegistrationDetails.routingBank = this.vendorBankForm.get("routingBank").value;
             this._appService.vendorRegistrationDetails.swiftInterm = this.vendorBankForm.get("swiftInterm").value;
-
+     
             let req: VendorRegistrationRequestModel = {
                 action: this._appService.updateOperations.save,
                 vendorMasterDetails: this._appService.vendorRegistrationDetails
@@ -73,11 +78,16 @@ export class VendorBankDetailsComponent implements OnInit {
     }
 
     updateVendorDetails() {
-        this.vendorBankForm.get("bankAddress").setValue(this._appService.vendorRegistrationDetails.bankAddress);
+        // this.vendorBankForm.get("bankAddress").setValue(this._appService.vendorRegistrationDetails.bankAddress);
         this.vendorBankForm.get("accountNum").setValue(this._appService.vendorRegistrationDetails.accountNum);
         this.vendorBankForm.get("accountType").setValue(this._appService.vendorRegistrationDetails.accountType);
         this.vendorBankForm.get("accountName").setValue(this._appService.vendorRegistrationDetails.accountName);
-        this.vendorBankForm.get("ifscCode").setValue(this._appService.vendorRegistrationDetails.ifscCode);
+        this.vendorBankForm.get("ifscCode").setValue(this._appService.vendorRegistrationDetails.ifscCode);       
+         this.vendorBankForm.get("bankName").setValue(this._appService.vendorRegistrationDetails.bankName);
+        this.vendorBankForm.get("bankBranch").setValue(this._appService.vendorRegistrationDetails.bankBranch);
+        this.vendorBankForm.get("bankCity").setValue(this._appService.vendorRegistrationDetails.bankCity);
+        this.vendorBankForm.get("bankRegion").setValue(this._appService.vendorRegistrationDetails.bankRegion);
+        this.vendorBankForm.get("bankCountry").setValue(this._appService.vendorRegistrationDetails.bankCountry);
         this.vendorBankForm.get("swiftIbanCode").setValue(this._appService.vendorRegistrationDetails.swiftIbanCode);
         this.vendorBankForm.get("routingBank").setValue(this._appService.vendorRegistrationDetails.routingBank);
         this.vendorBankForm.get("swiftInterm").setValue(this._appService.vendorRegistrationDetails.swiftInterm);
@@ -85,11 +95,16 @@ export class VendorBankDetailsComponent implements OnInit {
 
     ngOnInit() {
         this.vendorBankForm = this._formBuilder.group({
-            bankAddress: [null, [Validators.required]],
+            // bankAddress: [null, [Validators.required]],
             accountNum: [null, [Validators.required]],
             accountType: [null, [Validators.required]],
             accountName: [null, [Validators.required]],
             ifscCode: [null, [Validators.required]],
+            bankName: [null, [Validators.required]],
+            bankBranch: [null, [Validators.required]],
+            bankCity: [null, [Validators.required]],
+            bankRegion: [null, [Validators.required]],
+            bankCountry: [null, [Validators.required]],
             swiftIbanCode: [null, [Validators.required]],
             routingBank: [null, [Validators.required]],
             swiftInterm: [null, [Validators.required]],
