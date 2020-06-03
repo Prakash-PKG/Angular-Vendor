@@ -13,24 +13,24 @@
 
 
     <div class="tabs full-width">
-        <mat-tab-group mat-align-tabs="start">
+        <mat-tab-group mat-align-tabs="start" (selectedTabChange)="onTabChange($event)">
 
             <mat-tab label="All Pending approvals">
                 <div class="ven-tab-container">
-                    <mat-card class="card mat-elevation-z3">
-                        <div class="flex-container full-width">
+                    <mat-card class="card mat-elevation-z3" *ngFor="let appr of allPendingApprovals; let allInd = index">
+                        <div class="flex-container full-width" (click) = "onApprovalRecClick(appr)">
                             <div class="description flex-item">
                                 <div class="flex-container">
                                     <div class="flex-item">
-                                        Vendor Name / Invoice No :
+                                        {{ getVendorNameOrInvoiceNo(appr) }}
                                     </div>
                                     <div class="flex-item">
-                                        Submitted On:
+                                        {{ getSubmittedDate(appr) }}
                                     </div>
                                 </div>
                                 <div class="flex-item">
                                     <div class="title">
-                                        <h3>Approval Type</h3>
+                                        <h3> {{ getApprovalType(appr) }}</h3>
                                     </div>
                                 </div>
                             </div>
@@ -39,23 +39,22 @@
                 </div>
             </mat-tab>
 
-
             <mat-tab label="Vendor Pending approvals">
                 <div class="ven-tab-container">
-                    <mat-card class="card mat-elevation-z3">
+                    <mat-card class="card mat-elevation-z3" *ngFor="let appr of vendorPendingApprovals; let allInd = index">
                         <div class="flex-container full-width">
                             <div class="description flex-item">
                                 <div class="flex-container">
                                     <div class="flex-item">
-                                        Vendor Name:
+                                        {{ getVendorNameOrInvoiceNo(appr) }}
                                     </div>
                                     <div class="flex-item">
-                                        Submitted On:
+                                        {{ getSubmittedDate(appr) }}
                                     </div>
                                 </div>
                                 <div class="flex-item">
                                     <div class="title">
-                                        <h3>Vendor Approval</h3>
+                                        <h3> {{ getApprovalType(appr) }}</h3>
                                     </div>
                                 </div>
                             </div>
@@ -67,20 +66,20 @@
 
             <mat-tab label="Invoice Pending approvals">
                 <div class="inv-tab-container">
-                    <mat-card class="card mat-elevation-z3">
+                    <mat-card class="card mat-elevation-z3" *ngFor="let appr of invoicePendingApprovals; let allInd = index">
                         <div class="flex-container full-width">
                             <div class="description flex-item">
-                                <div class="flex-container">
+                               <div class="flex-container">
                                     <div class="flex-item">
-                                        Invoice No:
+                                        {{ getVendorNameOrInvoiceNo(appr) }}
                                     </div>
                                     <div class="flex-item">
-                                        Submitted On:
+                                        {{ getSubmittedDate(appr) }}
                                     </div>
                                 </div>
                                 <div class="flex-item">
                                     <div class="title">
-                                        <h3>Invoice Approval</h3>
+                                        <h3> {{ getApprovalType(appr) }}</h3>
                                     </div>
                                 </div>
                             </div>

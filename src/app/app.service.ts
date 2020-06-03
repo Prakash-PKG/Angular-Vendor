@@ -1,4 +1,4 @@
-import { VendorMasterDetailsModel, VendorRegistrationInitDataModel } from './models/data-models';
+import { VendorMasterDetailsModel, VendorRegistrationInitDataModel, PendingApprovalsModel } from './models/data-models';
 
 import { Injectable } from '@angular/core';
 import { DatePipe } from '@angular/common';
@@ -8,7 +8,7 @@ import { DatePipe } from '@angular/common';
 })
 export class AppService {
 
-   // readonly domain = "http://localhost:8080";
+    //readonly domain = "http://localhost:8080";
     readonly domain = "https://mvendor-dev.marlabs.com";  
     //readonly domain = "https://mtime.marlabs.com";  
     readonly baseUrl = this.domain + "/mvendor/";
@@ -45,6 +45,18 @@ export class AppService {
         submit: "submit",
         approve: "approve",
         reject: "reject"
+    };
+
+    readonly approvalLevels: any = {
+        po: "po",
+        functionalHead: "functional_head",
+        finance: "finance",
+        procurement: "procurement"
+    };
+
+    readonly approvalTypes: any = {
+        vendor: "vendor",
+        invoice: "invoice"
     };
 
     readonly dbDateFormat: string = "yyyy-MM-dd"; // Server and DB expects this format, by changing this it will reflect in all places
@@ -159,6 +171,8 @@ export class AppService {
 
         return regDetails;
     }
+
+    selectedPendingApprovalRecord: PendingApprovalsModel = null;
 
     vendorRegistrationInitDetails: VendorRegistrationInitDataModel = null;
 

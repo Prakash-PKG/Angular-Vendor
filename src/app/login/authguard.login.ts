@@ -12,8 +12,9 @@ export class AuthGuardLogin implements CanActivate {
     userName: string;
     userEmail: string;
     userId: string;
-    userRole: string;
-    //private cryptoService:CryptoService, private commonService:CommonService,
+    userRole: string[];
+    departmentHead: string;
+
     constructor(private authService: LoginService, private router: Router, private cryptoService: CryptoService) { }
 
     canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
@@ -22,19 +23,9 @@ export class AuthGuardLogin implements CanActivate {
         let isAuthorizesUser: boolean = false;
         if (!localStorage.getItem("x-auth-token")) {
             this.router.navigate(['login']);
-            // return false;
+
             return true;
         } else {
-            // let user = JSON.parse(localStorage.getItem('user'));
-            // let encryptedRole = localStorage.getItem('authorizeToken');
-            // let userRole = this.cryptoService.decrypt(encryptedRole);
-            // below is commented by mine
-            //   let userRole = this.commonService.getUserRole();
-            //     if(routeRoles.indexOf(userRole) != -1){
-            //       isAuthorizesUser=true;
-            //     }
-
-
             let user = localStorage.getItem('user');
             user = this.cryptoService.decrypt(user);
             const userDetails = JSON.parse(user);
@@ -42,71 +33,76 @@ export class AuthGuardLogin implements CanActivate {
             this.userName = userDetails.userName;
             this.userEmail = userDetails.userEmail;
             this.userId = userDetails.userId;
+            this.departmentHead = userDetails["department head"]
 
             globalConstant.userDetails.userId = this.userId;
             globalConstant.userDetails.userEmail = this.userEmail;
             globalConstant.userDetails.userName = this.userName;
+            globalConstant.userDetails.departmentHead = this.departmentHead;
             globalConstant.userDetails.userRoles = this.userRole;
 
-            globalConstant.userDetails.isAdmin = false;
-            globalConstant.userDetails.isManager = false;
-            globalConstant.userDetails.isDUHead = false;
-             globalConstant.userDetails.isFinance = false;
+            globalConstant.userDetails.isVendor = false;
+            globalConstant.userDetails.isPurchaseOwner = false;
+            globalConstant.userDetails.isFunctionalHead = false;
+            globalConstant.userDetails.isProcurement = false;
+            globalConstant.userDetails.isFinance = false;
+            globalConstant.userDetails.isEmpanelment = false;
+            globalConstant.userDetails.poDepts = [];
              
             if(globalConstant.userDetails.userRoles && globalConstant.userDetails.userRoles.length > 0) {
-                let adminRoles = globalConstant.userDetails.userRoles.filter(r => r.name == "Admin");
-                if(adminRoles && adminRoles.length > 0) {
-                    globalConstant.userDetails.isAdmin = true;
+                let vendorRoles = globalConstant.userDetails.userRoles.filter(r => globalConstant.vendorRoles.indexOf(r.roleCode) > -1);
+                if(vendorRoles && vendorRoles.length > 0) {
+                    globalConstant.userDetails.isVendor = true;
                 }
                 else {
-                    globalConstant.userDetails.isAdmin = false;
+                    globalConstant.userDetails.isVendor = false;
                 }
 
-                let managerRoles = globalConstant.userDetails.userRoles.filter(r => r.name == "Manager");
-                if(managerRoles && managerRoles.length > 0) {
-                    globalConstant.userDetails.isManager = true;
+                let poRoles = globalConstant.userDetails.userRoles.filter(r => globalConstant.poRoles.indexOf(r.roleCode) > -1);
+                if(poRoles && poRoles.length > 0) {
+                    globalConstant.userDetails.isPurchaseOwner = true;
+                    for(let pr in poRoles) {
+                        globalConstant.userDetails.poDepts.push(pr["roleCode"].toUpperCase());
+                    }
+                 }
+                else {
+                    globalConstant.userDetails.isPurchaseOwner = false;
+                }
+
+                let functionalHeadRoles = globalConstant.userDetails.userRoles.filter(r => globalConstant.functionalHeadRoles.indexOf(r.roleCode) > -1);
+                if(functionalHeadRoles && functionalHeadRoles.length > 0) {
+                    globalConstant.userDetails.isFunctionalHead = true;
                 }
                 else {
-                    globalConstant.userDetails.isManager = false;
+                    globalConstant.userDetails.isFunctionalHead = false;
                 }
 
-                let duHeadRoles = globalConstant.userDetails.userRoles.filter(r => r.name == "DU-Head");
-                if(duHeadRoles && duHeadRoles.length > 0) {
-                    globalConstant.userDetails.isDUHead = true;
+                let procurementRoles = globalConstant.userDetails.userRoles.filter(r => globalConstant.procurementRoles.indexOf(r.roleCode) > -1);
+                if(procurementRoles && procurementRoles.length > 0) {
+                    globalConstant.userDetails.isProcurement = true;
                 }
                 else {
-                    globalConstant.userDetails.isDUHead = false;
+                    globalConstant.userDetails.isProcurement = false;
                 }
 
-                let financeRoles = globalConstant.userDetails.userRoles.filter(r => r.name == "Finance");
+                let financeRoles = globalConstant.userDetails.userRoles.filter(r => globalConstant.financeRoles.indexOf(r.roleCode) > -1);
                 if(financeRoles && financeRoles.length > 0) {
                     globalConstant.userDetails.isFinance = true;
                 }
                 else {
                     globalConstant.userDetails.isFinance = false;
                 }
+
+                let empanelmentRoles = globalConstant.userDetails.userRoles.filter(r => globalConstant.empanelmentRoles.indexOf(r.roleCode) > -1);
+                if(empanelmentRoles && empanelmentRoles.length > 0) {
+                    globalConstant.userDetails.isEmpanelment = true;
+                }
+                else {
+                    globalConstant.userDetails.isEmpanelment = false;
+                }
             }
-            
-            let proxyUser = localStorage.getItem('proxyUser');
-            proxyUser = this.cryptoService.decrypt(proxyUser);
-            const proxyUserDetails = JSON.parse(proxyUser);
-
-            globalConstant.proxyUserDetails.userId = proxyUserDetails.userId;
-            globalConstant.proxyUserDetails.userEmail = proxyUserDetails.userEmail;
-            globalConstant.proxyUserDetails.userName = proxyUserDetails.userName;
-            globalConstant.proxyUserDetails.userRoles = proxyUserDetails.userRole;
-
-
-            // let encryptedRole = localStorage.getItem('authorizeToken');
-            // let userRole = this.cryptoService.decrypt(encryptedRole);
-            // below is commented by mine
-            //   let userRole = this.commonService.getUserRole();
-            //     if(routeRoles.indexOf(userRole) != -1){
-            //       isAuthorizesUser=true;
-            //     }
            
             return true;
         }
-        //return true;
     }
 }

@@ -1,3 +1,4 @@
+import { globalConstant } from './../common/global-constant';
 import { VendorApprovalService } from './vendor-approval.service';
 import { AppService } from './../app.service';
 import {
@@ -32,10 +33,18 @@ export class VendorApprovalComponent implements OnInit {
         private _vendorApprovalService: VendorApprovalService) { }
 
     onApproveClick() {
+        this.updateVendorApprovals(this._appService.updateOperations.approve);
+    }
+
+    onRejectClick() {
+        this.updateVendorApprovals(this._appService.updateOperations.reject);
+    }
+
+    updateVendorApprovals(action: string) {
         let req: VendorApprovalReqModel = {
-            action: this._appService.updateOperations.reject,
+            action: action,
             vendorApprovalID: 4,
-            vendorMasterId: 19,
+            vendorMasterId: 18,
             departmentCode: "finance",
             approverId: "107083",
             remarks: this.remarks,
@@ -65,24 +74,18 @@ export class VendorApprovalComponent implements OnInit {
                 });
     }
 
-    onRejectClick() {
-
-    }
-    onAttachMSAClick() {
-
-    }
-
     async loadInitData() {
-        let req: VendorApprovalInitReqModel = {
-            vendorMasterId: 19
-        };
-        this._homeService.updateBusy(<BusyDataModel>{ isBusy: true, msg: "Loading..." });
-        this.vendorApprovalDetails = await this._vendorApprovalService.getVendorApprovalInitData(req);
-        this.vendorDetails = this.vendorApprovalDetails.vendorMasterDetails;
-        this.vendoraccGroupList = this.vendorApprovalDetails.accGroupMasterList;
-        this.companyCodeList = this.vendorApprovalDetails.companyCodeMasterList;
-        this.currencyList = this.vendorApprovalDetails.currencyMasterList;
-        this._homeService.updateBusy(<BusyDataModel>{ isBusy: false, msg: null });
+        if(this._appService.selectedPendingApprovalRecord) {
+            let req: VendorApprovalInitReqModel = {
+                vendorMasterId: this._appService.selectedPendingApprovalRecord.vendorMasterId,
+                departmentCode: this._appService.selectedPendingApprovalRecord.approvalLevel
+            };
+
+            this._homeService.updateBusy(<BusyDataModel>{ isBusy: true, msg: "Loading..." });
+            this.vendorApprovalDetails = await this._vendorApprovalService.getVendorApprovalInitData(req);
+            this.vendorDetails = this.vendorApprovalDetails.vendorMasterDetails;
+            this._homeService.updateBusy(<BusyDataModel>{ isBusy: false, msg: null });
+        }
     }
 
     ngOnDestroy() {

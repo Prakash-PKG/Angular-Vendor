@@ -72,18 +72,6 @@ export class LoginService {
     storeUserData(response) {
         localStorage.setItem('x-auth-token', response.headers.get("x-auth-token"));
         localStorage.setItem('user', this._cryptoService.encrypt(response._body));
-        localStorage.setItem('proxyUser', this._cryptoService.encrypt(response._body));
-
-        // const userDetails = response.json();
-        // this.userRole=userDetails.userRoles;
-        // this.userName=userDetails.userName;
-        // this.userEmail=userDetails.userEmail;
-        // this.userId=userDetails.userId;
-
-        // globalConstant.useDetails.userId = this.userId;
-        // globalConstant.useDetails.userEmail = this.userEmail;
-        // globalConstant.useDetails.userName = this.userName;
-        // globalConstant.useDetails.userRoles = this.userRole;
     }
 
 
