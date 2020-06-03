@@ -8,13 +8,8 @@ import { DatePipe } from '@angular/common';
 })
 export class AppService {
 
-<<<<<<< HEAD
-   readonly domain = "http://localhost:8080";
-    // readonly domain = "https://mvendor-dev.marlabs.com";  
-=======
     //readonly domain = "http://localhost:8080";
     readonly domain = "https://mvendor-dev.marlabs.com";  
->>>>>>> 1b5c4d502a5c54bc2b7369e624088c5c05d2b394
     //readonly domain = "https://mtime.marlabs.com";  
     readonly baseUrl = this.domain + "/mvendor/";
     readonly customerAuthUrl = this.domain + "/customerAuth/oauth/token";
