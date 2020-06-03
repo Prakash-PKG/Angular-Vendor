@@ -13,6 +13,11 @@ export class CountryDataModel {
     countryCode: string;
     countryName: string;
 }
+export class regionMasterVOList {
+    regionCode: string;
+    regionDesc: string;
+    countryCode: string;
+}
 
 export class EmpanelmentInitDataModel {
     countryDataVOList: CountryDataModel[];
@@ -131,6 +136,7 @@ export class VendorMasterDocumentModel {
 export class VendorRegistrationInitDataModel {
     countriesList: CountryDataModel[];
     documentDetailsList: VendorMasterDocumentModel[];
+    regionMasterVOList: regionMasterVOList[];
 }
 
 export class InvoiceSearchResultModel {
@@ -228,6 +234,6 @@ export class AccGroupMasterList {
 
 }
 export class currencyMasterList {
-	 currencyCode:string;	
-	 currencyDesc:string;
+    currencyCode: string;
+    currencyDesc: string;
 }

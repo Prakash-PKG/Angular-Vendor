@@ -63,9 +63,9 @@
   .text-description {
     color: gray;
   }
-  ::ng-deep .mat-form-field-wrapper {
-    padding-bottom: 0em !important;
-  }
+  // ::ng-deep .mat-form-field-wrapper {
+  //   padding-bottom: 0em !important;
+  // }
   .mat-raised-button[disabled][disabled] {
     background-color: rgba(151,53,216,.5);
   }

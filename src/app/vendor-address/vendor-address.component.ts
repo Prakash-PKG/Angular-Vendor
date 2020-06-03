@@ -6,7 +6,7 @@ import { HomeService } from './../home/home.service';
 import { AppService } from '../app.service';
 import { VendorRegistrationService } from './../vendor-registration/vendor-registration.service';
 
-import { BusyDataModel, VendorRegistrationRequestModel, VendorRegistrationResultModel, CountryDataModel } from './../models/data-models';
+import { BusyDataModel, VendorRegistrationRequestModel, VendorRegistrationResultModel, CountryDataModel, regionMasterVOList } from './../models/data-models';
 
 @Component({
     selector: 'app-vendor-address',
@@ -17,7 +17,7 @@ export class VendorAddressComponent implements OnInit {
 
     vendorAddressForm: FormGroup;
     failureMsg: string = "";
-    countryList: CountryDataModel[] = [];
+    countryList: CountryDataModel[] = [];  
 
     constructor(private _appService: AppService,
         private _homeService: HomeService,
@@ -83,6 +83,7 @@ export class VendorAddressComponent implements OnInit {
             this._appService.vendorRegistrationInitDetails.countriesList.length > 0) {
                 this.countryList = this._appService.vendorRegistrationInitDetails.countriesList;
         }
+
         this.vendorAddressForm = this._formBuilder.group({
             city: [null, [Validators.required]],
             street: [null, [Validators.required]],

@@ -61,14 +61,22 @@
             </div>
             <div class="col-6 form-group">
                 <mat-form-field class="full-width">
-                    <input type="text" matInput placeholder="Region" formControlName="bankRegion" autocomplete="off">
+                    <mat-select formControlName="bankRegion"  placeholder="Region">
+                        <mat-option *ngFor="let region of regionMasterVOList" [value]="region.regionCode">
+                            {{ region.regionDesc }}
+                        </mat-option>
+                    </mat-select>
                 </mat-form-field>
             </div>
         </div>
         <div class="row field">
             <div class="col-6 form-group">
                 <mat-form-field class="full-width">
-                    <input type="number" matInput placeholder="Country" formControlName="bankCountry" autocomplete="off">
+                    <mat-select formControlName="bankCountry"  placeholder="Country">
+                        <mat-option *ngFor="let c of countryList" [value]="c.countryCode">
+                            {{ c.countryName }}
+                        </mat-option>
+                    </mat-select>
                 </mat-form-field>
             </div>
         </div>

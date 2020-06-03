@@ -26,7 +26,8 @@ export class VendorRegistrationService {
         let initModel: VendorRegistrationInitDataModel = new VendorRegistrationInitDataModel();
         if(data) {
             initModel.countriesList = data["countryDataVOList"];
-            initModel.documentDetailsList = data["vendorMasterDocumentVOList"];
+            initModel.documentDetailsList = data["vendorMasterDocumentVOList"];        
+            initModel.regionMasterVOList = data ["regionMasterVOList"];
         }
 
         return initModel;

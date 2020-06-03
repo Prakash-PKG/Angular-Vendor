@@ -80,6 +80,7 @@ export class VendorDetailsComponent implements OnInit {
             contactPerson: [null],
             // contactNum: [null, [Validators.required]],
             mobileNum: [null, [Validators.required]],
+            telephoneNum:  [null],
             emailId: [null, [Validators.required, Validators.email]],
             password: [null, [Validators.required]],
             confirmPassword: [null, [Validators.required]]

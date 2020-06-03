@@ -6,7 +6,7 @@ import { HomeService } from './../home/home.service';
 import { AppService } from '../app.service';
 import { VendorRegistrationService } from './../vendor-registration/vendor-registration.service';
 
-import { BusyDataModel, VendorRegistrationRequestModel, VendorRegistrationResultModel, CountryDataModel } from './../models/data-models';
+import { BusyDataModel, VendorRegistrationRequestModel, VendorRegistrationResultModel, CountryDataModel, regionMasterVOList } from './../models/data-models';
 
 @Component({
     selector: 'app-vendor-bank-details',
@@ -14,10 +14,11 @@ import { BusyDataModel, VendorRegistrationRequestModel, VendorRegistrationResult
     styleUrls: ['./vendor-bank-details.component.scss']
 })
 export class VendorBankDetailsComponent implements OnInit {
-    
+
     vendorBankForm: FormGroup;
     failureMsg: string = "";
     countryList: CountryDataModel[] = [];
+    regionMasterVOList: regionMasterVOList[] = [];
 
     constructor(private _appService: AppService,
         private _homeService: HomeService,
@@ -49,7 +50,7 @@ export class VendorBankDetailsComponent implements OnInit {
             this._appService.vendorRegistrationDetails.swiftIbanCode = this.vendorBankForm.get("swiftIbanCode").value;
             this._appService.vendorRegistrationDetails.routingBank = this.vendorBankForm.get("routingBank").value;
             this._appService.vendorRegistrationDetails.swiftInterm = this.vendorBankForm.get("swiftInterm").value;
-     
+
             let req: VendorRegistrationRequestModel = {
                 action: this._appService.updateOperations.save,
                 vendorMasterDetails: this._appService.vendorRegistrationDetails
@@ -70,10 +71,10 @@ export class VendorBankDetailsComponent implements OnInit {
                         }
                     }
                 },
-                (error) => {
-                    this._homeService.updateBusy(<BusyDataModel>{ isBusy: false, msg: null });
-                    console.log(error);
-                });
+                    (error) => {
+                        this._homeService.updateBusy(<BusyDataModel>{ isBusy: false, msg: null });
+                        console.log(error);
+                    });
         }
     }
 
@@ -82,8 +83,8 @@ export class VendorBankDetailsComponent implements OnInit {
         this.vendorBankForm.get("accountNum").setValue(this._appService.vendorRegistrationDetails.accountNum);
         this.vendorBankForm.get("accountType").setValue(this._appService.vendorRegistrationDetails.accountType);
         this.vendorBankForm.get("accountName").setValue(this._appService.vendorRegistrationDetails.accountName);
-        this.vendorBankForm.get("ifscCode").setValue(this._appService.vendorRegistrationDetails.ifscCode);       
-         this.vendorBankForm.get("bankName").setValue(this._appService.vendorRegistrationDetails.bankName);
+        this.vendorBankForm.get("ifscCode").setValue(this._appService.vendorRegistrationDetails.ifscCode);
+        this.vendorBankForm.get("bankName").setValue(this._appService.vendorRegistrationDetails.bankName);
         this.vendorBankForm.get("bankBranch").setValue(this._appService.vendorRegistrationDetails.bankBranch);
         this.vendorBankForm.get("bankCity").setValue(this._appService.vendorRegistrationDetails.bankCity);
         this.vendorBankForm.get("bankRegion").setValue(this._appService.vendorRegistrationDetails.bankRegion);
@@ -94,6 +95,16 @@ export class VendorBankDetailsComponent implements OnInit {
     }
 
     ngOnInit() {
+        this.countryList = [];
+        if (this._appService.vendorRegistrationInitDetails && this._appService.vendorRegistrationInitDetails.countriesList &&
+            this._appService.vendorRegistrationInitDetails.countriesList.length > 0) {
+            this.countryList = this._appService.vendorRegistrationInitDetails.countriesList;
+        }
+        this.regionMasterVOList = [];
+        if (this._appService.vendorRegistrationInitDetails && this._appService.vendorRegistrationInitDetails.regionMasterVOList &&
+            this._appService.vendorRegistrationInitDetails.regionMasterVOList.length > 0) {
+            this.regionMasterVOList = this._appService.vendorRegistrationInitDetails.regionMasterVOList;
+        }
         this.vendorBankForm = this._formBuilder.group({
             // bankAddress: [null, [Validators.required]],
             accountNum: [null, [Validators.required]],
