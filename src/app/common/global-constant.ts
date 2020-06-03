@@ -5,16 +5,18 @@ export const globalConstant : any = {
         userEmail: "",
         userName: "",
         userRoles: [],
-        actAsList: [],
-        isAdmin: false,
-        isManager: false,
-        isDUHead: false,
-        isFinance: false
+        isVendor: false,
+        isPurchaseOwner: false,
+        isFunctionalHead: false,
+        isProcurement: false,
+        isFinance: false,
+        isEmpanelment: false,
+        poDepts: []
     },
-    proxyUserDetails: {
-        userId: "",
-        userEmail: "",
-        userName: "",
-        userRoles: []
-    }
+    poRoles: ["adp", "hrp", "isp", "itp", "lgp", "mkp"],
+    functionalHeadRoles: ["functional_head"],
+    financeRoles: ["finance"],
+    empanelmentRoles: ["empanelment"],
+    procurementRoles: ["procurement"],
+    vendorRoles: ["vendor"]
 }

@@ -190,6 +190,8 @@ export class PendingApprovalsModel {
     approvalLevel: string;
     statusCode: string;
     submittedDate: string;
+    approveType: string;
+    vendorMasterId: number;
 }
 
 export class VendorMasterFilesModel {
@@ -212,6 +214,7 @@ export class VendorApprovalInitResultModel {
 
 export class VendorApprovalInitReqModel {
     vendorMasterId: number;
+    departmentCode: string;
 }
 
 export class VendorApprovalReqModel {

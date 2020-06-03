@@ -65,7 +65,7 @@ const routes: Routes = [
             {
                 path: 'pendingapprovals',
                 component: PendingApprovalsComponent,
-                //canActivate: [AuthGuardLogin]
+                canActivate: [AuthGuardLogin]
             },
             {
                 path: 'podetails',
