@@ -159,44 +159,39 @@
             </div>
 
             <div class="Rtable Rtable--2cols Rtable--collapse">
-                <!--div class="Rtable-cell Rtable-cell--head">GST No.</div>
-                <div class="Rtable-cell"> {{ vendorDetails.gstNum }} - Filename.pdf</div>
-
-                <div class="Rtable-cell Rtable-cell--head">Incorporation Certificate</div>
-                <div class="Rtable-cell">Filename.pdf</div>
-
-                <div class="Rtable-cell Rtable-cell--head">Cancelled Cheque</div>
-                <div class="Rtable-cell">Filename.pdf</div>
-
-                <div class="Rtable-cell Rtable-cell--head">Utilities Bill</div>
-                <div class="Rtable-cell">Filename.pdf</div>
-
-                <div class="Rtable-cell Rtable-cell--head">Pan No.</div>
-                <div class="Rtable-cell">{{ vendorDetails.panNum }} - Filename.pdf</div>
-
-                <div class="Rtable-cell Rtable-cell--head">MSME No.</div>
-                <div class="Rtable-cell"> MSME No - Filename.pdf</div>
-
-                <div class="Rtable-cell Rtable-cell--head">Other (if any) </div>
-                <div class="Rtable-cell" style="width: 75%;">khadija Bohra</div-->
-
+          
                 <div class="Rtable-cell Rtable-cell--head">GST No.</div>
-                <div class="Rtable-cell"> {{ vendorDetails.gstNum }}</div>
+                <div class="Rtable-cell"> {{ vendorDetails?.gstNum }}</div>
 
                 <div class="Rtable-cell Rtable-cell--head">Pan No.</div>
-                <div class="Rtable-cell">{{ vendorDetails.panNum }}</div>
+                <div class="Rtable-cell">{{ vendorDetails?.panNum }}</div>
 
                 <div class="Rtable-cell Rtable-cell--head">PF No.</div>
-                <div class="Rtable-cell">{{ vendorDetails.pfNum }}</div>
+                <div class="Rtable-cell"> {{ vendorDetails?.pfNum }}</div>
 
                 <div class="Rtable-cell Rtable-cell--head">ESI No.</div>
-                <div class="Rtable-cell">{{ vendorDetails.cinNum }}</div>
+                <div class="Rtable-cell">{{ vendorDetails?.panNum }}</div>
+
+                <div class="Rtable-cell Rtable-cell--head">CIN No.</div>
+                <div class="Rtable-cell">{{ vendorDetails?.cinNum }}</div>
+
+                <div class="Rtable-cell Rtable-cell--head">SEZ/Non SEZ </div>
+                <div class="Rtable-cell"> {{ vendorDetails?.isSez }}</div>
+
+                <div class="Rtable-cell Rtable-cell--head">Is RCM applicable? </div>
+                <div class="Rtable-cell">{{ vendorDetails?.isRcmApplicable }}</div>
+
+                <div class="Rtable-cell Rtable-cell--head">Is MSME registered? </div>
+                <div class="Rtable-cell"> {{ vendorDetails?.isMsmedRegistered }}</div>
+
+                <div class="Rtable-cell Rtable-cell--head">Have any TDS lower deduction certificate? </div>
+                <div class="Rtable-cell">{{ vendorDetails?.hasTdsLower }}</div>
 
                 <div class="Rtable-cell Rtable-cell--head">LUT No.</div>
-                <div class="Rtable-cell">{{ vendorDetails.lutNum }}</div>
-
+                <div class="Rtable-cell">{{ vendorDetails?.lutNum }}</div>
+                
                 <div class="Rtable-cell Rtable-cell--head">LUT Date</div>
-                <div class="Rtable-cell">{{ vendorDetails.lut_date }}</div>
+                <div class="Rtable-cell">{{ vendorDetails?.lut_date }}</div>
  
             </div>
         </div>
