@@ -7,6 +7,7 @@ import { AppService } from '../app.service';
 import { VendorRegistrationService } from './../vendor-registration/vendor-registration.service';
 
 import { BusyDataModel, VendorRegistrationRequestModel, VendorRegistrationResultModel, VendorMasterDocumentModel } from './../models/data-models';
+import { DatePipe } from '@angular/common';
 
 @Component({
     selector: 'app-vendor-documents',
@@ -23,7 +24,8 @@ export class VendorDocumentsComponent implements OnInit {
         private _homeService: HomeService,
         private _vendorRegistrationService: VendorRegistrationService,
         private _router: Router,
-        private _formBuilder: FormBuilder) { }
+        private _formBuilder: FormBuilder,
+        private _datePipe: DatePipe) { }
 
     onPrevClick() {
         this._router.navigate([this._appService.routingConstants.vendorBankDetails]);
@@ -43,7 +45,7 @@ export class VendorDocumentsComponent implements OnInit {
             this._appService.vendorRegistrationDetails.isMsmedRegistered = this.vendorDocumentForm.get("isMsmedRegistered").value;
             this._appService.vendorRegistrationDetails.hasTdsLower = this.vendorDocumentForm.get("hasTdsLower").value;
             this._appService.vendorRegistrationDetails.lutNum = this.vendorDocumentForm.get("lutNum").value;
-            this._appService.vendorRegistrationDetails.lut_date = this.vendorDocumentForm.get("lut_date").value;
+            this._appService.vendorRegistrationDetails.lutDate = this._datePipe.transform(this.vendorDocumentForm.get("lutDate").value, this._appService.dbDateFormat);
            
             let req: VendorRegistrationRequestModel = {
                 action: this._appService.updateOperations.submit,
@@ -83,7 +85,7 @@ export class VendorDocumentsComponent implements OnInit {
         this.vendorDocumentForm.get("isMsmedRegistered").setValue(this._appService.vendorRegistrationDetails.isMsmedRegistered);
         this.vendorDocumentForm.get("hasTdsLower").setValue(this._appService.vendorRegistrationDetails.hasTdsLower);
         this.vendorDocumentForm.get("lutNum").setValue(this._appService.vendorRegistrationDetails.lutNum);
-        this.vendorDocumentForm.get("lut_date").setValue(this._appService.vendorRegistrationDetails.lut_date);
+        this.vendorDocumentForm.get("lutDate").setValue(new Date(this._appService.vendorRegistrationDetails.lutDate));
     }
 
     ngOnInit() {
@@ -105,7 +107,7 @@ export class VendorDocumentsComponent implements OnInit {
             isMsmedRegistered:[null],
             hasTdsLower:[null],
             lutNum:[null],
-            lut_date:[null]
+            lutDate:[null]
             
         });
 

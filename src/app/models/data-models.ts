@@ -108,7 +108,7 @@ export class VendorMasterDetailsModel {
     isSez: boolean;
     isRcmApplicable: boolean;
     lutNum: string;
-    lut_date: string;
+    lutDate: string;
     // paymentTerms: string;
     cinNum: string;
     isMsmedRegistered: boolean;
