@@ -41,6 +41,7 @@ export class VendorDocumentsComponent implements OnInit {
             this._appService.vendorRegistrationDetails.isSez = this.vendorDocumentForm.get("isSez").value;
             this._appService.vendorRegistrationDetails.isRcmApplicable = this.vendorDocumentForm.get("isRcmApplicable").value;
             this._appService.vendorRegistrationDetails.isMsmedRegistered = this.vendorDocumentForm.get("isMsmedRegistered").value;
+            this._appService.vendorRegistrationDetails.hasTdsLower = this.vendorDocumentForm.get("hasTdsLower").value;
             this._appService.vendorRegistrationDetails.lutNum = this.vendorDocumentForm.get("lutNum").value;
             this._appService.vendorRegistrationDetails.lut_date = this.vendorDocumentForm.get("lut_date").value;
            
@@ -80,6 +81,7 @@ export class VendorDocumentsComponent implements OnInit {
         this.vendorDocumentForm.get("isSez").setValue(this._appService.vendorRegistrationDetails.isSez);
         this.vendorDocumentForm.get("isRcmApplicable").setValue(this._appService.vendorRegistrationDetails.isRcmApplicable);
         this.vendorDocumentForm.get("isMsmedRegistered").setValue(this._appService.vendorRegistrationDetails.isMsmedRegistered);
+        this.vendorDocumentForm.get("hasTdsLower").setValue(this._appService.vendorRegistrationDetails.hasTdsLower);
         this.vendorDocumentForm.get("lutNum").setValue(this._appService.vendorRegistrationDetails.lutNum);
         this.vendorDocumentForm.get("lut_date").setValue(this._appService.vendorRegistrationDetails.lut_date);
     }
@@ -101,6 +103,7 @@ export class VendorDocumentsComponent implements OnInit {
             isSez:[null],
             isRcmApplicable:[null],
             isMsmedRegistered:[null],
+            hasTdsLower:[null],
             lutNum:[null],
             lut_date:[null]
             
