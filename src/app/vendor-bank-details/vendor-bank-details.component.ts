@@ -45,7 +45,7 @@ export class VendorBankDetailsComponent implements OnInit {
             this._appService.vendorRegistrationDetails.bankName = this.vendorBankForm.get("bankName").value;
             this._appService.vendorRegistrationDetails.bankBranch = this.vendorBankForm.get("bankBranch").value;
             this._appService.vendorRegistrationDetails.bankCity = this.vendorBankForm.get("bankCity").value;
-            this._appService.vendorRegistrationDetails.bankRegion = this.vendorBankForm.get("bankRegion").value;
+            this._appService.vendorRegistrationDetails.bankRegionName = this.vendorBankForm.get("bankRegionName").value;
             this._appService.vendorRegistrationDetails.bankCountry = this.vendorBankForm.get("bankCountry").value;
             this._appService.vendorRegistrationDetails.swiftIbanCode = this.vendorBankForm.get("swiftIbanCode").value;
             this._appService.vendorRegistrationDetails.routingBank = this.vendorBankForm.get("routingBank").value;
@@ -87,7 +87,7 @@ export class VendorBankDetailsComponent implements OnInit {
         this.vendorBankForm.get("bankName").setValue(this._appService.vendorRegistrationDetails.bankName);
         this.vendorBankForm.get("bankBranch").setValue(this._appService.vendorRegistrationDetails.bankBranch);
         this.vendorBankForm.get("bankCity").setValue(this._appService.vendorRegistrationDetails.bankCity);
-        this.vendorBankForm.get("bankRegion").setValue(this._appService.vendorRegistrationDetails.bankRegion);
+        this.vendorBankForm.get("bankRegionName").setValue(this._appService.vendorRegistrationDetails.bankRegionName);
         this.vendorBankForm.get("bankCountry").setValue(this._appService.vendorRegistrationDetails.bankCountry);
         this.vendorBankForm.get("swiftIbanCode").setValue(this._appService.vendorRegistrationDetails.swiftIbanCode);
         this.vendorBankForm.get("routingBank").setValue(this._appService.vendorRegistrationDetails.routingBank);
@@ -114,7 +114,7 @@ export class VendorBankDetailsComponent implements OnInit {
             bankName: [null, [Validators.required]],
             bankBranch: [null, [Validators.required]],
             bankCity: [null, [Validators.required]],
-            bankRegion: [null, [Validators.required]],
+            bankRegionName: [null, [Validators.required]],
             bankCountry: [null, [Validators.required]],
             swiftIbanCode: [null],
             routingBank: [null],
