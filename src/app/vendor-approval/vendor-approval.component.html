@@ -176,16 +176,16 @@
                 <div class="Rtable-cell">{{ vendorDetails?.cinNum }}</div>
 
                 <div class="Rtable-cell Rtable-cell--head">SEZ/Non SEZ </div>
-                <div class="Rtable-cell"> {{ vendorDetails?.isSez }}</div>
+                <div class="Rtable-cell"> {{ vendorDetails?.isSez == true ? 'SEZ' : 'NON SEZ' }}</div>
 
                 <div class="Rtable-cell Rtable-cell--head">Is RCM applicable? </div>
-                <div class="Rtable-cell">{{ vendorDetails?.isRcmApplicable }}</div>
+                <div class="Rtable-cell">{{ vendorDetails?.isRcmApplicable == true ? 'YES' : 'NO'}}</div>
 
                 <div class="Rtable-cell Rtable-cell--head">Is MSME registered? </div>
-                <div class="Rtable-cell"> {{ vendorDetails?.isMsmedRegistered }}</div>
+                <div class="Rtable-cell"> {{ vendorDetails?.isMsmedRegistered  == true ? 'YES' : 'NO'}}</div>
 
                 <div class="Rtable-cell Rtable-cell--head">Have any TDS lower deduction certificate? </div>
-                <div class="Rtable-cell">{{ vendorDetails?.hasTdsLower }}</div>
+                <div class="Rtable-cell">{{ vendorDetails?.hasTdsLower  == true ? 'YES' : 'NO'}}</div>
 
                 <div class="Rtable-cell Rtable-cell--head">LUT No.</div>
                 <div class="Rtable-cell">{{ vendorDetails?.lutNum }}</div>
