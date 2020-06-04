@@ -90,7 +90,8 @@ export class VendorMasterDetailsModel {
     floorNum: string;
     street: string;
     city: string;
-    stateName: string;
+    stateCode:string;
+    // stateName: string;
     countryCode: string;
     countryName: string;
     pincode: string;

@@ -41,7 +41,7 @@ export class VendorAddressComponent implements OnInit {
             this._appService.vendorRegistrationDetails.city = this.vendorAddressForm.get("city").value;
             this._appService.vendorRegistrationDetails.street = this.vendorAddressForm.get("street").value;
             this._appService.vendorRegistrationDetails.pincode = this.vendorAddressForm.get("pincode").value;
-            this._appService.vendorRegistrationDetails.stateName = this.vendorAddressForm.get("stateName").value;
+            this._appService.vendorRegistrationDetails.stateCode = this.vendorAddressForm.get("stateCode").value;
             this._appService.vendorRegistrationDetails.countryCode = this.vendorAddressForm.get("countryCode").value;
 
             let req: VendorRegistrationRequestModel = {
@@ -77,7 +77,7 @@ export class VendorAddressComponent implements OnInit {
         this.vendorAddressForm.get("city").setValue(this._appService.vendorRegistrationDetails.city);
         this.vendorAddressForm.get("street").setValue(this._appService.vendorRegistrationDetails.street);
         this.vendorAddressForm.get("pincode").setValue(this._appService.vendorRegistrationDetails.pincode);
-        this.vendorAddressForm.get("stateName").setValue(this._appService.vendorRegistrationDetails.stateName);
+        this.vendorAddressForm.get("stateCode").setValue(this._appService.vendorRegistrationDetails.stateCode);
         this.vendorAddressForm.get("countryCode").setValue(this._appService.vendorRegistrationDetails.countryCode);
     }
 
@@ -87,7 +87,7 @@ export class VendorAddressComponent implements OnInit {
             this._appService.vendorRegistrationInitDetails.countriesList.length > 0) {
                 this.countryList = this._appService.vendorRegistrationInitDetails.countriesList;
         }
-        this.regionMasterVOList = [];
+   this.regionMasterVOList = [];
         if (this._appService.vendorRegistrationInitDetails && this._appService.vendorRegistrationInitDetails.regionMasterVOList &&
             this._appService.vendorRegistrationInitDetails.regionMasterVOList.length > 0) {
             this.regionMasterVOList = this._appService.vendorRegistrationInitDetails.regionMasterVOList;
@@ -98,7 +98,7 @@ export class VendorAddressComponent implements OnInit {
             city: [null, [Validators.required]],
             street: [null, [Validators.required]],
             pincode: [null],
-            stateName: [null, [Validators.required]],
+            stateCode: [null, [Validators.required]],
             countryCode: [null, [Validators.required]]
         });
 
