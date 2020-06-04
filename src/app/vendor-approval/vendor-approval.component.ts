@@ -75,7 +75,7 @@ export class VendorApprovalComponent implements OnInit {
     }
 
     async loadInitData() {
-        if(this._appService.selectedPendingApprovalRecord) {
+        // if(this._appService.selectedPendingApprovalRecord) {
             let req: VendorApprovalInitReqModel = {
                 // vendorMasterId: this._appService.selectedPendingApprovalRecord.vendorMasterId,
                 // departmentCode: this._appService.selectedPendingApprovalRecord.approvalLevel
@@ -87,6 +87,24 @@ export class VendorApprovalComponent implements OnInit {
             this.vendorApprovalDetails = await this._vendorApprovalService.getVendorApprovalInitData(req);
             this.vendorDetails = this.vendorApprovalDetails.vendorMasterDetails;
             this._homeService.updateBusy(<BusyDataModel>{ isBusy: false, msg: null });
+            this.loadDropDown();
+        // }
+    }
+    loadDropDown(){
+        this.vendoraccGroupList = [];
+        if(this.vendorApprovalDetails && this.vendorApprovalDetails.accGroupMasterList &&
+            this.vendorApprovalDetails.accGroupMasterList.length > 0) {
+                this.vendoraccGroupList=this.vendorApprovalDetails.accGroupMasterList;               
+        }
+        this.companyCodeList = [];
+        if(this.vendorApprovalDetails && this.vendorApprovalDetails.companyCodeMasterList &&
+            this.vendorApprovalDetails.companyCodeMasterList.length > 0) {
+                this.companyCodeList=this.vendorApprovalDetails.companyCodeMasterList;               
+        }
+        this.currencyList = [];
+        if(this.vendorApprovalDetails && this.vendorApprovalDetails.currencyMasterList &&
+            this.vendorApprovalDetails.currencyMasterList.length > 0) {
+                this.currencyList=this.vendorApprovalDetails.currencyMasterList;               
         }
     }
 
@@ -103,8 +121,9 @@ export class VendorApprovalComponent implements OnInit {
             this.isDashboardCollapsed = !data;
         });
 
-        setTimeout(() => {
+        // setTimeout(() => {
             this.loadInitData();
-        }, 100);
+            
+        // }, 100);
     }
 }

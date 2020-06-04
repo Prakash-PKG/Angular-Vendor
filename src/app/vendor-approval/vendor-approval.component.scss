@@ -5,12 +5,12 @@
 .my-container {
   padding-top: 1em;
 }
-.title{
-    margin-bottom: 1em;
+.title {
+  margin-bottom: 1em;
 }
 .section-title {
-    font-size: larger;
-    font-weight: bolder;
+  font-size: larger;
+  font-weight: bolder;
 }
 .vendor-detail-section {
   margin-bottom: 2em;
@@ -52,6 +52,7 @@
 }
 .Rtable--2cols > .Rtable-cell:nth-child(odd) {
   width: 18.5%;
+  max-width: 18.5%;
 }
 .Rtable--2cols > .Rtable-cell::nth-child(even) {
   width: 33.5%;
@@ -89,6 +90,7 @@
     display: block;
     > .Rtable-cell {
       width: 50% !important;
+      max-width: 50%;
       display: inline-flex !important;
     }
   }
