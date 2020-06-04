@@ -8,13 +8,13 @@
 
             <div class="col-6 form-group">
                 <mat-form-field class="full-width">
-                    <input type="text" matInput placeholder="Address Line 1" formControlName="address1" autocomplete="off">
+                    <input type="text" matInput placeholder="Address Line 1" formControlName="address1" autocomplete="off" required>
                 </mat-form-field>
             </div>
 
             <div class="col-4 form-group">
                 <mat-form-field class="full-width">
-                    <input type="text" placeholder="Type/Choose City " matInput formControlName="city" autocomplete="off">
+                    <input type="text" placeholder="Type/Choose City " matInput formControlName="city" autocomplete="off" required>
                 </mat-form-field>
             </div>
 
@@ -37,7 +37,7 @@
 
             <div class="col-6 form-group">
                 <mat-form-field class="full-width">
-                    <mat-select formControlName="stateCode"  placeholder="State">
+                    <mat-select formControlName="stateCode"  placeholder="State" required>
                         <mat-option *ngFor="let region of regionMasterVOList" [value]="region.regionCode">
                             {{ region.regionDesc }}
                         </mat-option>
@@ -51,13 +51,13 @@
 
             <div class="col-6 form-group">
                 <mat-form-field class="full-width">
-                    <input type="text" matInput placeholder="Street" formControlName="street" autocomplete="off">
+                    <input type="text" matInput placeholder="Street" formControlName="street" autocomplete="off" required>
                 </mat-form-field>
             </div>
 
             <div class="col-6 form-group">
                 <mat-form-field class="full-width">
-                    <mat-select formControlName="countryCode"  placeholder="Country">
+                    <mat-select formControlName="countryCode"  placeholder="Country" required>
                         <mat-option *ngFor="let c of countryList" [value]="c.countryCode">
                             {{ c.countryName }}
                         </mat-option>
