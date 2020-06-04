@@ -33,10 +33,17 @@ export class VendorDocumentsComponent implements OnInit {
         this.failureMsg = "";
 
         if (this.vendorDocumentForm.valid) {
-
-            this._appService.vendorRegistrationDetails.gstNum = this.vendorDocumentForm.get("gstNum").value;
             this._appService.vendorRegistrationDetails.panNum = this.vendorDocumentForm.get("panNum").value;
-
+            this._appService.vendorRegistrationDetails.gstNum = this.vendorDocumentForm.get("gstNum").value;
+            this._appService.vendorRegistrationDetails.pfNum = this.vendorDocumentForm.get("pfNum").value;
+            this._appService.vendorRegistrationDetails.esiNum = this.vendorDocumentForm.get("esiNum").value;
+            this._appService.vendorRegistrationDetails.cinNum = this.vendorDocumentForm.get("cinNum").value;
+            this._appService.vendorRegistrationDetails.isSez = this.vendorDocumentForm.get("isSez").value;
+            this._appService.vendorRegistrationDetails.isRcmApplicable = this.vendorDocumentForm.get("isRcmApplicable").value;
+            this._appService.vendorRegistrationDetails.isMsmedRegistered = this.vendorDocumentForm.get("isMsmedRegistered").value;
+            this._appService.vendorRegistrationDetails.lutNum = this.vendorDocumentForm.get("lutNum").value;
+            this._appService.vendorRegistrationDetails.lut_date = this.vendorDocumentForm.get("lut_date").value;
+           
             let req: VendorRegistrationRequestModel = {
                 action: this._appService.updateOperations.submit,
                 vendorMasterDetails: this._appService.vendorRegistrationDetails
@@ -65,8 +72,16 @@ export class VendorDocumentsComponent implements OnInit {
     }
 
     updateVendorDetails() {
-        this.vendorDocumentForm.get("gstNum").setValue(this._appService.vendorRegistrationDetails.gstNum);
         this.vendorDocumentForm.get("panNum").setValue(this._appService.vendorRegistrationDetails.panNum);
+        this.vendorDocumentForm.get("gstNum").setValue(this._appService.vendorRegistrationDetails.gstNum);
+        this.vendorDocumentForm.get("pfNum").setValue(this._appService.vendorRegistrationDetails.pfNum);
+        this.vendorDocumentForm.get("esiNum").setValue(this._appService.vendorRegistrationDetails.esiNum);
+        this.vendorDocumentForm.get("cinNum").setValue(this._appService.vendorRegistrationDetails.cinNum);
+        this.vendorDocumentForm.get("isSez").setValue(this._appService.vendorRegistrationDetails.isSez);
+        this.vendorDocumentForm.get("isRcmApplicable").setValue(this._appService.vendorRegistrationDetails.isRcmApplicable);
+        this.vendorDocumentForm.get("isMsmedRegistered").setValue(this._appService.vendorRegistrationDetails.isMsmedRegistered);
+        this.vendorDocumentForm.get("lutNum").setValue(this._appService.vendorRegistrationDetails.lutNum);
+        this.vendorDocumentForm.get("lut_date").setValue(this._appService.vendorRegistrationDetails.lut_date);
     }
 
     ngOnInit() {
@@ -77,8 +92,18 @@ export class VendorDocumentsComponent implements OnInit {
         }
 
         this.vendorDocumentForm = this._formBuilder.group({
+          
+            panNum: [null, [Validators.required]],
             gstNum: [null, [Validators.required]],
-            panNum: [null, [Validators.required]]
+            pfNum:[null],
+            esiNum:[null],
+            cinNum:[null],
+            isSez:[null],
+            isRcmApplicable:[null],
+            isMsmedRegistered:[null],
+            lutNum:[null],
+            lut_date:[null]
+            
         });
 
         this.updateVendorDetails();

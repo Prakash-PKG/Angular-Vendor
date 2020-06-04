@@ -34,8 +34,9 @@ export class VendorAddressComponent implements OnInit {
 
         this.failureMsg = "";
 
-        if (this.vendorAddressForm.valid) {
-
+        if (this.vendorAddressForm.valid) {   
+            this._appService.vendorRegistrationDetails.address1 = this.vendorAddressForm.get("address1").value;
+            this._appService.vendorRegistrationDetails.address2 = this.vendorAddressForm.get("address2").value;
             this._appService.vendorRegistrationDetails.city = this.vendorAddressForm.get("city").value;
             this._appService.vendorRegistrationDetails.street = this.vendorAddressForm.get("street").value;
             this._appService.vendorRegistrationDetails.pincode = this.vendorAddressForm.get("pincode").value;
@@ -70,6 +71,8 @@ export class VendorAddressComponent implements OnInit {
     }
 
     updateVendorDetails() {
+        this.vendorAddressForm.get("address1").setValue(this._appService.vendorRegistrationDetails.address1);
+        this.vendorAddressForm.get("address2").setValue(this._appService.vendorRegistrationDetails.address2);
         this.vendorAddressForm.get("city").setValue(this._appService.vendorRegistrationDetails.city);
         this.vendorAddressForm.get("street").setValue(this._appService.vendorRegistrationDetails.street);
         this.vendorAddressForm.get("pincode").setValue(this._appService.vendorRegistrationDetails.pincode);
@@ -85,6 +88,8 @@ export class VendorAddressComponent implements OnInit {
         }
 
         this.vendorAddressForm = this._formBuilder.group({
+            address1:[null, [Validators.required]],
+            address2:[null],
             city: [null, [Validators.required]],
             street: [null, [Validators.required]],
             pincode: [null],

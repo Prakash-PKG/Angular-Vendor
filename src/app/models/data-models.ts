@@ -108,7 +108,7 @@ export class VendorMasterDetailsModel {
     isRcmApplicable: boolean;
     lutNum: string;
     lut_date: string;
-    paymentTerms: string;
+    // paymentTerms: string;
     cinNum: string;
     isMsmedRegistered: boolean;
     pfNum: string;
@@ -125,6 +125,8 @@ export class VendorMasterDetailsModel {
     bankCity: string;
     bankRegion: string;
     bankCountry: string;
+    address1: string;
+    address2: string;
 }
 
 export class VendorMasterDocumentModel {

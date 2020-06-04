@@ -77,8 +77,10 @@ export class VendorApprovalComponent implements OnInit {
     async loadInitData() {
         if(this._appService.selectedPendingApprovalRecord) {
             let req: VendorApprovalInitReqModel = {
-                vendorMasterId: this._appService.selectedPendingApprovalRecord.vendorMasterId,
-                departmentCode: this._appService.selectedPendingApprovalRecord.approvalLevel
+                // vendorMasterId: this._appService.selectedPendingApprovalRecord.vendorMasterId,
+                // departmentCode: this._appService.selectedPendingApprovalRecord.approvalLevel
+                vendorMasterId:19,
+                departmentCode:'finance'
             };
 
             this._homeService.updateBusy(<BusyDataModel>{ isBusy: true, msg: "Loading..." });

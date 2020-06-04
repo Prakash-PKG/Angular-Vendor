@@ -8,13 +8,8 @@ import { DatePipe } from '@angular/common';
 })
 export class AppService {
 
-<<<<<<< HEAD
    readonly domain = "http://localhost:8080";
     // readonly domain = "https://mvendor-dev.marlabs.com";  
-=======
-    //readonly domain = "http://localhost:8080";
-    readonly domain = "https://mvendor-dev.marlabs.com";  
->>>>>>> 1b5c4d502a5c54bc2b7369e624088c5c05d2b394
     //readonly domain = "https://mtime.marlabs.com";  
     readonly baseUrl = this.domain + "/mvendor/";
     readonly customerAuthUrl = this.domain + "/customerAuth/oauth/token";
@@ -105,7 +100,7 @@ export class AppService {
         isRcmApplicable: false,
         lutNum: null,
         lut_date: null,
-        paymentTerms: null,
+        // paymentTerms: null,
         cinNum: null,
         isMsmedRegistered: false,
         pfNum: null,
@@ -121,7 +116,9 @@ export class AppService {
         bankBranch: null,
         bankCity: null,
         bankRegion: null,
-        bankCountry: null
+        bankCountry: null,
+        address1: null,
+        address2: null
     };
 
     resetVendorRegistrationDetails() {
@@ -155,7 +152,7 @@ export class AppService {
             isRcmApplicable: false,
             lutNum: null,
             lut_date: null,
-            paymentTerms: null,
+            // paymentTerms: null,
             cinNum: null,
             isMsmedRegistered: false,
             pfNum: null,
@@ -171,7 +168,9 @@ export class AppService {
             bankBranch: null,
             bankCity: null,
             bankRegion: null,
-            bankCountry: null
+            bankCountry: null,
+            address1: null,
+            address2: null
         };
 
         return regDetails;
