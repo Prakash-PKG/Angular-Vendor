@@ -26,7 +26,7 @@ export class VendorDetailsComponent implements OnInit {
         private _formBuilder: FormBuilder, ) { }
 
     onNextClick() {
-        this._router.navigate([this._appService.routingConstants.vendorAddressDetails]);
+        // this._router.navigate([this._appService.routingConstants.vendorAddressDetails]);
         this.failureMsg = "";
 
         if (this.vendorDetailsForm.valid) {

@@ -31,7 +31,7 @@ export class VendorAddressComponent implements OnInit {
     }
 
     onNextClick() {
-        this._router.navigate([this._appService.routingConstants.vendorBankDetails]);
+        // this._router.navigate([this._appService.routingConstants.vendorBankDetails]);
 
         this.failureMsg = "";
 
