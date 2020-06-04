@@ -91,7 +91,7 @@ export class VendorMasterDetailsModel {
     street: string;
     city: string;
     stateCode:string;
-    // stateName: string;
+    stateName: string;
     countryCode: string;
     countryName: string;
     pincode: string;
@@ -130,6 +130,7 @@ export class VendorMasterDetailsModel {
     address2: string;
     bankRegionName: string;
     bankCountryName: string;
+
 }
 
 export class VendorMasterDocumentModel {
