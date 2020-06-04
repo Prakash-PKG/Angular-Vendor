@@ -127,6 +127,8 @@ export class VendorMasterDetailsModel {
     bankCountry: string;
     address1: string;
     address2: string;
+    bankRegionName: string;
+    bankCountryName: string;
 }
 
 export class VendorMasterDocumentModel {
