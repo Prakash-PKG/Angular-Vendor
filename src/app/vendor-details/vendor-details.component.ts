@@ -17,18 +17,19 @@ export class VendorDetailsComponent implements OnInit {
 
     vendorDetailsForm: FormGroup;
     failureMsg: string = "";
+    requiredErrorMsg: string = "This field is mandatory"
 
     constructor(private _appService: AppService,
         private _homeService: HomeService,
         private _vendorRegistrationService: VendorRegistrationService,
         private _router: Router,
-        private _formBuilder: FormBuilder,) { }
+        private _formBuilder: FormBuilder, ) { }
 
     onNextClick() {
         this._router.navigate([this._appService.routingConstants.vendorAddressDetails]);
         this.failureMsg = "";
 
-        if(this.vendorDetailsForm.valid) {
+        if (this.vendorDetailsForm.valid) {
 
             this._appService.vendorRegistrationDetails.vendorName = this.vendorDetailsForm.get("vendorName").value;
             this._appService.vendorRegistrationDetails.contactPerson = this.vendorDetailsForm.get("contactPerson").value;
@@ -43,24 +44,24 @@ export class VendorDetailsComponent implements OnInit {
             }
             this._homeService.updateBusy(<BusyDataModel>{ isBusy: true, msg: null });
             this._vendorRegistrationService.updateVendorRegistrationDetails(req)
-            .subscribe(response => {
-                this._homeService.updateBusy(<BusyDataModel>{ isBusy: false, msg: null });
+                .subscribe(response => {
+                    this._homeService.updateBusy(<BusyDataModel>{ isBusy: false, msg: null });
 
-                if(response.body) {
-                    let result: VendorRegistrationResultModel = response.body as VendorRegistrationResultModel;
-                    if(result.status.status == 200 && result.status.isSuccess) {
-                        this._appService.vendorRegistrationDetails = result.vendorMasterDetails;
-                        this._router.navigate([this._appService.routingConstants.vendorAddressDetails]);
+                    if (response.body) {
+                        let result: VendorRegistrationResultModel = response.body as VendorRegistrationResultModel;
+                        if (result.status.status == 200 && result.status.isSuccess) {
+                            this._appService.vendorRegistrationDetails = result.vendorMasterDetails;
+                            this._router.navigate([this._appService.routingConstants.vendorAddressDetails]);
+                        }
+                        else {
+                            this.failureMsg = this._appService.messages.vendorRegistrationSaveFailure;
+                        }
                     }
-                    else {
-                        this.failureMsg = this._appService.messages.vendorRegistrationSaveFailure;
-                    }
-                }
-            },
-            (error) => {
-                this._homeService.updateBusy(<BusyDataModel>{ isBusy: false, msg: null });
-                console.log(error);
-            });
+                },
+                    (error) => {
+                        this._homeService.updateBusy(<BusyDataModel>{ isBusy: false, msg: null });
+                        console.log(error);
+                    });
         }
     }
 
@@ -80,7 +81,7 @@ export class VendorDetailsComponent implements OnInit {
             contactPerson: [null],
             // contactNum: [null, [Validators.required]],
             mobileNum: [null, [Validators.required]],
-            telephoneNum:  [null],
+            telephoneNum: [null],
             emailId: [null, [Validators.required, Validators.email]],
             password: [null, [Validators.required]],
             confirmPassword: [null, [Validators.required]]

@@ -8,7 +8,8 @@
             <div class="col-6 form-group">
                 <mat-form-field class="full-width">
                     <input type="text" matInput placeholder="Supplier Name" formControlName="vendorName"
-                        autocomplete="off">
+                        autocomplete="off" required>
+                        <mat-error *ngIf="vendorName.invalid">{{requiredErrorMsg}}</mat-error>
                 </mat-form-field>
             </div>
 
@@ -33,20 +34,23 @@
        
             <div class="col-6 form-group">
                 <mat-form-field class="full-width">
-                    <input type="text" matInput placeholder="Mobile No." formControlName="mobileNum" autocomplete="off">
+                    <input type="text" matInput placeholder="Mobile No." formControlName="mobileNum" autocomplete="off" required>
                 </mat-form-field>
+                <mat-error *ngIf="mobileNum.invalid">{{requiredErrorMsg}}</mat-error>
             </div>
             <div class="col-6 form-group">
                 <mat-form-field class="full-width">
                     <input type="text" matInput placeholder="Telephone No." formControlName="telephoneNum" autocomplete="off">
                 </mat-form-field>
+                
             </div>
 
         </div>
         <div class="row field">
             <div class="col-6 form-group">
                 <mat-form-field class="full-width">
-                    <input type="email" matInput placeholder="Email Id" formControlName="emailId" autocomplete="off">
+                    <input type="email" matInput placeholder="Email Id" formControlName="emailId" autocomplete="off" required>
+                    <mat-error *ngIf="emailId.invalid">{{requiredErrorMsg}}</mat-error>
                 </mat-form-field>
             </div>
         </div>
@@ -54,14 +58,16 @@
             <div class="col-6 form-group">
                 <mat-form-field class="full-width">
                     <input matInput type="password" class="form-control" placeholder="Password"
-                        formControlName="password" autocomplete="off">
+                        formControlName="password" autocomplete="off" required>
+                        <mat-error *ngIf="password.invalid">{{requiredErrorMsg}}</mat-error>
                 </mat-form-field>
             </div>
 
             <div class="col-6 form-group">
                 <mat-form-field class="full-width">
                     <input matInput type="password" class="form-control" placeholder="Confirm Password"
-                        formControlName="confirmPassword" autocomplete="off">
+                        formControlName="confirmPassword" autocomplete="off" required>
+                        <mat-error *ngIf="confirmPassword.invalid">{{requiredErrorMsg}}</mat-error>
                 </mat-form-field>
             </div>
         </div>

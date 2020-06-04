@@ -37,9 +37,9 @@
 
             <div class="col-6 form-group">
                 <mat-form-field class="full-width">
-                    <mat-select formControlName="stateCode"  placeholder="Region">
-                        <mat-option *ngFor="let stateName of regionMasterVOList" [value]="stateName.regionCode">
-                            {{ stateName.regionDesc }}
+                    <mat-select formControlName="stateCode"  placeholder="State">
+                        <mat-option *ngFor="let region of regionMasterVOList" [value]="region.regionCode">
+                            {{ region.regionDesc }}
                         </mat-option>
                     </mat-select>
                 </mat-form-field>

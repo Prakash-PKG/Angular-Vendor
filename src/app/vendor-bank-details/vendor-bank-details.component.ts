@@ -116,9 +116,9 @@ export class VendorBankDetailsComponent implements OnInit {
             bankCity: [null, [Validators.required]],
             bankRegion: [null, [Validators.required]],
             bankCountry: [null, [Validators.required]],
-            swiftIbanCode: [null, [Validators.required]],
-            routingBank: [null, [Validators.required]],
-            swiftInterm: [null, [Validators.required]],
+            swiftIbanCode: [null],
+            routingBank: [null],
+            swiftInterm: [null],
         });
 
         this.updateVendorDetails();
