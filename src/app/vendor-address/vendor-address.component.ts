@@ -18,6 +18,7 @@ export class VendorAddressComponent implements OnInit {
     vendorAddressForm: FormGroup;
     failureMsg: string = "";
     countryList: CountryDataModel[] = [];  
+    regionMasterVOList: regionMasterVOList[] = [];
 
     constructor(private _appService: AppService,
         private _homeService: HomeService,
@@ -86,7 +87,11 @@ export class VendorAddressComponent implements OnInit {
             this._appService.vendorRegistrationInitDetails.countriesList.length > 0) {
                 this.countryList = this._appService.vendorRegistrationInitDetails.countriesList;
         }
-
+        this.regionMasterVOList = [];
+        if (this._appService.vendorRegistrationInitDetails && this._appService.vendorRegistrationInitDetails.regionMasterVOList &&
+            this._appService.vendorRegistrationInitDetails.regionMasterVOList.length > 0) {
+            this.regionMasterVOList = this._appService.vendorRegistrationInitDetails.regionMasterVOList;
+        }
         this.vendorAddressForm = this._formBuilder.group({
             address1:[null, [Validators.required]],
             address2:[null],

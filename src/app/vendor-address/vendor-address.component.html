@@ -37,7 +37,11 @@
 
             <div class="col-6 form-group">
                 <mat-form-field class="full-width">
-                    <input type="text" matInput placeholder="State" formControlName="stateName" autocomplete="off">
+                    <mat-select formControlName="stateName"  placeholder="Region">
+                        <mat-option *ngFor="let stateName of regionMasterVOList" [value]="stateName.regionCode">
+                            {{ stateName.regionDesc }}
+                        </mat-option>
+                    </mat-select>
                 </mat-form-field>
             </div>
 
