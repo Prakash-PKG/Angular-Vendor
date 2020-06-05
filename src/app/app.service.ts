@@ -8,8 +8,8 @@ import { DatePipe } from '@angular/common';
 })
 export class AppService {
 
-   readonly domain = "http://localhost:8080";
-    // readonly domain = "https://mvendor-dev.marlabs.com";  
+    //readonly domain = "http://localhost:8080";
+    readonly domain = "https://mvendor-dev.marlabs.com";  
     //readonly domain = "https://mtime.marlabs.com";  
     readonly baseUrl = this.domain + "/mvendor/";
     readonly customerAuthUrl = this.domain + "/customerAuth/oauth/token";
@@ -24,7 +24,7 @@ export class AppService {
         invoiceApproval: "/home/invapproval",
         invoiceDetails: "/home/invdetails",
         invoiceSearch:"/home/invsearch",
-        invUpload: "/home/invupload",
+        invoiceUpload: "/home/invupload",
         pendingApprovals: "/home/pendingapprovals",
         poDetails: "/home/podetails",
         vendorApproval: "/home/venapproval",

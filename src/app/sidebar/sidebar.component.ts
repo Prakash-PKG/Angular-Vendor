@@ -73,6 +73,10 @@ export class SidebarComponent implements OnInit {
         this._router.navigate([this._appService.routingConstants.vendorApproval]);
     }
 
+    onInvoiceUploadClick() {
+        this._router.navigate([this._appService.routingConstants.invoiceUpload]);
+    }
+
     onLogoutClick() {
         this._loginService.logout().subscribe(
             (response) => {

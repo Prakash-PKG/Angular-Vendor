@@ -20,7 +20,7 @@ import { HomeService } from '../home/home.service';
 export class VendorApprovalComponent implements OnInit {
     isDashboardCollapsed: boolean = true;
     _sidebarExpansionSubscription: any = null;
-    vendorApprovalDetails: VendorApprovalInitResultModel = null;
+    vendorApprovalInitDetails: VendorApprovalInitResultModel = null;
     vendorDetails: VendorMasterDetailsModel = null;
     vendoraccGroupList: AccGroupMasterList[] = [];
     companyCodeList: CompanyCodeMasterList[] = [];
@@ -43,13 +43,13 @@ export class VendorApprovalComponent implements OnInit {
     updateVendorApprovals(action: string) {
         let req: VendorApprovalReqModel = {
             action: action,
-            vendorApprovalID: 4,
-            vendorMasterId: 18,
-            departmentCode: "finance",
-            approverId: "107083",
+            vendorApprovalID: this.vendorApprovalInitDetails.vendorApprovalDetails.vendorApprovalID,
+            vendorMasterId: this.vendorApprovalInitDetails.vendorApprovalDetails.vendorMasterId,
+            departmentCode: this.vendorApprovalInitDetails.vendorApprovalDetails.departmentCode,
+            approverId: globalConstant.userDetails.userId,
             remarks: this.remarks,
-            createdBy: "107209",
-            createDate: "2020-06-02"
+            createdBy: this.vendorApprovalInitDetails.vendorApprovalDetails.createdBy,
+            createDate: this.vendorApprovalInitDetails.vendorApprovalDetails.createDate
         }
 
         this._homeService.updateBusy(<BusyDataModel>{ isBusy: true, msg: null });
@@ -75,34 +75,35 @@ export class VendorApprovalComponent implements OnInit {
     }
 
     async loadInitData() {
-        // if(this._appService.selectedPendingApprovalRecord) {
+        if(this._appService.selectedPendingApprovalRecord) {
             let req: VendorApprovalInitReqModel = {
                  vendorMasterId: this._appService.selectedPendingApprovalRecord.vendorMasterId,
                  departmentCode: this._appService.selectedPendingApprovalRecord.approvalLevel
             };
 
             this._homeService.updateBusy(<BusyDataModel>{ isBusy: true, msg: "Loading..." });
-            this.vendorApprovalDetails = await this._vendorApprovalService.getVendorApprovalInitData(req);
-            this.vendorDetails = this.vendorApprovalDetails.vendorMasterDetails;
+            this.vendorApprovalInitDetails = await this._vendorApprovalService.getVendorApprovalInitData(req);
+            this.vendorDetails = this.vendorApprovalInitDetails.vendorMasterDetails;
             this._homeService.updateBusy(<BusyDataModel>{ isBusy: false, msg: null });
             this.loadDropDown();
-        // }
+        }
     }
+
     loadDropDown(){
         this.vendoraccGroupList = [];
-        if(this.vendorApprovalDetails && this.vendorApprovalDetails.accGroupMasterList &&
-            this.vendorApprovalDetails.accGroupMasterList.length > 0) {
-                this.vendoraccGroupList=this.vendorApprovalDetails.accGroupMasterList;               
+        if(this.vendorApprovalInitDetails && this.vendorApprovalInitDetails.accGroupMasterList &&
+            this.vendorApprovalInitDetails.accGroupMasterList.length > 0) {
+                this.vendoraccGroupList=this.vendorApprovalInitDetails.accGroupMasterList;               
         }
         this.companyCodeList = [];
-        if(this.vendorApprovalDetails && this.vendorApprovalDetails.companyCodeMasterList &&
-            this.vendorApprovalDetails.companyCodeMasterList.length > 0) {
-                this.companyCodeList=this.vendorApprovalDetails.companyCodeMasterList;               
+        if(this.vendorApprovalInitDetails && this.vendorApprovalInitDetails.companyCodeMasterList &&
+            this.vendorApprovalInitDetails.companyCodeMasterList.length > 0) {
+                this.companyCodeList=this.vendorApprovalInitDetails.companyCodeMasterList;               
         }
         this.currencyList = [];
-        if(this.vendorApprovalDetails && this.vendorApprovalDetails.currencyMasterList &&
-            this.vendorApprovalDetails.currencyMasterList.length > 0) {
-                this.currencyList=this.vendorApprovalDetails.currencyMasterList;               
+        if(this.vendorApprovalInitDetails && this.vendorApprovalInitDetails.currencyMasterList &&
+            this.vendorApprovalInitDetails.currencyMasterList.length > 0) {
+                this.currencyList=this.vendorApprovalInitDetails.currencyMasterList;               
         }
     }
 
@@ -119,9 +120,8 @@ export class VendorApprovalComponent implements OnInit {
             this.isDashboardCollapsed = !data;
         });
 
-        // setTimeout(() => {
+        setTimeout(() => {
             this.loadInitData();
-            
-        // }, 100);
+        }, 100);
     }
 }

@@ -39,8 +39,8 @@ export class InvoiceUploadReqModel {
 }
 
 export class InvoiceUploadResultModel {
-    pODetailsVO: PODetailsModel[];
-    statusVO: StatusModel;
+    poList: PODetailsModel[];
+    statusDetails: StatusModel;
 }
 
 export class PODetailsModel {
@@ -216,6 +216,7 @@ export class VendorApprovalInitResultModel {
     accGroupMasterList: AccGroupMasterList[];
     companyCodeMasterList: CompanyCodeMasterList[];
     currencyMasterList: currencyMasterList[];
+    vendorApprovalDetails: vendorApprovalDetails;
 }
 
 export class VendorApprovalInitReqModel {
@@ -223,8 +224,7 @@ export class VendorApprovalInitReqModel {
     departmentCode: string;
 }
 
-export class VendorApprovalReqModel {
-    action: string;
+export class vendorApprovalDetails {
     vendorApprovalID: number;
     vendorMasterId: number;
     departmentCode: string;
@@ -233,6 +233,11 @@ export class VendorApprovalReqModel {
     createdBy: string;
     createDate: string;
 }
+
+export class VendorApprovalReqModel extends vendorApprovalDetails{
+    action: string;
+}
+
 export class CompanyCodeMasterList {
     companyCode: string;
     companyDesc: string;
@@ -245,4 +250,25 @@ export class AccGroupMasterList {
 export class currencyMasterList {
     currencyCode: string;
     currencyDesc: string;
+}
+
+export class POItemsRequestModel {
+    poNumber: string;
+}
+
+export class POItemsResultModel {
+    statusDetails: StatusModel;;
+    itemsList: ItemModel[]
+}
+
+export class ItemModel {
+    poNumber: string;
+    itemNumber: string;
+    itemId: number;
+    itemDescription: string;
+    orderedUnits: string;
+    suppliedUnits: string;
+    consumedUnits: string;
+    invoiceUnits: string;
+    unitPrice: string;
 }
