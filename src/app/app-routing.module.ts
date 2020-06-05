@@ -83,41 +83,42 @@ const routes: Routes = [
                 component: EmpanelmentComponent,
                 //canActivate: [AuthGuardLogin]
             },
+            
+        ]
+    },
+    {
+        path: 'vendor',
+        component: VendorRegistrationComponent,
+        children: [
             {
-                path: 'vendor',
-                component: VendorRegistrationComponent,
-                children: [
-                    {
-                        path: 'vendetails',
-                        component: VendorDetailsComponent,
-                        //canActivate: [AuthGuardLogin]
-                    },
-                    {
-                        path: 'venaddr',
-                        component: VendorAddressComponent,
-                        //canActivate: [AuthGuardLogin]
-                    },
-                    {
-                        path: 'venbank',
-                        component: VendorBankDetailsComponent,
-                        //canActivate: [AuthGuardLogin]
-                    },
-                    {
-                        path: 'vendocs',
-                        component: VendorDocumentsComponent,
-                        //canActivate: [AuthGuardLogin]
-                    },
-                    {
-                        path: 'venothers',
-                        component: VendorOthersComponent,
-                        //canActivate: [AuthGuardLogin]
-                    },
-                    {
-                        path: '',
-                        redirectTo: 'vendetails',
-                        pathMatch: 'full'
-                    }
-                ]
+                path: 'vendetails',
+                component: VendorDetailsComponent,
+                //canActivate: [AuthGuardLogin]
+            },
+            {
+                path: 'venaddr',
+                component: VendorAddressComponent,
+                //canActivate: [AuthGuardLogin]
+            },
+            {
+                path: 'venbank',
+                component: VendorBankDetailsComponent,
+                //canActivate: [AuthGuardLogin]
+            },
+            {
+                path: 'vendocs',
+                component: VendorDocumentsComponent,
+                //canActivate: [AuthGuardLogin]
+            },
+            {
+                path: 'venothers',
+                component: VendorOthersComponent,
+                //canActivate: [AuthGuardLogin]
+            },
+            {
+                path: '',
+                redirectTo: 'vendetails',
+                pathMatch: 'full'
             }
         ]
     },

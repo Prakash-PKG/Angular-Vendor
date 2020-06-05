@@ -29,11 +29,11 @@ export class AppService {
         poDetails: "/home/podetails",
         vendorApproval: "/home/venapproval",
         empanelment: "/home/empanelment",
-        vendorDetails: "/home/vendor/vendetails",
-        vendorAddressDetails: "/home/vendor/venaddr",
-        vendorBankDetails: "/home/vendor/venbank",
-        vendorDocuments: "/home/vendor/vendocs",
-        vendorOther: "/home/vendor/venothers"
+        vendorDetails: "/vendor/vendetails",
+        vendorAddressDetails: "/vendor/venaddr",
+        vendorBankDetails: "/vendor/venbank",
+        vendorDocuments: "/vendor/vendocs",
+        vendorOther: "/vendor/venothers"
     };
 
     readonly pageConstants: any = {
