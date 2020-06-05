@@ -216,19 +216,19 @@
     <div class="search-row">
         <mat-form-field class="field search-row-element">
           <mat-label>Account Group</mat-label>
-          <mat-select >
+          <mat-select [(ngModel)] = "selectedVendorGroup">
             <mat-option *ngFor="let accGrp of vendoraccGroupList" [value]="accGrp.groupCode">{{accGrp.groupDesc}}</mat-option>
           </mat-select>
         </mat-form-field>
         <mat-form-field class="field search-row-element">
             <mat-label>Company Code</mat-label>
-            <mat-select >
+            <mat-select [(ngModel)] = "selectedCompanyCode">
               <mat-option *ngFor="let cocode of companyCodeList" [value]="cocode.companyCode">{{cocode.companyDesc}}</mat-option>
             </mat-select>
           </mat-form-field>
           <mat-form-field class="field search-row-element">
             <mat-label>Currency</mat-label>
-            <mat-select >
+            <mat-select [(ngModel)] = "selectedCurrency">
               <mat-option *ngFor="let currency of currencyList" [value]="currency.currencyCode">{{currency.currencyDesc}}</mat-option>
             </mat-select>
           </mat-form-field>
@@ -239,7 +239,7 @@
     <div class="row field">
         <div class="col-12 form-group">
             <mat-form-field class="full-width">
-                <textarea matInput placeholder="Remarks" formControlName="remarks" autocomplete="off"></textarea>
+                <textarea matInput placeholder="Remarks" [(ngModel)] = "remarks" autocomplete="off"></textarea>
             </mat-form-field>
         </div>
     </div>

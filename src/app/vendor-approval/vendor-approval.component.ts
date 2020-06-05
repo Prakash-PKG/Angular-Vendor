@@ -26,6 +26,9 @@ export class VendorApprovalComponent implements OnInit {
     companyCodeList: CompanyCodeMasterList[] = [];
     currencyList: currencyMasterList[] = [];
     remarks: string = "";
+    selectedVendorGroup: string = null;
+    selectedCompanyCode: string = null;
+    selectedCurrency: string = null;
     msg: string = "";
 
     constructor(private _homeService: HomeService,
@@ -48,8 +51,11 @@ export class VendorApprovalComponent implements OnInit {
             departmentCode: this.vendorApprovalInitDetails.vendorApprovalDetails.departmentCode,
             approverId: globalConstant.userDetails.userId,
             remarks: this.remarks,
+            groupCode: this.selectedVendorGroup,
+            companyCode: this.selectedCompanyCode,
+            currencyCode: this.selectedCurrency,
             createdBy: this.vendorApprovalInitDetails.vendorApprovalDetails.createdBy,
-            createDate: this.vendorApprovalInitDetails.vendorApprovalDetails.createDate
+            createDate: this.vendorApprovalInitDetails.vendorApprovalDetails.createDate,
         }
 
         this._homeService.updateBusy(<BusyDataModel>{ isBusy: true, msg: null });

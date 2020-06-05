@@ -32,6 +32,7 @@ export class VendorApprovalService {
             detailsModel.accGroupMasterList = data ["accGroupMasterList"];
             detailsModel.companyCodeMasterList =data["companyCodeMasterList"];
             detailsModel.currencyMasterList = data["currencyMasterList"];
+            detailsModel.vendorApprovalDetails = data["vendorApprovalDetail"];
         }
 
         return detailsModel;
