@@ -1,128 +1,124 @@
 <div class="main">
     <div class="title">
-        <h3>Bank Details</h3>
+        <h3>Vendor Registration</h3>
     </div>
-
-    <form [formGroup]="vendorBankForm">
-        <!-- <div class="row field">
-            <div class="col-12 form-group">
-                <mat-form-field class="full-width">
-                    <textarea matInput placeholder="Beneficiary Bank Name and Bank Address" formControlName="bankAddress" autocomplete="off"></textarea>
-                </mat-form-field>
-            </div>
-        </div> -->
-
-
-        <div class="row field">
-            <div class="col-6 form-group">
-                <mat-form-field class="full-width">
-                    <input type="number" matInput placeholder="Account Number" formControlName="accountNum"
-                        autocomplete="off" required>
-                </mat-form-field>
-            </div>
-            <div class="col-6 form-group">
-                <mat-form-field class="full-width">
-                    <input type="text" matInput placeholder="Account Name" formControlName="accountName"
-                        autocomplete="off" required>
-                </mat-form-field>
-            </div>
+    <div class="my-container">
+        <div class="heading">
+            <mat-icon>account_balance_wallet</mat-icon>
+            <h4>Bank Details</h4>
         </div>
 
-        <div class="row field">
-            <div class="col-6 form-group">
-                <mat-form-field class="full-width">
-                    <input type="text" matInput placeholder="Account Type" formControlName="accountType"
-                        autocomplete="off" required>
-                </mat-form-field>
-            </div>
-            <div class="col-6 form-group">
-                <mat-form-field class="full-width">
-                    <input type="text" matInput placeholder="IFSC code" formControlName="ifscCode" autocomplete="off"
-                        required>
-                </mat-form-field>
-            </div>
-        </div>
-
-
-        <div class="row field">
-            <div class="col-6 form-group">
-                <mat-form-field class="full-width">
-                    <input type="text" matInput placeholder="Bank Name" formControlName="bankName" autocomplete="off"
-                        required>
-                </mat-form-field>
-            </div>
-            <div class="col-6 form-group">
-                <mat-form-field class="full-width">
-                    <input type="text" matInput placeholder="Bank Branch Name" formControlName="bankBranch"
-                        autocomplete="off" required>
-                </mat-form-field>
-            </div>
-        </div>
-
-        <div class="row field">
-            <div class="col-6 form-group">
-                <mat-form-field class="full-width">
-                    <input type="text" matInput placeholder="City" formControlName="bankCity" autocomplete="off"
-                        required>
-                </mat-form-field>
-            </div>
-            <div class="col-6 form-group">
-                <mat-form-field class="full-width">
-                    <mat-select formControlName="bankCountry" placeholder="Country" required>
-                        <mat-option *ngFor="let c of countryList" [value]="c.countryCode">
-                            {{ c.countryName }}
-                        </mat-option>
-                    </mat-select>
-                </mat-form-field>
-            </div>
-        </div>
-        <div class="row field">
-            <div class="col-6 form-group">
-                <mat-form-field class="full-width">
-                    <mat-select formControlName="bankRegion" placeholder="Region" required>
-                        <mat-option *ngFor="let region of regionMasterVOList" [value]="region.regionCode">
-                            {{ region.regionDesc }}
-                        </mat-option>
-                    </mat-select>
-                </mat-form-field>
+        <form [formGroup]="vendorBankForm">
+            <div class="row field">
+                <div class="col-6 form-group">
+                    <mat-form-field class="full-width">
+                        <input type="number" matInput placeholder="Account Number" formControlName="accountNum"
+                            autocomplete="off" required>
+                    </mat-form-field>
+                </div>
+                <div class="col-6 form-group">
+                    <mat-form-field class="full-width">
+                        <input type="text" matInput placeholder="Account Name" formControlName="accountName"
+                            autocomplete="off" required>
+                    </mat-form-field>
+                </div>
             </div>
 
-        </div>
-
-        <div class="partition-note">For International Bank Details
-            <mat-divider></mat-divider>
-        </div>
-
-        <div class="row field">
-            <div class="col-12 form-group">
-                <mat-form-field class="full-width">
-                    <textarea matInput placeholder="Intermidiary/routing Bank Name and Bank Address"
-                        formControlName="routingBank" autocomplete="off"></textarea>
-                </mat-form-field>
+            <div class="row field">
+                <div class="col-6 form-group">
+                    <mat-form-field class="full-width">
+                        <input type="text" matInput placeholder="Account Type" formControlName="accountType"
+                            autocomplete="off" required>
+                    </mat-form-field>
+                </div>
+                <div class="col-6 form-group">
+                    <mat-form-field class="full-width">
+                        <input type="text" matInput placeholder="IFSC code" formControlName="ifscCode"
+                            autocomplete="off" required>
+                    </mat-form-field>
+                </div>
             </div>
 
-        </div>
-        <div class="row field">
-            <div class="col-6 form-group">
-                <mat-form-field class="full-width">
-                    <input type="text" matInput placeholder="SWIFT Code/IBAN" formControlName="swiftIbanCode"
-                        autocomplete="off">
-                </mat-form-field>
+
+            <div class="row field">
+                <div class="col-6 form-group">
+                    <mat-form-field class="full-width">
+                        <input type="text" matInput placeholder="Bank Name" formControlName="bankName"
+                            autocomplete="off" required>
+                    </mat-form-field>
+                </div>
+                <div class="col-6 form-group">
+                    <mat-form-field class="full-width">
+                        <input type="text" matInput placeholder="Bank Branch Name" formControlName="bankBranch"
+                            autocomplete="off" required>
+                    </mat-form-field>
+                </div>
             </div>
-            <div class="col-6 form-group">
-                <mat-form-field class="full-width">
-                    <input type="text" matInput placeholder="SWIFT Code of Intermidiary/routing Bank"
-                        formControlName="swiftInterm" autocomplete="off">
-                </mat-form-field>
+
+            <div class="row field">
+                <div class="col-6 form-group">
+                    <mat-form-field class="full-width">
+                        <input type="text" matInput placeholder="City" formControlName="bankCity" autocomplete="off"
+                            required>
+                    </mat-form-field>
+                </div>
+                <div class="col-6 form-group">
+                    <mat-form-field class="full-width">
+                        <mat-select formControlName="bankCountry" placeholder="Country" required>
+                            <mat-option *ngFor="let c of countryList" [value]="c.countryCode">
+                                {{ c.countryName }}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
             </div>
+            <div class="row field">
+                <div class="col-6 form-group">
+                    <mat-form-field class="full-width">
+                        <mat-select formControlName="bankRegion" placeholder="Region" required>
+                            <mat-option *ngFor="let region of regionMasterVOList" [value]="region.regionCode">
+                                {{ region.regionDesc }}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+
+            </div>
+
+            <div class="partition-note">For International Bank Details
+                <mat-divider></mat-divider>
+            </div>
+
+            <div class="row field">
+                <div class="col-12 form-group">
+                    <mat-form-field class="full-width">
+                        <textarea matInput placeholder="Intermidiary/routing Bank Name and Bank Address"
+                            formControlName="routingBank" autocomplete="off"></textarea>
+                    </mat-form-field>
+                </div>
+
+            </div>
+            <div class="row field">
+                <div class="col-6 form-group">
+                    <mat-form-field class="full-width">
+                        <input type="text" matInput placeholder="SWIFT Code/IBAN" formControlName="swiftIbanCode"
+                            autocomplete="off">
+                    </mat-form-field>
+                </div>
+                <div class="col-6 form-group">
+                    <mat-form-field class="full-width">
+                        <input type="text" matInput placeholder="SWIFT Code of Intermidiary/routing Bank"
+                            formControlName="swiftInterm" autocomplete="off">
+                    </mat-form-field>
+                </div>
+            </div>
+        </form>
+        <div class="errortxt">
+            {{ failureMsg }}
         </div>
-    </form>
-    <div class="errortxt">
-        {{ failureMsg }}
+        <div class="row actions margin-unset">
+            <button mat-raised-button class="footer-actions" (click)="onPrevClick()">Previous</button>
+            <button mat-raised-button class="footer-actions" (click)="onNextClick()">Next</button>
+        </div>
     </div>
-    <div class="row actions margin-unset">
-        <button mat-raised-button class="footer-actions" (click)="onPrevClick()">Previous</button>
-        <button mat-raised-button class="footer-actions" (click)="onNextClick()">Next</button>
-    </div>
-
 </div>

@@ -1,7 +1,12 @@
 <div class="main">
     <div class="title">
-        <h3>Documents</h3>
+        <h3>Vendor Registration</h3>
     </div>
+    <div class="my-container">
+        <div class="heading">
+            <mat-icon>attachment</mat-icon>
+            <h4>Vendor Documents</h4>
+        </div>
 
     <form [formGroup]="vendorDocumentForm">
         <div class="row">
@@ -86,7 +91,7 @@
             </div>
         </div>
         <div class="row other-attachment">
-            <div class="col-10">
+            <div class="col-9">
                 <mat-form-field class="full-width">
                     <mat-select placeholder="Document Description">
                         <mat-option *ngFor="let d of documentsList" [value]="d.vendorMasterDocumentsId">
@@ -95,7 +100,7 @@
                     </mat-select>
                 </mat-form-field>
             </div>
-            <div class="col-2 actions">
+            <div class="col-3 actions">
                 <button mat-raised-button class="footer-actions">Attach</button>
                 <mat-icon>visibility</mat-icon>
             </div>
