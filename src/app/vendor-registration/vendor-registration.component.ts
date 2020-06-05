@@ -19,17 +19,13 @@ export class VendorRegistrationComponent implements OnInit {
 
     spinnerCls: string = "";
     busyMsg: string = "Please wait...";
-    currentUrl:string="";
-    venDetails:string="/vendor/vendetails";
-    venAdd:string="/vendor/venaddr";
-    venBank:string="/vendor/venbank";
-    venDoc:string="/vendor/vendocs";
+    currentPage: string;
 
     vendorRegistrationInitDataModel: VendorRegistrationInitDataModel = null;
     constructor(private _appService: AppService,
-                private _spinner: NgxSpinnerService,
-                private _vendorRegistrationService: VendorRegistrationService,
-                private route: Router) { }
+        private _spinner: NgxSpinnerService,
+        private _vendorRegistrationService: VendorRegistrationService,
+        private _homeService: HomeService) { }
 
     async loadInitData() {
         this._vendorRegistrationService.updateBusy(<BusyDataModel>{ isBusy: true, msg: "Loading..." });
@@ -45,10 +41,9 @@ export class VendorRegistrationComponent implements OnInit {
     }
 
     ngOnInit() {
-        this.currentUrl=this.route.routerState.snapshot.url;
         let spin = this._spinner;
         this._busySubscription = this._vendorRegistrationService.isBusy.subscribe(data => {
-            if(data && data.isBusy == true) {
+            if (data && data.isBusy == true) {
                 spin.show();
                 this.spinnerCls = "overlay";
                 //this.busyMsg = (data.msg) ? data.msg : "Please wait...";
@@ -59,9 +54,11 @@ export class VendorRegistrationComponent implements OnInit {
                 this.spinnerCls = "";
             }
         });
-
+        this._homeService.currentPageDetails.subscribe(page => {
+            this.currentPage = page.pageName;
+        })
         setTimeout(() => {
-           this.loadInitData();
+            this.loadInitData();
         }, 100);
 
     }

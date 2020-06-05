@@ -6,6 +6,7 @@ import { AppService } from '../app.service';
 import { VendorRegistrationService } from './../vendor-registration/vendor-registration.service';
 
 import { BusyDataModel, VendorRegistrationRequestModel, VendorRegistrationResultModel, CountryDataModel, regionMasterVOList } from './../models/data-models';
+import { HomeService } from '../home/home.service';
 
 @Component({
     selector: 'app-vendor-bank-details',
@@ -22,7 +23,8 @@ export class VendorBankDetailsComponent implements OnInit {
     constructor(private _appService: AppService,
         private _vendorRegistrationService: VendorRegistrationService,
         private _router: Router,
-        private _formBuilder: FormBuilder) { }
+        private _formBuilder: FormBuilder,
+        private _homeService: HomeService) { }
 
     onPrevClick() {
         this._router.navigate([this._appService.routingConstants.vendorAddressDetails]);
@@ -119,6 +121,7 @@ export class VendorBankDetailsComponent implements OnInit {
             swiftInterm: [null],
         });
 
+        this._homeService.updateCurrentPageDetails({ pageName: 'venBank' });
         this.updateVendorDetails();
     }
 

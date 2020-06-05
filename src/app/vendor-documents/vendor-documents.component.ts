@@ -7,6 +7,7 @@ import { VendorRegistrationService } from './../vendor-registration/vendor-regis
 
 import { BusyDataModel, VendorRegistrationRequestModel, VendorRegistrationResultModel, VendorMasterDocumentModel } from './../models/data-models';
 import { DatePipe } from '@angular/common';
+import { HomeService } from '../home/home.service';
 
 @Component({
     selector: 'app-vendor-documents',
@@ -23,7 +24,8 @@ export class VendorDocumentsComponent implements OnInit {
         private _vendorRegistrationService: VendorRegistrationService,
         private _router: Router,
         private _formBuilder: FormBuilder,
-        private _datePipe: DatePipe) { }
+        private _datePipe: DatePipe,
+        private _homeService:HomeService) { }
 
     onPrevClick() {
         this._router.navigate([this._appService.routingConstants.vendorBankDetails]);
@@ -108,7 +110,8 @@ export class VendorDocumentsComponent implements OnInit {
             lutDate:[null]
             
         });
-
+        
+        this._homeService.updateCurrentPageDetails({ pageName: 'venDoc' });
         this.updateVendorDetails();
     }
 

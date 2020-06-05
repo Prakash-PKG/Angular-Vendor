@@ -6,6 +6,7 @@ import { AppService } from '../app.service';
 import { VendorRegistrationService } from './../vendor-registration/vendor-registration.service';
 
 import { BusyDataModel, VendorRegistrationRequestModel, VendorRegistrationResultModel } from './../models/data-models';
+import { HomeService } from '../home/home.service';
 
 @Component({
     selector: 'app-vendor-details',
@@ -21,7 +22,8 @@ export class VendorDetailsComponent implements OnInit {
     constructor(private _appService: AppService,
         private _vendorRegistrationService: VendorRegistrationService,
         private _router: Router,
-        private _formBuilder: FormBuilder, ) { }
+        private _formBuilder: FormBuilder,
+        private _homeService:HomeService ) { }
 
     onNextClick() {
         // this._router.navigate([this._appService.routingConstants.vendorAddressDetails]);
@@ -50,6 +52,7 @@ export class VendorDetailsComponent implements OnInit {
                         if (result.status.status == 200 && result.status.isSuccess) {
                             this._appService.vendorRegistrationDetails = result.vendorMasterDetails;
                             this._router.navigate([this._appService.routingConstants.vendorAddressDetails]);
+                           
                         }
                         else {
                             this.failureMsg = this._appService.messages.vendorRegistrationSaveFailure;
@@ -84,8 +87,8 @@ export class VendorDetailsComponent implements OnInit {
             password: [null, [Validators.required]],
             confirmPassword: [null, [Validators.required]]
         });
-
-        this.updateVendorDetails();
+        this._homeService.updateCurrentPageDetails({ pageName: 'venDetails' });
+                this.updateVendorDetails();
     }
 
 }
