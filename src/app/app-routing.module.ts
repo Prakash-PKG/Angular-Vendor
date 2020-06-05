@@ -76,7 +76,7 @@ const routes: Routes = [
             {
                 path: 'venapproval',
                 component: VendorApprovalComponent,
-                //canActivate: [AuthGuardLogin]
+                canActivate: [AuthGuardLogin]
             },
             {
                 path: 'empanelment',
