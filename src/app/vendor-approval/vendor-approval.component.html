@@ -2,7 +2,7 @@
     <div class="title">
         <h3>Pending Approvals - Vendor Approvals</h3>
     </div>
-    <div class="search-row">
+    <!--div class="search-row">
         <mat-form-field class="field search-row-element">
           <mat-label>Account Group</mat-label>
           <mat-select >
@@ -17,14 +17,14 @@
           </mat-form-field>
           <mat-form-field class="field search-row-element">
             <mat-label>Currency</mat-label>
-            <mat-select >
+            <mat-select > 
               <mat-option *ngFor="let currency of currencyList" [value]="currency.currencyCode">{{currency.currencyDesc}}</mat-option>
             </mat-select>
           </mat-form-field>
       <div class="actions search-row-element">
         <button mat-raised-button class="footer-actions" (click)="onAttachMSAClick()">Attach MSA</button>
       </div>
-    </div>
+    </div-->
 
 
     <div class="container my-container margin-unset full-width">
@@ -77,7 +77,7 @@
                 <div class="Rtable-cell">{{ vendorDetails?.address2 }}</div>
 
                 <div class="Rtable-cell Rtable-cell--head">State</div>
-                <div class="Rtable-cell">{{ vendorDetails?.stateCode }}</div>
+                <div class="Rtable-cell">{{ vendorDetails?.stateName }}</div>
 
                 <div class="Rtable-cell Rtable-cell--head">Street</div>
                 <div class="Rtable-cell">{{ vendorDetails?.street }}</div>
@@ -121,7 +121,7 @@
                 <div class="Rtable-cell">{{ vendorDetails?.bankCity }}</div>
 
                 <div class="Rtable-cell Rtable-cell--head">Region</div>
-                <div class="Rtable-cell">{{ vendorDetails?.bankRegion }}</div>
+                <div class="Rtable-cell">{{ vendorDetails?.bankRegionName }}</div>
 
                 <div class="Rtable-cell Rtable-cell--head">Country</div>
                 <div class="Rtable-cell">{{ vendorDetails?.bankCountryName }}</div>
@@ -213,10 +213,37 @@
         </div> -->
 
     </div>
-    <div>
-        <input [(ngModel)]="remarks" type="text" matInput placeholder="Remarks" autocomplete="off">
+    <div class="search-row">
+        <mat-form-field class="field search-row-element">
+          <mat-label>Account Group</mat-label>
+          <mat-select >
+            <mat-option *ngFor="let accGrp of vendoraccGroupList" [value]="accGrp.groupCode">{{accGrp.groupDesc}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field class="field search-row-element">
+            <mat-label>Company Code</mat-label>
+            <mat-select >
+              <mat-option *ngFor="let cocode of companyCodeList" [value]="cocode.companyCode">{{cocode.companyDesc}}</mat-option>
+            </mat-select>
+          </mat-form-field>
+          <mat-form-field class="field search-row-element">
+            <mat-label>Currency</mat-label>
+            <mat-select >
+              <mat-option *ngFor="let currency of currencyList" [value]="currency.currencyCode">{{currency.currencyDesc}}</mat-option>
+            </mat-select>
+          </mat-form-field>
+      <div class="actions search-row-element">
+        <button mat-raised-button class="footer-actions" (click)="onAttachMSAClick()">Attach MSA</button>
+      </div>
+    </div> 
+    <div class="row field">
+        <div class="col-12 form-group">
+            <mat-form-field class="full-width">
+                <textarea matInput placeholder="Remarks" formControlName="remarks" autocomplete="off"></textarea>
+            </mat-form-field>
+        </div>
     </div>
-
+    
     <div>
         {{ msg }}
     </div>
