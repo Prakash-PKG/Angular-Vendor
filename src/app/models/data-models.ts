@@ -230,6 +230,9 @@ export class vendorApprovalDetails {
     departmentCode: string;
     approverId: string;
     remarks: string;
+    groupCode: string;
+    companyCode: string;
+    currencyCode: string;
     createdBy: string;
     createDate: string;
 }
@@ -257,8 +260,8 @@ export class POItemsRequestModel {
 }
 
 export class POItemsResultModel {
-    statusDetails: StatusModel;;
-    itemsList: ItemModel[]
+    statusDetails: StatusModel;
+    itemsList: ItemModel[];
 }
 
 export class ItemModel {
