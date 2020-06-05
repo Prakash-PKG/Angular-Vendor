@@ -35,8 +35,21 @@
                     <input type="text" matInput placeholder="CIN No." formControlName="cinNum" autocomplete="off">
                 </mat-form-field>
             </div>
-
+            <div class="col-4 form-group row">
+                <mat-form-field class="full-width">
+                    <input type="text" matInput placeholder="LUT No." formControlName="lutNum" autocomplete="off">
+                </mat-form-field>
+            </div>
+            <div class="col-2 form-group row">
+                <mat-form-field class="full-width">
+                    <mat-label>Pick LUT Date</mat-label>
+                    <input matInput [matDatepicker]="picker" formControlName="lutDate" disabled>
+                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                    <mat-datepicker #picker disabled="false"></mat-datepicker>
+                </mat-form-field>
+            </div>
         </div>
+        <div style="margin-bottom: 20px;"></div>
         <div class="row">
             <div class="col-6 form-group row" style="justify-content: space-between;">
                 <mat-label>SEZ/Non SEZ</mat-label>
@@ -52,8 +65,8 @@
                     <mat-radio-button [value]=false>NO</mat-radio-button>
                 </mat-radio-group>
             </div>
-
         </div>
+        <div style="margin-bottom: 10px;"></div>
         <div class="row">
             <div class="col-6 form-group row" style="justify-content: space-between;">
 
@@ -72,33 +85,15 @@
                 </mat-radio-group>
             </div>
         </div>
-        <div class="row">
-            <div class="col-6 form-group row">
-                <mat-form-field class="full-width">
-                    <input type="text" matInput placeholder="LUT No." formControlName="lutNum" autocomplete="off">
-                </mat-form-field>
-            </div>
-            <div class="col-6 form-group row">
-                <mat-form-field class="full-width">
-                    <mat-label>Pick LUT Date</mat-label>
-                    <input matInput [matDatepicker]="picker" formControlName="lutDate" disabled>
-                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-                    <mat-datepicker #picker disabled="false"></mat-datepicker>
-                </mat-form-field>
-            </div>
-        </div>
-
         <div class="row other-attachment">
             <div class="col-10">
-                <!--<mat-form-field class="full-width">
+                <mat-form-field class="full-width">
                     <mat-select placeholder="Document Description">
                         <mat-option *ngFor="let d of documentsList" [value]="d.vendorMasterDocumentsId">
                             {{ d.documentDescription }}
                         </mat-option>
                     </mat-select>
-                </mat-form-field>-->
-
-
+                </mat-form-field>
             </div>
             <div class="col-2 actions">
                 <button mat-raised-button class="footer-actions">Attach</button>

@@ -107,10 +107,6 @@ const routes: Routes = [
                 component: VendorDocumentsComponent
             },
             {
-                path: 'venothers',
-                component: VendorOthersComponent
-            },
-            {
                 path: '',
                 redirectTo: 'vendetails',
                 pathMatch: 'full'
