@@ -2,4 +2,47 @@
     <p style="font-size: 20px; color: white">{{ busyMsg }}</p>
 </ngx-spinner>
 
-<router-outlet></router-outlet>
+<div class="main">
+    <div class="title">
+        <h3>Vendor Registration</h3>
+    </div>
+
+    <div class="my-stepper">
+        <div class="steps">
+            <div class="step-label-span">
+                <div class="full-width step-label mat-elevation-z6" [ngClass]="[currentUrl == venDetails ? 'step-label-green' : '']">Vendor Details</div>
+            </div>
+            <div class="step-btn-span">
+                <div class="step-btn mat-elevation-z6" [ngClass]="[currentUrl == venDetails ? 'step-btn-green' : '']">1</div>
+            </div>
+        </div>
+        <div class="steps">
+            <div class="step-label-span">
+                <div class="full-width step-label mat-elevation-z6" [ngClass]="[currentUrl == venAdd ? 'step-label-green' : '']">Vendor Address</div>
+            </div>
+            <div class="step-btn-span">
+                <div class="step-btn mat-elevation-z6" [ngClass]="[currentUrl == venAdd ? 'step-btn-green' : '']">2</div>
+            </div>
+        </div>
+        <div class="steps">
+            <div class="step-label-span">
+                <div class="full-width step-label mat-elevation-z6" [ngClass]="[currentUrl == venBank ? 'step-label-green' : '']">Vendor Bank Details</div>
+            </div>
+            <div class="step-btn-span">
+                <div class="step-btn mat-elevation-z6" [ngClass]="[currentUrl == venBank ? 'step-btn-green' : '']">3</div>
+            </div>
+        </div>
+        <div class="steps" style="margin-bottom: 0px;">
+            <div class="step-label-span">
+                <div class="full-width step-label mat-elevation-z6" [ngClass]="[currentUrl == venDoc ? 'step-label-green' : '']">Vendor Documents</div>
+            </div>
+            <div class="step-btn-span">
+                <div class="step-btn mat-elevation-z6" [ngClass]="[currentUrl == venDoc ? 'step-btn-green' : '']">4</div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="my-container">
+        <router-outlet></router-outlet>
+    </div>

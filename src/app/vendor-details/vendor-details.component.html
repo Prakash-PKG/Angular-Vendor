@@ -1,76 +1,69 @@
-<div class="main">
-    <div class="title">
-        <h3>Vendor Registration</h3>
-    </div>
-    <div class="my-container">
-        <div class="heading">
-            <mat-icon>person</mat-icon>
-            <h4>Vendor Details</h4>
+<div class="heading">
+    <mat-icon>person</mat-icon>
+    <h4>Vendor Details</h4>
+</div>
+
+<form [formGroup]="vendorDetailsForm">
+    <div class="row field">
+        <div class="col-6 form-group">
+            <mat-form-field class="full-width">
+                <input type="text" matInput placeholder="Supplier Name" formControlName="vendorName" autocomplete="off"
+                    required>
+            </mat-form-field>
         </div>
 
-        <form [formGroup]="vendorDetailsForm">
-            <div class="row field">
-                <div class="col-6 form-group">
-                    <mat-form-field class="full-width">
-                        <input type="text" matInput placeholder="Supplier Name" formControlName="vendorName"
-                            autocomplete="off" required>
-                    </mat-form-field>
-                </div>
-
-                <div class="col-6 form-group">
-                    <mat-form-field class="full-width">
-                        <input type="text" matInput placeholder="Contact Person" formControlName="contactPerson"
-                            autocomplete="off">
-                    </mat-form-field>
-                </div>
-            </div>
-
-            <div class="row field">
-
-                <div class="col-6 form-group">
-                    <mat-form-field class="full-width">
-                        <input type="text" matInput placeholder="Mobile No." formControlName="mobileNum"
-                            autocomplete="off" required>
-                    </mat-form-field>
-                </div>
-                <div class="col-6 form-group">
-                    <mat-form-field class="full-width">
-                        <input type="text" matInput placeholder="Telephone No." formControlName="telephoneNum"
-                            autocomplete="off">
-                    </mat-form-field>
-                </div>
-            </div>
-
-            <div class="row field">
-                <div class="col-6 form-group">
-                    <mat-form-field class="full-width">
-                        <input type="email" matInput placeholder="Email Id" formControlName="emailId" autocomplete="off"
-                            required>
-                    </mat-form-field>
-                </div>
-            </div>
-
-            <div class="row field">
-                <div class="col-6 form-group">
-                    <mat-form-field class="full-width">
-                        <input matInput type="password" class="form-control" placeholder="Password"
-                            formControlName="password" autocomplete="off" required>
-                    </mat-form-field>
-                </div>
-                <div class="col-6 form-group">
-                    <mat-form-field class="full-width">
-                        <input matInput type="password" class="form-control" placeholder="Confirm Password"
-                            formControlName="confirmPassword" autocomplete="off" required>
-                        <!-- <mat-error *ngIf="confirmPassword.invalid">{{requiredErrorMsg}}</mat-error> -->
-                    </mat-form-field>
-                </div>
-            </div>
-        </form>
-        <div class="errortxt">
-            {{ failureMsg }}
-        </div>
-        <div class="row actions margin-unset">
-            <button mat-raised-button class="footer-actions" (click)="onNextClick()">Next</button>
+        <div class="col-6 form-group">
+            <mat-form-field class="full-width">
+                <input type="text" matInput placeholder="Contact Person" formControlName="contactPerson"
+                    autocomplete="off">
+            </mat-form-field>
         </div>
     </div>
+
+    <div class="row field">
+
+        <div class="col-6 form-group">
+            <mat-form-field class="full-width">
+                <input type="text" matInput placeholder="Mobile No." formControlName="mobileNum" autocomplete="off"
+                    required>
+            </mat-form-field>
+        </div>
+        <div class="col-6 form-group">
+            <mat-form-field class="full-width">
+                <input type="text" matInput placeholder="Telephone No." formControlName="telephoneNum"
+                    autocomplete="off">
+            </mat-form-field>
+        </div>
+    </div>
+
+    <div class="row field">
+        <div class="col-6 form-group">
+            <mat-form-field class="full-width">
+                <input type="email" matInput placeholder="Email Id" formControlName="emailId" autocomplete="off"
+                    required>
+            </mat-form-field>
+        </div>
+    </div>
+
+    <div class="row field">
+        <div class="col-6 form-group">
+            <mat-form-field class="full-width">
+                <input matInput type="password" class="form-control" placeholder="Password" formControlName="password"
+                    autocomplete="off" required>
+            </mat-form-field>
+        </div>
+        <div class="col-6 form-group">
+            <mat-form-field class="full-width">
+                <input matInput type="password" class="form-control" placeholder="Confirm Password"
+                    formControlName="confirmPassword" autocomplete="off" required>
+                <!-- <mat-error *ngIf="confirmPassword.invalid">{{requiredErrorMsg}}</mat-error> -->
+            </mat-form-field>
+        </div>
+    </div>
+</form>
+<div class="errortxt">
+    {{ failureMsg }}
+</div>
+<div class="row actions margin-unset">
+    <button mat-raised-button class="footer-actions" (click)="onNextClick()">Next</button>
 </div>
