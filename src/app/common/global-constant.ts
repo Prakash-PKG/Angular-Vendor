@@ -10,6 +10,7 @@ export const globalConstant : any = {
         userId: "",
         userEmail: "",
         userName: "",
+        departmentHead: null,
         userRoles: [],
         isVendor: false,
         isPurchaseOwner: false,

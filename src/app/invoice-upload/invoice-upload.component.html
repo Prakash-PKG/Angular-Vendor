@@ -7,40 +7,40 @@
             <div class="col-2">
                 <mat-form-field class="full-width">
                     <mat-label>Choose PO No.</mat-label>
-                    <mat-select matNativeControl (selectionChange)="onPoNumberChange()" formControlName="poList">
+                    <mat-select matNativeControl formControlName="poList">
                         <mat-option *ngFor="let p of poList" [value]="p.poNumber">
                             {{ p.poNumber }}
                         </mat-option>
                     </mat-select>
                 </mat-form-field>
-                <div class="errortxt">
+                <!--<div class="errortxt">
                     PO No. is required
-                </div>
+                </div>-->
             </div>
             <div class="col-2">
                 <mat-form-field class="full-width">
                     <mat-label>Invoice No.</mat-label>
-                    <input matInput placeholder="Invoice No." formControlName="invoiceNumber">
+                    <input type="text" matInput formControlName="invoiceNumber" autocomplete="off">
                 </mat-form-field>
-                <div class="errortxt">
+                <!--<div class="errortxt">
                     Invoice No. is required
-                </div>
+                </div>-->
             </div>
             <div class="col-2">
                 <mat-form-field class="full-width">
                     <mat-label>Invoice Date</mat-label>
-                    <input matInput [matDatepicker]="picker" disabled formControlName="invoiceDate">
+                    <input matInput [matDatepicker]="picker" disabled formControlName="invoiceDate" autocomplete="off">
                     <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                     <mat-datepicker #picker disabled="false"></mat-datepicker>
                 </mat-form-field>
-                <div class="errortxt">
+                <!--<div class="errortxt">
                     Invoice Date is required
-                </div>
+                </div>-->
             </div>
             <div class="col-6">
                 <mat-form-field class="full-width">
                     <mat-label>Remarks</mat-label>
-                    <textarea matInput placeholder="Remarks" formControlName="remarks"></textarea>
+                    <input type="text" matInput placeholder="Remarks" formControlName="remarks" autocomplete="off">
                 </mat-form-field>
             </div>
         </div>
@@ -55,56 +55,85 @@
                         </th>
                     </tr>
                 </thead>
+                <tbody formArrayName="itemsList" >
+                    <tr *ngFor="let item of invoiceUploadForm.get('itemsList')?.controls; let itemInd = index" [formGroupName]="itemInd">
+                        <td>
+                            {{ item.get("itemNumber").value }}
+                        </td>
+                        <td>
+                            {{ item.get("itemDescription").value }}
+                        </td>
+                        <td>
+                            <input class="inv-qty" formControlName = "hsn">
+                        </td>
+                        <td>
+                            {{ item.get("orderedUnits").value }}
+                        </td>
+                        <td>
+                            {{ item.get("suppliedUnits").value }}
+                        </td>
+                        <td>
+                            {{ item.get("consumedUnits").value }}
+                        </td>
+                        <td>
+                            <input class="inv-qty" formControlName = "invoiceUnits" (blur) = "onInvoiceUnitsBlur(itemInd)">
+                        </td>
+                        <td>
+                            {{ item.get("unitPrice").value }}
+                        </td>
+                        <td>
+                            {{ item.get("unitsAmt").value  }}
+                        </td>
+                    </tr>
+                    
+                    
+                </tbody>
+            </table>
+            <table class="dataTable full-width">
                 <tbody>
                     <tr>
-                        <td>
+                        <td class="add-ons"> Invoice Net Amount
                         </td>
-                        <td>
-                        </td>
-                        <td>
-                        </td>
-                        <td>
-                        </td>
-                        <td>
-                        </td>
-                        <td>
-                            <input class="inv-qty">
-                        </td>
-                        <td>
-                        </td>
-                        <td>
+                        <td class="amount">
+                            {{ f["totalItemsAmt"].value }}
                         </td>
                     </tr>
                     <tr>
-                        <td colspan="7" class="add-ons"> Invoice Net Amount
+                        <td class="add-ons"> Freight Amount
                         </td>
                         <td class="amount">
+                            <input class="inv-qty" formControlName = "freightCharges" (blur) = "updateInvoiceTotalAmt()">
                         </td>
                     </tr>
                     <tr>
-                        <td colspan="7" class="add-ons"> Freight Amount
+                        <td class="add-ons"> Total Tax Amount
                         </td>
                         <td class="amount">
+                            <input class="inv-qty" formControlName = "totalTax" (blur) = "updateInvoiceTotalAmt()">
                         </td>
                     </tr>
                     <tr>
-                        <td colspan="7" class="add-ons"> Invoice Total Amount
+                        <td class="add-ons"> Invoice Total Amount
                         </td>
                         <td class="amount">
+                            {{ f["totalInvAmt"].value }}
                         </td>
                     </tr>
                 </tbody>
             </table>
+            
             <div class="actions">
                 <button mat-raised-button class="footer-actions footer-actions-green" required>Invoice Attachment</button>
             </div>
             <div class="actions">
                 <button mat-raised-button class="footer-actions footer-actions-green">Supporting Doc Attachment</button>
             </div>
+            <div style="color: blue">
+                {{ msg }}
+            </div>
             <div class="row actions margin-unset">
                 <button mat-raised-button class="footer-actions">Cancel</button>
-
-                <button mat-raised-button class="footer-actions footer-actions-green">Submit</button>
+                <button mat-raised-button class="footer-actions footer-actions-green" (click) = "onSubmitClick()">Submit</button>
             </div>
         </div>
     </form>

@@ -1,5 +1,5 @@
 import { InvoiceUploadResultModel, InvoiceUploadReqModel, 
-        POItemsRequestModel, POItemsResultModel } from './../models/data-models';
+        POItemsRequestModel, POItemsResultModel, UpdateInvoiceRequestModel } from './../models/data-models';
 import { Injectable } from '@angular/core';
 import { AppService } from './../app.service';
 import { HttpClient } from '@angular/common/http';
@@ -52,5 +52,10 @@ export class InvoiceUploadService {
         }
 
         return initModel;
+    }
+
+    updateInvoiceDetails(updateReqModel: UpdateInvoiceRequestModel) {
+        let url = this._appService.baseUrl + "updateInvoice";
+        return this._http.post(url, updateReqModel, {responseType: 'json', observe: 'response'});
     }
 }

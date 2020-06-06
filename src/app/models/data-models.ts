@@ -1,5 +1,3 @@
-
-
 export class BusyDataModel {
     isBusy: boolean;
     msg: string;
@@ -45,6 +43,7 @@ export class InvoiceUploadResultModel {
 
 export class PODetailsModel {
     poNumber: string;
+    purchaseOrderId: number;
     currencyType: string;
     departmentId: string;
     vendorId: string;
@@ -279,4 +278,67 @@ export class ItemModel {
     consumedUnits: string;
     invoiceUnits: string;
     unitPrice: string;
+    hsn: string;
+    createdBy: string;
+    createdDate: string;
+}
+
+export class InvoiceDetailsModel {
+    invoiceId: number;
+    purchaseOrderId: number;
+    invoiceNumber: string;
+    invoiceDate: string;
+    remarks: string;
+    freightCharges: string;
+    totalAmt: string;
+    grnSesNumber: string;
+    statusCode: string;
+    totalTax: string;
+    createdBy: string;
+    createdDate: string;
+}
+
+export class UpdateInvoiceRequestModel {
+    action: string;
+    vendorEmailId: string;
+    poDetails: PODetailsModel;
+    invoiceDetails: InvoiceDetailsModel;
+    itemsDetails: ItemModel[];
+}
+
+export class UpdateInvoiceResultModel {
+    statusDetails: StatusModel;
+    invoiceDetails: InvoiceDetailsModel;
+    itemsDetails: ItemModel[];
+}
+
+export class InvoiceApprovalInitReqModel {
+    purchaseOrderId: number;
+	invoiceId: number;
+	poNumber: string;
+	poDeptId: string;
+	approvalLevel: string;
+}
+
+export class InvoiceApprovalInitResultModel {
+    invoiceDetails: InvoiceDetailsModel;
+    itemsList: ItemModel[];
+    approvalDetails: InvoiceApprovalModel;
+}
+
+export class InvoiceApprovalModel {
+    invoiceApprovalId: number;
+    purchaseOrderId: number;
+    invoiceId: number;
+    departmentId: string;
+    statusCode: string;
+    approverId: string;
+    approvalLevel: string;
+    remarks: string;
+}
+
+export class UpdateInvoiceApprovalReqModel {
+    action: string;
+    departmentHeadId: string;
+    approvalDetails: InvoiceApprovalModel;
 }
