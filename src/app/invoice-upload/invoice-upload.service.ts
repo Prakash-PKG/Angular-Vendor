@@ -1,4 +1,4 @@
-import { InvoiceUploadResultModel, InvoiceUploadReqModel, 
+import { InvoiceUploadResultModel, InvoiceUploadReqModel, InvoiceDocumentReqModel, 
         POItemsRequestModel, POItemsResultModel, UpdateInvoiceRequestModel } from './../models/data-models';
 import { Injectable } from '@angular/core';
 import { AppService } from './../app.service';
@@ -57,5 +57,11 @@ export class InvoiceUploadService {
     updateInvoiceDetails(updateReqModel: UpdateInvoiceRequestModel) {
         let url = this._appService.baseUrl + "updateInvoice";
         return this._http.post(url, updateReqModel, {responseType: 'json', observe: 'response'});
+    }
+
+
+    uploadInvoiceDocuments(filesReq: InvoiceDocumentReqModel) {
+        let url = this._appService.baseUrl + "updateInvDoc";
+        return this._http.post(url, filesReq, { responseType: 'text', observe: 'response' });
     }
 }

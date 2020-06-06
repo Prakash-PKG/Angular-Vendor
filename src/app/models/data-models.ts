@@ -342,3 +342,16 @@ export class UpdateInvoiceApprovalReqModel {
     departmentHeadId: string;
     approvalDetails: InvoiceApprovalModel;
 }
+
+export class FileDetailsModel {
+    actualFileName: String;
+    uniqueFileName: string;
+    fileData: any;
+    documentTypeId: number;
+    fileId: number;
+}
+
+export class InvoiceDocumentReqModel {
+    invoiceId: number;
+    fileDetails: FileDetailsModel[];
+}

@@ -35,32 +35,32 @@ const routes: Routes = [
             {
                 path: 'posearch',
                 component: PoSearchComponent,
-                //canActivate: [AuthGuardLogin]
+                canActivate: [AuthGuardLogin]
             },
             {
                 path: 'fp',
                 component: ForgotPasswordComponent,
-                //canActivate: [AuthGuardLogin]
+                canActivate: [AuthGuardLogin]
             },
             {
                 path: 'invapproval',
                 component: InvoiceApprovalsComponent,
-                //canActivate: [AuthGuardLogin]
+                canActivate: [AuthGuardLogin]
             },
             {
                 path: 'invdetails',
                 component: InvoiceDetailsComponent,
-                //canActivate: [AuthGuardLogin]
+                canActivate: [AuthGuardLogin]
             },
             {
                 path: 'invsearch',
                 component: InvoiceSearchComponent,
-                //canActivate: [AuthGuardLogin]
+                canActivate: [AuthGuardLogin]
             },
             {
                 path: 'invupload',
                 component: InvoiceUploadComponent,
-                //canActivate: [AuthGuardLogin]
+                canActivate: [AuthGuardLogin]
             },
             {
                 path: 'pendingapprovals',
@@ -70,9 +70,8 @@ const routes: Routes = [
             {
                 path: 'podetails',
                 component: PoDetailsComponent,
-                //canActivate: [AuthGuardLogin]
+                canActivate: [AuthGuardLogin]
             },
-
             {
                 path: 'venapproval',
                 component: VendorApprovalComponent,
@@ -81,7 +80,7 @@ const routes: Routes = [
             {
                 path: 'empanelment',
                 component: EmpanelmentComponent,
-                //canActivate: [AuthGuardLogin]
+                canActivate: [AuthGuardLogin]
             },
             
         ]

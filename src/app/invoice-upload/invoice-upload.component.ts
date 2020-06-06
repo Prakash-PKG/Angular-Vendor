@@ -1,8 +1,8 @@
 import { globalConstant } from './../common/global-constant';
 import { AppService } from './../app.service';
 import { InvoiceUploadService } from './invoice-upload.service';
-import { BusyDataModel, InvoiceUploadResultModel, InvoiceUploadReqModel, 
-        PODetailsModel, POItemsRequestModel, POItemsResultModel, ItemModel,
+import { BusyDataModel, InvoiceUploadResultModel, InvoiceUploadReqModel, InvoiceDocumentReqModel, 
+        PODetailsModel, POItemsRequestModel, POItemsResultModel, ItemModel, FileDetailsModel,
         UpdateInvoiceRequestModel, UpdateInvoiceResultModel } from './../models/data-models';
 import { Component, OnInit } from '@angular/core';
 import { HomeService } from '../home/home.service';
@@ -29,12 +29,141 @@ export class InvoiceUploadComponent implements OnInit {
 
     msg: string = "";
 
+    invoiceFilesList: FileDetailsModel[] = [];
+    supportingFilesList: FileDetailsModel[] = [];
+
+    invoiceUpdateResults: UpdateInvoiceResultModel = null;
+
+    selectedInvoiceType: string = "po";
+
     constructor(private _homeService: HomeService, 
                 private _appService: AppService,
                 private _formBuilder: FormBuilder,
                 private _invoiceUploadService: InvoiceUploadService) { }
 
     get f() { return this.invoiceUploadForm.controls; }
+
+    onInvoiceBrowseClick(event: any) {
+        event.preventDefault();
+
+        let element: HTMLElement = document.getElementById("invoiceFileCtrl");
+        element.click();
+    }
+
+    onInvoiceFileChange(event: any) {
+        this.invoiceFilesList = [];
+        if (event.target.files && event.target.files.length > 0) {
+            for (let f = 0; f < event.target.files.length; f++) {
+                let file = event.target.files[f];
+                if (file) {
+                    let fileDetails: FileDetailsModel = {
+                        actualFileName: file.name,
+                        uniqueFileName: null,
+                        fileData: null,
+                        documentTypeId: 1,
+                        fileId: null
+                    };
+                    this.invoiceFilesList.push(fileDetails);
+
+                    let reader = new FileReader();
+                    reader.onload = this._handleInvoiceFileReaderLoaded.bind(this, file.name);
+                    reader.readAsBinaryString(file);
+                }
+            }
+        }
+    }
+
+    private _handleInvoiceFileReaderLoaded(actualFileName, readerEvt) {
+        let binaryString = readerEvt.target.result;
+        let base64textString = btoa(binaryString);
+
+        for (let fileItem of this.invoiceFilesList) {
+            if (fileItem.actualFileName == actualFileName) {
+                fileItem.fileData = base64textString;
+                break;
+            }
+        }
+    }
+
+    onInvoiceAttachFileClick() {
+        if(this.invoiceUpdateResults && this.invoiceUpdateResults.invoiceDetails && this.invoiceUpdateResults.invoiceDetails.invoiceId) {
+            let filesReq: InvoiceDocumentReqModel = {
+                invoiceId: this.invoiceUpdateResults.invoiceDetails.invoiceId,
+                fileDetails: this.invoiceFilesList
+            }
+
+            this._homeService.updateBusy(<BusyDataModel>{ isBusy: true, msg: "Attaching..." });
+            this._invoiceUploadService.uploadInvoiceDocuments(filesReq)
+                .subscribe(response => {
+                    this._homeService.updateBusy(<BusyDataModel>{ isBusy: false, msg: null });
+                    this.invoiceFilesList = [];
+                },
+                (error) => {
+                    this._homeService.updateBusy(<BusyDataModel>{ isBusy: false, msg: null });
+                    console.log(error);
+                });
+        }
+    }
+
+    onSupportingBrowseClick(event: any) {
+        event.preventDefault();
+
+        let element: HTMLElement = document.getElementById("supportingFileCtrl");
+        element.click();
+    }
+
+    private _handleSuportingReaderLoaded(actualFileName, readerEvt) {
+        let binaryString = readerEvt.target.result;
+        let base64textString = btoa(binaryString);
+
+        for (let fileItem of this.supportingFilesList) {
+            if (fileItem.actualFileName == actualFileName) {
+                fileItem.fileData = base64textString;
+                break;
+            }
+        }
+    }
+
+    onSupportingFileChange(event: any) {
+        this.supportingFilesList = [];
+        if (event.target.files && event.target.files.length > 0) {
+            for (let f = 0; f < event.target.files.length; f++) {
+                let file = event.target.files[f];
+                if (file) {
+                    let fileDetails: FileDetailsModel = {
+                        actualFileName: file.name,
+                        uniqueFileName: null,
+                        fileData: null,
+                        documentTypeId: 2,
+                        fileId: null
+                    };
+                    this.supportingFilesList.push(fileDetails);
+
+                    let reader = new FileReader();
+                    reader.onload = this._handleSuportingReaderLoaded.bind(this, file.name);
+                    reader.readAsBinaryString(file);
+                }
+            }
+        }
+    }
+
+    onSupportingAttachFileClick() {
+        let filesReq: InvoiceDocumentReqModel = {
+            invoiceId: this.invoiceUpdateResults.invoiceDetails.invoiceId,
+            fileDetails: this.supportingFilesList
+        }
+
+        this._homeService.updateBusy(<BusyDataModel>{ isBusy: true, msg: "Attaching..." });
+        this._invoiceUploadService.uploadInvoiceDocuments(filesReq)
+            .subscribe(response => {
+                this._homeService.updateBusy(<BusyDataModel>{ isBusy: false, msg: null });
+                this.supportingFilesList = [];
+            },
+                (error) => {
+                    this._homeService.updateBusy(<BusyDataModel>{ isBusy: false, msg: null });
+                    console.log(error);
+                });
+    }
 
     onInvoiceUnitsBlur(itemInd: number) {
         const itemsFa: FormArray = <FormArray>this.invoiceUploadForm.controls['itemsList'];
@@ -195,9 +324,9 @@ export class InvoiceUploadComponent implements OnInit {
                     this._homeService.updateBusy(<BusyDataModel>{ isBusy: false, msg: null });
 
                     if (response.body) {
-                        let result: UpdateInvoiceResultModel = response.body as UpdateInvoiceResultModel;
-                        if (result.statusDetails.status == 200 && result.statusDetails.isSuccess) {
-                            this.msg = result.statusDetails.message;
+                        this.invoiceUpdateResults = response.body as UpdateInvoiceResultModel;
+                        if (this.invoiceUpdateResults.statusDetails.status == 200 && this.invoiceUpdateResults.statusDetails.isSuccess) {
+                            this.msg = this.invoiceUpdateResults.statusDetails.message;
                         }
                         else {
                             this.msg = "failed";
