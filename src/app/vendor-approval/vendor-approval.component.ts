@@ -35,6 +35,10 @@ export class VendorApprovalComponent implements OnInit {
         private _appService: AppService,
         private _vendorApprovalService: VendorApprovalService) { }
 
+    onAttachMSAClick() {
+        
+    }
+
     onApproveClick() {
         this.updateVendorApprovals(this._appService.updateOperations.approve);
     }
