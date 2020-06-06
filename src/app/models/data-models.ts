@@ -90,7 +90,7 @@ export class VendorMasterDetailsModel {
     floorNum: string;
     street: string;
     city: string;
-    stateCode:string;
+    stateCode: string;
     stateName: string;
     countryCode: string;
     countryName: string;
@@ -130,6 +130,11 @@ export class VendorMasterDetailsModel {
     address2: string;
     bankRegionName: string;
     bankCountryName: string;
+    groupCode: string;
+    companyCode: string;
+    currencyCode: string;
+    procRemark: string;
+    finRemark: string;
 
 }
 
@@ -237,7 +242,7 @@ export class vendorApprovalDetails {
     createDate: string;
 }
 
-export class VendorApprovalReqModel extends vendorApprovalDetails{
+export class VendorApprovalReqModel extends vendorApprovalDetails {
     action: string;
 }
 

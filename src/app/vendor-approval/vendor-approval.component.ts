@@ -50,10 +50,10 @@ export class VendorApprovalComponent implements OnInit {
             vendorMasterId: this.vendorApprovalInitDetails.vendorApprovalDetails.vendorMasterId,
             departmentCode: this.vendorApprovalInitDetails.vendorApprovalDetails.departmentCode,
             approverId: globalConstant.userDetails.userId,
-            remarks: this.remarks,
+            remarks:  this.remarks,
             groupCode: this.selectedVendorGroup,
             companyCode: this.selectedCompanyCode,
-            currencyCode: this.selectedCurrency,
+            currencyCode:this.selectedCurrency,
             createdBy: this.vendorApprovalInitDetails.vendorApprovalDetails.createdBy,
             createDate: this.vendorApprovalInitDetails.vendorApprovalDetails.createDate,
         }
@@ -81,10 +81,10 @@ export class VendorApprovalComponent implements OnInit {
     }
 
     async loadInitData() {
-        if(this._appService.selectedPendingApprovalRecord) {
+        if (this._appService.selectedPendingApprovalRecord) {
             let req: VendorApprovalInitReqModel = {
-                 vendorMasterId: this._appService.selectedPendingApprovalRecord.vendorMasterId,
-                 departmentCode: this._appService.selectedPendingApprovalRecord.approvalLevel
+                vendorMasterId: this._appService.selectedPendingApprovalRecord.vendorMasterId,
+                departmentCode: this._appService.selectedPendingApprovalRecord.approvalLevel
             };
 
             this._homeService.updateBusy(<BusyDataModel>{ isBusy: true, msg: "Loading..." });
@@ -95,22 +95,35 @@ export class VendorApprovalComponent implements OnInit {
         }
     }
 
-    loadDropDown(){
+    loadDropDown() {
         this.vendoraccGroupList = [];
-        if(this.vendorApprovalInitDetails && this.vendorApprovalInitDetails.accGroupMasterList &&
+        console.log(this.vendorApprovalInitDetails);
+        if (this.vendorApprovalInitDetails && this.vendorApprovalInitDetails.accGroupMasterList &&
             this.vendorApprovalInitDetails.accGroupMasterList.length > 0) {
-                this.vendoraccGroupList=this.vendorApprovalInitDetails.accGroupMasterList;               
+            this.vendoraccGroupList = this.vendorApprovalInitDetails.accGroupMasterList;
         }
         this.companyCodeList = [];
-        if(this.vendorApprovalInitDetails && this.vendorApprovalInitDetails.companyCodeMasterList &&
+        if (this.vendorApprovalInitDetails && this.vendorApprovalInitDetails.companyCodeMasterList &&
             this.vendorApprovalInitDetails.companyCodeMasterList.length > 0) {
-                this.companyCodeList=this.vendorApprovalInitDetails.companyCodeMasterList;               
+            this.companyCodeList = this.vendorApprovalInitDetails.companyCodeMasterList;
         }
         this.currencyList = [];
-        if(this.vendorApprovalInitDetails && this.vendorApprovalInitDetails.currencyMasterList &&
+        if (this.vendorApprovalInitDetails && this.vendorApprovalInitDetails.currencyMasterList &&
             this.vendorApprovalInitDetails.currencyMasterList.length > 0) {
-                this.currencyList=this.vendorApprovalInitDetails.currencyMasterList;               
+            this.currencyList = this.vendorApprovalInitDetails.currencyMasterList;
         }
+        console.log(this.vendorApprovalInitDetails.vendorApprovalDetails.companyCode);
+        this.selectedCompanyCode = this.vendorApprovalInitDetails.vendorMasterDetails &&
+            this.vendorApprovalInitDetails.vendorMasterDetails.companyCode ?
+            this.vendorApprovalInitDetails.vendorMasterDetails.companyCode : undefined;
+
+        this.selectedCurrency = this.vendorApprovalInitDetails.vendorMasterDetails &&
+            this.vendorApprovalInitDetails.vendorMasterDetails.currencyCode ?
+            this.vendorApprovalInitDetails.vendorMasterDetails.currencyCode : undefined;
+            
+        this.selectedVendorGroup = this.vendorApprovalInitDetails.vendorMasterDetails &&
+        this.vendorApprovalInitDetails.vendorMasterDetails.groupCode ?
+        this.vendorApprovalInitDetails.vendorMasterDetails.groupCode : undefined;
     }
 
     ngOnDestroy() {

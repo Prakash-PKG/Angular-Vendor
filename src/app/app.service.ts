@@ -121,7 +121,12 @@ export class AppService {
         address2: null,
         bankRegionName: null,
         bankCountryName: null,
-        stateName:null
+        stateName:null,
+        groupCode:  null,
+        companyCode:  null,
+        currencyCode:  null,
+        procRemark:  null,
+        finRemark:  null
     };
 
     resetVendorRegistrationDetails() {
@@ -176,7 +181,12 @@ export class AppService {
             address2: null,
             bankRegionName: null,
             bankCountryName: null,
-            stateName:null
+            stateName:null,
+            groupCode:  null,
+            companyCode:  null,
+            currencyCode:  null,
+            procRemark:  null,
+            finRemark:  null
         };
 
         return regDetails;
