@@ -227,8 +227,16 @@
       </div>
     </div>
     <div class="row field">
-        <div class="Rtable-cell Rtable-cell--head" style=" width: 30%; max-width: 30%;">Procurement Approver Remarks</div>
-        <div class="Rtable-cell" style=" width: 70%;">{{ vendorDetails?.procRemark }}</div>
+        <div class="Rtable Rtable--2cols Rtable--collapse">
+
+            <div class="Rtable-cell Rtable-cell--head">Procurement Approver Remarks</div>
+            <div class="Rtable-cell"> {{ vendorDetails?.procRemark }}</div>
+    
+            <div class="Rtable-cell Rtable-cell--head">Approved By</div>
+            <div class="Rtable-cell">{{ vendorDetails?.procApprByName }}</div>
+        </div>
+        <!--div class="Rtable-cell Rtable-cell--head" style=" width: 30%; max-width: 30%;">Procurement Approver Remarks</div>
+        <div class="Rtable-cell" style=" width: 70%;">{{ vendorDetails?.procRemark }}</div-->
 
       <div class="col-12 form-group">
         <mat-form-field class="full-width">

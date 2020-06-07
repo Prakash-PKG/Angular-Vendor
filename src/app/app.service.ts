@@ -136,6 +136,8 @@ export class AppService {
         companyCode:  null,
         currencyCode:  null,
         procRemark:  null,
+        procApprByName:  null,
+        finApprByName: null,
         finRemark:  null
     };
 
@@ -196,6 +198,8 @@ export class AppService {
             companyCode:  null,
             currencyCode:  null,
             procRemark:  null,
+            procApprByName:  null,
+            finApprByName: null,
             finRemark:  null
         };
 

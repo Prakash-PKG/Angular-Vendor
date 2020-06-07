@@ -133,6 +133,8 @@ export class VendorMasterDetailsModel {
     companyCode: string;
     currencyCode: string;
     procRemark: string;
+    procApprByName:  string;
+    finApprByName: string;
     finRemark: string;
 
 }
