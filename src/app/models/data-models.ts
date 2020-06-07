@@ -189,6 +189,7 @@ export class PendingApprovalRequestModel {
 }
 
 export class PendingApprovalsModel {
+    approvalId: number;
     purchaseOrderId: number;
     invoiceId: number;
     poNumber: string;
@@ -300,7 +301,7 @@ export class InvoiceDetailsModel {
 
 export class UpdateInvoiceRequestModel {
     action: string;
-    vendorEmailId: string;
+    userId: string;
     poDetails: PODetailsModel;
     invoiceDetails: InvoiceDetailsModel;
     itemsDetails: ItemModel[];
@@ -308,11 +309,13 @@ export class UpdateInvoiceRequestModel {
 
 export class UpdateInvoiceResultModel {
     statusDetails: StatusModel;
+    poDetails: PODetailsModel;
     invoiceDetails: InvoiceDetailsModel;
     itemsDetails: ItemModel[];
 }
 
 export class InvoiceApprovalInitReqModel {
+    approvalId: number;
     purchaseOrderId: number;
 	invoiceId: number;
 	poNumber: string;
@@ -324,6 +327,7 @@ export class InvoiceApprovalInitResultModel {
     invoiceDetails: InvoiceDetailsModel;
     itemsList: ItemModel[];
     approvalDetails: InvoiceApprovalModel;
+    poDetails: PODetailsModel;
 }
 
 export class InvoiceApprovalModel {
@@ -335,6 +339,8 @@ export class InvoiceApprovalModel {
     approverId: string;
     approvalLevel: string;
     remarks: string;
+    createdBy: string;
+    createdDate: string;
 }
 
 export class UpdateInvoiceApprovalReqModel {

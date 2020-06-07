@@ -27,14 +27,15 @@ export class InvoiceApprovalsService {
         if(data) {
             initModel.invoiceDetails = data["invoiceDetails"];
             initModel.itemsList = data["itemsList"]; 
-            initModel.approvalDetails = data["approvalDetails"];       
+            initModel.approvalDetails = data["approvalDetails"];  
+            initModel.poDetails = data["poDetails"];     
         }
 
         return initModel;
     }
 
     updateInvoiceApprovalDetails(updateReqModel: UpdateInvoiceApprovalReqModel) {
-        let url = this._appService.baseUrl + "updateVendorApproval";
+        let url = this._appService.baseUrl + "updateInvAppr";
         return this._http.post(url, updateReqModel, {responseType: 'json', observe: 'response'});
     }
 }

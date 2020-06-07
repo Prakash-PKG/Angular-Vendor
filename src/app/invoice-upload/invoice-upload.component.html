@@ -2,18 +2,18 @@
     <div class="title">
         <h3>Invoice Creation</h3>
     </div>
-    <mat-radio-group class = "tp-radio-group" [(ngModel)] = "selectedInvoiceType">
-        <mat-radio-button class = "tp-radio-button" value = "po">
+    <mat-radio-group class="tp-radio-group" [(ngModel)]="selectedInvoiceType">
+        <mat-radio-button class="tp-radio-button" value="po">
             PO Invoice
         </mat-radio-button>
-        <mat-radio-button class = "tp-radio-button" value = "non-po">
+        <mat-radio-button class="tp-radio-button" value="non-po">
             Non PO Invoice
         </mat-radio-button>
     </mat-radio-group>
 
     <form [formGroup]="invoiceUploadForm">
         <div class="row search">
-            <div class="col-2" *ngIf = "selectedInvoiceType == 'po'">
+            <div class="col-2" *ngIf="selectedInvoiceType == 'po'">
                 <mat-form-field class="full-width">
                     <mat-label>Choose PO No.</mat-label>
                     <mat-select matNativeControl formControlName="poList">
@@ -53,7 +53,9 @@
                 </mat-form-field>
             </div>
         </div>
-
+        <div class="actions" *ngIf="selectedInvoiceType == 'non-po'">
+            <button mat-raised-button class="footer-actions footer-actions-green" (click)="onNewClick()">New</button>
+        </div>
         <!-- table details -->
         <div class="container my-container margin-unset full-width">
             <table class="dataTable full-width">
@@ -67,35 +69,39 @@
                 <tbody formArrayName="itemsList">
                     <tr *ngFor="let item of invoiceUploadForm.get('itemsList')?.controls; let itemInd = index" [formGroupName]="itemInd">
                         <td>
-                            {{ item.get("itemNumber").value }}
+                            <span *ngIf="selectedInvoiceType == 'po'">{{ item.get("itemNumber").value }}</span>
+                            <input *ngIf="selectedInvoiceType == 'non-po'" class="inv-qty" formControlName="itemNumber">
                         </td>
                         <td>
-                            {{ item.get("itemDescription").value }}
+                            <span *ngIf="selectedInvoiceType == 'po'">{{ item.get("itemDescription").value }}</span>
+                            <input *ngIf="selectedInvoiceType == 'non-po'" class="inv-qty" formControlName="itemDescription">
                         </td>
                         <td>
                             <input class="inv-qty" formControlName="hsn">
                         </td>
                         <td>
-                            {{ item.get("orderedUnits").value }}
+                            <span *ngIf="selectedInvoiceType == 'po'">{{ item.get("orderedUnits").value }}</span>
+                            <input *ngIf="selectedInvoiceType == 'non-po'" class="inv-qty" formControlName="orderedUnits">
                         </td>
                         <td>
-                            {{ item.get("suppliedUnits").value }}
+                            <span *ngIf="selectedInvoiceType == 'po'">{{ item.get("suppliedUnits").value }}</span>
+                            <input *ngIf="selectedInvoiceType == 'non-po'" class="inv-qty" formControlName="suppliedUnits">
                         </td>
                         <td>
-                            {{ item.get("consumedUnits").value }}
+                            <span *ngIf="selectedInvoiceType == 'po'">{{ item.get("consumedUnits").value }}</span>
+                            <input *ngIf="selectedInvoiceType == 'non-po'" class="inv-qty" formControlName="consumedUnits">
                         </td>
                         <td>
                             <input class="inv-qty" formControlName="invoiceUnits" (blur)="onInvoiceUnitsBlur(itemInd)">
                         </td>
                         <td>
-                            {{ item.get("unitPrice").value }}
+                            <span *ngIf="selectedInvoiceType == 'po'">{{ item.get("unitPrice").value }}</span>
+                            <input *ngIf="selectedInvoiceType == 'non-po'" class="inv-qty" formControlName="unitPrice">
                         </td>
                         <td>
                             {{ item.get("unitsAmt").value }}
                         </td>
                     </tr>
-
-
                 </tbody>
             </table>
             <table class="dataTable full-width">
@@ -130,6 +136,10 @@
                     </tr>
                 </tbody>
             </table>
+
+            <div class="actions">
+                <button mat-raised-button class="footer-actions footer-actions-green" (click)="onSaveClick()">Save</button>
+            </div>
 
             <div class="actions">
                 <div style="font-weight: bold">

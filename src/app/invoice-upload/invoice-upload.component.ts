@@ -43,6 +43,30 @@ export class InvoiceUploadComponent implements OnInit {
 
     get f() { return this.invoiceUploadForm.controls; }
 
+    onNewClick() {
+        const formsList = <FormArray>this.invoiceUploadForm.controls['itemsList'];
+        formsList.insert(formsList.length, this.createNonPOItem());
+    }
+
+    createNonPOItem() {
+        let fg: FormGroup = this._formBuilder.group({
+            itemId: null,
+            itemNumber: null,
+            itemDescription: null,
+            orderedUnits: null,
+            suppliedUnits: null,
+            consumedUnits: null,
+            invoiceUnits: null,
+            unitPrice: null,
+            unitsAmt: null,
+            hsn: null,
+            createdBy: null,
+            createdDate: null
+        });
+
+        return fg;
+    }
+
     onInvoiceBrowseClick(event: any) {
         event.preventDefault();
 
@@ -270,74 +294,95 @@ export class InvoiceUploadComponent implements OnInit {
         return fg;
     }
 
+    onSaveClick() {
+        this.updateInvoiceDetails(this._appService.updateOperations.save);
+    }
+
     onSubmitClick() {
+        this.updateInvoiceDetails(this._appService.updateOperations.submit);
+    }
 
-        let poNumber = this.invoiceUploadForm.get("poList").value;
-        let selectedPOItem: PODetailsModel = this.poList.find( p => p.poNumber = poNumber);
-        if(selectedPOItem) {
-            let itemsList: ItemModel[] = [];
-            const itemsFa: FormArray = <FormArray>this.invoiceUploadForm.controls['itemsList'];
-            for(let i = 0; i < itemsFa.length; i++) {
-                let item: ItemModel = {
-                    poNumber: poNumber,
-                    itemNumber: itemsFa.controls[i].get("itemNumber").value,
-                    itemId: itemsFa.controls[i].get("itemId").value,
-                    itemDescription: itemsFa.controls[i].get("itemDescription").value,
-                    orderedUnits: itemsFa.controls[i].get("orderedUnits").value,
-                    suppliedUnits: itemsFa.controls[i].get("suppliedUnits").value,
-                    consumedUnits: itemsFa.controls[i].get("consumedUnits").value,
-                    invoiceUnits: itemsFa.controls[i].get("invoiceUnits").value,
-                    unitPrice: itemsFa.controls[i].get("unitPrice").value,
-                    hsn: itemsFa.controls[i].get("hsn").value,
-                    createdBy: itemsFa.controls[i].get("createdBy").value,
-                    createdDate: itemsFa.controls[i].get("createdDate").value
-                };
-
-                itemsList.push(item);
+    updateInvoiceDetails(action: string) {
+        let selectedPOItem: PODetailsModel = null;
+        let poNumber = null;
+        if(this.selectedInvoiceType == 'po') {
+            let poNumber = this.invoiceUploadForm.get("poList").value;
+            selectedPOItem = this.poList.find( p => p.poNumber = poNumber);
+            if(!selectedPOItem) {
+                return false;
             }
-
-
-            let req: UpdateInvoiceRequestModel = {
-                action: this._appService.updateOperations.submit,
-                vendorEmailId: globalConstant.userDetails.userEmail,
-                poDetails: selectedPOItem,
-                invoiceDetails: {
-                    invoiceId: null,
-                    purchaseOrderId: selectedPOItem.purchaseOrderId,
-                    invoiceNumber: this.invoiceUploadForm.get("invoiceNumber").value,
-                    invoiceDate: this._appService.getFormattedDateTime(this.invoiceUploadForm.get("invoiceDate").value),
-                    remarks: this.invoiceUploadForm.get("remarks").value,
-                    freightCharges: this.invoiceUploadForm.get("freightCharges").value,
-                    totalAmt: this.invoiceUploadForm.get("totalInvAmt").value,
-                    grnSesNumber: null,
-                    statusCode: null,
-                    totalTax: this.invoiceUploadForm.get("totalTax").value,
-                    createdBy: null,
-                    createdDate: null
-                },
-                itemsDetails: itemsList
-            }
-
-            this._homeService.updateBusy(<BusyDataModel>{ isBusy: true, msg: null });
-            this._invoiceUploadService.updateInvoiceDetails(req)
-                .subscribe(response => {
-                    this._homeService.updateBusy(<BusyDataModel>{ isBusy: false, msg: null });
-
-                    if (response.body) {
-                        this.invoiceUpdateResults = response.body as UpdateInvoiceResultModel;
-                        if (this.invoiceUpdateResults.statusDetails.status == 200 && this.invoiceUpdateResults.statusDetails.isSuccess) {
-                            this.msg = this.invoiceUpdateResults.statusDetails.message;
-                        }
-                        else {
-                            this.msg = "failed";
-                        }
-                    }
-                },
-                (error) => {
-                    this._homeService.updateBusy(<BusyDataModel>{ isBusy: false, msg: null });
-                    console.log(error);
-                });
         }
+        else {
+            selectedPOItem = {
+                poNumber: null,
+                purchaseOrderId: null,
+                currencyType: null,
+                departmentId: globalConstant.userDetails.poDepts[0],
+                vendorId: null
+            }
+        }
+
+        let itemsList: ItemModel[] = [];
+        const itemsFa: FormArray = <FormArray>this.invoiceUploadForm.controls['itemsList'];
+        for(let i = 0; i < itemsFa.length; i++) {
+            let item: ItemModel = {
+                poNumber: poNumber,
+                itemNumber: itemsFa.controls[i].get("itemNumber").value,
+                itemId: itemsFa.controls[i].get("itemId").value,
+                itemDescription: itemsFa.controls[i].get("itemDescription").value,
+                orderedUnits: itemsFa.controls[i].get("orderedUnits").value,
+                suppliedUnits: itemsFa.controls[i].get("suppliedUnits").value,
+                consumedUnits: itemsFa.controls[i].get("consumedUnits").value,
+                invoiceUnits: itemsFa.controls[i].get("invoiceUnits").value,
+                unitPrice: itemsFa.controls[i].get("unitPrice").value,
+                hsn: itemsFa.controls[i].get("hsn").value,
+                createdBy: itemsFa.controls[i].get("createdBy").value,
+                createdDate: itemsFa.controls[i].get("createdDate").value
+            };
+
+            itemsList.push(item);
+        }
+
+        let req: UpdateInvoiceRequestModel = {
+            action: action,
+            userId: (this.selectedInvoiceType == 'po') ? globalConstant.userDetails.userEmail : globalConstant.userDetails.userId,
+            poDetails: selectedPOItem,
+            invoiceDetails: {
+                invoiceId: null,
+                purchaseOrderId: (selectedPOItem) ? selectedPOItem.purchaseOrderId : null,
+                invoiceNumber: this.invoiceUploadForm.get("invoiceNumber").value,
+                invoiceDate: this._appService.getFormattedDateTime(this.invoiceUploadForm.get("invoiceDate").value),
+                remarks: this.invoiceUploadForm.get("remarks").value,
+                freightCharges: this.invoiceUploadForm.get("freightCharges").value,
+                totalAmt: this.invoiceUploadForm.get("totalInvAmt").value,
+                grnSesNumber: null,
+                statusCode: null,
+                totalTax: this.invoiceUploadForm.get("totalTax").value,
+                createdBy: null,
+                createdDate: null
+            },
+            itemsDetails: itemsList
+        }
+
+        this._homeService.updateBusy(<BusyDataModel>{ isBusy: true, msg: null });
+        this._invoiceUploadService.updateInvoiceDetails(req)
+            .subscribe(response => {
+                this._homeService.updateBusy(<BusyDataModel>{ isBusy: false, msg: null });
+
+                if (response.body) {
+                    this.invoiceUpdateResults = response.body as UpdateInvoiceResultModel;
+                    if (this.invoiceUpdateResults.statusDetails.status == 200 && this.invoiceUpdateResults.statusDetails.isSuccess) {
+                        this.msg = this.invoiceUpdateResults.statusDetails.message;
+                    }
+                    else {
+                        this.msg = "failed";
+                    }
+                }
+            },
+            (error) => {
+                this._homeService.updateBusy(<BusyDataModel>{ isBusy: false, msg: null });
+                console.log(error);
+            });
     }
 
     ngOnDestroy() {

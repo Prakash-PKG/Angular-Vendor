@@ -1,6 +1,7 @@
 import { globalConstant } from './../common/global-constant';
 import { AppService } from './../app.service';
-import { BusyDataModel, InvoiceApprovalInitResultModel, InvoiceApprovalInitReqModel, StatusModel, UpdateInvoiceApprovalReqModel } from './../models/data-models';
+import { BusyDataModel, InvoiceApprovalInitResultModel, InvoiceApprovalInitReqModel, ItemModel, 
+    StatusModel, UpdateInvoiceApprovalReqModel } from './../models/data-models';
 import { InvoiceApprovalsService } from './invoice-approvals.service';
 import { Component, OnInit } from '@angular/core';
 import { HomeService } from '../home/home.service';
@@ -14,19 +15,31 @@ export class InvoiceApprovalsComponent implements OnInit {
     isDashboardCollapsed: boolean = true;
     _sidebarExpansionSubscription: any = null;
 
-    headerArr: string[] = ['po', 'vendorid', 'vendorname', 'podate', 'currency', 'totalamt', 'billedamt', 'payrec'];
+    headerArr: string[] = ['Item#', "Item Description", "HSN/SAC", "Ordered Units", "Supplied Units", "Consumed Units", "Invoiced Units", "Currency" , "Unit Price", "Total Amount"];
 
     initDetails: InvoiceApprovalInitResultModel = null;
 
     msg: string = "";
 
+    remarks: string = "";
+
     constructor(private _homeService: HomeService,
                 private _appService: AppService,
                 private _invoiceApprovalsService: InvoiceApprovalsService) { }
 
+    getUnitsAmt(item: ItemModel) {
+        let unitsAmt = (item.unitPrice && item.invoiceUnits) ? +item.unitPrice * +item.invoiceUnits : null;
+        return unitsAmt;
+    }
+
+    getCurrencyType() {
+        return this.initDetails.poDetails.currencyType;
+    }
+
     async loadInitData() {
         if(this._appService.selectedPendingApprovalRecord) {
             let req: InvoiceApprovalInitReqModel = {
+                approvalId: this._appService.selectedPendingApprovalRecord.approvalId,
                 purchaseOrderId: this._appService.selectedPendingApprovalRecord.purchaseOrderId,
                 invoiceId: this._appService.selectedPendingApprovalRecord.invoiceId,
                 poNumber: this._appService.selectedPendingApprovalRecord.poNumber,
@@ -59,7 +72,9 @@ export class InvoiceApprovalsComponent implements OnInit {
                 statusCode: null,
                 approverId: globalConstant.userDetails.userId,
                 approvalLevel: this.initDetails.approvalDetails.approvalLevel,
-                remarks: null
+                remarks: this.remarks,
+                createdBy: this.initDetails.approvalDetails.createdBy,
+                createdDate: this.initDetails.approvalDetails.createdDate
             }
         };
 
