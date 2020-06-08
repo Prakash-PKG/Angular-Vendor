@@ -2,8 +2,10 @@
     <div class="title">
         <h3>Invoice Creation</h3>
     </div>
-    <mat-radio-group class="tp-radio-group" [(ngModel)]="selectedInvoiceType" *ngIf = "isSelectedInvoiceTypeVisible == true">
-        <mat-radio-button class="tp-radio-button" value="po" (change)="onInvoiceTypeChange($event)">
+    <mat-radio-group class="tp-radio-group" [(ngModel)]="selectedInvoiceType"
+        *ngIf="isSelectedInvoiceTypeVisible == true" style="margin-top: 1em;">
+        <mat-radio-button class="tp-radio-button" value="po" (change)="onInvoiceTypeChange($event)"
+            style="margin-right: 1em;">
             PO Invoice
         </mat-radio-button>
         <mat-radio-button class="tp-radio-button" value="non-po" (change)="onInvoiceTypeChange($event)">
@@ -12,60 +14,46 @@
     </mat-radio-group>
 
     <form [formGroup]="invoiceUploadForm">
-        <div class="row search">
-            <div class="col-2" *ngIf="selectedInvoiceType == 'po'">
-                <mat-form-field class="full-width">
-                    <mat-label>Choose PO No.</mat-label>
-                    <mat-select matNativeControl formControlName="poList">
-                        <mat-option *ngFor="let p of poList" [value]="p.poNumber">
-                            {{ p.poNumber }}
-                        </mat-option>
-                    </mat-select>
-                </mat-form-field>
-                <!--<div class="errortxt">
-                    PO No. is required
-                </div>-->
-            </div>
-            <div class="col-2">
-                <mat-form-field class="full-width">
-                    <mat-label>Invoice No.</mat-label>
-                    <input type="text" matInput formControlName="invoiceNumber" autocomplete="off">
-                </mat-form-field>
-                <!--<div class="errortxt">
-                    Invoice No. is required
-                </div>-->
-            </div>
-            <div class="col-2">
-                <mat-form-field class="full-width">
-                    <mat-label>Invoice Date</mat-label>
-                    <input matInput [matDatepicker]="picker" disabled formControlName="invoiceDate" autocomplete="off">
-                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-                    <mat-datepicker #picker disabled="false"></mat-datepicker>
-                </mat-form-field>
-                <!--<div class="errortxt">
-                    Invoice Date is required
-                </div>-->
-            </div>
-            <div class="col-6">
-                <mat-form-field class="full-width">
-                    <mat-label>Remarks</mat-label>
-                    <input type="text" matInput placeholder="Remarks" formControlName="remarks" autocomplete="off">
-                </mat-form-field>
-            </div>
-            <div class="col-6" *ngIf="selectedInvoiceType == 'non-po'">
-                <mat-form-field class="full-width">
-                    <mat-label>Choose Currency</mat-label>
-                    <mat-select matNativeControl formControlName="currency">
-                        <mat-option *ngFor="let c of currencyList" [value]="c.currencyCode">
-                            {{ c.currencyDesc }}
-                        </mat-option>
-                    </mat-select>
-                </mat-form-field>
+        <div class="search-row">
+            <mat-form-field class="search-row-element" *ngIf="selectedInvoiceType == 'po'">
+                <mat-label>Choose PO No.</mat-label>
+                <mat-select matNativeControl formControlName="poList">
+                    <mat-option *ngFor="let p of poList" [value]="p.poNumber">
+                        {{ p.poNumber }}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+
+            <mat-form-field class="search-row-element">
+                <mat-label>Invoice No.</mat-label>
+                <input type="text" matInput formControlName="invoiceNumber" autocomplete="off">
+            </mat-form-field>
+
+            <mat-form-field class="search-row-element date">
+                <mat-label>Invoice Date</mat-label>
+                <input matInput [matDatepicker]="picker" disabled formControlName="invoiceDate" autocomplete="off">
+                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-datepicker #picker disabled="false"></mat-datepicker>
+            </mat-form-field>
+
+            <mat-form-field class="search-row-element remarks">
+                <mat-label>Remarks</mat-label>
+                <input type="text" matInput placeholder="Remarks" formControlName="remarks" autocomplete="off">
+            </mat-form-field>
+
+            <mat-form-field class="search-row-elemen currency" *ngIf="selectedInvoiceType == 'non-po'">
+                <mat-label>Choose Currency</mat-label>
+                <mat-select matNativeControl formControlName="currency">
+                    <mat-option *ngFor="let c of currencyList" [value]="c.currencyCode">
+                        {{ c.currencyDesc }}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+            <div class=" search-row-element actions" *ngIf="selectedInvoiceType == 'non-po'">
+                <button mat-raised-button class="footer-actions footer-actions-green" (click)="onNewClick()">New</button>
             </div>
         </div>
-        <div class="actions" *ngIf="selectedInvoiceType == 'non-po'">
-            <button mat-raised-button class="footer-actions footer-actions-green" (click)="onNewClick()">New</button>
-        </div>
+       
         <!-- table details -->
         <div class="container my-container margin-unset full-width">
             <table class="dataTable full-width">
@@ -107,7 +95,8 @@
                             <span>{{ currency }}</span>
                         </td>
                         <td class="amount">
-                            <span *ngIf="selectedInvoiceType == 'po'" (blur)="onInvoiceUnitsBlur(itemInd)">{{ item.get("unitPrice").value }}</span>
+                            <span *ngIf="selectedInvoiceType == 'po'"
+                                (blur)="onInvoiceUnitsBlur(itemInd)">{{ item.get("unitPrice").value }}</span>
                             <input *ngIf="selectedInvoiceType == 'non-po'" class="inv-qty" formControlName="unitPrice">
                         </td>
                         <td class="amount">
@@ -130,7 +119,8 @@
                         </td>
                         <td style="margin-left: 10px" class="amount">
                             <span>
-                                <input class="inv-qty" formControlName="freightCharges" (blur)="updateInvoiceTotalAmt()">
+                                <input class="inv-qty" formControlName="freightCharges"
+                                    (blur)="updateInvoiceTotalAmt()">
                                 <span style="margin-left: 10px">{{ currency }}</span>
                             </span>
                         </td>
@@ -140,7 +130,7 @@
                         </td>
                         <td style="margin-left: 10px" class="amount">
                             <span>
-                                <input class="inv-qty" formControlName="totalTax" (blur)="updateInvoiceTotalAmt()">  
+                                <input class="inv-qty" formControlName="totalTax" (blur)="updateInvoiceTotalAmt()">
                                 <span style="margin-left: 10px">{{ currency }}</span>
                             </span>
                         </td>
@@ -192,8 +182,7 @@
             </div>
             <div class="row actions margin-unset">
                 <button mat-raised-button class="footer-actions">Cancel</button>
-                <button mat-raised-button class="footer-actions"
-                    (click)="onSubmitClick()">Submit</button>
+                <button mat-raised-button class="footer-actions" (click)="onSubmitClick()">Submit</button>
                 <button mat-raised-button class="footer-actions footer-actions-green"
                     (click)="onSaveClick()">Save</button>
             </div>

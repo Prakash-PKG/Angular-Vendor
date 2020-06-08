@@ -10,9 +10,7 @@
     font-weight: 700;
     text-align: right;
 }
-.search{
-    margin-bottom: 1em;
-}
+
 .attachment-row {
     display: flex;
     flex-wrap: wrap;
@@ -28,4 +26,28 @@
     flex: 0 0 3em;
     height: 2em;
     line-height: 1em;
+}
+.search-row {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .search-row-element {
+    flex-grow: 0;
+  }
+.search-row 
+.mat-form-field{
+  margin-right: 2em;
+}
+.search-row .remarks{
+    flex-grow: 1;
+}
+.search-row .date{
+    width: 8em;
+}
+.search-row .currency
+{
+    width: 9em;
 }

@@ -99,9 +99,11 @@
         </div>
     </div>
 
+
     <div>
-        <mat-label>Remarks</mat-label>
-        <input class="inv-qty" [(ngModel)]="remarks">
+        <mat-form-field class="full-width">
+            <textarea matInput placeholder="Remarks" [(ngModel)]="remarks" autocomplete="off"></textarea>
+        </mat-form-field>
     </div>
 
     <div *ngIf = "isPOInvoice == true">
@@ -169,6 +171,7 @@
     <div class="row actions margin-unset">
         <button mat-raised-button class="footer-actions">Cancel</button>
         <button mat-raised-button class="footer-actions" (click)="onRejectClick()">Reject</button>
-        <button mat-raised-button class="footer-actions footer-actions-green" (click)="onApproveClick()">Approve</button>
+        <button mat-raised-button class="footer-actions footer-actions-green"
+            (click)="onApproveClick()">Approve</button>
     </div>
 </div>
