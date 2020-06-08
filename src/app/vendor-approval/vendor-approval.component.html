@@ -2,7 +2,7 @@
   <div class="title">
     <h3>Pending Approvals - Vendor Approvals</h3>
   </div>
-   <div class="container my-container margin-unset full-width">
+  <div class="container my-container margin-unset full-width">
     <!--------------- vendor details -------------------------->
     <div class="vendor-detail-section">
       <div class="section-title">
@@ -199,61 +199,74 @@
 
         </div> -->
 
-<div class="approver-section">
-    <div class="search-row">
-      <mat-form-field class="field search-row-element">
-        <mat-label>Account Group</mat-label>
-        <mat-select [(ngModel)]="selectedVendorGroup">
-          <mat-option *ngFor="let accGrp of vendoraccGroupList" [value]="accGrp.groupCode">{{accGrp.groupDesc}}
-          </mat-option>
-        </mat-select>
-      </mat-form-field>
-      <mat-form-field class="field search-row-element">
-        <mat-label>Company Code</mat-label>
-        <mat-select [(ngModel)]="selectedCompanyCode">
-          <mat-option *ngFor="let cocode of companyCodeList" [value]="cocode.companyCode">{{cocode.companyDesc}}
-          </mat-option>
-        </mat-select>
-      </mat-form-field>
-      <mat-form-field class="field search-row-element">
-        <mat-label>Currency</mat-label>
-        <mat-select [(ngModel)]="selectedCurrency">
-          <mat-option *ngFor="let currency of currencyList" [value]="currency.currencyCode">{{currency.currencyDesc}}
-          </mat-option>
-        </mat-select>
-      </mat-form-field>
-      <div class="actions search-row-element">
-        <button mat-raised-button class="footer-actions" (click)="onAttachMSAClick()">Attach MSA</button>
-      </div>
-    </div>
-    <div class="row field">
-        <div class="Rtable Rtable--2cols Rtable--collapse">
+    <div class="approver-section">
+      <div class="search-row">
+        <mat-form-field class="field search-row-element">
+          <mat-label>Account Group</mat-label>
+          <mat-select [(ngModel)]="selectedVendorGroup">
+            <mat-option *ngFor="let accGrp of vendoraccGroupList" [value]="accGrp.groupCode">{{accGrp.groupDesc}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field class="field search-row-element">
+          <mat-label>Company Code</mat-label>
+          <mat-select [(ngModel)]="selectedCompanyCode">
+            <mat-option *ngFor="let cocode of companyCodeList" [value]="cocode.companyCode">{{cocode.companyDesc}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field class="field search-row-element">
+          <mat-label>Currency</mat-label>
+          <mat-select [(ngModel)]="selectedCurrency">
+            <mat-option *ngFor="let currency of currencyList" [value]="currency.currencyCode">{{currency.currencyDesc}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field class="field search-row-element" *ngIf="roleName=='Finance'">
+          <mat-label>with Hold Type</mat-label>
+          <mat-select [(ngModel)]="withholdType" (selectionChange)="onHoldTypeSelected($event)"> 
+            <mat-option *ngFor="let withholdType of withholdTypeList" [value]="withholdType.withholdTypeCode" >
+              {{withholdType.withholdTypeDesc}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field class="field search-row-element" *ngIf="roleName=='Finance'">
+          <mat-label>with Hold Tax</mat-label>
+          <mat-select [(ngModel)]="withholdTax">
+            <mat-option *ngFor="let withholdTax of withholdTaxList" [value]="withholdTax.withholdTaxCode">
+              {{withholdTax.withholdTaxDesc}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
 
-            <div class="Rtable-cell Rtable-cell--head">Procurement Approver Remarks</div>
-            <div class="Rtable-cell"> {{ vendorDetails?.procRemark }}</div>
-    
-            <div class="Rtable-cell Rtable-cell--head">Approved By</div>
-            <div class="Rtable-cell">{{ vendorDetails?.procApprByName }}</div>
+        <div class="actions search-row-element">
+          <button mat-raised-button class="footer-actions" (click)="onAttachMSAClick()">Attach MSA</button>
         </div>
-        <!--div class="Rtable-cell Rtable-cell--head" style=" width: 30%; max-width: 30%;">Procurement Approver Remarks</div>
+      </div>
+      <div class="row">
+        <div class="col-6"><span style="color:black">Procurement Approver Remarks:</span>
+          {{ vendorDetails?.procRemark }}</div>
+
+        <div class="col-6"><span style="color:black">Approved By:</span>
+          {{ vendorDetails?.procApprByName }}</div>
+      </div>
+      <!--div class="Rtable-cell Rtable-cell--head" style=" width: 30%; max-width: 30%;">Procurement Approver Remarks</div>
         <div class="Rtable-cell" style=" width: 70%;">{{ vendorDetails?.procRemark }}</div-->
 
-      <div class="col-12 form-group">
+      <div class="form-group">
         <mat-form-field class="full-width">
           <textarea matInput placeholder="Remarks" [(ngModel)]="remarks" autocomplete="off"></textarea>
         </mat-form-field>
       </div>
 
     </div>
-      <div>
-        {{ msg }}
-      </div>
+    <div>
+      {{ msg }}
+    </div>
 
-      <div class="row actions margin-unset">
-        <button mat-raised-button class="footer-actions" (click)="onRejectClick()">Reject</button>
-        <button mat-raised-button class="footer-actions footer-actions-green"
-          (click)="onApproveClick()">Approve</button>
-      </div>
+    <div class="row actions margin-unset">
+      <button mat-raised-button class="footer-actions" (click)="onRejectClick()">Reject</button>
+      <button mat-raised-button class="footer-actions footer-actions-green" (click)="onApproveClick()">Approve</button>
     </div>
   </div>
 </div>

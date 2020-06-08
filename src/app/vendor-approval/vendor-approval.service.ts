@@ -33,6 +33,8 @@ export class VendorApprovalService {
             detailsModel.companyCodeMasterList =data["companyCodeMasterList"];
             detailsModel.currencyMasterList = data["currencyMasterList"];
             detailsModel.vendorApprovalDetails = data["vendorApprovalDetail"];
+            detailsModel.withholdTaxVOList =data["withholdTaxVOList"];
+            detailsModel.withholdTypeVOList = data ["withholdTypeVOList"];
         }
 
         return detailsModel;

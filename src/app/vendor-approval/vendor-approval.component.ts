@@ -7,7 +7,9 @@ import {
     VendorApprovalReqModel,
     AccGroupMasterList,
     CompanyCodeMasterList,
-    currencyMasterList
+    currencyMasterList,
+    WithholdTypeList,
+    WithholdTaxList
 } from './../models/data-models';
 import { Component, OnInit } from '@angular/core';
 import { HomeService } from '../home/home.service';
@@ -25,7 +27,12 @@ export class VendorApprovalComponent implements OnInit {
     vendoraccGroupList: AccGroupMasterList[] = [];
     companyCodeList: CompanyCodeMasterList[] = [];
     currencyList: currencyMasterList[] = [];
+    withholdTaxList: WithholdTaxList[] = [];
+    withholdTypeList: WithholdTypeList[] = [];
+    withholdTax: string = "";
+    withholdType: string = "";
     remarks: string = "";
+    roleName: string = "";
     selectedVendorGroup: string = null;
     selectedCompanyCode: string = null;
     selectedCurrency: string = null;
@@ -36,7 +43,7 @@ export class VendorApprovalComponent implements OnInit {
         private _vendorApprovalService: VendorApprovalService) { }
 
     onAttachMSAClick() {
-        
+
     }
 
     onApproveClick() {
@@ -54,10 +61,12 @@ export class VendorApprovalComponent implements OnInit {
             vendorMasterId: this.vendorApprovalInitDetails.vendorApprovalDetails.vendorMasterId,
             departmentCode: this.vendorApprovalInitDetails.vendorApprovalDetails.departmentCode,
             approverId: globalConstant.userDetails.userId,
-            remarks:  this.remarks,
+            remarks: this.remarks,
             groupCode: this.selectedVendorGroup,
             companyCode: this.selectedCompanyCode,
-            currencyCode:this.selectedCurrency,
+            currencyCode: this.selectedCurrency,
+            withholdTaxCode: this.withholdTax,
+            withholdTypeCode: this.withholdType,
             createdBy: this.vendorApprovalInitDetails.vendorApprovalDetails.createdBy,
             createDate: this.vendorApprovalInitDetails.vendorApprovalDetails.createDate,
         }
@@ -101,7 +110,7 @@ export class VendorApprovalComponent implements OnInit {
 
     loadDropDown() {
         this.vendoraccGroupList = [];
-        console.log(this.vendorApprovalInitDetails);
+
         if (this.vendorApprovalInitDetails && this.vendorApprovalInitDetails.accGroupMasterList &&
             this.vendorApprovalInitDetails.accGroupMasterList.length > 0) {
             this.vendoraccGroupList = this.vendorApprovalInitDetails.accGroupMasterList;
@@ -116,7 +125,13 @@ export class VendorApprovalComponent implements OnInit {
             this.vendorApprovalInitDetails.currencyMasterList.length > 0) {
             this.currencyList = this.vendorApprovalInitDetails.currencyMasterList;
         }
-        console.log(this.vendorApprovalInitDetails.vendorApprovalDetails.companyCode);
+
+        this.withholdTypeList = [];
+        if (this.vendorApprovalInitDetails && this.vendorApprovalInitDetails.withholdTypeVOList &&
+            this.vendorApprovalInitDetails.withholdTypeVOList.length > 0) {
+            this.withholdTypeList = this.vendorApprovalInitDetails.withholdTypeVOList;
+        }
+
         this.selectedCompanyCode = this.vendorApprovalInitDetails.vendorMasterDetails &&
             this.vendorApprovalInitDetails.vendorMasterDetails.companyCode ?
             this.vendorApprovalInitDetails.vendorMasterDetails.companyCode : undefined;
@@ -124,10 +139,19 @@ export class VendorApprovalComponent implements OnInit {
         this.selectedCurrency = this.vendorApprovalInitDetails.vendorMasterDetails &&
             this.vendorApprovalInitDetails.vendorMasterDetails.currencyCode ?
             this.vendorApprovalInitDetails.vendorMasterDetails.currencyCode : undefined;
-            
+
         this.selectedVendorGroup = this.vendorApprovalInitDetails.vendorMasterDetails &&
-        this.vendorApprovalInitDetails.vendorMasterDetails.groupCode ?
-        this.vendorApprovalInitDetails.vendorMasterDetails.groupCode : undefined;
+            this.vendorApprovalInitDetails.vendorMasterDetails.groupCode ?
+            this.vendorApprovalInitDetails.vendorMasterDetails.groupCode : undefined;
+    }
+    onHoldTypeSelected(holdType) {
+        this.withholdTaxList = [];
+        if (this.vendorApprovalInitDetails && this.vendorApprovalInitDetails.withholdTaxVOList &&
+            this.vendorApprovalInitDetails.withholdTaxVOList.length > 0) {
+            this.withholdTaxList = this.vendorApprovalInitDetails.withholdTaxVOList.filter(e => e.withholdTypeCode == holdType.value);
+        }
+        console.log(this.withholdTaxList);
+
     }
 
     ngOnDestroy() {
@@ -142,6 +166,7 @@ export class VendorApprovalComponent implements OnInit {
         this._sidebarExpansionSubscription = this._homeService.isSidebarCollapsed.subscribe(data => {
             this.isDashboardCollapsed = !data;
         });
+        this.roleName = globalConstant.userDetails.userRoles[0].roleName;
 
         setTimeout(() => {
             this.loadInitData();

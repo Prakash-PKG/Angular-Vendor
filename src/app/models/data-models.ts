@@ -133,10 +133,9 @@ export class VendorMasterDetailsModel {
     companyCode: string;
     currencyCode: string;
     procRemark: string;
-    procApprByName:  string;
+    procApprByName: string;
     finApprByName: string;
     finRemark: string;
-
 }
 
 export class VendorMasterDocumentModel {
@@ -224,6 +223,8 @@ export class VendorApprovalInitResultModel {
     companyCodeMasterList: CompanyCodeMasterList[];
     currencyMasterList: currencyMasterList[];
     vendorApprovalDetails: vendorApprovalDetails;
+    withholdTypeVOList: WithholdTypeList[];
+    withholdTaxVOList: WithholdTaxList[];
 }
 
 export class VendorApprovalInitReqModel {
@@ -242,6 +243,8 @@ export class vendorApprovalDetails {
     currencyCode: string;
     createdBy: string;
     createDate: string;
+    withholdTypeCode: string;
+    withholdTaxCode: string;
 }
 
 export class VendorApprovalReqModel extends vendorApprovalDetails {
@@ -319,10 +322,10 @@ export class UpdateInvoiceResultModel {
 export class InvoiceApprovalInitReqModel {
     approvalId: number;
     purchaseOrderId: number;
-	invoiceId: number;
-	poNumber: string;
-	poDeptId: string;
-	approvalLevel: string;
+    invoiceId: number;
+    poNumber: string;
+    poDeptId: string;
+    approvalLevel: string;
 }
 
 export class InvoiceApprovalInitResultModel {
@@ -362,4 +365,17 @@ export class FileDetailsModel {
 export class InvoiceDocumentReqModel {
     invoiceId: number;
     fileDetails: FileDetailsModel[];
+}
+
+export class WithholdTaxList {
+    withholdTaxId: number;
+    withholdTaxCode: string;
+    withholdTaxDesc: string;
+    withholdTypeCode: string;
+}
+export class WithholdTypeList {
+    withholdTypeId: number;
+    withholdTypeCode: string;
+    withholdTypeDesc: string;
+    countryCode: string;
 }
