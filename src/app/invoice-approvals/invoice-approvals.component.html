@@ -99,14 +99,11 @@
         </div>
     </div>
 
-
-    <div>
         <mat-form-field class="full-width">
             <textarea matInput placeholder="Remarks" [(ngModel)]="remarks" autocomplete="off"></textarea>
         </mat-form-field>
-    </div>
 
-    <div *ngIf = "isPOInvoice == true">
+    <div *ngIf = "isPOInvoice == true" style="margin-bottom:2em;">
         <mat-form-field class="full-width" *ngIf = "isGrnDdlVisible == true">
             <mat-label>GRN/SES No.</mat-label>
             <mat-select matNativeControl [(ngModel)] = "selectedGrnSesNumber">
