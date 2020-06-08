@@ -46,6 +46,10 @@ export class VendorApprovalComponent implements OnInit {
 
     }
 
+    onSendForCorrClick() {
+        
+    }
+
     onApproveClick() {
         this.updateVendorApprovals(this._appService.updateOperations.approve);
     }
