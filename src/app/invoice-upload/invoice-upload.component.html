@@ -77,14 +77,16 @@
                     </tr>
                 </thead>
                 <tbody formArrayName="itemsList">
-                    <tr *ngFor="let item of invoiceUploadForm.get('itemsList')?.controls; let itemInd = index" [formGroupName]="itemInd">
+                    <tr *ngFor="let item of invoiceUploadForm.get('itemsList')?.controls; let itemInd = index"
+                        [formGroupName]="itemInd">
                         <td>
                             <span *ngIf="selectedInvoiceType == 'po'">{{ item.get("itemNumber").value }}</span>
                             <input *ngIf="selectedInvoiceType == 'non-po'" class="inv-qty" formControlName="itemNumber">
                         </td>
                         <td>
                             <span *ngIf="selectedInvoiceType == 'po'">{{ item.get("itemDescription").value }}</span>
-                            <input *ngIf="selectedInvoiceType == 'non-po'" class="inv-qty" formControlName="itemDescription">
+                            <input *ngIf="selectedInvoiceType == 'non-po'" class="inv-qty"
+                                formControlName="itemDescription">
                         </td>
                         <td>
                             <input class="inv-qty" formControlName="hsn">
@@ -104,11 +106,11 @@
                         <td *ngIf="selectedInvoiceType == 'po'">
                             <span>{{ currency }}</span>
                         </td>
-                        <td>
+                        <td class="amount">
                             <span *ngIf="selectedInvoiceType == 'po'" (blur)="onInvoiceUnitsBlur(itemInd)">{{ item.get("unitPrice").value }}</span>
                             <input *ngIf="selectedInvoiceType == 'non-po'" class="inv-qty" formControlName="unitPrice">
                         </td>
-                        <td>
+                        <td class="amount">
                             {{ item.get("unitsAmt").value }}
                         </td>
                     </tr>
@@ -153,41 +155,49 @@
                 </tbody>
             </table>
 
-            <!--<div class="actions">
-                <button mat-raised-button class="footer-actions footer-actions-green" (click)="onSaveClick()">Save</button>
-            </div>-->
-
-            <div class="actions">
-                <div style="font-weight: bold">
+            <div class="actions attachment-row">
+                <div class="attachment-elements" style="font-weight: bold">
                     Invoice Attachments
                 </div>
-                <input style="display: none" [attr.id]="'invoiceFileCtrl'" type="file" multiple accept=".xls,.xlsx,.doc,.docx,.pdf,.png,.jpg,.zip"
+                <input class="attachment-elements" style="display: none" [attr.id]="'invoiceFileCtrl'" type="file"
+                    multiple accept=".xls,.xlsx,.doc,.docx,.pdf,.png,.jpg,.zip"
                     (change)="onInvoiceFileChange($event)" />
-                <button mat-raised-button class="footer-actions" (click)="onInvoiceBrowseClick($event)">Browse</button>
-                <button mat-raised-button class="footer-actions footer-actions-green" (click)="onInvoiceAttachFileClick()">Attach</button>
-                <div class="filename" *ngFor="let f of invoiceFilesList">
+                <button mat-raised-button class="footer-actions attachment-elements"
+                    (click)="onInvoiceBrowseClick($event)">Browse</button>
+                <button mat-raised-button class="footer-actions  attachment-elements"
+                    (click)="onInvoiceAttachFileClick()">Attach</button>
+                <div class="filename attachment-elements" *ngFor="let f of invoiceFilesList">
                     <span>{{ f.actualFileName }}</span>
                 </div>
-                <div class="actions">
-                    <div style="font-weight: bold">
-                        Supporting Document Attachments
-                    </div>
-                    <input style="display: none" [attr.id]="'supportingFileCtrl'" type="file" multiple accept=".xls,.xlsx,.doc,.docx,.pdf,.png,.jpg,.zip"
-                        (change)="onSupportingFileChange($event)" />
-                    <button mat-raised-button class="footer-actions" (click)="onSupportingBrowseClick($event)">Browse</button>
-                    <button mat-raised-button class="footer-actions footer-actions-green" (click)="onSupportingAttachFileClick()">Attach</button>
-                    <div class="filename" *ngFor="let f of supportingFilesList">
-                        <span>{{ f.actualFileName }}</span>
-                    </div>
-                </div>
-                <div style="color: blue">
-                    {{ msg }}
-                </div>
-                <div class="row actions margin-unset">
-                    <button mat-raised-button class="footer-actions">Cancel</button>
-                    <button mat-raised-button class="footer-actions footer-actions-green" (click)="onSubmitClick()">Submit</button>
-                </div>
             </div>
+            <div class="actions attachment-row">
+
+                <div class="attachment-elements" style="font-weight: bold">
+                    Supporting Document Attachments
+                </div>
+                <input class="attachment-elements" style="display: none" [attr.id]="'supportingFileCtrl'" type="file"
+                    multiple accept=".xls,.xlsx,.doc,.docx,.pdf,.png,.jpg,.zip"
+                    (change)="onSupportingFileChange($event)" />
+                <button mat-raised-button class="footer-actions attachment-elements"
+                    (click)="onSupportingBrowseClick($event)">Browse</button>
+                <button mat-raised-button class="footer-actions  attachment-elements"
+                    (click)="onSupportingAttachFileClick()">Attach</button>
+                <div class="filename attachment-elements" *ngFor="let f of supportingFilesList">
+                    <span>{{ f.actualFileName }}</span>
+                </div>
+
+            </div>
+            <div style="color: blue">
+                {{ msg }}
+            </div>
+            <div class="row actions margin-unset">
+                <button mat-raised-button class="footer-actions">Cancel</button>
+                <button mat-raised-button class="footer-actions"
+                    (click)="onSubmitClick()">Submit</button>
+                <button mat-raised-button class="footer-actions footer-actions-green"
+                    (click)="onSaveClick()">Save</button>
+            </div>
+
         </div>
     </form>
 </div>

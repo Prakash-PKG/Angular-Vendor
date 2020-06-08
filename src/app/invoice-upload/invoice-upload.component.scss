@@ -4,6 +4,7 @@
 }
 .inv-qty{
     border: 1px solid gray;
+    text-align: right;
 }
 .add-ons{
     font-weight: 700;
@@ -11,4 +12,20 @@
 }
 .search{
     margin-bottom: 1em;
+}
+.attachment-row {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    align-items: center;
+
+  }
+  
+  .attachment-elements {
+    flex: 0 0 16em;
+  }
+.attachment-row .footer-actions{
+    flex: 0 0 3em;
+    height: 2em;
+    line-height: 1em;
 }
