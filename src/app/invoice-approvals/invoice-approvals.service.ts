@@ -33,6 +33,10 @@ export class InvoiceApprovalsService {
             initModel.grnSesList = data["grnSesList"]; 
         }
 
+        if(!initModel.grnSesList) {
+            initModel.grnSesList = [];
+        }
+
         for(let i = 0; i < 2; i++) {
             let gsModel: GrnSesModel = {
                 grnSesNumber: "GRN00" + (i + 1)

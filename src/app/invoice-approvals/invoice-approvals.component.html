@@ -104,16 +104,16 @@
         <input class="inv-qty" [(ngModel)]="remarks">
     </div>
 
-    <div>
-        <mat-label>GRN/SES No.</mat-label>
-        <mat-form-field class="full-width">
-            <mat-label>Choose PO No.</mat-label>
-            <mat-select matNativeControl formControlName="poList">
-                <mat-option *ngFor="let p of poList" [value]="p.poNumber">
-                    {{ p.poNumber }}
+    <div *ngIf = "isPOInvoice == true">
+        <mat-form-field class="full-width" *ngIf = "isGrnDdlVisible == true">
+            <mat-label>GRN/SES No.</mat-label>
+            <mat-select matNativeControl [(ngModel)] = "selectedGrnSesNumber">
+                <mat-option *ngFor="let gs of grnSesList" [value]="gs.grnSesNumber">
+                    {{ gs.grnSesNumber }}
                 </mat-option>
             </mat-select>
         </mat-form-field>
+        <span *ngIf = "isGrnDdlVisible == false">{{ initDetails?.invoiceDetails?.grnSesNumber }}</span>
     </div>
 
     <!-- table details [dataSource]="POData"-->

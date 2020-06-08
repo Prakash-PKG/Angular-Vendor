@@ -1,6 +1,6 @@
 import { globalConstant } from './../common/global-constant';
 import { AppService } from './../app.service';
-import { BusyDataModel, InvoiceApprovalInitResultModel, InvoiceApprovalInitReqModel, ItemModel, 
+import { BusyDataModel, InvoiceApprovalInitResultModel, InvoiceApprovalInitReqModel, ItemModel, GrnSesModel, 
     StatusModel, UpdateInvoiceApprovalReqModel } from './../models/data-models';
 import { InvoiceApprovalsService } from './invoice-approvals.service';
 import { Component, OnInit } from '@angular/core';
@@ -31,6 +31,10 @@ export class InvoiceApprovalsComponent implements OnInit {
     isPOCompleted: boolean = false;
     isFunctionalHeadCompleted: boolean = false;
     //isFinanceCompleted: boolean = false;
+
+    grnSesList: GrnSesModel[] = [];
+    selectedGrnSesNumber: string = "";
+    isGrnDdlVisible: boolean = true;
 
     constructor(private _homeService: HomeService,
                 private _appService: AppService,
@@ -66,8 +70,14 @@ export class InvoiceApprovalsComponent implements OnInit {
             this._homeService.updateBusy(<BusyDataModel>{ isBusy: true, msg: "Loading..." });
             this.initDetails = await this._invoiceApprovalsService.getInvoiceApprovalInitData(req);
             this.isPOInvoice = false;
-            if(this.initDetails && this.initDetails.poDetails && this.initDetails.poDetails.purchaseOrderId && this.initDetails.poDetails.poNumber) {
-                this.isPOInvoice = true;
+            if(this.initDetails) {
+                if(this.initDetails.poDetails && this.initDetails.poDetails.purchaseOrderId && this.initDetails.poDetails.poNumber) {
+                    this.isPOInvoice = true;
+                }
+
+                this.grnSesList = this.initDetails.grnSesList;
+
+                this.updateStatusFlow();
             }
 
             if(this.isPOInvoice) {
@@ -78,6 +88,23 @@ export class InvoiceApprovalsComponent implements OnInit {
             }
 
             this._homeService.updateBusy(<BusyDataModel>{ isBusy: false, msg: null });
+        }
+    }
+
+    updateStatusFlow() {
+        this.isPOCompleted = false;
+        this.isFunctionalHeadCompleted = false;
+        this.isGrnDdlVisible = true;
+        if(this.initDetails.approvalDetails) {
+            if(this.initDetails.approvalDetails.approvalLevel == this._appService.approvalLevels.functionalHead) {
+                this.isPOCompleted = true;
+                this.isGrnDdlVisible = false;
+            }
+            else if(this.initDetails.approvalDetails.approvalLevel == this._appService.approvalLevels.finance) {
+                this.isPOCompleted = true;
+                this.isFunctionalHeadCompleted = true;
+                this.isGrnDdlVisible = false;
+            }
         }
     }
 
@@ -93,6 +120,7 @@ export class InvoiceApprovalsComponent implements OnInit {
         let req: UpdateInvoiceApprovalReqModel = {
             action: action,
             departmentHeadId: globalConstant.userDetails.departmentHead,
+            grnSesNumber: this.selectedGrnSesNumber,
             approvalDetails: {
                 invoiceApprovalId: this.initDetails.approvalDetails.invoiceApprovalId,
                 purchaseOrderId: this.initDetails.approvalDetails.purchaseOrderId,
@@ -129,24 +157,6 @@ export class InvoiceApprovalsComponent implements OnInit {
             });
     }
 
-    updateStatusFlow() {
-        this.isPOCompleted = false;
-        this.isFunctionalHeadCompleted = false;
-        //this.isFinanceCompleted = false;
-        if(globalConstant && globalConstant.userDetails) {
-            // if(globalConstant.userDetails.poDepts && globalConstant.userDetails.poDepts.length > 0) {
-            //     this.isPOCompleted = true;
-            // }
-            if(globalConstant.userDetails.isFunctionalHead) {
-                this.isPOCompleted = true;
-            }
-            else if(globalConstant.userDetails.isFinance) {
-                this.isPOCompleted = true;
-                this.isFunctionalHeadCompleted = true;
-            }
-        }
-    }
-
     ngOnDestroy() {
         if (this._sidebarExpansionSubscription) {
             this._sidebarExpansionSubscription.unsubscribe();
@@ -154,8 +164,6 @@ export class InvoiceApprovalsComponent implements OnInit {
     }
 
     ngOnInit() {
-        this.updateStatusFlow();
-
         this.isDashboardCollapsed = true;
 
         this._sidebarExpansionSubscription = this._homeService.isSidebarCollapsed.subscribe(data => {

@@ -364,6 +364,7 @@ export class InvoiceApprovalModel {
 
 export class UpdateInvoiceApprovalReqModel {
     action: string;
+    grnSesNumber: string;
     departmentHeadId: string;
     approvalDetails: InvoiceApprovalModel;
 }
