@@ -88,8 +88,8 @@
     </mat-form-field>
 
     <div *ngIf="isPOInvoice == true" style="margin-bottom:2em;">
+        <mat-label style="color:black;">GRN/SES No.</mat-label>
         <mat-form-field class="full-width" *ngIf="isGrnDdlVisible == true">
-            <mat-label>GRN/SES No.</mat-label>
             <mat-select matNativeControl [(ngModel)]="selectedGrnSesNumber">
                 <mat-option *ngFor="let gs of grnSesList" [value]="gs.grnSesNumber">
                     {{ gs.grnSesNumber }}
@@ -135,10 +135,10 @@
                     <td *ngIf="isPOInvoice == true">
                         {{ getCurrencyType() }}
                     </td>
-                    <td>
+                    <td class="amount">
                         {{ item.unitPrice }}
                     </td>
-                    <td>
+                    <td class="amount">
                         {{ getUnitsAmt(item) }}
                     </td>
                 </tr>
