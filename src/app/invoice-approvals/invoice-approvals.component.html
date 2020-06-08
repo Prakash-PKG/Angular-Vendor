@@ -99,20 +99,20 @@
         </div>
     </div>
 
-        <mat-form-field class="full-width">
-            <textarea matInput placeholder="Remarks" [(ngModel)]="remarks" autocomplete="off"></textarea>
-        </mat-form-field>
+    <mat-form-field class="full-width">
+        <textarea matInput placeholder="Remarks" [(ngModel)]="remarks" autocomplete="off"></textarea>
+    </mat-form-field>
 
-    <div *ngIf = "isPOInvoice == true" style="margin-bottom:2em;">
-        <mat-form-field class="full-width" *ngIf = "isGrnDdlVisible == true">
+    <div *ngIf="isPOInvoice == true" style="margin-bottom:2em;">
+        <mat-form-field class="full-width" *ngIf="isGrnDdlVisible == true">
             <mat-label>GRN/SES No.</mat-label>
-            <mat-select matNativeControl [(ngModel)] = "selectedGrnSesNumber">
+            <mat-select matNativeControl [(ngModel)]="selectedGrnSesNumber">
                 <mat-option *ngFor="let gs of grnSesList" [value]="gs.grnSesNumber">
                     {{ gs.grnSesNumber }}
                 </mat-option>
             </mat-select>
         </mat-form-field>
-        <span *ngIf = "isGrnDdlVisible == false">{{ initDetails?.invoiceDetails?.grnSesNumber }}</span>
+        <span *ngIf="isGrnDdlVisible == false">{{ initDetails?.invoiceDetails?.grnSesNumber }}</span>
     </div>
 
     <!-- table details [dataSource]="POData"-->
