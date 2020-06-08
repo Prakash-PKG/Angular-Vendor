@@ -1,5 +1,3 @@
-
-
 export class BusyDataModel {
     isBusy: boolean;
     msg: string;
@@ -39,12 +37,13 @@ export class InvoiceUploadReqModel {
 }
 
 export class InvoiceUploadResultModel {
-    pODetailsVO: PODetailsModel[];
-    statusVO: StatusModel;
+    poList: PODetailsModel[];
+    statusDetails: StatusModel;
 }
 
 export class PODetailsModel {
     poNumber: string;
+    purchaseOrderId: number;
     currencyType: string;
     departmentId: string;
     vendorId: string;
@@ -90,6 +89,7 @@ export class VendorMasterDetailsModel {
     floorNum: string;
     street: string;
     city: string;
+    stateCode: string;
     stateName: string;
     countryCode: string;
     countryName: string;
@@ -107,8 +107,8 @@ export class VendorMasterDetailsModel {
     isSez: boolean;
     isRcmApplicable: boolean;
     lutNum: string;
-    lut_date: string;
-    paymentTerms: string;
+    lutDate: string;
+    // paymentTerms: string;
     cinNum: string;
     isMsmedRegistered: boolean;
     pfNum: string;
@@ -125,6 +125,18 @@ export class VendorMasterDetailsModel {
     bankCity: string;
     bankRegion: string;
     bankCountry: string;
+    address1: string;
+    address2: string;
+    bankRegionName: string;
+    bankCountryName: string;
+    groupCode: string;
+    companyCode: string;
+    currencyCode: string;
+    procRemark: string;
+    procApprByName:  string;
+    finApprByName: string;
+    finRemark: string;
+
 }
 
 export class VendorMasterDocumentModel {
@@ -179,6 +191,7 @@ export class PendingApprovalRequestModel {
 }
 
 export class PendingApprovalsModel {
+    approvalId: number;
     purchaseOrderId: number;
     invoiceId: number;
     poNumber: string;
@@ -210,6 +223,7 @@ export class VendorApprovalInitResultModel {
     accGroupMasterList: AccGroupMasterList[];
     companyCodeMasterList: CompanyCodeMasterList[];
     currencyMasterList: currencyMasterList[];
+    vendorApprovalDetails: vendorApprovalDetails;
 }
 
 export class VendorApprovalInitReqModel {
@@ -217,16 +231,23 @@ export class VendorApprovalInitReqModel {
     departmentCode: string;
 }
 
-export class VendorApprovalReqModel {
-    action: string;
+export class vendorApprovalDetails {
     vendorApprovalID: number;
     vendorMasterId: number;
     departmentCode: string;
     approverId: string;
     remarks: string;
+    groupCode: string;
+    companyCode: string;
+    currencyCode: string;
     createdBy: string;
     createDate: string;
 }
+
+export class VendorApprovalReqModel extends vendorApprovalDetails {
+    action: string;
+}
+
 export class CompanyCodeMasterList {
     companyCode: string;
     companyDesc: string;
@@ -239,4 +260,106 @@ export class AccGroupMasterList {
 export class currencyMasterList {
     currencyCode: string;
     currencyDesc: string;
+}
+
+export class POItemsRequestModel {
+    poNumber: string;
+}
+
+export class POItemsResultModel {
+    statusDetails: StatusModel;
+    itemsList: ItemModel[];
+}
+
+export class ItemModel {
+    poNumber: string;
+    itemNumber: string;
+    itemId: number;
+    itemDescription: string;
+    orderedUnits: string;
+    suppliedUnits: string;
+    consumedUnits: string;
+    invoiceUnits: string;
+    unitPrice: string;
+    hsn: string;
+    createdBy: string;
+    createdDate: string;
+}
+
+export class InvoiceDetailsModel {
+    invoiceId: number;
+    purchaseOrderId: number;
+    invoiceNumber: string;
+    invoiceDate: string;
+    remarks: string;
+    freightCharges: string;
+    totalAmt: string;
+    grnSesNumber: string;
+    statusCode: string;
+    totalTax: string;
+    createdBy: string;
+    createdDate: string;
+}
+
+export class UpdateInvoiceRequestModel {
+    action: string;
+    userId: string;
+    poDetails: PODetailsModel;
+    invoiceDetails: InvoiceDetailsModel;
+    itemsDetails: ItemModel[];
+}
+
+export class UpdateInvoiceResultModel {
+    statusDetails: StatusModel;
+    poDetails: PODetailsModel;
+    invoiceDetails: InvoiceDetailsModel;
+    itemsDetails: ItemModel[];
+}
+
+export class InvoiceApprovalInitReqModel {
+    approvalId: number;
+    purchaseOrderId: number;
+	invoiceId: number;
+	poNumber: string;
+	poDeptId: string;
+	approvalLevel: string;
+}
+
+export class InvoiceApprovalInitResultModel {
+    invoiceDetails: InvoiceDetailsModel;
+    itemsList: ItemModel[];
+    approvalDetails: InvoiceApprovalModel;
+    poDetails: PODetailsModel;
+}
+
+export class InvoiceApprovalModel {
+    invoiceApprovalId: number;
+    purchaseOrderId: number;
+    invoiceId: number;
+    departmentId: string;
+    statusCode: string;
+    approverId: string;
+    approvalLevel: string;
+    remarks: string;
+    createdBy: string;
+    createdDate: string;
+}
+
+export class UpdateInvoiceApprovalReqModel {
+    action: string;
+    departmentHeadId: string;
+    approvalDetails: InvoiceApprovalModel;
+}
+
+export class FileDetailsModel {
+    actualFileName: String;
+    uniqueFileName: string;
+    fileData: any;
+    documentTypeId: number;
+    fileId: number;
+}
+
+export class InvoiceDocumentReqModel {
+    invoiceId: number;
+    fileDetails: FileDetailsModel[];
 }

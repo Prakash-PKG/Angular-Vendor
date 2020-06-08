@@ -65,6 +65,10 @@ export class LoginComponent implements OnInit {
         );
     }
 
+    onVendorRegistrationClickClick() {
+        this._router.navigate([this._appService.routingConstants.vendorDetails]);
+    }
+
     OnLoginClick() {
         // this._router.navigate([this._appService.routingConstants.posearch]);
         // return false;

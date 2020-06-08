@@ -61,11 +61,11 @@ export class AuthGuardLogin implements CanActivate {
                 let poRoles = globalConstant.userDetails.userRoles.filter(r => globalConstant.poRoles.indexOf(r.roleCode) > -1);
                 if(poRoles && poRoles.length > 0) {
                     globalConstant.userDetails.isPurchaseOwner = true;
-                    for(let pr in poRoles) {
-                        globalConstant.userDetails.poDepts.push(pr["roleCode"].toUpperCase());
+                    for(let pr = 0; pr < poRoles.length; pr++) {
+                        globalConstant.userDetails.poDepts.push(poRoles[pr]["roleCode"].toUpperCase());
                     }
                  }
-                else {
+                else {  
                     globalConstant.userDetails.isPurchaseOwner = false;
                 }
 

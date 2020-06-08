@@ -56,6 +56,7 @@ export class PendingApprovalsComponent implements OnInit {
             this._router.navigate([this._appService.routingConstants.vendorApproval]);
         }
         else {
+            this._router.navigate([this._appService.routingConstants.invoiceApproval]);
         }
     }
 

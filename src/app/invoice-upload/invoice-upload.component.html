@@ -1,107 +1,177 @@
 <div class="main">
-  <div class="title">
-    <h3>Invoice Creation</h3>
-  </div>
-  <div class="row search">
-    <div class="col-2">
-      <mat-form-field class="full-width">
-        <mat-label>PO No.</mat-label>
-        <mat-select matNativeControl required>
-          <mat-option>PO list</mat-option>
-        </mat-select>
-      </mat-form-field>
-      <div class="errortxt">
-        PO No. is required
-      </div>
+    <div class="title">
+        <h3>Invoice Creation</h3>
     </div>
-    <div class="col-2">
-      <mat-form-field class="full-width">
-        <mat-label>Invoice No.</mat-label>
-        <input matInput placeholder="Invoice No.">
-      </mat-form-field>
-      <div class="errortxt">
-        Invoice No. is required
-      </div>
-    </div>
-    <div class="col-2">
-      <mat-form-field class="full-width">
-        <mat-label>Invoice Date</mat-label>
-        <input matInput [matDatepicker]="picker" disabled>
-        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-        <mat-datepicker #picker disabled="false"></mat-datepicker>
-      </mat-form-field>
-      <div class="errortxt">
-        Invoice Date is required
-      </div>
-    </div>
-    <div class="col-6">
-      <mat-form-field class="full-width">
-        <mat-label>Remarks</mat-label>
-        <textarea matInput placeholder="Remarks"></textarea>
-      </mat-form-field>
-    </div>
-  </div>
+    <mat-radio-group class="tp-radio-group" [(ngModel)]="selectedInvoiceType">
+        <mat-radio-button class="tp-radio-button" value="po">
+            PO Invoice
+        </mat-radio-button>
+        <mat-radio-button class="tp-radio-button" value="non-po">
+            Non PO Invoice
+        </mat-radio-button>
+    </mat-radio-group>
 
-  <!-- table details -->
-  <div class="container my-container margin-unset full-width">
-    <table class="dataTable full-width">
-      <thead>
-        <tr>
-          <th class="headers" scope="col" *ngFor="let col of headerArr; let hInd = index">
-            <span>{{ headerArr[hInd] }} </span>
-          </th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>
-          </td>
-          <td>
-          </td>
-          <td>
-          </td>
-          <td>
-          </td>
-          <td>
-          </td>
-          <td>
-            <input class="inv-qty">
-          </td>
-          <td>
-          </td>
-          <td>
-          </td>
-        </tr>
-        <tr>
-          <td colspan="7" class="add-ons"> Invoice Net Amount
-          </td>
-          <td class="amount">
-          </td>
-        </tr>
-        <tr>
-          <td colspan="7" class="add-ons"> Freight Amount
-          </td>
-          <td class="amount">
-          </td>
-        </tr>
-        <tr>
-          <td colspan="7" class="add-ons"> Invoice Total Amount
-          </td>
-          <td class="amount">
-          </td>
-        </tr>
-      </tbody>
-    </table>
-    <div class="actions">
-      <button mat-raised-button class="footer-actions footer-actions-green" required>Invoice Attachment</button>
-    </div>
-    <div class="actions">
-      <button mat-raised-button class="footer-actions footer-actions-green">Supporting Doc Attachment</button>
-    </div>
-    <div class="row actions margin-unset">
-      <button mat-raised-button class="footer-actions">Cancel</button>
+    <form [formGroup]="invoiceUploadForm">
+        <div class="row search">
+            <div class="col-2" *ngIf="selectedInvoiceType == 'po'">
+                <mat-form-field class="full-width">
+                    <mat-label>Choose PO No.</mat-label>
+                    <mat-select matNativeControl formControlName="poList">
+                        <mat-option *ngFor="let p of poList" [value]="p.poNumber">
+                            {{ p.poNumber }}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+                <!--<div class="errortxt">
+                    PO No. is required
+                </div>-->
+            </div>
+            <div class="col-2">
+                <mat-form-field class="full-width">
+                    <mat-label>Invoice No.</mat-label>
+                    <input type="text" matInput formControlName="invoiceNumber" autocomplete="off">
+                </mat-form-field>
+                <!--<div class="errortxt">
+                    Invoice No. is required
+                </div>-->
+            </div>
+            <div class="col-2">
+                <mat-form-field class="full-width">
+                    <mat-label>Invoice Date</mat-label>
+                    <input matInput [matDatepicker]="picker" disabled formControlName="invoiceDate" autocomplete="off">
+                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                    <mat-datepicker #picker disabled="false"></mat-datepicker>
+                </mat-form-field>
+                <!--<div class="errortxt">
+                    Invoice Date is required
+                </div>-->
+            </div>
+            <div class="col-6">
+                <mat-form-field class="full-width">
+                    <mat-label>Remarks</mat-label>
+                    <input type="text" matInput placeholder="Remarks" formControlName="remarks" autocomplete="off">
+                </mat-form-field>
+            </div>
+        </div>
+        <div class="actions" *ngIf="selectedInvoiceType == 'non-po'">
+            <button mat-raised-button class="footer-actions footer-actions-green" (click)="onNewClick()">New</button>
+        </div>
+        <!-- table details -->
+        <div class="container my-container margin-unset full-width">
+            <table class="dataTable full-width">
+                <thead>
+                    <tr>
+                        <th class="headers" scope="col" *ngFor="let col of headerArr; let hInd = index">
+                            <span>{{ headerArr[hInd] }} </span>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody formArrayName="itemsList">
+                    <tr *ngFor="let item of invoiceUploadForm.get('itemsList')?.controls; let itemInd = index" [formGroupName]="itemInd">
+                        <td>
+                            <span *ngIf="selectedInvoiceType == 'po'">{{ item.get("itemNumber").value }}</span>
+                            <input *ngIf="selectedInvoiceType == 'non-po'" class="inv-qty" formControlName="itemNumber">
+                        </td>
+                        <td>
+                            <span *ngIf="selectedInvoiceType == 'po'">{{ item.get("itemDescription").value }}</span>
+                            <input *ngIf="selectedInvoiceType == 'non-po'" class="inv-qty" formControlName="itemDescription">
+                        </td>
+                        <td>
+                            <input class="inv-qty" formControlName="hsn">
+                        </td>
+                        <td>
+                            <span *ngIf="selectedInvoiceType == 'po'">{{ item.get("orderedUnits").value }}</span>
+                            <input *ngIf="selectedInvoiceType == 'non-po'" class="inv-qty" formControlName="orderedUnits">
+                        </td>
+                        <td>
+                            <span *ngIf="selectedInvoiceType == 'po'">{{ item.get("suppliedUnits").value }}</span>
+                            <input *ngIf="selectedInvoiceType == 'non-po'" class="inv-qty" formControlName="suppliedUnits">
+                        </td>
+                        <td>
+                            <span *ngIf="selectedInvoiceType == 'po'">{{ item.get("consumedUnits").value }}</span>
+                            <input *ngIf="selectedInvoiceType == 'non-po'" class="inv-qty" formControlName="consumedUnits">
+                        </td>
+                        <td>
+                            <input class="inv-qty" formControlName="invoiceUnits" (blur)="onInvoiceUnitsBlur(itemInd)">
+                        </td>
+                        <td>
+                            <span *ngIf="selectedInvoiceType == 'po'">{{ item.get("unitPrice").value }}</span>
+                            <input *ngIf="selectedInvoiceType == 'non-po'" class="inv-qty" formControlName="unitPrice">
+                        </td>
+                        <td>
+                            {{ item.get("unitsAmt").value }}
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <table class="dataTable full-width">
+                <tbody>
+                    <tr>
+                        <td class="add-ons"> Invoice Net Amount
+                        </td>
+                        <td class="amount">
+                            {{ f["totalItemsAmt"].value }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="add-ons"> Freight Amount
+                        </td>
+                        <td class="amount">
+                            <input class="inv-qty" formControlName="freightCharges" (blur)="updateInvoiceTotalAmt()">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="add-ons"> Total Tax Amount
+                        </td>
+                        <td class="amount">
+                            <input class="inv-qty" formControlName="totalTax" (blur)="updateInvoiceTotalAmt()">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="add-ons"> Invoice Total Amount
+                        </td>
+                        <td class="amount">
+                            {{ f["totalInvAmt"].value }}
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
 
-      <button mat-raised-button class="footer-actions footer-actions-green">Submit</button>
-    </div>
-  </div>
+            <div class="actions">
+                <button mat-raised-button class="footer-actions footer-actions-green" (click)="onSaveClick()">Save</button>
+            </div>
+
+            <div class="actions">
+                <div style="font-weight: bold">
+                    Invoice Attachments
+                </div>
+                <input style="display: none" [attr.id]="'invoiceFileCtrl'" type="file" multiple accept=".xls,.xlsx,.doc,.docx,.pdf,.png,.jpg,.zip"
+                    (change)="onInvoiceFileChange($event)" />
+                <button mat-raised-button class="footer-actions" (click)="onInvoiceBrowseClick($event)">Browse</button>
+                <button mat-raised-button class="footer-actions footer-actions-green" (click)="onAttachFileClick()">Attach</button>
+                <div class="filename" *ngFor="let f of invoiceFilesList">
+                    <span>{{ f.actualFileName }}</span>
+                </div>
+                <div class="actions">
+                    <div style="font-weight: bold">
+                        Supporting Document Attachments
+                    </div>
+                    <input style="display: none" [attr.id]="'supportingFileCtrl'" type="file" multiple accept=".xls,.xlsx,.doc,.docx,.pdf,.png,.jpg,.zip"
+                        (change)="onSupportingFileChange($event)" />
+                    <button mat-raised-button class="footer-actions" (click)="onSupportingBrowseClick($event)">Browse</button>
+                    <button mat-raised-button class="footer-actions footer-actions-green" (click)="onSupportingAttachFileClick()">Attach</button>
+                    <div class="filename" *ngFor="let f of supportingFilesList">
+                        <span>{{ f.actualFileName }}</span>
+                    </div>
+                </div>
+                <div style="color: blue">
+                    {{ msg }}
+                </div>
+                <div class="row actions margin-unset">
+                    <button mat-raised-button class="footer-actions">Cancel</button>
+                    <button mat-raised-button class="footer-actions footer-actions-green" (click)="onSubmitClick()">Submit</button>
+                </div>
+            </div>
+        </div>
+    </form>
 </div>

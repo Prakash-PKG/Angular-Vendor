@@ -1,89 +1,109 @@
-<div class="main">
-    <div class="title">
-        <h3>Documents</h3>
-    </div>
-
-    <form [formGroup]="vendorDocumentForm">
-        <div class="row">
-            <div class="col-6 form-group row">
-                <mat-form-field class="col-6">
-                    <input type="text" matInput placeholder="GST No." formControlName="gstNum" autocomplete="off">
-                </mat-form-field>
-                <span class="actions col-6">
-        <button mat-raised-button class="footer-actions">Attach</button>
-        <mat-icon>visibility</mat-icon>
-      </span>
-            </div>
-            <div class="col-6 form-group row">
-                <mat-label class="col-6">Incorporation Certificates
-                </mat-label>
-                <span class="actions col-6">
-        <button mat-raised-button class="footer-actions">Attach</button>
-        <mat-icon>visibility</mat-icon>
-      </span>
-            </div>
-        </div>
-
-        <div class="row">
-            <div class="col-6 form-group row">
-                <mat-label class="col-6">Cancelled Cheque
-                </mat-label>
-                <span class="actions col-6">
-        <button mat-raised-button class="footer-actions">Attach</button>
-        <mat-icon>visibility</mat-icon>
-      </span>
-            </div>
-            <div class="col-6 form-group row">
-                <mat-label class="col-6">Utilities Bill
-                </mat-label>
-                <span class="actions col-6">
-        <button mat-raised-button class="footer-actions">Attach</button>
-        <mat-icon>visibility</mat-icon>
-      </span>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-6 form-group row">
-                <mat-form-field class="col-6">
-                    <input type="text" matInput placeholder="PAN No." formControlName="panNum" autocomplete="off">
-                </mat-form-field>
-                <span class="actions col-6">
-        <button mat-raised-button class="footer-actions">Attach</button>
-        <mat-icon>visibility</mat-icon>
-      </span>
-            </div>
-            <div class="col-6 form-group row">
-                <mat-label class="col-6">MSME
-                </mat-label>
-                <span class="actions col-6">
-        <button mat-raised-button class="footer-actions">Attach</button>
-        <mat-icon>visibility</mat-icon>
-      </span>
-            </div>
-        </div>
-        <div class="row other-attachment">
-            <div class="col-10">
-                <!--<mat-form-field class="full-width">
-                    <mat-select placeholder="Document Description">
-                        <mat-option *ngFor="let d of documentsList" [value]="d.vendorMasterDocumentsId">
-                            {{ d.documentDescription }}
-                        </mat-option>
-                    </mat-select>
-                </mat-form-field>-->
-
-                
-            </div>
-            <div class="col-2 actions">
-                <button mat-raised-button class="footer-actions">Attach</button>
-                <mat-icon>visibility</mat-icon>
-            </div>
-        </div>
-    </form>
-    <div class="errortxt">
-        {{ failureMsg }}
-    </div>
-    <div class="row actions margin-unset">
-        <button mat-raised-button class="footer-actions" (click) = "onPrevClick()">Previous</button>
-        <button mat-raised-button class="footer-actions footer-actions-green" (click) = "onSubmitClick()">Submit</button>
-    </div>
+<div class="heading">
+    <mat-icon>attachment</mat-icon>
+    <h4>Vendor Documents</h4>
 </div>
+
+<form [formGroup]="vendorDocumentForm">
+    <div class="row">
+        <div class="col-6 form-group row">
+            <mat-form-field class="full-width">
+                <input type="text" matInput placeholder="GST No." formControlName="gstNum" autocomplete="off" required>
+            </mat-form-field>
+        </div>
+        <div class="col-6 form-group row">
+            <mat-form-field class="full-width">
+                <input type="text" matInput placeholder="PAN No." formControlName="panNum" autocomplete="off" required>
+            </mat-form-field>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-6 form-group row">
+            <mat-form-field class="full-width">
+                <input type="text" matInput placeholder="PF No." formControlName="pfNum" autocomplete="off">
+            </mat-form-field>
+        </div>
+        <div class="col-6 form-group row">
+            <mat-form-field class="full-width">
+                <input type="text" matInput placeholder="ESI No." formControlName="esiNum" autocomplete="off">
+            </mat-form-field>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-6 form-group row">
+            <mat-form-field class="full-width">
+                <input type="text" matInput placeholder="CIN No." formControlName="cinNum" autocomplete="off">
+            </mat-form-field>
+        </div>
+        <div class="col-4 form-group row">
+            <mat-form-field class="full-width">
+                <input type="text" matInput placeholder="LUT No." formControlName="lutNum" autocomplete="off">
+            </mat-form-field>
+        </div>
+        <div class="col-2 form-group row">
+            <mat-form-field class="full-width">
+                <mat-label>Pick LUT Date</mat-label>
+                <input matInput [matDatepicker]="picker" formControlName="lutDate" disabled>
+                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-datepicker #picker disabled="false"></mat-datepicker>
+            </mat-form-field>
+        </div>
+    </div>
+    <div style="margin-bottom: 20px;"></div>
+    <div class="row">
+        <div class="col-6 form-group row" style="justify-content: space-between;">
+            <mat-label>SEZ/Non SEZ</mat-label>
+            <mat-radio-group aria-label="SEZ/Non SEZ" formControlName="isSez" style="width:50%">
+                <mat-radio-button [value]=true>SEZ</mat-radio-button>
+                <mat-radio-button [value]=false>Non-Sez</mat-radio-button>
+            </mat-radio-group>
+        </div>
+        <div class="col-6 form-group row" style="justify-content: space-between;">
+            <mat-label>Is RCM applicable?</mat-label>
+            <mat-radio-group aria-label="Is RCM applicable?" formControlName="isRcmApplicable">
+                <mat-radio-button [value]=true>YES</mat-radio-button>
+                <mat-radio-button [value]=false>NO</mat-radio-button>
+            </mat-radio-group>
+        </div>
+    </div>
+    <div style="margin-bottom: 10px;"></div>
+    <div class="row">
+        <div class="col-6 form-group row" style="justify-content: space-between;">
+
+            <mat-label>Is MSME registered?</mat-label>
+            <mat-radio-group aria-label="Is MSME registered?" formControlName="isMsmedRegistered" style="width:50%">
+                <mat-radio-button [value]=true>YES</mat-radio-button>
+                <mat-radio-button [value]=false>NO</mat-radio-button>
+            </mat-radio-group>
+        </div>
+        <div class="col-6 form-group row" style="justify-content: space-between;">
+
+            <mat-label>Have any TDS lower deduction certificate?</mat-label>
+            <mat-radio-group aria-label="Have any TDS lower deduction certificate?" formControlName="hasTdsLower">
+                <mat-radio-button [value]=true>YES</mat-radio-button>
+                <mat-radio-button [value]=false>NO</mat-radio-button>
+            </mat-radio-group>
+        </div>
+    </div>
+    <div class="row other-attachment">
+        <div class="col-9">
+            <mat-form-field class="full-width">
+                <mat-select placeholder="Document Description">
+                    <mat-option *ngFor="let d of documentsList" [value]="d.vendorMasterDocumentsId">
+                        {{ d.documentDescription }}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+        <div class="col-3 actions">
+            <button mat-raised-button class="footer-actions">Attach</button>
+            <mat-icon>visibility</mat-icon>
+        </div>
+    </div>
+</form>
+<div class="errortxt">
+    {{ failureMsg }}
+</div>
+<div class="row actions margin-unset">
+    <button mat-raised-button class="footer-actions" (click)="onPrevClick()">Previous</button>
+    <button mat-raised-button class="footer-actions footer-actions-green" (click)="onSubmitClick()">Submit</button>

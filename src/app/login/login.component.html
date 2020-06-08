@@ -9,7 +9,7 @@
       <div class="form-group">
         <mat-form-field class="example-full-width">
           <mat-label>Enter Email </mat-label>
-          <input matInput type="email" class="form-control" placeholder="Enter Email" formControlName="userId">
+          <input matInput type="email" placeholder="Enter Email" formControlName="userId">
         </mat-form-field>
 
           <small id="emailHelp" class="form-text text-muted text-description">(Enter Marlabs System Login Email)</small>
@@ -24,7 +24,7 @@
       <div class="form-group">
         <mat-form-field class="example-full-width">
           <mat-label>Enter Password </mat-label>
-          <input matInput type="password" class="form-control" placeholder="Enter Password" formControlName="password">
+          <input matInput type="password" placeholder="Enter Password" formControlName="password">
         </mat-form-field>
 
           <small id="emailHelp" class="form-text text-muted text-description">(Enter Marlabs System Password)</small>
@@ -37,6 +37,10 @@
       </div>
       <!-- errors -->
       <div class="errortxt loginerror">{{ errorMessage }}</div>
+
+      <div style="color: blue; cursor: pointer; margin-top: 50px" (click) = "onVendorRegistrationClickClick()">
+            Vendor Registration
+      </div>
 
       <!--  login button -->
       <div class="row actions margin-unset">

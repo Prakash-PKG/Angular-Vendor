@@ -1,75 +1,70 @@
-<div class="main">
-    <div class="title">
-        <h3>Vendor Address</h3>
+<div class="heading">
+    <mat-icon>perm_phone_msg</mat-icon>
+    <h4>Vendor Address</h4>
+</div>
+
+<form [formGroup]="vendorAddressForm">
+    <div class="row field">
+        <div class="col-6 form-group">
+            <mat-form-field class="full-width">
+                <input type="text" matInput placeholder="Address Line 1" formControlName="address1" autocomplete="off"
+                    required>
+            </mat-form-field>
+        </div>
+        <div class="col-6 form-group">
+            <mat-form-field class="full-width">
+                <input type="text" matInput placeholder="Address Line 2" formControlName="address2" autocomplete="off">
+            </mat-form-field>
+        </div>
     </div>
 
-    <form [formGroup]="vendorAddressForm">
-        <div class="row field">
+    <div class="row field">
 
-            <div class="col-6 form-group">
-                <mat-form-field class="full-width">
-                    <input type="text" matInput placeholder="Address Line 1" autocomplete="off">
-                </mat-form-field>
-            </div>
-
-            <div class="col-4 form-group">
-                <mat-form-field class="full-width">
-                    <input type="text" placeholder="Type/Choose City " matInput formControlName="city" autocomplete="off">
-                </mat-form-field>
-            </div>
-
-
-            <div class="col-2 form-group">
-                <mat-form-field class="full-width">
-                    <input type="text" placeholder="Pincode " matInput formControlName="pincode" autocomplete="off">
-                </mat-form-field>
-            </div>
-
+        <div class="col-6 form-group">
+            <mat-form-field class="full-width">
+                <input type="text" matInput placeholder="Street" formControlName="street" autocomplete="off" required>
+            </mat-form-field>
         </div>
-
-        <div class="row field">
-
-            <div class="col-6 form-group">
-                <mat-form-field class="full-width">
-                    <input type="text" matInput placeholder="Address Line 2" autocomplete="off">
-                </mat-form-field>
-            </div>
-
-            <div class="col-6 form-group">
-                <mat-form-field class="full-width">
-                    <input type="text" matInput placeholder="State" formControlName="stateName" autocomplete="off">
-                </mat-form-field>
-            </div>
-
+        <div class="col-4 form-group">
+            <mat-form-field class="full-width">
+                <input type="text" placeholder="Type/Choose City " matInput formControlName="city" autocomplete="off"
+                    required>
+            </mat-form-field>
         </div>
-
-        <div class="row field">
-
-            <div class="col-6 form-group">
-                <mat-form-field class="full-width">
-                    <input type="text" matInput placeholder="Street" formControlName="street" autocomplete="off">
-                </mat-form-field>
-            </div>
-
-            <div class="col-6 form-group">
-                <mat-form-field class="full-width">
-                    <mat-select formControlName="countryCode"  placeholder="Country">
-                        <mat-option *ngFor="let c of countryList" [value]="c.countryCode">
-                            {{ c.countryName }}
-                        </mat-option>
-                    </mat-select>
-                </mat-form-field>
-            </div>
-
+        <div class="col-2 form-group">
+            <mat-form-field class="full-width">
+                <input type="text" placeholder="Pincode " matInput formControlName="pincode" autocomplete="off">
+            </mat-form-field>
         </div>
-    </form>
-    <div class="errortxt">
-        {{ failureMsg }}
-    </div>
-    <div class="row actions margin-unset">
-        <button mat-raised-button class="footer-actions" (click)="onPrevClick()">Previous</button>
-
-        <button mat-raised-button class="footer-actions" (click)="onNextClick()">Next</button>
     </div>
 
+    <div class="row field">
+
+        <div class="col-6 form-group">
+            <mat-form-field class="full-width">
+                <mat-select formControlName="countryCode" placeholder="Country" required>
+                    <mat-option *ngFor="let c of countryList" [value]="c.countryCode">
+                        {{ c.countryName }}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+
+        <div class="col-6 form-group">
+            <mat-form-field class="full-width">
+                <mat-select formControlName="stateCode" placeholder="State" required>
+                    <mat-option *ngFor="let region of regionMasterVOList" [value]="region.regionCode">
+                        {{ region.regionDesc }}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+    </div>
+</form>
+<div class="errortxt">
+    {{ failureMsg }}
+</div>
+<div class="row actions margin-unset">
+    <button mat-raised-button class="footer-actions" (click)="onPrevClick()">Previous</button>
+    <button mat-raised-button class="footer-actions" (click)="onNextClick()">Next</button>
 </div>

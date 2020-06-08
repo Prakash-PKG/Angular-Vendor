@@ -11,7 +11,7 @@
     <ul class="menu">
         <li class="removehover" style="padding:0px;">
             <div class="creation-btn actions">
-                    <button mat-raised-button class="footer-actions"   [ngClass]="{' btn-collapsed': isSidebarCollapsed ==  true }">
+                    <button mat-raised-button class="footer-actions" (click) = "onInvoiceUploadClick()" [ngClass]="{' btn-collapsed': isSidebarCollapsed ==  true }">
                         <span *ngIf="isSidebarCollapsed === false" >Invoice Creation</span>
                         <span *ngIf="isSidebarCollapsed === true" ><mat-icon>create</mat-icon></span>
                     </button>
@@ -42,6 +42,12 @@
             </div>
             <div class="navtxt">Invoice Search</div>
         </li>
+        <li (click) = "onInvoiceApprovalClick()">
+            <div class="side-icon">
+                <mat-icon>local_offer</mat-icon>
+            </div>
+            <div class="navtxt">Invoice Approval</div>
+        </li>
         <li>
             <div class="side-icon">
                 <mat-icon>description</mat-icon>
@@ -55,12 +61,12 @@
             <div class="navtxt">Vendor</div>
         </li>
         <ul class="childdash">
-            <li [ngStyle]="{'padding-left': isSidebarCollapsed === true ? '1em': '2em' }" (click) = "onVendorRegistrationClickClick()">
+            <!--<li [ngStyle]="{'padding-left': isSidebarCollapsed === true ? '1em': '2em' }" (click) = "onVendorRegistrationClickClick()">
                 <div class="side-icon">
                     <mat-icon>how_to_reg</mat-icon>
                 </div>
                 <div class="navtxt">Vendor Registration</div>
-            </li>
+            </li>-->
             <li [ngStyle]="{'padding-left': isSidebarCollapsed === true ? '1em': '2em' }" (click) = "onEmpanelmentClick()">
                 <div class="side-icon">
                     <mat-icon>person</mat-icon>

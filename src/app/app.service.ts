@@ -8,8 +8,8 @@ import { DatePipe } from '@angular/common';
 })
 export class AppService {
 
-    //readonly domain = "http://localhost:8080";
-    readonly domain = "https://mvendor-dev.marlabs.com";  
+    readonly domain = "http://localhost:8080";
+    //readonly domain = "https://mvendor-dev.marlabs.com";  
     //readonly domain = "https://mtime.marlabs.com";  
     readonly baseUrl = this.domain + "/mvendor/";
     readonly customerAuthUrl = this.domain + "/customerAuth/oauth/token";
@@ -24,16 +24,16 @@ export class AppService {
         invoiceApproval: "/home/invapproval",
         invoiceDetails: "/home/invdetails",
         invoiceSearch:"/home/invsearch",
-        invUpload: "/home/invupload",
+        invoiceUpload: "/home/invupload",
         pendingApprovals: "/home/pendingapprovals",
         poDetails: "/home/podetails",
         vendorApproval: "/home/venapproval",
         empanelment: "/home/empanelment",
-        vendorDetails: "/home/vendor/vendetails",
-        vendorAddressDetails: "/home/vendor/venaddr",
-        vendorBankDetails: "/home/vendor/venbank",
-        vendorDocuments: "/home/vendor/vendocs",
-        vendorOther: "/home/vendor/venothers"
+        vendorDetails: "/vendor/vendetails",
+        vendorAddressDetails: "/vendor/venaddr",
+        vendorBankDetails: "/vendor/venbank",
+        vendorDocuments: "/vendor/vendocs",
+        vendorOther: "/vendor/venothers"
     };
 
     readonly pageConstants: any = {
@@ -62,9 +62,19 @@ export class AppService {
     readonly dbDateFormat: string = "yyyy-MM-dd"; // Server and DB expects this format, by changing this it will reflect in all places
     readonly displayDtFormat: string = "dd MMM yyyy"; // Displays dates in this format. By changing this, total application date formats will change
     
+    readonly dbDateTimeFormat: string = "yyyy-MM-dd HH:mm:ss";
+
     getFormattedDate(dtStr: string) {
         if(dtStr) {
             return this._datePipe.transform(new Date(dtStr), this.displayDtFormat);
+        }
+        
+        return "";
+    }
+
+    getFormattedDateTime(dtStr: string) {
+        if(dtStr) {
+            return this._datePipe.transform(new Date(dtStr), this.dbDateTimeFormat);
         }
         
         return "";
@@ -82,7 +92,7 @@ export class AppService {
         floorNum: null,
         street: null,
         city: null,
-        stateName: null,
+        stateCode: null,
         countryCode: null,
         countryName: null,
         pincode: null,
@@ -99,8 +109,8 @@ export class AppService {
         isSez: false,
         isRcmApplicable: false,
         lutNum: null,
-        lut_date: null,
-        paymentTerms: null,
+        lutDate: null,
+        // paymentTerms: null,
         cinNum: null,
         isMsmedRegistered: false,
         pfNum: null,
@@ -116,7 +126,19 @@ export class AppService {
         bankBranch: null,
         bankCity: null,
         bankRegion: null,
-        bankCountry: null
+        bankCountry: null,
+        address1: null,
+        address2: null,
+        bankRegionName: null,
+        bankCountryName: null,
+        stateName:null,
+        groupCode:  null,
+        companyCode:  null,
+        currencyCode:  null,
+        procRemark:  null,
+        procApprByName:  null,
+        finApprByName: null,
+        finRemark:  null
     };
 
     resetVendorRegistrationDetails() {
@@ -132,7 +154,7 @@ export class AppService {
             floorNum: null,
             street: null,
             city: null,
-            stateName: null,
+            stateCode: null,
             countryCode: null,
             countryName: null,
             pincode: null,
@@ -149,8 +171,8 @@ export class AppService {
             isSez: false,
             isRcmApplicable: false,
             lutNum: null,
-            lut_date: null,
-            paymentTerms: null,
+            lutDate: null,
+            // paymentTerms: null,
             cinNum: null,
             isMsmedRegistered: false,
             pfNum: null,
@@ -166,7 +188,19 @@ export class AppService {
             bankBranch: null,
             bankCity: null,
             bankRegion: null,
-            bankCountry: null
+            bankCountry: null,
+            address1: null,
+            address2: null,
+            bankRegionName: null,
+            bankCountryName: null,
+            stateName:null,
+            groupCode:  null,
+            companyCode:  null,
+            currencyCode:  null,
+            procRemark:  null,
+            procApprByName:  null,
+            finApprByName: null,
+            finRemark:  null
         };
 
         return regDetails;

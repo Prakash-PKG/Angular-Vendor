@@ -2,11 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
-import { HomeService } from './../home/home.service';
 import { AppService } from '../app.service';
 import { VendorRegistrationService } from './../vendor-registration/vendor-registration.service';
 
 import { BusyDataModel, VendorRegistrationRequestModel, VendorRegistrationResultModel, CountryDataModel, regionMasterVOList } from './../models/data-models';
+import { HomeService } from '../home/home.service';
 
 @Component({
     selector: 'app-vendor-bank-details',
@@ -21,17 +21,17 @@ export class VendorBankDetailsComponent implements OnInit {
     regionMasterVOList: regionMasterVOList[] = [];
 
     constructor(private _appService: AppService,
-        private _homeService: HomeService,
         private _vendorRegistrationService: VendorRegistrationService,
         private _router: Router,
-        private _formBuilder: FormBuilder) { }
+        private _formBuilder: FormBuilder,
+        private _homeService: HomeService) { }
 
     onPrevClick() {
         this._router.navigate([this._appService.routingConstants.vendorAddressDetails]);
     }
 
     onNextClick() {
-        this._router.navigate([this._appService.routingConstants.vendorDocuments]);
+        // this._router.navigate([this._appService.routingConstants.vendorDocuments]);
 
         this.failureMsg = "";
 
@@ -55,10 +55,10 @@ export class VendorBankDetailsComponent implements OnInit {
                 action: this._appService.updateOperations.save,
                 vendorMasterDetails: this._appService.vendorRegistrationDetails
             }
-            this._homeService.updateBusy(<BusyDataModel>{ isBusy: true, msg: null });
+            this._vendorRegistrationService.updateBusy(<BusyDataModel>{ isBusy: true, msg: null });
             this._vendorRegistrationService.updateVendorRegistrationDetails(req)
                 .subscribe(response => {
-                    this._homeService.updateBusy(<BusyDataModel>{ isBusy: false, msg: null });
+                    this._vendorRegistrationService.updateBusy(<BusyDataModel>{ isBusy: false, msg: null });
 
                     if (response.body) {
                         let result: VendorRegistrationResultModel = response.body as VendorRegistrationResultModel;
@@ -72,7 +72,7 @@ export class VendorBankDetailsComponent implements OnInit {
                     }
                 },
                     (error) => {
-                        this._homeService.updateBusy(<BusyDataModel>{ isBusy: false, msg: null });
+                        this._vendorRegistrationService.updateBusy(<BusyDataModel>{ isBusy: false, msg: null });
                         console.log(error);
                     });
         }
@@ -116,11 +116,12 @@ export class VendorBankDetailsComponent implements OnInit {
             bankCity: [null, [Validators.required]],
             bankRegion: [null, [Validators.required]],
             bankCountry: [null, [Validators.required]],
-            swiftIbanCode: [null, [Validators.required]],
-            routingBank: [null, [Validators.required]],
-            swiftInterm: [null, [Validators.required]],
+            swiftIbanCode: [null],
+            routingBank: [null],
+            swiftInterm: [null],
         });
 
+        this._homeService.updateCurrentPageDetails({ pageName: 'venBank' });
         this.updateVendorDetails();
     }
 

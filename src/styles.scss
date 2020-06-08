@@ -165,6 +165,7 @@ button {
   padding: 0em 1em 1em;
   max-width: unset;
   overflow: auto;
+  min-height: -webkit-fill-available;
 }
 .actions .footer-actions {
   background-color: blueviolet;
@@ -190,6 +191,7 @@ padding: 20px;
 padding-bottom: 0px;
 display: flex;
 flex-direction: column;
+min-height: -webkit-fill-available;
 }
 .errortxt {
   color: #ce2a0e;
@@ -198,4 +200,5 @@ flex-direction: column;
 }
 .title{
   color: blueviolet;
+  font-size: x-large;
 }

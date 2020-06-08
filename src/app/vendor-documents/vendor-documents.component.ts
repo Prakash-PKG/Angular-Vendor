@@ -2,11 +2,12 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
-import { HomeService } from './../home/home.service';
 import { AppService } from '../app.service';
 import { VendorRegistrationService } from './../vendor-registration/vendor-registration.service';
 
 import { BusyDataModel, VendorRegistrationRequestModel, VendorRegistrationResultModel, VendorMasterDocumentModel } from './../models/data-models';
+import { DatePipe } from '@angular/common';
+import { HomeService } from '../home/home.service';
 
 @Component({
     selector: 'app-vendor-documents',
@@ -20,10 +21,11 @@ export class VendorDocumentsComponent implements OnInit {
     documentsList: VendorMasterDocumentModel[] = [];
 
     constructor(private _appService: AppService,
-        private _homeService: HomeService,
         private _vendorRegistrationService: VendorRegistrationService,
         private _router: Router,
-        private _formBuilder: FormBuilder) { }
+        private _formBuilder: FormBuilder,
+        private _datePipe: DatePipe,
+        private _homeService:HomeService) { }
 
     onPrevClick() {
         this._router.navigate([this._appService.routingConstants.vendorBankDetails]);
@@ -33,18 +35,26 @@ export class VendorDocumentsComponent implements OnInit {
         this.failureMsg = "";
 
         if (this.vendorDocumentForm.valid) {
-
-            this._appService.vendorRegistrationDetails.gstNum = this.vendorDocumentForm.get("gstNum").value;
             this._appService.vendorRegistrationDetails.panNum = this.vendorDocumentForm.get("panNum").value;
-
+            this._appService.vendorRegistrationDetails.gstNum = this.vendorDocumentForm.get("gstNum").value;
+            this._appService.vendorRegistrationDetails.pfNum = this.vendorDocumentForm.get("pfNum").value;
+            this._appService.vendorRegistrationDetails.esiNum = this.vendorDocumentForm.get("esiNum").value;
+            this._appService.vendorRegistrationDetails.cinNum = this.vendorDocumentForm.get("cinNum").value;
+            this._appService.vendorRegistrationDetails.isSez = this.vendorDocumentForm.get("isSez").value;
+            this._appService.vendorRegistrationDetails.isRcmApplicable = this.vendorDocumentForm.get("isRcmApplicable").value;
+            this._appService.vendorRegistrationDetails.isMsmedRegistered = this.vendorDocumentForm.get("isMsmedRegistered").value;
+            this._appService.vendorRegistrationDetails.hasTdsLower = this.vendorDocumentForm.get("hasTdsLower").value;
+            this._appService.vendorRegistrationDetails.lutNum = this.vendorDocumentForm.get("lutNum").value;
+            this._appService.vendorRegistrationDetails.lutDate = this._datePipe.transform(this.vendorDocumentForm.get("lutDate").value, this._appService.dbDateFormat);
+           
             let req: VendorRegistrationRequestModel = {
                 action: this._appService.updateOperations.submit,
                 vendorMasterDetails: this._appService.vendorRegistrationDetails
             }
-            this._homeService.updateBusy(<BusyDataModel>{ isBusy: true, msg: null });
+            this._vendorRegistrationService.updateBusy(<BusyDataModel>{ isBusy: true, msg: null });
             this._vendorRegistrationService.updateVendorRegistrationDetails(req)
                 .subscribe(response => {
-                    this._homeService.updateBusy(<BusyDataModel>{ isBusy: false, msg: null });
+                    this._vendorRegistrationService.updateBusy(<BusyDataModel>{ isBusy: false, msg: null });
 
                     if (response.body) {
                         let result: VendorRegistrationResultModel = response.body as VendorRegistrationResultModel;
@@ -58,15 +68,24 @@ export class VendorDocumentsComponent implements OnInit {
                     }
                 },
                 (error) => {
-                    this._homeService.updateBusy(<BusyDataModel>{ isBusy: false, msg: null });
+                    this._vendorRegistrationService.updateBusy(<BusyDataModel>{ isBusy: false, msg: null });
                     console.log(error);
                 });
         }
     }
 
     updateVendorDetails() {
-        this.vendorDocumentForm.get("gstNum").setValue(this._appService.vendorRegistrationDetails.gstNum);
         this.vendorDocumentForm.get("panNum").setValue(this._appService.vendorRegistrationDetails.panNum);
+        this.vendorDocumentForm.get("gstNum").setValue(this._appService.vendorRegistrationDetails.gstNum);
+        this.vendorDocumentForm.get("pfNum").setValue(this._appService.vendorRegistrationDetails.pfNum);
+        this.vendorDocumentForm.get("esiNum").setValue(this._appService.vendorRegistrationDetails.esiNum);
+        this.vendorDocumentForm.get("cinNum").setValue(this._appService.vendorRegistrationDetails.cinNum);
+        this.vendorDocumentForm.get("isSez").setValue(this._appService.vendorRegistrationDetails.isSez);
+        this.vendorDocumentForm.get("isRcmApplicable").setValue(this._appService.vendorRegistrationDetails.isRcmApplicable);
+        this.vendorDocumentForm.get("isMsmedRegistered").setValue(this._appService.vendorRegistrationDetails.isMsmedRegistered);
+        this.vendorDocumentForm.get("hasTdsLower").setValue(this._appService.vendorRegistrationDetails.hasTdsLower);
+        this.vendorDocumentForm.get("lutNum").setValue(this._appService.vendorRegistrationDetails.lutNum);
+        this.vendorDocumentForm.get("lutDate").setValue(new Date(this._appService.vendorRegistrationDetails.lutDate));
     }
 
     ngOnInit() {
@@ -77,10 +96,22 @@ export class VendorDocumentsComponent implements OnInit {
         }
 
         this.vendorDocumentForm = this._formBuilder.group({
+          
+            panNum: [null, [Validators.required]],
             gstNum: [null, [Validators.required]],
-            panNum: [null, [Validators.required]]
+            pfNum:[null],
+            esiNum:[null],
+            cinNum:[null],
+            isSez:[null],
+            isRcmApplicable:[null],
+            isMsmedRegistered:[null],
+            hasTdsLower:[null],
+            lutNum:[null],
+            lutDate:[null]
+            
         });
-
+        
+        this._homeService.updateCurrentPageDetails({ pageName: 'venDoc' });
         this.updateVendorDetails();
     }
 
