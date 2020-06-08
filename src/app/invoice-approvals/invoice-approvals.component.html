@@ -5,59 +5,51 @@
     <!-- -----------------------------------stepper---------------------------------------------- -->
     <ul class="stepper">
         <li class="step completed">
-            <span class="upper-text">06 Feb 2020</span>
+            <span class="upper-text"></span>
             <span class="dot"></span>
             <span class="lower-text">
-        Invoice Upload
-      </span>
+                Invoice Upload
+            </span>
         </li>
 
-        <li class="step completed">
-            <span class="upper-text">15 Feb 2020</span>
+        <li class="step" [ngClass]="isPOCompleted == true ? 'completed' : ''">
+            <span class="upper-text"></span>
             <span class="dot"></span>
             <span class="lower-text">
-        Invoice Validation
-      </span>
+                PO Approval
+            </span>
         </li>
-        <li class="step completed">
-            <span class="upper-text">27 Feb 2020</span>
+
+        <li class="step" [ngClass]="isFunctionalHeadCompleted == true ? 'completed' : ''">
+            <span class="upper-text"></span>
             <span class="dot"></span>
             <span class="lower-text">
-        Buyer Approval
-      </span>
+                Functional Head Approval
+            </span>
         </li>
 
         <li class="step">
             <span class="upper-text"></span>
             <span class="dot"></span>
             <span class="lower-text">
-        Business Head Approval
-      </span>
+                Finance Approval
+            </span>
         </li>
 
         <li class="step">
             <span class="upper-text"></span>
             <span class="dot"></span>
             <span class="lower-text">
-        Finance Approval
-      </span>
-        </li>
-
-        <li class="step">
-            <span class="upper-text"></span>
-            <span class="dot"></span>
-            <span class="lower-text">
-        Payment
-      </span>
+                Payment
+            </span>
         </li>
     </ul>
 
-
     <div class="search-row">
         <div class="search-row-element">
-            <div class="search-row-element">
+            <div class="search-row-element" *ngIf="isPOInvoice == true">
                 <mat-label>PO No.</mat-label>
-                <div class="value">{{ initDetails?.invoiceDetails?.purchaseOrderId }}</div>
+                <div class="value">{{ initDetails?.poDetails?.poNumber }}</div>
             </div>
 
             <div class="search-row-element">
@@ -67,15 +59,12 @@
 
             <div class="search-row-element">
                 <mat-label>Invoice Date</mat-label>
-                <div class="value">{{ initDetails?.invoiceDetails?.invoiceDate }}</div>
+                <div class="value">{{ getFormattedDate(initDetails?.invoiceDetails?.invoiceDate) }}</div>
             </div>
-        </div>
-        <div class="search-row-element">
-            <div class="search-row-element">
-                <mat-label>Total Invoice Amount
-                    <div class="smaller-text">Including Tax</div>
-                </mat-label>
-                <div class="value">{{ initDetails?.invoiceDetails?.totalAmt }}</div>
+
+            <div class="search-row-element" *ngIf="isPOInvoice == false">
+                <mat-label>Currency</mat-label>
+                <div class="value">{{ initDetails?.invoiceDetails?.currencyType }}</div>
             </div>
 
             <div class="search-row-element">
@@ -83,14 +72,48 @@
                 <div class="value">{{ initDetails?.invoiceDetails?.remarks }}</div>
             </div>
         </div>
-        <div>
-            <mat-label>Remarks</mat-label>
-            <input class="inv-qty" [(ngModel)] = "remarks">
+        <div class="search-row-element">
+            <div class="search-row-element">
+                <mat-label>Freight Charges
+                </mat-label>
+                <div class="value">{{ initDetails?.invoiceDetails?.freightCharges }}</div>
+            </div>
+
+            <div class="search-row-element">
+                <mat-label>Total Tax Amount
+                </mat-label>
+                <div class="value">{{ initDetails?.invoiceDetails?.totalTax }}</div>
+            </div>
+
+            <div class="search-row-element">
+                <mat-label>Total Invoice Amount
+                    <div class="smaller-text">Including Tax</div>
+                </mat-label>
+                <div class="value">{{ initDetails?.invoiceDetails?.totalAmt }}</div>
+            </div>
         </div>
+
         <div class="actions search-row-element">
             <button mat-raised-button class="footer-actions footer-actions-green">Invoice Attachments</button>
             <button mat-raised-button class="footer-actions footer-actions-green">Supporting Attachments</button>
         </div>
+    </div>
+
+    <div>
+        <mat-label>Remarks</mat-label>
+        <input class="inv-qty" [(ngModel)]="remarks">
+    </div>
+
+    <div>
+        <mat-label>GRN/SES No.</mat-label>
+        <mat-form-field class="full-width">
+            <mat-label>Choose PO No.</mat-label>
+            <mat-select matNativeControl formControlName="poList">
+                <mat-option *ngFor="let p of poList" [value]="p.poNumber">
+                    {{ p.poNumber }}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
     </div>
 
     <!-- table details [dataSource]="POData"-->
@@ -114,19 +137,19 @@
                     <td>
                         {{ item.hsn }}
                     </td>
-                    <td>
+                    <td *ngIf="isPOInvoice == true">
                         {{ item.orderedUnits }}
                     </td>
-                    <td>
+                    <td *ngIf="isPOInvoice == true">
                         {{ item.suppliedUnits }}
                     </td>
-                    <td>
+                    <td *ngIf="isPOInvoice == true">
                         {{ item.consumedUnits }}
                     </td>
                     <td>
                         {{ item.invoiceUnits }}
                     </td>
-                    <td>
+                    <td *ngIf="isPOInvoice == true">
                         {{ getCurrencyType() }}
                     </td>
                     <td>

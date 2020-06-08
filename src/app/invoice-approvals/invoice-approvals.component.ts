@@ -15,13 +15,22 @@ export class InvoiceApprovalsComponent implements OnInit {
     isDashboardCollapsed: boolean = true;
     _sidebarExpansionSubscription: any = null;
 
-    headerArr: string[] = ['Item#', "Item Description", "HSN/SAC", "Ordered Units", "Supplied Units", "Consumed Units", "Invoiced Units", "Currency" , "Unit Price", "Total Amount"];
+    headerArr: string[] = [];
+    nonPOHeaderArr: string [] = ['Item No.', 'Item Desc', "HSN/SAC", 'Invoive Qty', 'Rate', 'Amount'];
+    poHeaderArr: string[] = ['Item No.', 'Item Desc', "HSN/SAC", 'Order Qty', 'Supplied Qty', 'Balance Qty', 
+                            'Invoive Qty', 'Currency', 'Rate', 'Amount'];
 
     initDetails: InvoiceApprovalInitResultModel = null;
 
     msg: string = "";
 
     remarks: string = "";
+
+    isPOInvoice: boolean = false;
+
+    isPOCompleted: boolean = false;
+    isFunctionalHeadCompleted: boolean = false;
+    //isFinanceCompleted: boolean = false;
 
     constructor(private _homeService: HomeService,
                 private _appService: AppService,
@@ -36,6 +45,14 @@ export class InvoiceApprovalsComponent implements OnInit {
         return this.initDetails.poDetails.currencyType;
     }
 
+    getFormattedDate(dtStr: string) {
+        if(dtStr) {
+            return this._appService.getFormattedDate(dtStr);
+        }
+        
+        return "";
+    }
+
     async loadInitData() {
         if(this._appService.selectedPendingApprovalRecord) {
             let req: InvoiceApprovalInitReqModel = {
@@ -48,6 +65,18 @@ export class InvoiceApprovalsComponent implements OnInit {
             }
             this._homeService.updateBusy(<BusyDataModel>{ isBusy: true, msg: "Loading..." });
             this.initDetails = await this._invoiceApprovalsService.getInvoiceApprovalInitData(req);
+            this.isPOInvoice = false;
+            if(this.initDetails && this.initDetails.poDetails && this.initDetails.poDetails.purchaseOrderId && this.initDetails.poDetails.poNumber) {
+                this.isPOInvoice = true;
+            }
+
+            if(this.isPOInvoice) {
+                this.headerArr = this.poHeaderArr.concat();
+            }
+            else {
+                this.headerArr = this.nonPOHeaderArr.concat();
+            }
+
             this._homeService.updateBusy(<BusyDataModel>{ isBusy: false, msg: null });
         }
     }
@@ -100,6 +129,24 @@ export class InvoiceApprovalsComponent implements OnInit {
             });
     }
 
+    updateStatusFlow() {
+        this.isPOCompleted = false;
+        this.isFunctionalHeadCompleted = false;
+        //this.isFinanceCompleted = false;
+        if(globalConstant && globalConstant.userDetails) {
+            // if(globalConstant.userDetails.poDepts && globalConstant.userDetails.poDepts.length > 0) {
+            //     this.isPOCompleted = true;
+            // }
+            if(globalConstant.userDetails.isFunctionalHead) {
+                this.isPOCompleted = true;
+            }
+            else if(globalConstant.userDetails.isFinance) {
+                this.isPOCompleted = true;
+                this.isFunctionalHeadCompleted = true;
+            }
+        }
+    }
+
     ngOnDestroy() {
         if (this._sidebarExpansionSubscription) {
             this._sidebarExpansionSubscription.unsubscribe();
@@ -107,6 +154,8 @@ export class InvoiceApprovalsComponent implements OnInit {
     }
 
     ngOnInit() {
+        this.updateStatusFlow();
+
         this.isDashboardCollapsed = true;
 
         this._sidebarExpansionSubscription = this._homeService.isSidebarCollapsed.subscribe(data => {

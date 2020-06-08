@@ -1,4 +1,5 @@
-import { InvoiceApprovalInitReqModel, InvoiceApprovalInitResultModel, UpdateInvoiceApprovalReqModel } from './../models/data-models';
+import { InvoiceApprovalInitReqModel, InvoiceApprovalInitResultModel, 
+    UpdateInvoiceApprovalReqModel, GrnSesModel } from './../models/data-models';
 import { Injectable } from '@angular/core';
 import { AppService } from './../app.service';
 import { HttpClient } from '@angular/common/http';
@@ -28,7 +29,16 @@ export class InvoiceApprovalsService {
             initModel.invoiceDetails = data["invoiceDetails"];
             initModel.itemsList = data["itemsList"]; 
             initModel.approvalDetails = data["approvalDetails"];  
-            initModel.poDetails = data["poDetails"];     
+            initModel.poDetails = data["poDetails"];    
+            initModel.grnSesList = data["grnSesList"]; 
+        }
+
+        for(let i = 0; i < 2; i++) {
+            let gsModel: GrnSesModel = {
+                grnSesNumber: "GRN00" + (i + 1)
+            }
+
+            initModel.grnSesList.push(gsModel);
         }
 
         return initModel;

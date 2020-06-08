@@ -36,8 +36,15 @@ export class InvoiceUploadReqModel {
     departments: string[];
 }
 
+export class InvoiceFileTypwModel {
+    fileType: string;
+    invoiceFileTypesId: number;
+}
+
 export class InvoiceUploadResultModel {
     poList: PODetailsModel[];
+    invoiceFileTypes: InvoiceFileTypwModel[];
+    currencyList: currencyMasterList[];
     statusDetails: StatusModel;
 }
 
@@ -263,6 +270,7 @@ export class AccGroupMasterList {
 export class currencyMasterList {
     currencyCode: string;
     currencyDesc: string;
+    currencyMasterId: number;
 }
 
 export class POItemsRequestModel {
@@ -300,6 +308,7 @@ export class InvoiceDetailsModel {
     grnSesNumber: string;
     statusCode: string;
     totalTax: string;
+    currencyType: string;
     createdBy: string;
     createdDate: string;
 }
@@ -333,6 +342,11 @@ export class InvoiceApprovalInitResultModel {
     itemsList: ItemModel[];
     approvalDetails: InvoiceApprovalModel;
     poDetails: PODetailsModel;
+    grnSesList: GrnSesModel[];
+}
+
+export class GrnSesModel {
+    grnSesNumber: string;
 }
 
 export class InvoiceApprovalModel {

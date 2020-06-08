@@ -1,8 +1,8 @@
 import { globalConstant } from './../common/global-constant';
 import { AppService } from './../app.service';
 import { InvoiceUploadService } from './invoice-upload.service';
-import { BusyDataModel, InvoiceUploadResultModel, InvoiceUploadReqModel, InvoiceDocumentReqModel, 
-        PODetailsModel, POItemsRequestModel, POItemsResultModel, ItemModel, FileDetailsModel,
+import { BusyDataModel, InvoiceUploadResultModel, InvoiceUploadReqModel, InvoiceDocumentReqModel, currencyMasterList, 
+        PODetailsModel, POItemsRequestModel, POItemsResultModel, ItemModel, FileDetailsModel, InvoiceFileTypwModel, 
         UpdateInvoiceRequestModel, UpdateInvoiceResultModel } from './../models/data-models';
 import { Component, OnInit } from '@angular/core';
 import { HomeService } from '../home/home.service';
@@ -18,7 +18,10 @@ export class InvoiceUploadComponent implements OnInit {
     isDashboardCollapsed: boolean = true;
     _sidebarExpansionSubscription: any = null;
 
-    headerArr: string[] = ['Item No.', 'Item Desc', "HSN/SAC", 'Order Qty', 'Supplied Qty', 'Balance Qty', 'Invoive Qty', 'Rate', 'Amount'];
+    headerArr: string[] = [];
+    nonPOHeaderArr: string [] = ['Item No.', 'Item Desc', "HSN/SAC", 'Invoive Qty', 'Rate', 'Amount'];
+    poHeaderArr: string[] = ['Item No.', 'Item Desc', "HSN/SAC", 'Order Qty', 'Supplied Qty', 'Balance Qty', 
+                            'Invoive Qty', 'Currency', 'Rate', 'Amount'];
 
     _initDetails: InvoiceUploadResultModel = null;
     _poItemsResultDetails: POItemsResultModel = null;
@@ -36,12 +39,41 @@ export class InvoiceUploadComponent implements OnInit {
 
     selectedInvoiceType: string = "po";
 
+    selectedPOItem: PODetailsModel = null;
+
+    currency: string = "";
+
+    invoiceFileTypeId: number = null;
+    supportFileTypeId: number = null;
+
+    currencyList: currencyMasterList[] = [];
+
+    isSelectedInvoiceTypeVisible: boolean = true;
+
     constructor(private _homeService: HomeService, 
                 private _appService: AppService,
                 private _formBuilder: FormBuilder,
                 private _invoiceUploadService: InvoiceUploadService) { }
 
     get f() { return this.invoiceUploadForm.controls; }
+
+    onInvoiceTypeChange(evtData) {
+        this.resetAllFields();
+        
+        if(evtData.value == "po") {
+            this.headerArr = this.poHeaderArr.concat();
+        }
+        else {
+            this.headerArr = this.nonPOHeaderArr.concat();
+        }
+    }
+
+    resetAllFields() {
+        this.invoiceUploadForm.reset();
+        this.removeItems();
+        this.currency = "";
+        this.selectedPOItem = null;
+    }
 
     onNewClick() {
         const formsList = <FormArray>this.invoiceUploadForm.controls['itemsList'];
@@ -84,7 +116,7 @@ export class InvoiceUploadComponent implements OnInit {
                         actualFileName: file.name,
                         uniqueFileName: null,
                         fileData: null,
-                        documentTypeId: 1,
+                        documentTypeId: this.invoiceFileTypeId,
                         fileId: null
                     };
                     this.invoiceFilesList.push(fileDetails);
@@ -110,23 +142,23 @@ export class InvoiceUploadComponent implements OnInit {
     }
 
     onInvoiceAttachFileClick() {
-        if(this.invoiceUpdateResults && this.invoiceUpdateResults.invoiceDetails && this.invoiceUpdateResults.invoiceDetails.invoiceId) {
-            let filesReq: InvoiceDocumentReqModel = {
-                invoiceId: this.invoiceUpdateResults.invoiceDetails.invoiceId,
-                fileDetails: this.invoiceFilesList
-            }
-
-            this._homeService.updateBusy(<BusyDataModel>{ isBusy: true, msg: "Attaching..." });
-            this._invoiceUploadService.uploadInvoiceDocuments(filesReq)
-                .subscribe(response => {
-                    this._homeService.updateBusy(<BusyDataModel>{ isBusy: false, msg: null });
-                    this.invoiceFilesList = [];
-                },
-                (error) => {
-                    this._homeService.updateBusy(<BusyDataModel>{ isBusy: false, msg: null });
-                    console.log(error);
-                });
+        let invId = (this.invoiceUpdateResults && this.invoiceUpdateResults.invoiceDetails && this.invoiceUpdateResults.invoiceDetails.invoiceId) ?
+        this.invoiceUpdateResults.invoiceDetails.invoiceId : null;
+        let filesReq: InvoiceDocumentReqModel = {
+            invoiceId: invId,
+            fileDetails: this.invoiceFilesList
         }
+
+        this._homeService.updateBusy(<BusyDataModel>{ isBusy: true, msg: "Attaching..." });
+        this._invoiceUploadService.uploadInvoiceDocuments(filesReq)
+            .subscribe(response => {
+                this._homeService.updateBusy(<BusyDataModel>{ isBusy: false, msg: null });
+                this.invoiceFilesList = [];
+            },
+            (error) => {
+                this._homeService.updateBusy(<BusyDataModel>{ isBusy: false, msg: null });
+                console.log(error);
+            });
     }
 
     onSupportingBrowseClick(event: any) {
@@ -158,7 +190,7 @@ export class InvoiceUploadComponent implements OnInit {
                         actualFileName: file.name,
                         uniqueFileName: null,
                         fileData: null,
-                        documentTypeId: 2,
+                        documentTypeId: this.supportFileTypeId,
                         fileId: null
                     };
                     this.supportingFilesList.push(fileDetails);
@@ -228,6 +260,20 @@ export class InvoiceUploadComponent implements OnInit {
         this.invoiceUploadForm.get("totalInvAmt").setValue(totalInvAmt);
     }
 
+    prepareInvoiceFileTypes() {
+        this.invoiceFileTypeId = null;
+        this.supportFileTypeId = null;
+        if(this._initDetails && this._initDetails.invoiceFileTypes && this._initDetails.invoiceFileTypes.length > 0) {
+            let invoiceFileTypeItem: InvoiceFileTypwModel = this._initDetails.invoiceFileTypes.find(ft => ft.fileType == "invoice");
+            if(invoiceFileTypeItem) {
+                this.invoiceFileTypeId = invoiceFileTypeItem.invoiceFileTypesId;
+            }
+
+            let supportFileTypeItem: InvoiceFileTypwModel = this._initDetails.invoiceFileTypes.find(ft => ft.fileType == "support");
+            this.supportFileTypeId = supportFileTypeItem.invoiceFileTypesId;
+        }
+    }
+
     async loadInitData() {
 
         let req: InvoiceUploadReqModel = {
@@ -237,12 +283,25 @@ export class InvoiceUploadComponent implements OnInit {
         }
         this._homeService.updateBusy(<BusyDataModel>{ isBusy: true, msg: "Loading..." });
         this._initDetails = await this._invoiceUploadService.getInvoiceUploadInitData(req);
-        this.poList = this._initDetails.poList.concat();
+        if(this._initDetails) {
+            this.prepareInvoiceFileTypes();
+            this.poList = this._initDetails.poList.concat();
+            this.currencyList = this._initDetails.currencyList.concat();
+        }
         this._homeService.updateBusy(<BusyDataModel>{ isBusy: false, msg: null });
 
         this.invoiceUploadForm.get("poList").valueChanges.subscribe(val => {
+            this.selectedPOItem = null;
             if(val) {
+                this.selectedPOItem = this.poList.find( p => p.poNumber == val);
+                this.currency = this.selectedPOItem.currencyType;
                 this.loadPOItems();
+            }
+        });
+
+        this.invoiceUploadForm.get("currency").valueChanges.subscribe(val => {
+            if(val) {
+                this.currency = val;
             }
         });
     }
@@ -303,17 +362,16 @@ export class InvoiceUploadComponent implements OnInit {
     }
 
     updateInvoiceDetails(action: string) {
-        let selectedPOItem: PODetailsModel = null;
         let poNumber = null;
         if(this.selectedInvoiceType == 'po') {
-            let poNumber = this.invoiceUploadForm.get("poList").value;
-            selectedPOItem = this.poList.find( p => p.poNumber = poNumber);
-            if(!selectedPOItem) {
+            if(!this.selectedPOItem) {
                 return false;
             }
+
+            poNumber = this.selectedPOItem.poNumber;
         }
         else {
-            selectedPOItem = {
+            this.selectedPOItem = {
                 poNumber: null,
                 purchaseOrderId: null,
                 currencyType: null,
@@ -346,10 +404,10 @@ export class InvoiceUploadComponent implements OnInit {
         let req: UpdateInvoiceRequestModel = {
             action: action,
             userId: (this.selectedInvoiceType == 'po') ? globalConstant.userDetails.userEmail : globalConstant.userDetails.userId,
-            poDetails: selectedPOItem,
+            poDetails: this.selectedPOItem,
             invoiceDetails: {
                 invoiceId: null,
-                purchaseOrderId: (selectedPOItem) ? selectedPOItem.purchaseOrderId : null,
+                purchaseOrderId: (this.selectedPOItem) ? this.selectedPOItem.purchaseOrderId : null,
                 invoiceNumber: this.invoiceUploadForm.get("invoiceNumber").value,
                 invoiceDate: this._appService.getFormattedDateTime(this.invoiceUploadForm.get("invoiceDate").value),
                 remarks: this.invoiceUploadForm.get("remarks").value,
@@ -358,6 +416,7 @@ export class InvoiceUploadComponent implements OnInit {
                 grnSesNumber: null,
                 statusCode: null,
                 totalTax: this.invoiceUploadForm.get("totalTax").value,
+                currencyType: this.currency,
                 createdBy: null,
                 createdDate: null
             },
@@ -392,7 +451,11 @@ export class InvoiceUploadComponent implements OnInit {
     }
 
     ngOnInit() {
+        this.isSelectedInvoiceTypeVisible = (globalConstant.userDetails.isVendor) ? false : true;
+
         this.isDashboardCollapsed = true;
+
+        this.headerArr = this.poHeaderArr.concat();
 
         this._sidebarExpansionSubscription = this._homeService.isSidebarCollapsed.subscribe(data => {
             this.isDashboardCollapsed = !data;
@@ -405,8 +468,9 @@ export class InvoiceUploadComponent implements OnInit {
             remarks: [ null, Validators.required ],
             freightCharges: [ null, Validators.required ],
             totalTax: [ null, Validators.required ],
-            totalItemsAmt: [ null ],
-            totalInvAmt: [ null, Validators.required ],
+            totalItemsAmt: [ "" ],
+            totalInvAmt: [ "", Validators.required ],
+            currency: null,
             createdBy: null,
             createdDate: null,
             itemsList: this._formBuilder.array([], Validators.required)

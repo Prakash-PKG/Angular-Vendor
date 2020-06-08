@@ -2,11 +2,11 @@
     <div class="title">
         <h3>Invoice Creation</h3>
     </div>
-    <mat-radio-group class="tp-radio-group" [(ngModel)]="selectedInvoiceType">
-        <mat-radio-button class="tp-radio-button" value="po">
+    <mat-radio-group class="tp-radio-group" [(ngModel)]="selectedInvoiceType" *ngIf = "isSelectedInvoiceTypeVisible == true">
+        <mat-radio-button class="tp-radio-button" value="po" (change)="onInvoiceTypeChange($event)">
             PO Invoice
         </mat-radio-button>
-        <mat-radio-button class="tp-radio-button" value="non-po">
+        <mat-radio-button class="tp-radio-button" value="non-po" (change)="onInvoiceTypeChange($event)">
             Non PO Invoice
         </mat-radio-button>
     </mat-radio-group>
@@ -52,6 +52,16 @@
                     <input type="text" matInput placeholder="Remarks" formControlName="remarks" autocomplete="off">
                 </mat-form-field>
             </div>
+            <div class="col-6" *ngIf="selectedInvoiceType == 'non-po'">
+                <mat-form-field class="full-width">
+                    <mat-label>Choose Currency</mat-label>
+                    <mat-select matNativeControl formControlName="currency">
+                        <mat-option *ngFor="let c of currencyList" [value]="c.currencyCode">
+                            {{ c.currencyDesc }}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
         </div>
         <div class="actions" *ngIf="selectedInvoiceType == 'non-po'">
             <button mat-raised-button class="footer-actions footer-actions-green" (click)="onNewClick()">New</button>
@@ -79,23 +89,23 @@
                         <td>
                             <input class="inv-qty" formControlName="hsn">
                         </td>
-                        <td>
-                            <span *ngIf="selectedInvoiceType == 'po'">{{ item.get("orderedUnits").value }}</span>
-                            <input *ngIf="selectedInvoiceType == 'non-po'" class="inv-qty" formControlName="orderedUnits">
+                        <td *ngIf="selectedInvoiceType == 'po'">
+                            <span>{{ item.get("orderedUnits").value }}</span>
                         </td>
-                        <td>
-                            <span *ngIf="selectedInvoiceType == 'po'">{{ item.get("suppliedUnits").value }}</span>
-                            <input *ngIf="selectedInvoiceType == 'non-po'" class="inv-qty" formControlName="suppliedUnits">
+                        <td *ngIf="selectedInvoiceType == 'po'">
+                            <span>{{ item.get("suppliedUnits").value }}</span>
                         </td>
-                        <td>
-                            <span *ngIf="selectedInvoiceType == 'po'">{{ item.get("consumedUnits").value }}</span>
-                            <input *ngIf="selectedInvoiceType == 'non-po'" class="inv-qty" formControlName="consumedUnits">
+                        <td *ngIf="selectedInvoiceType == 'po'">
+                            <span>{{ item.get("consumedUnits").value }}</span>
                         </td>
                         <td>
                             <input class="inv-qty" formControlName="invoiceUnits" (blur)="onInvoiceUnitsBlur(itemInd)">
                         </td>
+                        <td *ngIf="selectedInvoiceType == 'po'">
+                            <span>{{ currency }}</span>
+                        </td>
                         <td>
-                            <span *ngIf="selectedInvoiceType == 'po'">{{ item.get("unitPrice").value }}</span>
+                            <span *ngIf="selectedInvoiceType == 'po'" (blur)="onInvoiceUnitsBlur(itemInd)">{{ item.get("unitPrice").value }}</span>
                             <input *ngIf="selectedInvoiceType == 'non-po'" class="inv-qty" formControlName="unitPrice">
                         </td>
                         <td>
@@ -109,37 +119,43 @@
                     <tr>
                         <td class="add-ons"> Invoice Net Amount
                         </td>
-                        <td class="amount">
-                            {{ f["totalItemsAmt"].value }}
+                        <td style="margin-left: 10px" class="amount">
+                            {{ f["totalItemsAmt"].value + " " + currency }}
                         </td>
                     </tr>
                     <tr>
                         <td class="add-ons"> Freight Amount
                         </td>
-                        <td class="amount">
-                            <input class="inv-qty" formControlName="freightCharges" (blur)="updateInvoiceTotalAmt()">
+                        <td style="margin-left: 10px" class="amount">
+                            <span>
+                                <input class="inv-qty" formControlName="freightCharges" (blur)="updateInvoiceTotalAmt()">
+                                <span style="margin-left: 10px">{{ currency }}</span>
+                            </span>
                         </td>
                     </tr>
                     <tr>
                         <td class="add-ons"> Total Tax Amount
                         </td>
-                        <td class="amount">
-                            <input class="inv-qty" formControlName="totalTax" (blur)="updateInvoiceTotalAmt()">
+                        <td style="margin-left: 10px" class="amount">
+                            <span>
+                                <input class="inv-qty" formControlName="totalTax" (blur)="updateInvoiceTotalAmt()">  
+                                <span style="margin-left: 10px">{{ currency }}</span>
+                            </span>
                         </td>
                     </tr>
                     <tr>
                         <td class="add-ons"> Invoice Total Amount
                         </td>
-                        <td class="amount">
-                            {{ f["totalInvAmt"].value }}
+                        <td style="margin-left: 10px" class="amount">
+                            {{ f["totalInvAmt"].value + " " + currency }}
                         </td>
                     </tr>
                 </tbody>
             </table>
 
-            <div class="actions">
+            <!--<div class="actions">
                 <button mat-raised-button class="footer-actions footer-actions-green" (click)="onSaveClick()">Save</button>
-            </div>
+            </div>-->
 
             <div class="actions">
                 <div style="font-weight: bold">
@@ -148,7 +164,7 @@
                 <input style="display: none" [attr.id]="'invoiceFileCtrl'" type="file" multiple accept=".xls,.xlsx,.doc,.docx,.pdf,.png,.jpg,.zip"
                     (change)="onInvoiceFileChange($event)" />
                 <button mat-raised-button class="footer-actions" (click)="onInvoiceBrowseClick($event)">Browse</button>
-                <button mat-raised-button class="footer-actions footer-actions-green" (click)="onAttachFileClick()">Attach</button>
+                <button mat-raised-button class="footer-actions footer-actions-green" (click)="onInvoiceAttachFileClick()">Attach</button>
                 <div class="filename" *ngFor="let f of invoiceFilesList">
                     <span>{{ f.actualFileName }}</span>
                 </div>

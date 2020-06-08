@@ -27,7 +27,9 @@ export class InvoiceUploadService {
         let initModel: InvoiceUploadResultModel = new InvoiceUploadResultModel();
         if(data) {
             initModel.poList = data["pODetailsVO"];
-            initModel.statusDetails = data["statusVO"];        
+            initModel.statusDetails = data["statusVO"];  
+            initModel.invoiceFileTypes = data["invoiceFileTypes"];     
+            initModel.currencyList =  data["currencyMasterList"];
         }
 
         return initModel;
