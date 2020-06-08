@@ -92,5 +92,24 @@
   color: #3c3c3c;
 }
 .title {
-  margin: 0px 0px 1em 9em;
+  margin: 0px 0px 1em 12%;
+
+}
+@media only screen and (max-width: 599px) and (min-device-width: 320px){
+  .title{
+    text-align: end;
+    margin-top: .5em;
+    margin: 0px;
+    font-size: large;
+  }
+  .main{
+    padding: 1em;
+  }
+  .heading{
+    margin:0px;
+    text-align: left;
+  }
+  .my-stepper {
+    display: none;
+  }
 }

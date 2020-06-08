@@ -1,6 +1,6 @@
 <div class="heading">
     <mat-icon>person</mat-icon>
-    <h4>Vendor Details</h4>
+    <div class="title">Vendor Details</div>
 </div>
 
 <form [formGroup]="vendorDetailsForm">
@@ -48,15 +48,14 @@
     <div class="row field">
         <div class="col-6 form-group">
             <mat-form-field class="full-width">
-                <input matInput type="password" class="form-control" placeholder="Password" formControlName="password"
+                <input  type="password" matInput placeholder="Password" formControlName="password"
                     autocomplete="off" required>
             </mat-form-field>
         </div>
         <div class="col-6 form-group">
             <mat-form-field class="full-width">
-                <input matInput type="password" class="form-control" placeholder="Confirm Password"
+                <input  type="password" matInput placeholder="Confirm Password"
                     formControlName="confirmPassword" autocomplete="off" required>
-                <!-- <mat-error *ngIf="confirmPassword.invalid">{{requiredErrorMsg}}</mat-error> -->
             </mat-form-field>
         </div>
     </div>
