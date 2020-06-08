@@ -243,7 +243,7 @@
           <button mat-raised-button class="footer-actions" (click)="onAttachMSAClick()">Attach MSA</button>
         </div>
       </div>
-      <div class="row">
+      <div class="row" *ngIf="roleName=='Finance'">
         <div class="col-6"><span style="color:black">Procurement Approver Remarks:</span>
           {{ vendorDetails?.procRemark }}</div>
 

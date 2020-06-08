@@ -151,7 +151,6 @@ export class VendorApprovalComponent implements OnInit {
             this.withholdTaxList = this.vendorApprovalInitDetails.withholdTaxVOList.filter(e => e.withholdTypeCode == holdType.value);
         }
         console.log(this.withholdTaxList);
-
     }
 
     ngOnDestroy() {
