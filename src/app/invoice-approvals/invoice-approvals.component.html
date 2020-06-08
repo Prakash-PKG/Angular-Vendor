@@ -44,52 +44,36 @@
             </span>
         </li>
     </ul>
-
     <div class="search-row">
-        <div class="search-row-element">
-            <div class="search-row-element" *ngIf="isPOInvoice == true">
-                <mat-label>PO No.</mat-label>
-                <div class="value">{{ initDetails?.poDetails?.poNumber }}</div>
-            </div>
 
-            <div class="search-row-element">
-                <mat-label>Invoice No.</mat-label>
-                <div class="value">{{ initDetails?.invoiceDetails?.invoiceNumber }}</div>
-            </div>
+        <div class="vendor-detail-section search-row-element">
 
-            <div class="search-row-element">
-                <mat-label>Invoice Date</mat-label>
-                <div class="value">{{ getFormattedDate(initDetails?.invoiceDetails?.invoiceDate) }}</div>
-            </div>
+            <div class="Rtable Rtable--2cols Rtable--collapse">
 
-            <div class="search-row-element" *ngIf="isPOInvoice == false">
-                <mat-label>Currency</mat-label>
-                <div class="value">{{ initDetails?.invoiceDetails?.currencyType }}</div>
-            </div>
+                <div class="Rtable-cell Rtable-cell--head" *ngIf="isPOInvoice == true">PO No.</div>
+                <div class="Rtable-cell " *ngIf="isPOInvoice == true">{{ initDetails?.poDetails?.poNumber }}</div>
 
-            <div class="search-row-element">
-                <mat-label>Remarks</mat-label>
-                <div class="value">{{ initDetails?.invoiceDetails?.remarks }}</div>
-            </div>
-        </div>
-        <div class="search-row-element">
-            <div class="search-row-element">
-                <mat-label>Freight Charges
-                </mat-label>
-                <div class="value">{{ initDetails?.invoiceDetails?.freightCharges }}</div>
-            </div>
+                <div class="Rtable-cell Rtable-cell--head">Invoice No.</div>
+                <div class="Rtable-cell">{{ initDetails?.invoiceDetails?.invoiceNumber }}</div>
 
-            <div class="search-row-element">
-                <mat-label>Total Tax Amount
-                </mat-label>
-                <div class="value">{{ initDetails?.invoiceDetails?.totalTax }}</div>
-            </div>
+                <div class="Rtable-cell Rtable-cell--head">Invoice Date</div>
+                <div class="Rtable-cell">{{ getFormattedDate(initDetails?.invoiceDetails?.invoiceDate) }}</div>
 
-            <div class="search-row-element">
-                <mat-label>Total Invoice Amount
-                    <div class="smaller-text">Including Tax</div>
-                </mat-label>
-                <div class="value">{{ initDetails?.invoiceDetails?.totalAmt }}</div>
+                <div class="Rtable-cell Rtable-cell--head">Currency</div>
+                <div class="Rtable-cell">{{ initDetails?.invoiceDetails?.currencyType }}</div>
+
+                <div class="Rtable-cell Rtable-cell--head">Remarks</div>
+                <div class="Rtable-cell">{{ initDetails?.invoiceDetails?.remarks }}</div>
+
+                <div class="Rtable-cell Rtable-cell--head">Freight</div>
+                <div class="Rtable-cell ">{{ initDetails?.invoiceDetails?.freightCharges }}</div>
+
+                <div class="Rtable-cell Rtable-cell--head">Total Tax Amt</div>
+                <div class="Rtable-cell">{{ initDetails?.invoiceDetails?.totalTax }}</div>
+
+                <div class="Rtable-cell Rtable-cell--head">Total Inv Amt<small>(inc. tax)</small></div>
+                <div class="Rtable-cell">{{ initDetails?.invoiceDetails?.totalAmt }}</div>
+
             </div>
         </div>
 
