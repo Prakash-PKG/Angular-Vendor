@@ -319,6 +319,7 @@ export class UpdateInvoiceRequestModel {
     poDetails: PODetailsModel;
     invoiceDetails: InvoiceDetailsModel;
     itemsDetails: ItemModel[];
+    filesList: FileDetailsModel[];
 }
 
 export class UpdateInvoiceResultModel {
@@ -343,6 +344,8 @@ export class InvoiceApprovalInitResultModel {
     approvalDetails: InvoiceApprovalModel;
     poDetails: PODetailsModel;
     grnSesList: GrnSesModel[];
+    invoiceFilesList: FileDetailsModel[];
+    supportFilesList: FileDetailsModel[];
 }
 
 export class GrnSesModel {
@@ -375,10 +378,18 @@ export class FileDetailsModel {
     fileData: any;
     documentTypeId: number;
     fileId: number;
+    createdDate: string;
+    createdBy: string;
 }
 
 export class InvoiceDocumentReqModel {
     invoiceId: number;
+    userId: string;
+    fileDetails: FileDetailsModel[];
+}
+
+export class InvoiceDocumentResultModel {
+    status: StatusModel;
     fileDetails: FileDetailsModel[];
 }
 

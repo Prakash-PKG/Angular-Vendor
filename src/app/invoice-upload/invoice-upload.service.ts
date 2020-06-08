@@ -64,6 +64,6 @@ export class InvoiceUploadService {
 
     uploadInvoiceDocuments(filesReq: InvoiceDocumentReqModel) {
         let url = this._appService.baseUrl + "updateInvDoc";
-        return this._http.post(url, filesReq, { responseType: 'text', observe: 'response' });
+        return this._http.post(url, filesReq, { responseType: 'json', observe: 'response' });
     }
 }

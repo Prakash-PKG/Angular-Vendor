@@ -3,7 +3,7 @@ import { AppService } from './../app.service';
 import { InvoiceUploadService } from './invoice-upload.service';
 import { BusyDataModel, InvoiceUploadResultModel, InvoiceUploadReqModel, InvoiceDocumentReqModel, currencyMasterList, 
         PODetailsModel, POItemsRequestModel, POItemsResultModel, ItemModel, FileDetailsModel, InvoiceFileTypwModel, 
-        UpdateInvoiceRequestModel, UpdateInvoiceResultModel } from './../models/data-models';
+        UpdateInvoiceRequestModel, UpdateInvoiceResultModel, InvoiceDocumentResultModel } from './../models/data-models';
 import { Component, OnInit } from '@angular/core';
 import { HomeService } from '../home/home.service';
 import { FormBuilder, FormGroup, FormArray, Validators, FormControl, AbstractControl } from '@angular/forms';
@@ -117,7 +117,9 @@ export class InvoiceUploadComponent implements OnInit {
                         uniqueFileName: null,
                         fileData: null,
                         documentTypeId: this.invoiceFileTypeId,
-                        fileId: null
+                        fileId: null,
+                        createdDate: null,
+                        createdBy: null
                     };
                     this.invoiceFilesList.push(fileDetails);
 
@@ -146,6 +148,7 @@ export class InvoiceUploadComponent implements OnInit {
         this.invoiceUpdateResults.invoiceDetails.invoiceId : null;
         let filesReq: InvoiceDocumentReqModel = {
             invoiceId: invId,
+            userId: globalConstant.userDetails.isVendor ? globalConstant.userDetails.userEmail : globalConstant.userDetails.userId,
             fileDetails: this.invoiceFilesList
         }
 
@@ -153,7 +156,14 @@ export class InvoiceUploadComponent implements OnInit {
         this._invoiceUploadService.uploadInvoiceDocuments(filesReq)
             .subscribe(response => {
                 this._homeService.updateBusy(<BusyDataModel>{ isBusy: false, msg: null });
-                this.invoiceFilesList = [];
+                if (response.body) {
+                    let results: InvoiceDocumentResultModel = response.body as InvoiceDocumentResultModel;
+
+                    if (results.status.status == 200 && results.status.isSuccess) {
+                        this.invoiceFilesList = [];
+                        this.invoiceFilesList = results.fileDetails.concat();
+                    }
+                }
             },
             (error) => {
                 this._homeService.updateBusy(<BusyDataModel>{ isBusy: false, msg: null });
@@ -191,7 +201,9 @@ export class InvoiceUploadComponent implements OnInit {
                         uniqueFileName: null,
                         fileData: null,
                         documentTypeId: this.supportFileTypeId,
-                        fileId: null
+                        fileId: null,
+                        createdDate: null,
+                        createdBy: null
                     };
                     this.supportingFilesList.push(fileDetails);
 
@@ -204,8 +216,11 @@ export class InvoiceUploadComponent implements OnInit {
     }
 
     onSupportingAttachFileClick() {
+        let invId = (this.invoiceUpdateResults && this.invoiceUpdateResults.invoiceDetails && this.invoiceUpdateResults.invoiceDetails.invoiceId) ?
+        this.invoiceUpdateResults.invoiceDetails.invoiceId : null;
         let filesReq: InvoiceDocumentReqModel = {
-            invoiceId: this.invoiceUpdateResults.invoiceDetails.invoiceId,
+            userId: globalConstant.userDetails.isVendor ? globalConstant.userDetails.userEmail : globalConstant.userDetails.userId,
+            invoiceId: invId,
             fileDetails: this.supportingFilesList
         }
 
@@ -213,7 +228,18 @@ export class InvoiceUploadComponent implements OnInit {
         this._invoiceUploadService.uploadInvoiceDocuments(filesReq)
             .subscribe(response => {
                 this._homeService.updateBusy(<BusyDataModel>{ isBusy: false, msg: null });
-                this.supportingFilesList = [];
+                
+                if (response.body) {
+                    let results: InvoiceDocumentResultModel = response.body as InvoiceDocumentResultModel;
+
+                    if (results.status.status == 200 && results.status.isSuccess) {
+                        this.supportingFilesList = [];
+                        this.supportingFilesList = results.fileDetails.concat();
+                    }
+                    // else {
+                    //     this.msg = "failed";
+                    // }
+                }
             },
                 (error) => {
                     this._homeService.updateBusy(<BusyDataModel>{ isBusy: false, msg: null });
@@ -401,9 +427,22 @@ export class InvoiceUploadComponent implements OnInit {
             itemsList.push(item);
         }
 
+        let filesList: FileDetailsModel[] = [];
+        for(let invCnt = 0; invCnt < this.invoiceFilesList.length; invCnt++) {
+            if(this.invoiceFilesList[invCnt] && this.invoiceFilesList[invCnt].fileId) {
+                filesList.push(this.invoiceFilesList[invCnt]);
+            }
+        }
+
+        for(let sCnt = 0; sCnt < this.supportingFilesList.length; sCnt++) {
+            if(this.supportingFilesList[sCnt] && this.supportingFilesList[sCnt].fileId) {
+                filesList.push(this.supportingFilesList[sCnt]);
+            }
+        }
+
         let req: UpdateInvoiceRequestModel = {
             action: action,
-            userId: (this.selectedInvoiceType == 'po') ? globalConstant.userDetails.userEmail : globalConstant.userDetails.userId,
+            userId: (this.selectedInvoiceType == 'po' && globalConstant.userDetails.isVendor) ? globalConstant.userDetails.userEmail : globalConstant.userDetails.userId,
             poDetails: this.selectedPOItem,
             invoiceDetails: {
                 invoiceId: null,
@@ -420,7 +459,8 @@ export class InvoiceUploadComponent implements OnInit {
                 createdBy: null,
                 createdDate: null
             },
-            itemsDetails: itemsList
+            itemsDetails: itemsList,
+            filesList: filesList
         }
 
         this._homeService.updateBusy(<BusyDataModel>{ isBusy: true, msg: null });

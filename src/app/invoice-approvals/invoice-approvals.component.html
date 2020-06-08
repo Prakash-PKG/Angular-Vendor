@@ -59,8 +59,8 @@
                 <div class="Rtable-cell Rtable-cell--head">Invoice Date</div>
                 <div class="Rtable-cell">{{ getFormattedDate(initDetails?.invoiceDetails?.invoiceDate) }}</div>
 
-                <div class="Rtable-cell Rtable-cell--head">Currency</div>
-                <div class="Rtable-cell">{{ initDetails?.invoiceDetails?.currencyType }}</div>
+                <div *ngIf="isPOInvoice == false" class="Rtable-cell Rtable-cell--head">Currency</div>
+                <div *ngIf="isPOInvoice == false" class="Rtable-cell">{{ initDetails?.invoiceDetails?.currencyType }}</div>
 
                 <div class="Rtable-cell Rtable-cell--head">Remarks</div>
                 <div class="Rtable-cell">{{ initDetails?.invoiceDetails?.remarks }}</div>
@@ -79,7 +79,13 @@
 
         <div class="actions search-row-element">
             <button mat-raised-button class="footer-actions footer-actions-green">Invoice Attachments</button>
+            <div *ngFor="let ifile of invoiceFilesList; let ifileInd = index">
+                {{ ifile.actualFileName }}
+            </div>
             <button mat-raised-button class="footer-actions footer-actions-green">Supporting Attachments</button>
+            <div *ngFor="let sf of supportFilesList; let sfInd = index">
+                {{ sf.actualFileName }}
+            </div>
         </div>
     </div>
 

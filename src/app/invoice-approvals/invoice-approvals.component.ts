@@ -1,6 +1,7 @@
 import { globalConstant } from './../common/global-constant';
 import { AppService } from './../app.service';
-import { BusyDataModel, InvoiceApprovalInitResultModel, InvoiceApprovalInitReqModel, ItemModel, GrnSesModel, 
+import { BusyDataModel, InvoiceApprovalInitResultModel, InvoiceApprovalInitReqModel, 
+    ItemModel, GrnSesModel, FileDetailsModel, 
     StatusModel, UpdateInvoiceApprovalReqModel } from './../models/data-models';
 import { InvoiceApprovalsService } from './invoice-approvals.service';
 import { Component, OnInit } from '@angular/core';
@@ -35,6 +36,9 @@ export class InvoiceApprovalsComponent implements OnInit {
     grnSesList: GrnSesModel[] = [];
     selectedGrnSesNumber: string = "";
     isGrnDdlVisible: boolean = true;
+
+    invoiceFilesList: FileDetailsModel[] = [];
+    supportFilesList: FileDetailsModel[] = [];
 
     constructor(private _homeService: HomeService,
                 private _appService: AppService,
@@ -78,6 +82,9 @@ export class InvoiceApprovalsComponent implements OnInit {
                 this.grnSesList = this.initDetails.grnSesList;
 
                 this.updateStatusFlow();
+
+                this.invoiceFilesList = this.initDetails.invoiceFilesList;
+                this.supportFilesList = this.initDetails.supportFilesList;
             }
 
             if(this.isPOInvoice) {
