@@ -45,7 +45,9 @@ textarea{
 }
 
 // --------------------------------------------------------------css for data table starts here-----------------------------------------------------
-
+.dataTable tbody tr td.amount{
+  text-align: right;
+  }
 .dataTable {
   overflow: auto;
   margin-top: 10px;
@@ -71,9 +73,7 @@ textarea{
 .dataTable thead tr th:last-child {
   text-align: right;
 }
-.amount{
-text-align: right;
-}
+
 
 .dataTable tr {
   height: 3em;
