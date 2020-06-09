@@ -1,7 +1,8 @@
-import { VendorMasterDetailsModel, VendorRegistrationInitDataModel, PendingApprovalsModel } from './models/data-models';
+import { VendorMasterDetailsModel, VendorRegistrationInitDataModel, PendingApprovalsModel, FileDetailsModel } from './models/data-models';
 
 import { Injectable } from '@angular/core';
 import { DatePipe } from '@angular/common';
+import { HttpClient } from '@angular/common/http';
 
 @Injectable({
     providedIn: 'root'
@@ -15,7 +16,7 @@ export class AppService {
     readonly customerAuthUrl = this.domain + "/customerAuth/oauth/token";
     readonly isForProduction: boolean = false;
 
-    constructor(private _datePipe: DatePipe) { }
+    constructor(private _datePipe: DatePipe, private _http: HttpClient) { }
 
     readonly routingConstants: any = {
         login: "/",
@@ -215,5 +216,27 @@ export class AppService {
         vendorRegistrationSubmitSuccessMsg: "Vendor details submitted successful",
         vendorApprovalFailure: "Vendor approval is failed"
     };
+
+    getFileData(fileDetails: FileDetailsModel) {
+        let url = this.baseUrl + 'downloadInvDoc/' + fileDetails.uniqueFileName;
+        return this._http.get(url, {responseType: 'arraybuffer', observe: 'response'});
+    }
+
+    downloadInvoiceFile(fileDetails: FileDetailsModel) {
+        this.getFileData(fileDetails).subscribe(
+            (data) => {
+                const blob = new Blob([data.body], { type: 'application/octet-stream' });
+                const url = window.URL.createObjectURL(blob);
+
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = fileDetails.actualFileName;
+                document.body.appendChild(a);
+                a.click();
+            },
+            error => {
+                console.log(error);
+            });
+    }
 
 }

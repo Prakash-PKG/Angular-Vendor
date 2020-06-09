@@ -3,7 +3,7 @@ import { AppService } from './../app.service';
 import { InvoiceUploadService } from './invoice-upload.service';
 import { BusyDataModel, InvoiceUploadResultModel, InvoiceUploadReqModel, InvoiceDocumentReqModel, currencyMasterList, 
         PODetailsModel, POItemsRequestModel, POItemsResultModel, ItemModel, FileDetailsModel, InvoiceFileTypwModel, 
-        UpdateInvoiceRequestModel, UpdateInvoiceResultModel, InvoiceDocumentResultModel } from './../models/data-models';
+        UpdateInvoiceRequestModel, UpdateInvoiceResultModel, InvoiceDocumentResultModel, StatusModel } from './../models/data-models';
 import { Component, OnInit } from '@angular/core';
 import { HomeService } from '../home/home.service';
 import { FormBuilder, FormGroup, FormArray, Validators, FormControl, AbstractControl } from '@angular/forms';
@@ -350,6 +350,43 @@ export class InvoiceUploadComponent implements OnInit {
         }
 
         this.updateAmountDetails();
+    }
+
+    onDeleteFileClick(fileDetails: FileDetailsModel, fileIndex: number, fileType: string) {
+        if(fileDetails.fileId) {
+            this._homeService.updateBusy(<BusyDataModel>{isBusy: true, msg: "Deleting..."});
+            this._invoiceUploadService.deleteInvoiceFile(fileDetails)
+                .subscribe(response => {
+                    this._homeService.updateBusy(<BusyDataModel>{isBusy: false, msg: null});
+                    let result = response.body as StatusModel;
+                    if(result.isSuccess) {
+                        this.removefileFromList(fileIndex, fileType);
+                    }
+                },
+                (error) => {
+                    this._homeService.updateBusy(<BusyDataModel>{isBusy: false, msg: null});
+                    console.log(error);
+                });
+        }
+        else {
+            this.removefileFromList(fileIndex, fileType);
+        }
+    }
+
+    removefileFromList(fileIndex: number, fileType: string) {
+        if(fileType == 'invoice') {
+            if(this.invoiceFilesList.length > 0) {
+                this.invoiceFilesList.splice(fileIndex, 1);
+            }
+        } else {
+            if(this.supportingFilesList.length > 0) {
+                this.supportingFilesList.splice(fileIndex, 1);
+            }
+        }
+    }
+
+    downloadFile(fileDetails: FileDetailsModel) {
+        this._appService.downloadInvoiceFile(fileDetails);
     }
 
     removeItems() {

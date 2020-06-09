@@ -1,5 +1,6 @@
 import { InvoiceUploadResultModel, InvoiceUploadReqModel, InvoiceDocumentReqModel, 
-        POItemsRequestModel, POItemsResultModel, UpdateInvoiceRequestModel } from './../models/data-models';
+        POItemsRequestModel, POItemsResultModel, UpdateInvoiceRequestModel,
+    FileDetailsModel, RemoveDocumentReqModel } from './../models/data-models';
 import { Injectable } from '@angular/core';
 import { AppService } from './../app.service';
 import { HttpClient } from '@angular/common/http';
@@ -65,5 +66,13 @@ export class InvoiceUploadService {
     uploadInvoiceDocuments(filesReq: InvoiceDocumentReqModel) {
         let url = this._appService.baseUrl + "updateInvDoc";
         return this._http.post(url, filesReq, { responseType: 'json', observe: 'response' });
+    }
+
+    deleteInvoiceFile(fileDetails: FileDetailsModel) {
+        let req: RemoveDocumentReqModel = {
+            fileId: fileDetails.fileId
+        };
+        let url = this._appService.baseUrl + "removeInvDoc/";
+        return this._http.post(url, req, { responseType: 'json', observe: 'response' });
     }
 }

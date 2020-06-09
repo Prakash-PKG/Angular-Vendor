@@ -81,10 +81,16 @@
             <button mat-raised-button class="footer-actions footer-actions-green">Invoice Attachments</button>
             <div *ngFor="let ifile of invoiceFilesList; let ifileInd = index">
                 {{ ifile.actualFileName }}
+                <button mat-button mat-icon-button aria-label="Download" (click) = "downloadFile(ifile)">
+                    <mat-icon>save_alt</mat-icon>
+                </button>
             </div>
             <button mat-raised-button class="footer-actions footer-actions-green">Supporting Attachments</button>
             <div *ngFor="let sf of supportFilesList; let sfInd = index">
                 {{ sf.actualFileName }}
+                <button mat-button mat-icon-button aria-label="Download" (click) = "downloadFile(sf)">
+                    <mat-icon>save_alt</mat-icon>
+                </button>
             </div>
         </div>
     </div>

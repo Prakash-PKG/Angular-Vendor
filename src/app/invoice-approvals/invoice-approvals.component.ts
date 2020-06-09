@@ -164,6 +164,10 @@ export class InvoiceApprovalsComponent implements OnInit {
             });
     }
 
+    downloadFile(fileDetails: FileDetailsModel) {
+        this._appService.downloadInvoiceFile(fileDetails);
+    }
+
     ngOnDestroy() {
         if (this._sidebarExpansionSubscription) {
             this._sidebarExpansionSubscription.unsubscribe();

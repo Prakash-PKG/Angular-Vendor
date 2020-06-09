@@ -373,7 +373,7 @@ export class UpdateInvoiceApprovalReqModel {
 }
 
 export class FileDetailsModel {
-    actualFileName: String;
+    actualFileName: string;
     uniqueFileName: string;
     fileData: any;
     documentTypeId: number;
@@ -404,4 +404,8 @@ export class WithholdTypeList {
     withholdTypeCode: string;
     withholdTypeDesc: string;
     countryCode: string;
+}
+
+export class RemoveDocumentReqModel {
+    fileId: number;
 }

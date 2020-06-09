@@ -156,8 +156,16 @@
                     (click)="onInvoiceBrowseClick($event)">Browse</button>
                 <button mat-raised-button class="footer-actions  attachment-elements"
                     (click)="onInvoiceAttachFileClick()">Attach</button>
-                <div class="filename attachment-elements" *ngFor="let f of invoiceFilesList">
-                    <span>{{ f.actualFileName }}</span>
+                <div class="filename attachment-elements" *ngFor="let f of invoiceFilesList; let fInd = index">
+                    <span>
+                        {{ f.actualFileName }}
+                        <button mat-button mat-icon-button aria-label="Delete" (click) = "onDeleteFileClick(f, fInd, 'invoice')">
+                            <mat-icon>delete_outline</mat-icon>
+                        </button>
+                        <button *ngIf = "f.fileId != null" mat-button mat-icon-button aria-label="Download" (click) = "downloadFile(f)">
+                            <mat-icon>save_alt</mat-icon>
+                        </button>
+                    </span>
                 </div>
             </div>
             <div class="actions attachment-row">
@@ -172,8 +180,16 @@
                     (click)="onSupportingBrowseClick($event)">Browse</button>
                 <button mat-raised-button class="footer-actions  attachment-elements"
                     (click)="onSupportingAttachFileClick()">Attach</button>
-                <div class="filename attachment-elements" *ngFor="let f of supportingFilesList">
-                    <span>{{ f.actualFileName }}</span>
+                <div class="filename attachment-elements" *ngFor="let f of supportingFilesList; let fInd = index">
+                    <span>
+                        {{ f.actualFileName }}
+                        <button mat-button mat-icon-button aria-label="Delete" (click) = "onDeleteFileClick(f, fInd, 'support')">
+                            <mat-icon>delete_outline</mat-icon>
+                        </button>
+                        <button *ngIf = "f.fileId != null" mat-button mat-icon-button aria-label="Download" (click) = "downloadFile(f)">
+                            <mat-icon>save_alt</mat-icon>
+                        </button>
+                    </span>
                 </div>
 
             </div>
