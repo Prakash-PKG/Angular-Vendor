@@ -44,6 +44,11 @@
   height: 2em;
   line-height: 1em;
 }
+.filename{
+  flex-grow:1;
+  flex-basis: auto;
+}
+
 .search-row {
   display: flex;
   flex-wrap: wrap;

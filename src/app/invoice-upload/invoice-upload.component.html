@@ -156,7 +156,7 @@
                     (click)="onInvoiceBrowseClick($event)">Browse</button>
                 <button mat-raised-button class="footer-actions  attachment-elements"
                     (click)="onInvoiceAttachFileClick()">Attach</button>
-                <div class="filename attachment-elements" *ngFor="let f of invoiceFilesList; let fInd = index">
+                <div class="filename attachment-elements" *ngFor="let f of invoiceFilesList; let fInd = index" >
                     <span>
                         {{ f.actualFileName }}
                         <button mat-button mat-icon-button aria-label="Delete" (click) = "onDeleteFileClick(f, fInd, 'invoice')">

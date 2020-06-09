@@ -409,3 +409,11 @@ export class WithholdTypeList {
 export class RemoveDocumentReqModel {
     fileId: number;
 }
+export class VendorDocumentReqModel {
+    userId: string;
+    fileDetails: FileDetailsModel[];
+}
+export class  VendorDocumentResultModel {
+    status: StatusModel;
+    fileDetails: FileDetailsModel[];
+    }

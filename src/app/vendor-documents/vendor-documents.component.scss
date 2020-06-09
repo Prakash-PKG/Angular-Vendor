@@ -53,3 +53,27 @@
 .mat-radio-group{
     width:33%;
 }
+
+
+
+.attachment-row {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    align-items: center;
+  }
+  
+  .attachment-elements {
+    flex: 0 0 16em;
+  }
+  .attachment-row .footer-actions {
+    flex: 0 0 3em;
+    height: 2em;
+    line-height: 1em;
+  }
+
+  .filename{
+    flex-grow:1;
+    flex-basis: auto;
+  }
+  
