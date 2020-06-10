@@ -5,7 +5,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AppService } from '../app.service';
 import { VendorRegistrationService } from './../vendor-registration/vendor-registration.service';
 
-import { BusyDataModel, VendorRegistrationRequestModel, VendorRegistrationResultModel, VendorMasterDocumentModel, FileDetailsModel, VendorDocumentReqModel, VendorDocumentResultModel, StatusModel } from './../models/data-models';
+import { BusyDataModel, VendorRegistrationRequestModel, VendorRegistrationResultModel, VendorDocumentReqModel,VendorMasterDocumentModel, FileDetailsModel, VendorDocumentResultModel, StatusModel } from './../models/data-models';
 import { DatePipe } from '@angular/common';
 import { HomeService } from '../home/home.service';
 import { globalConstant } from '../common/global-constant';
@@ -74,11 +74,12 @@ export class VendorDocumentsComponent implements OnInit {
         element.click();
     }
     onAttachFileClick() {
-    this.filesList.forEach(e=>e.documentTypeId==1);// hardcoded // need to be change as per file type
+        this.filesList.forEach(e => e.documentTypeId = 1);// hardcoded // need to be change as per file type
 
         let filesReq: VendorDocumentReqModel = {
             userId: globalConstant.userDetails.isVendor ? globalConstant.userDetails.userEmail : globalConstant.userDetails.userId,
-            fileDetails: this.filesList
+            fileDetails: this.filesList,
+            vendorMasterId: this._appService.vendorRegistrationDetails.vendorMasterId
         }
 
         this._homeService.updateBusy(<BusyDataModel>{ isBusy: true, msg: "Attaching..." });
@@ -86,7 +87,7 @@ export class VendorDocumentsComponent implements OnInit {
             .subscribe(response => {
                 this._homeService.updateBusy(<BusyDataModel>{ isBusy: false, msg: null });
                 if (response.body) {
-                    let results: VendorDocumentResultModel = response.body as VendorDocumentResultModel; 
+                    let results: VendorDocumentResultModel = response.body as VendorDocumentResultModel;
 
                     if (results.status.status == 200 && results.status.isSuccess) {
                         this.filesList = [];
@@ -147,20 +148,20 @@ export class VendorDocumentsComponent implements OnInit {
     }
 
     onDeleteFileClick(fileDetails: FileDetailsModel, fileIndex: number, fileType: string) {
-        if(fileDetails.fileId) {
-            this._homeService.updateBusy(<BusyDataModel>{isBusy: true, msg: "Deleting..."});
+        if (fileDetails.fileId) {
+            this._homeService.updateBusy(<BusyDataModel>{ isBusy: true, msg: "Deleting..." });
             this._vendorRegistrationService.deleteVendorFile(fileDetails)
                 .subscribe(response => {
-                    this._homeService.updateBusy(<BusyDataModel>{isBusy: false, msg: null});
+                    this._homeService.updateBusy(<BusyDataModel>{ isBusy: false, msg: null });
                     let result = response.body as StatusModel;
-                    if(result.isSuccess) {
+                    if (result.isSuccess) {
                         this.removefileFromList(fileIndex, fileType);
                     }
                 },
-                (error) => {
-                    this._homeService.updateBusy(<BusyDataModel>{isBusy: false, msg: null});
-                    console.log(error);
-                });
+                    (error) => {
+                        this._homeService.updateBusy(<BusyDataModel>{ isBusy: false, msg: null });
+                        console.log(error);
+                    });
         }
         else {
             this.removefileFromList(fileIndex, fileType);
@@ -168,8 +169,8 @@ export class VendorDocumentsComponent implements OnInit {
     }
 
     removefileFromList(fileIndex: number, fileType: string) {
-        if(fileType == 'invoice') {
-            if(this.filesList.length > 0) {
+        if (fileType == 'invoice') {
+            if (this.filesList.length > 0) {
                 this.filesList.splice(fileIndex, 1);
             }
         }
@@ -197,14 +198,14 @@ export class VendorDocumentsComponent implements OnInit {
         this.vendorDocumentForm.get("hasTdsLower").setValue(this._appService.vendorRegistrationDetails.hasTdsLower);
         this.vendorDocumentForm.get("lutNum").setValue(this._appService.vendorRegistrationDetails.lutNum);
         this.vendorDocumentForm.get("lutDate").setValue(new Date(this._appService.vendorRegistrationDetails.lutDate));
-       
+
     }
 
     ngOnInit() {
         this.documentsList = [];
         if (this._appService.vendorRegistrationInitDetails && this._appService.vendorRegistrationInitDetails.documentDetailsList &&
             this._appService.vendorRegistrationInitDetails.documentDetailsList.length > 0) {
-            this.documentsList = this._appService.vendorRegistrationInitDetails.documentDetailsList;
+            this.documentsList = this._appService.vendorRegistrationInitDetails.documentDetailsList.filter(dl => dl.isMandatory == '0');
         }
 
         this.vendorDocumentForm = this._formBuilder.group({

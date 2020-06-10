@@ -9,8 +9,8 @@ import { HttpClient } from '@angular/common/http';
 })
 export class AppService {
 
-    //readonly domain = "http://localhost:8080";
-    readonly domain = "https://mvendor-dev.marlabs.com";  
+    readonly domain = "http://localhost:8080";
+    // readonly domain = "https://mvendor-dev.marlabs.com";  
     //readonly domain = "https://mtime.marlabs.com";  
     readonly baseUrl = this.domain + "/mvendor/";
     readonly customerAuthUrl = this.domain + "/customerAuth/oauth/token";
@@ -139,7 +139,8 @@ export class AppService {
         procRemark:  null,
         procApprByName:  null,
         finApprByName: null,
-        finRemark:  null
+        finRemark:  null,
+        isGSTReg:null
     };
 
     resetVendorRegistrationDetails() {
@@ -201,7 +202,8 @@ export class AppService {
             procRemark:  null,
             procApprByName:  null,
             finApprByName: null,
-            finRemark:  null
+            finRemark:  null,
+            isGSTReg:null
         };
 
         return regDetails;

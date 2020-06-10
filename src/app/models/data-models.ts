@@ -143,6 +143,7 @@ export class VendorMasterDetailsModel {
     procApprByName: string;
     finApprByName: string;
     finRemark: string;
+    isGSTReg: string;
 }
 
 export class VendorMasterDocumentModel {
@@ -412,8 +413,9 @@ export class RemoveDocumentReqModel {
 export class VendorDocumentReqModel {
     userId: string;
     fileDetails: FileDetailsModel[];
+    vendorMasterId: number;
 }
-export class  VendorDocumentResultModel {
+export class VendorDocumentResultModel {
     status: StatusModel;
     fileDetails: FileDetailsModel[];
-    }
+}
