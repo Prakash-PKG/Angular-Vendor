@@ -108,6 +108,7 @@ export class VendorDocumentsComponent implements OnInit {
         this.failureMsg = "";
 
         if (this.vendorDocumentForm.valid) {
+            this._appService.vendorRegistrationDetails.isGSTReg = this.vendorDocumentForm.get("isGSTReg").value;
             this._appService.vendorRegistrationDetails.panNum = this.vendorDocumentForm.get("panNum").value;
             this._appService.vendorRegistrationDetails.gstNum = this.vendorDocumentForm.get("gstNum").value;
             this._appService.vendorRegistrationDetails.pfNum = this.vendorDocumentForm.get("pfNum").value;
@@ -187,6 +188,7 @@ export class VendorDocumentsComponent implements OnInit {
 
     }
     updateVendorDetails() {
+        this.vendorDocumentForm.get("isGSTReg").setValue(this._appService.vendorRegistrationDetails.isGSTReg);
         this.vendorDocumentForm.get("panNum").setValue(this._appService.vendorRegistrationDetails.panNum);
         this.vendorDocumentForm.get("gstNum").setValue(this._appService.vendorRegistrationDetails.gstNum);
         this.vendorDocumentForm.get("pfNum").setValue(this._appService.vendorRegistrationDetails.pfNum);
@@ -202,6 +204,7 @@ export class VendorDocumentsComponent implements OnInit {
     }
 
     ngOnInit() {
+        this.isGST=false;
         this.documentsList = [];
         if (this._appService.vendorRegistrationInitDetails && this._appService.vendorRegistrationInitDetails.documentDetailsList &&
             this._appService.vendorRegistrationInitDetails.documentDetailsList.length > 0) {
@@ -212,6 +215,7 @@ export class VendorDocumentsComponent implements OnInit {
 
             panNum: [null, [Validators.required]],
             gstNum: [null, [Validators.required]],
+            isGSTReg:[null, [Validators.required]],
             pfNum: [null],
             esiNum: [null],
             cinNum: [null],

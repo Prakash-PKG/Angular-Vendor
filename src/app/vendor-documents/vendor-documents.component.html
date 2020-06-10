@@ -4,61 +4,149 @@
 </div>
 
 <form [formGroup]="vendorDocumentForm">
+    <!------------------------------------- GST No---------------------- -->
     <div class="row">
         <div class="col-6 form-group row">
-            <mat-form-field class="full-width">
+            <mat-label>Is GST Registered?</mat-label>
+            <mat-radio-group aria-label="Is GST Registered?" formControlName="isGSTReg">
+                <mat-radio-button [value]=true>YES</mat-radio-button>
+                <mat-radio-button [value]=false>NO</mat-radio-button>
+            </mat-radio-group>
+        </div>
+
+        <div class="col-6 form-group row">
+            <mat-form-field>
                 <input type="text" matInput placeholder="GST No." formControlName="gstNum" autocomplete="off" required>
             </mat-form-field>
-        </div>
-        <div class="col-6 form-group row">
-            <mat-form-field class="full-width">
-                <input type="text" matInput placeholder="PAN No." formControlName="panNum" autocomplete="off" required>
-            </mat-form-field>
-        </div>
-    </div>
+            <div class="actions attachment-row">
+                <input class="attachment-elements" style="display: none" [attr.id]="'invoiceFileCtrl'" type="file"
+                    multiple accept=".xls,.xlsx,.doc,.docx,.pdf,.png,.jpg,.zip" (change)="onFileChange($event)" />
+                <button mat-raised-button class="footer-actions attachment-elements"
+                    (click)="onBrowseFileClick($event)">Browse</button>
+                <button mat-raised-button class="footer-actions  attachment-elements"
+                    (click)="onAttachFileClick()">Attach</button>
+                <div class="filename attachment-elements" *ngFor="let f of filesList; let fInd = index">
+                    <span>
+                        {{ f.actualFileName }}
+                        <button mat-button mat-icon-button aria-label="Delete"
+                            (click)="onDeleteFileClick(f, fInd, 'invoice')">
+                            <mat-icon>delete_outline</mat-icon>
+                        </button>
+                        <button *ngIf="f.fileId != null" mat-button mat-icon-button aria-label="Download"
+                            (click)="downloadFile(f)">
+                            <mat-icon>save_alt</mat-icon>
+                        </button>
+                    </span>
+                </div>
+            </div>
 
-    <div class="row">
-        <div class="col-6 form-group row">
-            <mat-form-field class="full-width">
-                <input type="text" matInput placeholder="PF No." formControlName="pfNum" autocomplete="off">
-            </mat-form-field>
-        </div>
-        <div class="col-6 form-group row">
-            <mat-form-field class="full-width">
-                <input type="text" matInput placeholder="ESI No." formControlName="esiNum" autocomplete="off">
-            </mat-form-field>
         </div>
     </div>
     <div class="row">
+        <!------------------------------------- Pan No---------------------- -->
         <div class="col-6 form-group row">
-            <mat-form-field class="full-width">
-                <input type="text" matInput placeholder="CIN No." formControlName="cinNum" autocomplete="off">
-            </mat-form-field>
+            <div class="actions attachment-row full-width">
+                <div class="attachment-elements">
+                    <mat-form-field>
+                        <input type="text" matInput placeholder="PAN No." formControlName="panNum" autocomplete="off"
+                            required>
+                    </mat-form-field>
+                </div>
+                <input class="attachment-elements" style="display: none" [attr.id]="'invoiceFileCtrl'" type="file"
+                    multiple accept=".xls,.xlsx,.doc,.docx,.pdf,.png,.jpg,.zip" (change)="onFileChange($event)" />
+                <button mat-raised-button class="footer-actions attachment-elements"
+                    (click)="onBrowseFileClick($event)">Browse</button>
+                <button mat-raised-button class="footer-actions  attachment-elements"
+                    (click)="onAttachFileClick()">Attach</button>
+                <div class="filename attachment-elements" *ngFor="let f of filesList; let fInd = index">
+                    <span>
+                        {{ f.actualFileName }}
+                        <button mat-button mat-icon-button aria-label="Delete"
+                            (click)="onDeleteFileClick(f, fInd, 'invoice')">
+                            <mat-icon>delete_outline</mat-icon>
+                        </button>
+                        <button *ngIf="f.fileId != null" mat-button mat-icon-button aria-label="Download"
+                            (click)="downloadFile(f)">
+                            <mat-icon>save_alt</mat-icon>
+                        </button>
+                    </span>
+                </div>
+            </div>
         </div>
-        <div class="col-4 form-group row">
-            <mat-form-field class="full-width">
-                <input type="text" matInput placeholder="LUT No." formControlName="lutNum" autocomplete="off">
-            </mat-form-field>
+        <!------------------------------------- Cancelled Cheque---------------------- -->
+        <div class="col-6 form-group row">
+            <mat-label>Cancelled Cheque * :</mat-label>
+            <div class="actions attachment-row">
+                <input class="attachment-elements" style="display: none" [attr.id]="'invoiceFileCtrl'" type="file"
+                    multiple accept=".xls,.xlsx,.doc,.docx,.pdf,.png,.jpg,.zip" (change)="onFileChange($event)" />
+                <button mat-raised-button class="footer-actions attachment-elements"
+                    (click)="onBrowseFileClick($event)">Browse</button>
+                <button mat-raised-button class="footer-actions  attachment-elements"
+                    (click)="onAttachFileClick()">Attach</button>
+                <div class="filename attachment-elements" *ngFor="let f of filesList; let fInd = index">
+                    <span>
+                        {{ f.actualFileName }}
+                        <button mat-button mat-icon-button aria-label="Delete"
+                            (click)="onDeleteFileClick(f, fInd, 'invoice')">
+                            <mat-icon>delete_outline</mat-icon>
+                        </button>
+                        <button *ngIf="f.fileId != null" mat-button mat-icon-button aria-label="Download"
+                            (click)="downloadFile(f)">
+                            <mat-icon>save_alt</mat-icon>
+                        </button>
+                    </span>
+                </div>
+            </div>
         </div>
-        <div class="col-2 form-group row">
-            <mat-form-field class="full-width">
-                <mat-label>Pick LUT Date</mat-label>
-                <input matInput [matDatepicker]="picker" formControlName="lutDate" disabled>
-                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-                <mat-datepicker #picker disabled="false"></mat-datepicker>
+    </div>
+    <div class="row">
+        <!------------------------------------- PF No.---------------------- -->
+        <div class="col-6 form-group row">
+            <div class="actions attachment-row full-width">
+                <div class="attachment-elements">
+                    <mat-form-field>
+                        <input type="text" matInput placeholder="PF No." formControlName="pfNum" autocomplete="off">
+                    </mat-form-field>
+                </div>
+                <input class="attachment-elements" style="display: none" [attr.id]="'invoiceFileCtrl'" type="file"
+                    multiple accept=".xls,.xlsx,.doc,.docx,.pdf,.png,.jpg,.zip" (change)="onFileChange($event)" />
+                <button mat-raised-button class="footer-actions attachment-elements"
+                    (click)="onBrowseFileClick($event)">Browse</button>
+                <button mat-raised-button class="footer-actions  attachment-elements"
+                    (click)="onAttachFileClick()">Attach</button>
+                <div class="filename attachment-elements" *ngFor="let f of filesList; let fInd = index">
+                    <span>
+                        {{ f.actualFileName }}
+                        <button mat-button mat-icon-button aria-label="Delete"
+                            (click)="onDeleteFileClick(f, fInd, 'invoice')">
+                            <mat-icon>delete_outline</mat-icon>
+                        </button>
+                        <button *ngIf="f.fileId != null" mat-button mat-icon-button aria-label="Download"
+                            (click)="downloadFile(f)">
+                            <mat-icon>save_alt</mat-icon>
+                        </button>
+                    </span>
+                </div>
+            </div>
+
+        </div>
+        <!------------------------------------- Esi No.---------------------- -->
+        <div class="col-6 form-group row">
+            <mat-form-field>
+                <input type="text" matInput placeholder="ESI No." formControlName="esiNum" autocomplete="off">
             </mat-form-field>
         </div>
     </div>
     <div style="margin-bottom: 20px;"></div>
     <div class="row">
-        <div class="col-6 form-group row" style="justify-content: space-between;">
+        <div class="col-6 form-group row">
             <mat-label>SEZ/Non SEZ</mat-label>
             <mat-radio-group aria-label="SEZ/Non SEZ" formControlName="isSez" style="width:50%">
                 <mat-radio-button [value]=true>SEZ</mat-radio-button>
                 <mat-radio-button [value]=false>Non-Sez</mat-radio-button>
             </mat-radio-group>
         </div>
-        <div class="col-6 form-group row" style="justify-content: space-between;">
+        <div class="col-6 form-group row">
             <mat-label>Is RCM applicable?</mat-label>
             <mat-radio-group aria-label="Is RCM applicable?" formControlName="isRcmApplicable">
                 <mat-radio-button [value]=true>YES</mat-radio-button>
@@ -68,7 +156,7 @@
     </div>
     <div style="margin-bottom: 10px;"></div>
     <div class="row">
-        <div class="col-6 form-group row" style="justify-content: space-between;">
+        <div class="col-6 form-group row">
 
             <mat-label>Is MSME registered?</mat-label>
             <mat-radio-group aria-label="Is MSME registered?" formControlName="isMsmedRegistered" style="width:50%">
@@ -76,7 +164,7 @@
                 <mat-radio-button [value]=false>NO</mat-radio-button>
             </mat-radio-group>
         </div>
-        <div class="col-6 form-group row" style="justify-content: space-between;">
+        <div class="col-6 form-group row">
 
             <mat-label>Have any TDS lower deduction certificate?</mat-label>
             <mat-radio-group aria-label="Have any TDS lower deduction certificate?" formControlName="hasTdsLower">
@@ -85,35 +173,85 @@
             </mat-radio-group>
         </div>
     </div>
-    <div class="actions attachment-row">
-        <div class="attachment-elements" style="font-weight: bold">
-            <mat-form-field>
-                <mat-select placeholder="Document Description" (change)="onFileTypeChange($event)">
-                    <mat-option *ngFor="let d of documentsList" [value]="d.vendorMasterDocumentsId">
-                        {{ d.documentDescription }}
-                    </mat-option>
-                </mat-select>
+    <div class="row">
+        <div class="col-6 form-group row">
+            <mat-form-field class="full-width">
+                <input type="text" matInput placeholder="CIN No." formControlName="cinNum" autocomplete="off">
             </mat-form-field>
         </div>
-        <input class="attachment-elements" style="display: none" [attr.id]="'invoiceFileCtrl'" type="file" multiple
-            accept=".xls,.xlsx,.doc,.docx,.pdf,.png,.jpg,.zip" (change)="onFileChange($event)" />
-        <button mat-raised-button class="footer-actions attachment-elements"
-            (click)="onBrowseFileClick($event)">Browse</button>
-        <button mat-raised-button class="footer-actions  attachment-elements"
-            (click)="onAttachFileClick()">Attach</button>
-        <div class="filename attachment-elements" *ngFor="let f of filesList; let fInd = index">
-            <span>
-                {{ f.actualFileName }}
-                <button mat-button mat-icon-button aria-label="Delete" (click)="onDeleteFileClick(f, fInd, 'invoice')">
-                    <mat-icon>delete_outline</mat-icon>
-                </button>
-                <button *ngIf="f.fileId != null" mat-button mat-icon-button aria-label="Download"
-                    (click)="downloadFile(f)">
-                    <mat-icon>save_alt</mat-icon>
-                </button>
-            </span>
+
+        <div class="col-6 form-group row">
+            <mat-form-field class="full-width">
+                <mat-label>Pick LUT Date</mat-label>
+                <input matInput [matDatepicker]="picker" formControlName="lutDate" disabled>
+                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-datepicker #picker disabled="false"></mat-datepicker>
+            </mat-form-field>
         </div>
     </div>
+    <div class="row">
+        <div class="col-6 form-group row">
+            <div class="actions attachment-row full-width">
+                <div class="attachment-elements">
+                    <mat-form-field>
+                        <input type="text" matInput placeholder="LUT No." formControlName="lutNum" autocomplete="off">
+                    </mat-form-field>
+                </div>
+                <input class="attachment-elements" style="display: none" [attr.id]="'invoiceFileCtrl'" type="file"
+                    multiple accept=".xls,.xlsx,.doc,.docx,.pdf,.png,.jpg,.zip" (change)="onFileChange($event)" />
+                <button mat-raised-button class="footer-actions attachment-elements"
+                    (click)="onBrowseFileClick($event)">Browse</button>
+                <button mat-raised-button class="footer-actions  attachment-elements"
+                    (click)="onAttachFileClick()">Attach</button>
+                <div class="filename attachment-elements" *ngFor="let f of filesList; let fInd = index">
+                    <span>
+                        {{ f.actualFileName }}
+                        <button mat-button mat-icon-button aria-label="Delete"
+                            (click)="onDeleteFileClick(f, fInd, 'invoice')">
+                            <mat-icon>delete_outline</mat-icon>
+                        </button>
+                        <button *ngIf="f.fileId != null" mat-button mat-icon-button aria-label="Download"
+                            (click)="downloadFile(f)">
+                            <mat-icon>save_alt</mat-icon>
+                        </button>
+                    </span>
+                </div>
+            </div>
+        </div>
+        <div class="col-6 form-group row">
+            <div class="actions attachment-row full-width">
+                <div class="attachment-elements" style="font-weight: bold">
+                    <mat-form-field>
+                        <mat-select placeholder="Document Description" (change)="onFileTypeChange($event)">
+                            <mat-option *ngFor="let d of documentsList" [value]="d.vendorMasterDocumentsId">
+                                {{ d.documentDescription }}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+                <input class="attachment-elements" style="display: none" [attr.id]="'invoiceFileCtrl'" type="file"
+                    multiple accept=".xls,.xlsx,.doc,.docx,.pdf,.png,.jpg,.zip" (change)="onFileChange($event)" />
+                <button mat-raised-button class="footer-actions attachment-elements"
+                    (click)="onBrowseFileClick($event)">Browse</button>
+                <button mat-raised-button class="footer-actions  attachment-elements"
+                    (click)="onAttachFileClick()">Attach</button>
+                <div class="filename attachment-elements" *ngFor="let f of filesList; let fInd = index">
+                    <span>
+                        {{ f.actualFileName }}
+                        <button mat-button mat-icon-button aria-label="Delete"
+                            (click)="onDeleteFileClick(f, fInd, 'invoice')">
+                            <mat-icon>delete_outline</mat-icon>
+                        </button>
+                        <button *ngIf="f.fileId != null" mat-button mat-icon-button aria-label="Download"
+                            (click)="downloadFile(f)">
+                            <mat-icon>save_alt</mat-icon>
+                        </button>
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- <div class="col-9">
             <mat-form-field class="full-width">
                 <mat-select placeholder="Document Description">
