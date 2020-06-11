@@ -44,37 +44,21 @@
   margin: 0px;
   flex-wrap: nowrap;
 }
-.other-attachment {
-  margin: 30px 15px;
-}
+
 .mat-radio-button {
   margin-right: 10px;
 }
-.mat-radio-group {
-  width: 33%;
-}
 
-.attachment-row {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: flex-start;
+.doc-field {
+  justify-content: space-between;
   align-items: center;
 }
-
-.attachment-elements {
-  flex: 0 0 16em;
-}
-.attachment-row .footer-actions {
-  flex: 0 0 3em;
+.doc-field .actions .footer-actions {
   height: 2em;
   line-height: 1em;
 }
-
-.filename {
-  flex-grow: 1;
-  flex-basis: auto;
-}
-.col-6 {
+.doc-form-field {
+  display: flex;
   justify-content: space-between;
   align-items: center;
 }
