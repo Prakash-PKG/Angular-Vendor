@@ -9,10 +9,6 @@
         <div class="col-5 doc-form-field">
             <mat-label>{{vendorDocCtrl.incCerCtrl.placeholder}} * :
             </mat-label>
-            <mat-radio-group>
-                <mat-radio-button [value]=true selected>YES</mat-radio-button>
-                <mat-radio-button [value]=false>NO</mat-radio-button>
-            </mat-radio-group>
         </div>
         <div class="col-7 actions">
             <input style="display: none" [attr.id]="vendorDocCtrl.incCerCtrl.browserId" type="file" multiple
@@ -47,15 +43,16 @@
     </div>
     <!------------------------------------- GST No---------------------- -->
     <div class="row doc-field">
-        <div class="col-5 doc-form-field">
+        <div class="col-3 doc-form-field">
             <mat-form-field>
                 <input type="text" matInput placeholder="{{vendorDocCtrl.gstCtrl.placeholder}}" formControlName="gstNum"
-                    autocomplete="off" required>
+                    autocomplete="off" (blur)="updateMandatory('gstNum',vendorDocCtrl.gstCtrl.documentTypeId)">
             </mat-form-field>
-            <mat-label></mat-label>
+        </div>
+        <div class="col-2 doc-form-field">
             <mat-radio-group formControlName="isGSTReg">
-                <mat-radio-button [value]=true selected>YES</mat-radio-button>
-                <mat-radio-button [value]=false>NO</mat-radio-button>
+                <mat-radio-button [value]=true>YES</mat-radio-button>
+                <mat-radio-button [value]=false [checked]=true>NO</mat-radio-button>
             </mat-radio-group>
         </div>
         <div class="col-7 actions">
@@ -63,9 +60,11 @@
                 accept=".xls,.xlsx,.doc,.docx,.pdf,.png,.jpg,.zip"
                 (change)="onFileChange($event, vendorDocCtrl.gstCtrl.documentTypeId)" />
             <button mat-raised-button class="footer-actions"
-                (click)="onBrowseFileClick($event, vendorDocCtrl.gstCtrl.browserId)">Browse</button>
+                (click)="onBrowseFileClick($event, vendorDocCtrl.gstCtrl.browserId)"
+                [disabled]="!vendorDocumentForm.get('gstNum').value">Browse</button>
             <button mat-raised-button class="footer-actions"
-                (click)="onAttachFileClick(vendorDocCtrl.gstCtrl.documentTypeId)">Attach</button>
+                (click)="onAttachFileClick(vendorDocCtrl.gstCtrl.documentTypeId)"
+                [disabled]="!vendorDocumentForm.get('gstNum').value">Attach</button>
             <span *ngIf="filesMap">
                 <span class="filename"
                     *ngFor="let f of filesMap[vendorDocCtrl.gstCtrl.documentTypeId]?.filesList; let fInd = index">
@@ -92,15 +91,11 @@
     <!------------------------------------- Pan No---------------------- -->
     <div class="row doc-field">
         <div class="col-5 doc-form-field">
-            <mat-form-field>
+            <mat-form-field class="full-width">
                 <input type="text" matInput placeholder="{{vendorDocCtrl.panCtrl.placeholder}}" formControlName="panNum"
                     autocomplete="off" required>
             </mat-form-field>
             <mat-label></mat-label>
-            <mat-radio-group>
-                <mat-radio-button [value]=true selected>YES</mat-radio-button>
-                <mat-radio-button [value]=false>NO</mat-radio-button>
-            </mat-radio-group>
         </div>
         <div class="col-7 actions">
             <input style="display: none" [attr.id]="vendorDocCtrl.panCtrl.browserId" type="file" multiple
@@ -137,10 +132,6 @@
     <div class="row doc-field">
         <div class="col-5 doc-form-field">
             <mat-label> {{vendorDocCtrl.canChqCtrl.placeholder}} * :</mat-label>
-            <mat-radio-group>
-                <mat-radio-button [value]=true selected>YES</mat-radio-button>
-                <mat-radio-button [value]=false>NO</mat-radio-button>
-            </mat-radio-group>
         </div>
         <div class="col-7 actions">
             <input style="display: none" [attr.id]="vendorDocCtrl.canChqCtrl.browserId" type="file" multiple
@@ -182,9 +173,9 @@
             </mat-form-field>
             <mat-form-field style="width:9em;">
                 <mat-label>Pick LUT Date</mat-label>
-                <input matInput [matDatepicker]="picker" formControlName="lutDate" disabled>
+                <input matInput [matDatepicker]="picker" formControlName="lutDate">
                 <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-                <mat-datepicker #picker disabled="false"></mat-datepicker>
+                <mat-datepicker #picker></mat-datepicker>
             </mat-form-field>
         </div>
         <div class="col-7 actions">
@@ -221,23 +212,19 @@
     <!------------------------------------- PF No---------------------- -->
     <div class="row doc-field">
         <div class="col-5 doc-form-field">
-            <mat-form-field>
+            <mat-form-field class="full-width">
                 <input type="text" matInput placeholder="{{vendorDocCtrl.pfCtrl.placeholder}}" formControlName="pfNum"
-                    autocomplete="off"  (blur)="updateMandatory($event,vendorDocCtrl.pfCtrl.documentTypeId)">
+                    autocomplete="off" (blur)="updateMandatory('pfNum',vendorDocCtrl.pfCtrl.documentTypeId)">
             </mat-form-field>
-            <mat-label></mat-label>
-            <mat-radio-group>
-                <mat-radio-button [value]=true selected>YES</mat-radio-button>
-                <mat-radio-button [value]=false>NO</mat-radio-button>
-            </mat-radio-group>
+
         </div>
         <div class="col-7 actions">
             <input style="display: none" [attr.id]="vendorDocCtrl.pfCtrl.browserId" type="file" multiple
                 accept=".xls,.xlsx,.doc,.docx,.pdf,.png,.jpg,.zip"
                 (change)="onFileChange($event, vendorDocCtrl.pfCtrl.documentTypeId)" />
-            <button mat-raised-button class="footer-actions"
+            <button mat-raised-button class="footer-actions" [disabled]="!vendorDocumentForm.get('pfNum').value"
                 (click)="onBrowseFileClick($event, vendorDocCtrl.pfCtrl.browserId)">Browse</button>
-            <button mat-raised-button class="footer-actions"
+            <button mat-raised-button class="footer-actions" [disabled]="!vendorDocumentForm.get('pfNum').value"
                 (click)="onAttachFileClick(vendorDocCtrl.pfCtrl.documentTypeId)">Attach</button>
             <span *ngIf="filesMap">
                 <span class="filename"
@@ -265,23 +252,19 @@
     <!------------------------------------- ESI  No---------------------- -->
     <div class="row doc-field">
         <div class="col-5 doc-form-field">
-            <mat-form-field>
+            <mat-form-field class="full-width">
                 <input type="text" matInput placeholder="{{vendorDocCtrl.esiCtrl.placeholder}}" formControlName="esiNum"
-                    autocomplete="off">
+                    autocomplete="off" (blur)="updateMandatory('esiNum',vendorDocCtrl.esiCtrl.documentTypeId)">
             </mat-form-field>
-            <mat-label></mat-label>
-            <mat-radio-group>
-                <mat-radio-button [value]=true selected>YES</mat-radio-button>
-                <mat-radio-button [value]=false>NO</mat-radio-button>
-            </mat-radio-group>
+
         </div>
         <div class="col-7 actions">
             <input style="display: none" [attr.id]="vendorDocCtrl.esiCtrl.browserId" type="file" multiple
                 accept=".xls,.xlsx,.doc,.docx,.pdf,.png,.jpg,.zip"
                 (change)="onFileChange($event, vendorDocCtrl.esiCtrl.documentTypeId)" />
-            <button mat-raised-button class="footer-actions"
+            <button mat-raised-button class="footer-actions" [disabled]="!vendorDocumentForm.get('esiNum').value"
                 (click)="onBrowseFileClick($event, vendorDocCtrl.esiCtrl.browserId)">Browse</button>
-            <button mat-raised-button class="footer-actions"
+            <button mat-raised-button class="footer-actions" [disabled]="!vendorDocumentForm.get('esiNum').value"
                 (click)="onAttachFileClick(vendorDocCtrl.esiCtrl.documentTypeId)">Attach</button>
             <span *ngIf="filesMap">
                 <span class="filename"
@@ -308,11 +291,14 @@
     </div>
     <!------------------------------------- MSME  Registered?---------------------- -->
     <div class="row doc-field">
-        <div class="col-5 doc-form-field">
+        <div class="col-3 doc-form-field">
             <mat-label>{{vendorDocCtrl.msmeCtrl.placeholder}}</mat-label>
-            <mat-radio-group formControlName="isMsmedRegistered">
+        </div>
+        <div class="col-2 doc-form-field">
+            <mat-radio-group formControlName="isMsmedRegistered"
+                (change)="updateMandatory('isMsmedRegistered',vendorDocCtrl.msmeCtrl.documentTypeId)">
                 <mat-radio-button [value]=true selected>YES</mat-radio-button>
-                <mat-radio-button [value]=false>NO</mat-radio-button>
+                <mat-radio-button [value]=false [checked]=true>NO</mat-radio-button>
             </mat-radio-group>
         </div>
         <div class="col-7 actions">
@@ -320,8 +306,10 @@
                 accept=".xls,.xlsx,.doc,.docx,.pdf,.png,.jpg,.zip"
                 (change)="onFileChange($event, vendorDocCtrl.msmeCtrl.documentTypeId)" />
             <button mat-raised-button class="footer-actions"
+                [disabled]="!vendorDocumentForm.get('isMsmedRegistered').value"
                 (click)="onBrowseFileClick($event, vendorDocCtrl.msmeCtrl.browserId)">Browse</button>
             <button mat-raised-button class="footer-actions"
+                [disabled]="!vendorDocumentForm.get('isMsmedRegistered').value"
                 (click)="onAttachFileClick(vendorDocCtrl.msmeCtrl.documentTypeId)">Attach</button>
             <span *ngIf="filesMap">
                 <span class="filename"
@@ -348,20 +336,23 @@
     </div>
     <!------------------------------------- Has TDS---------------------- -->
     <div class="row doc-field">
-        <div class="col-5 doc-form-field">
+        <div class="col-3 doc-form-field">
             <mat-label>{{vendorDocCtrl.tdsCtrl.placeholder}}</mat-label>
-            <mat-radio-group formControlName="hasTdsLower">
+        </div>
+        <div class="col-2 doc-form-field">
+            <mat-radio-group formControlName="hasTdsLower"
+                (change)="updateMandatory('hasTdsLower',vendorDocCtrl.tdsCtrl.documentTypeId)">
                 <mat-radio-button [value]=true selected>YES</mat-radio-button>
-                <mat-radio-button [value]=false>NO</mat-radio-button>
+                <mat-radio-button [value]=false [checked]=true>NO</mat-radio-button>
             </mat-radio-group>
         </div>
         <div class="col-7 actions">
             <input style="display: none" [attr.id]="vendorDocCtrl.tdsCtrl.browserId" type="file" multiple
                 accept=".xls,.xlsx,.doc,.docx,.pdf,.png,.jpg,.zip"
                 (change)="onFileChange($event, vendorDocCtrl.tdsCtrl.documentTypeId)" />
-            <button mat-raised-button class="footer-actions"
+            <button mat-raised-button class="footer-actions" [disabled]="!vendorDocumentForm.get('hasTdsLower').value"
                 (click)="onBrowseFileClick($event, vendorDocCtrl.tdsCtrl.browserId)">Browse</button>
-            <button mat-raised-button class="footer-actions"
+            <button mat-raised-button class="footer-actions" [disabled]="!vendorDocumentForm.get('hasTdsLower').value"
                 (click)="onAttachFileClick(vendorDocCtrl.tdsCtrl.documentTypeId)">Attach</button>
             <span *ngIf="filesMap">
                 <span class="filename"
@@ -388,9 +379,12 @@
     </div>
     <!------------------------------------- isSEZ---------------------- -->
     <div class="row doc-field">
-        <div class="col-5 doc-form-field">
+        <div class="col-3 doc-form-field">
             <mat-label>{{vendorDocCtrl.sezCtrl.placeholder}}</mat-label>
-            <mat-radio-group formControlName="isSez">
+        </div>
+        <div class="col-2 doc-form-field">
+            <mat-radio-group formControlName="isSez"
+                (change)="updateMandatory('isSez',vendorDocCtrl.sezCtrl.documentTypeId)">
                 <mat-radio-button [value]=true selected>SEZ</mat-radio-button>
                 <mat-radio-button [value]=false>Non-SEZ</mat-radio-button>
             </mat-radio-group>
@@ -399,9 +393,9 @@
             <input style="display: none" [attr.id]="vendorDocCtrl.sezCtrl.browserId" type="file" multiple
                 accept=".xls,.xlsx,.doc,.docx,.pdf,.png,.jpg,.zip"
                 (change)="onFileChange($event, vendorDocCtrl.sezCtrl.documentTypeId)" />
-            <button mat-raised-button class="footer-actions"
+            <button mat-raised-button class="footer-actions" [disabled]="!vendorDocumentForm.get('isSez').value"
                 (click)="onBrowseFileClick($event, vendorDocCtrl.sezCtrl.browserId)">Browse</button>
-            <button mat-raised-button class="footer-actions"
+            <button mat-raised-button class="footer-actions" [disabled]="!vendorDocumentForm.get('isSez').value"
                 (click)="onAttachFileClick(vendorDocCtrl.sezCtrl.documentTypeId)">Attach</button>
             <span *ngIf="filesMap">
                 <span class="filename"
@@ -426,13 +420,15 @@
         </div>
 
     </div>
-    <!------------------------------------- CIN No---------------------- -->
+    <!------------------------------------- RCM and CIN No---------------------- -->
     <div class="row doc-field">
-        <div class="col-5 doc-form-field">
+        <div class="col-3 doc-form-field">
             <mat-label>Is RCM applicable?</mat-label>
+        </div>
+        <div class="col-2 doc-form-field">
             <mat-radio-group aria-label="Is RCM applicable?" formControlName="isRcmApplicable">
                 <mat-radio-button [value]=true>YES</mat-radio-button>
-                <mat-radio-button [value]=false>NO</mat-radio-button>
+                <mat-radio-button [value]=false [checked]=true>NO</mat-radio-button>
             </mat-radio-group>
         </div>
         <div class="col-7 doc-form-field">

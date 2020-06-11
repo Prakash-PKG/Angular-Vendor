@@ -25,7 +25,7 @@ export class VendorDocumentsComponent implements OnInit {
     vendorDocumentForm: FormGroup;
     failureMsg: string = "";
     documentsList: VendorMasterDocumentModel[] = [];
-    filesMap = {}; // for reference: { (key: number): { filesList: [], isMandatory: boolean, isAttached: boolean, isValid: boolean } };
+    filesMap: { [key: number]: { filesList?: FileDetailsModel[], isMandatory?: boolean, isAttached?: boolean, isError?: boolean } } = {};
 
     vendorDocCtrl = {
         incCerCtrl: { documentTypeId: 1, browserId: 'incCerFileCtrl', placeholder: 'Incorporation Certificate' },
@@ -50,8 +50,7 @@ export class VendorDocumentsComponent implements OnInit {
 
     onFileChange(event: any, documentTypeId: number) {
         if (!documentTypeId) return;
-        this.filesMap[documentTypeId] = { filesList: [], isMandatory: false, isAttached: false, isValid: true, isError: false };
-        this.filesMap[documentTypeId].filesList = [];
+        this.filesMap[documentTypeId] = { filesList: [], isAttached: false };
         if (event.target.files && event.target.files.length > 0) {
             for (let f = 0; f < event.target.files.length; f++) {
                 let file = event.target.files[f];
@@ -119,12 +118,6 @@ export class VendorDocumentsComponent implements OnInit {
                 });
         console.log(this.filesMap);
     }
-    updateMandatory(ctrlId, documentTypeId: number) {
-        // if (ctrlId.target.value) {
-        //     this.filesMap[documentTypeId].isMandatory = true;
-        // }
-        console.log(documentTypeId);
-    }
     onPrevClick() {
         this._router.navigate([this._appService.routingConstants.vendorBankDetails]);
     }
@@ -139,7 +132,6 @@ export class VendorDocumentsComponent implements OnInit {
             }
         }
         if (!this.isValid) { return };
-
         this.failureMsg = "";
 
         if (this.vendorDocumentForm.valid) {
@@ -234,19 +226,32 @@ export class VendorDocumentsComponent implements OnInit {
         this.vendorDocumentForm.get("lutDate").setValue(new Date(this._appService.vendorRegistrationDetails.lutDate));
 
     }
-
-    ngOnInit() {
-        this.documentsList = [];
+    initializeFilesList() {
         if (this._appService.vendorRegistrationInitDetails && this._appService.vendorRegistrationInitDetails.documentDetailsList &&
             this._appService.vendorRegistrationInitDetails.documentDetailsList.length > 0) {
             this._appService.vendorRegistrationInitDetails.documentDetailsList.forEach(item =>
                 this.filesMap[item.vendorMasterDocumentsId] = { filesList: [], isMandatory: item.isMandatory, isAttached: false, isError: false });
         }
+    }
+    updateMandatory(selfId: string, documentTypeId: number) {
+            if (!this.vendorDocumentForm.get(selfId).value) {
+                this.vendorDocumentForm.get(selfId).setValidators([]);
+                this.vendorDocumentForm.get(selfId).updateValueAndValidity();
+                this.filesMap[documentTypeId] = { filesList: [], isMandatory: false, isAttached: false, isError: false }
+                return;
+            }
+            this.vendorDocumentForm.get(selfId).enable();
+            this.vendorDocumentForm.get(selfId).setValidators([Validators.required]);
+            this.vendorDocumentForm.get(selfId).updateValueAndValidity();
+            this.filesMap[documentTypeId].isMandatory = true;
+    }
+    ngOnInit() {
+        this.initializeFilesList();
 
         this.vendorDocumentForm = this._formBuilder.group({
 
             panNum: [null, [Validators.required]],
-            gstNum: [null, [Validators.required]],
+            gstNum: [null],
             isGSTReg: [null, [Validators.required]],
             pfNum: [null],
             esiNum: [null],
@@ -259,7 +264,6 @@ export class VendorDocumentsComponent implements OnInit {
             lutDate: [null]
 
         });
-
         this._homeService.updateCurrentPageDetails({ pageName: 'venDoc' });
         this.updateVendorDetails();
     }

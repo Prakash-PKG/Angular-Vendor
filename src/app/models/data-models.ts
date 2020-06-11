@@ -145,13 +145,13 @@ export class VendorMasterDetailsModel {
     procApprByName: string;
     finApprByName: string;
     finRemark: string;
-    isGSTReg: string;
+    isGSTReg: boolean;
 }
 
 export class VendorMasterDocumentModel {
     vendorMasterDocumentsId: number;
     documentDescription: string;
-    isMandatory: string;
+    isMandatory: boolean;
 }
 
 export class VendorRegistrationInitDataModel {

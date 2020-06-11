@@ -26,10 +26,12 @@
   color: blueviolet;
   margin: 2em;
   text-align: center;
+  
 }
 .heading .mat-icon {
   height: 1em;
   width: 1em;
+  transform: rotate(145deg);
 }
 .heading .material-icons {
   font-size: 3em;
@@ -62,4 +64,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+}
+.col-2{
+  padding:0px;
 }
