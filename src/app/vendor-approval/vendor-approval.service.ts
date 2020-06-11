@@ -1,5 +1,8 @@
-import { VendorApprovalInitResultModel, VendorApprovalInitReqModel,
-        VendorApprovalReqModel } from './../models/data-models';
+import {
+    VendorApprovalInitResultModel, VendorApprovalInitReqModel,
+    VendorApprovalReqModel,
+    VendorRegistrationRequestModel
+} from './../models/data-models';
 import { Injectable } from '@angular/core';
 import { AppService } from './../app.service';
 import { HttpClient } from '@angular/common/http';
@@ -10,7 +13,7 @@ import { HttpClient } from '@angular/common/http';
 export class VendorApprovalService {
 
     constructor(private _appService: AppService,
-                private _http: HttpClient) { }
+        private _http: HttpClient) { }
 
     async getVendorApprovalInitData(req: VendorApprovalInitReqModel) {
         let url = this._appService.baseUrl + "venApprovalDetails";
@@ -29,12 +32,12 @@ export class VendorApprovalService {
             detailsModel.statusDetails = data["status"];
             detailsModel.filesList = data["filesList"];
             detailsModel.vendorMasterDetails = data["vendorMasterDetails"];
-            detailsModel.accGroupMasterList = data ["accGroupMasterList"];
-            detailsModel.companyCodeMasterList =data["companyCodeMasterList"];
+            detailsModel.accGroupMasterList = data["accGroupMasterList"];
+            detailsModel.companyCodeMasterList = data["companyCodeMasterList"];
             detailsModel.currencyMasterList = data["currencyMasterList"];
             detailsModel.vendorApprovalDetails = data["vendorApprovalDetail"];
-            detailsModel.withholdTaxVOList =data["withholdTaxVOList"];
-            detailsModel.withholdTypeVOList = data ["withholdTypeVOList"];
+            detailsModel.withholdTaxVOList = data["withholdTaxVOList"];
+            detailsModel.withholdTypeVOList = data["withholdTypeVOList"];
         }
 
         return detailsModel;
@@ -42,6 +45,11 @@ export class VendorApprovalService {
 
     updateVendorApprovalDetails(updateReqModel: VendorApprovalReqModel) {
         let url = this._appService.baseUrl + "updateVendorApproval";
-        return this._http.post(url, updateReqModel, {responseType: 'json', observe: 'response'});
+        return this._http.post(url, updateReqModel, { responseType: 'json', observe: 'response' });
+    }
+    
+    sendBackForCorrection(sendVendorDetails: VendorRegistrationRequestModel) {
+        let url = this._appService.baseUrl + "fetchVendor";
+        return this._http.post(url, sendVendorDetails, { responseType: 'json', observe: 'response' });
     }
 }

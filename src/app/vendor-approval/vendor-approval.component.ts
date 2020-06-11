@@ -9,7 +9,8 @@ import {
     CompanyCodeMasterList,
     currencyMasterList,
     WithholdTypeList,
-    WithholdTaxList
+    WithholdTaxList,
+    VendorRegistrationRequestModel
 } from './../models/data-models';
 import { Component, OnInit } from '@angular/core';
 import { HomeService } from '../home/home.service';
@@ -47,7 +48,29 @@ export class VendorApprovalComponent implements OnInit {
     }
 
     onSendForCorrClick() {
-        
+        let req: VendorRegistrationRequestModel = {
+            action: 'sendBack',
+            vendorMasterDetails: this.vendorApprovalInitDetails.vendorMasterDetails
+        }
+        this._vendorApprovalService.sendBackForCorrection(req)
+        .subscribe(response => {
+            this._homeService.updateBusy(<BusyDataModel>{ isBusy: false, msg: null });
+
+            if (response.body) {
+                let result: StatusModel = response.body as StatusModel;
+                if (result.status == 200 && result.isSuccess) {
+                    this.msg = this._appService.messages.vendorSendBackSuccess;
+                }
+                else {
+                    this.msg = this._appService.messages.vendorSendBackFailure;
+                }
+            }
+        },
+            (error) => {
+                this._homeService.updateBusy(<BusyDataModel>{ isBusy: false, msg: null });
+                this.msg = this._appService.messages.vendorSendBackFailure;
+                console.log(error);
+            });
     }
 
     onApproveClick() {

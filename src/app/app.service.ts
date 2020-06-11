@@ -46,7 +46,8 @@ export class AppService {
         save: "save",
         submit: "submit",
         approve: "approve",
-        reject: "reject"
+        reject: "reject",
+        sendBack: "sendBack"
     };
 
     readonly approvalLevels: any = {
@@ -219,7 +220,9 @@ export class AppService {
     readonly messages: any = {
         vendorRegistrationSaveFailure: "Due to technical problems not able to proceed further. Please try later.",
         vendorRegistrationSubmitSuccessMsg: "Vendor details submitted successful",
-        vendorApprovalFailure: "Vendor approval is failed"
+        vendorApprovalFailure: "Vendor approval is failed",
+        vendorSendBackSuccess:"Vendor Details are send back for correction",
+        vendorSendBackFailure: "Vendor details sent back for correction failed"
     };
 
     getFileData(fileDetails: FileDetailsModel) {
