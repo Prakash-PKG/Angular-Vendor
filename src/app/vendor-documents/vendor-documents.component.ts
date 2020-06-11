@@ -49,11 +49,9 @@ export class VendorDocumentsComponent implements OnInit {
         private _homeService: HomeService) { }
 
     onFileChange(event: any, documentTypeId: number) {
-        console.log(this.filesMap);
         if (!documentTypeId) return;
-        this.filesMap[documentTypeId] = { filesList: [], isMandatory: true, isAttached: false, isValid: true };
+        this.filesMap[documentTypeId] = { filesList: [], isMandatory: false, isAttached: false, isValid: true, isError: false };
         this.filesMap[documentTypeId].filesList = [];
-        console.log(this.filesMap);
         if (event.target.files && event.target.files.length > 0) {
             for (let f = 0; f < event.target.files.length; f++) {
                 let file = event.target.files[f];
@@ -92,10 +90,9 @@ export class VendorDocumentsComponent implements OnInit {
         event.preventDefault();
         let element: HTMLElement = document.getElementById(controlName);
         element.click();
+        console.log(this.filesMap);
     }
     onAttachFileClick(documentTypeId: number) {
-        // this.filesMap[documentTypeId].filesList
-
         let filesReq: VendorDocumentReqModel = {
             userId: globalConstant.userDetails.isVendor ? globalConstant.userDetails.userEmail : globalConstant.userDetails.userId,
             fileDetails: this.filesMap[documentTypeId].filesList,
@@ -120,6 +117,13 @@ export class VendorDocumentsComponent implements OnInit {
                     this._homeService.updateBusy(<BusyDataModel>{ isBusy: false, msg: null });
                     console.log(error);
                 });
+        console.log(this.filesMap);
+    }
+    updateMandatory(ctrlId, documentTypeId: number) {
+        // if (ctrlId.target.value) {
+        //     this.filesMap[documentTypeId].isMandatory = true;
+        // }
+        console.log(documentTypeId);
     }
     onPrevClick() {
         this._router.navigate([this._appService.routingConstants.vendorBankDetails]);
@@ -132,13 +136,9 @@ export class VendorDocumentsComponent implements OnInit {
             if (this.filesMap[key].isMandatory && !this.filesMap[key].isAttached) {
                 this.isValid = false;
                 this.filesMap[key].isError = true;
-                console.log(this.filesMap[key]);
-                break;
             }
         }
-        if (!this.isValid) { console.log('validation failed'); return };
-
-        console.log('It is valid...');
+        if (!this.isValid) { return };
 
         this.failureMsg = "";
 
@@ -219,12 +219,6 @@ export class VendorDocumentsComponent implements OnInit {
         this._appService.downloadInvoiceFile(fileDetails);
     }
 
-    onFileTypeChange(docTYpe) {
-
-    }
-    prepareFileType() {
-
-    }
     updateVendorDetails() {
         this.vendorDocumentForm.get("isGSTReg").setValue(this._appService.vendorRegistrationDetails.isGSTReg);
         this.vendorDocumentForm.get("panNum").setValue(this._appService.vendorRegistrationDetails.panNum);
