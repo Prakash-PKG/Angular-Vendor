@@ -1,4 +1,5 @@
-import { VendorMasterDetailsModel, VendorRegistrationInitDataModel, PendingApprovalsModel, FileDetailsModel } from './models/data-models';
+import { VendorMasterDetailsModel, VendorRegistrationInitDataModel, 
+        PendingApprovalsModel, FileDetailsModel, PODetailsModel } from './models/data-models';
 
 import { Injectable } from '@angular/core';
 import { DatePipe } from '@angular/common';
@@ -64,6 +65,8 @@ export class AppService {
     readonly displayDtFormat: string = "dd MMM yyyy"; // Displays dates in this format. By changing this, total application date formats will change
     
     readonly dbDateTimeFormat: string = "yyyy-MM-dd HH:mm:ss";
+
+    selectedPO: PODetailsModel = null;
 
     getFormattedDate(dtStr: string) {
         if(dtStr) {

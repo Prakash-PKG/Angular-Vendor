@@ -49,11 +49,19 @@ export class InvoiceUploadResultModel {
 }
 
 export class PODetailsModel {
-    poNumber: string;
-    purchaseOrderId: number;
-    currencyType: string;
-    departmentId: string;
-    vendorId: string;
+    poNumber: string = null;
+    purchaseOrderId: number = null;
+    vendorId: string = null;
+    vendorName: string = null;
+    currencyType: string = null;
+    departmentId: string = null;
+    documentType: string = null;
+    accountAssignmenCategory: string;
+    poDate: string = null;
+    totalAmount: string = null;
+    billedAmount: string = null;
+    createdBy: string = null;
+    createdDate: string = null;
 }
 
 export class StatusModel {
@@ -63,15 +71,9 @@ export class StatusModel {
     exceptionMsg: string;
 }
 
-export class POSearchReqModel {
-    employeeId: string;
-    approvalLevels: string[];
-    departments: string[];
-}
-
 export class POSearchResultModel {
-    pODetailsVO: PODetailsModel[];
-    statusVO: StatusModel;
+    poList: PODetailsModel[];
+    statusDetails: StatusModel;
 }
 
 export class VendorRegistrationRequestModel {
@@ -197,6 +199,10 @@ export class PendingApprovalRequestModel {
     departments: string[];
 }
 
+export class POSearchReqModel extends PendingApprovalRequestModel {
+    vendorId: string;
+}
+
 export class PendingApprovalsModel {
     approvalId: number;
     purchaseOrderId: number;
@@ -296,6 +302,10 @@ export class ItemModel {
     hsn: string;
     createdBy: string;
     createdDate: string;
+}
+
+export class ItemDisplayModel extends ItemModel{
+    unitsTotalAmount: number;
 }
 
 export class InvoiceDetailsModel {
@@ -410,12 +420,23 @@ export class WithholdTypeList {
 export class RemoveDocumentReqModel {
     fileId: number;
 }
+
 export class VendorDocumentReqModel {
     userId: string;
     fileDetails: FileDetailsModel[];
     vendorMasterId: number;
 }
+
 export class VendorDocumentResultModel {
     status: StatusModel;
     fileDetails: FileDetailsModel[];
+}
+
+export class PODetailsRequestModel {
+    purchaseOrderId: number;
+}
+
+export class PODetailsResultsModel {
+    statusDetails: StatusModel;
+    itemsList: ItemDisplayModel[];
 }

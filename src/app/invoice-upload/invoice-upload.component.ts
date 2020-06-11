@@ -303,7 +303,7 @@ export class InvoiceUploadComponent implements OnInit {
     async loadInitData() {
 
         let req: InvoiceUploadReqModel = {
-            vendorId: '7100000002',
+            vendorId: (globalConstant.userDetails.isVendor) ? globalConstant.userDetails.userId : null,
             approvalLevels: [],
             departments: []
         }
@@ -434,13 +434,8 @@ export class InvoiceUploadComponent implements OnInit {
             poNumber = this.selectedPOItem.poNumber;
         }
         else {
-            this.selectedPOItem = {
-                poNumber: null,
-                purchaseOrderId: null,
-                currencyType: null,
-                departmentId: globalConstant.userDetails.poDepts[0],
-                vendorId: null
-            }
+            this.selectedPOItem = new PODetailsModel();
+            this.selectedPOItem.departmentId = globalConstant.userDetails.poDepts[0];
         }
 
         let itemsList: ItemModel[] = [];
