@@ -10,7 +10,7 @@ import {
     currencyMasterList,
     WithholdTypeList,
     WithholdTaxList,
-    VendorRegistrationDetailRequestModel
+    VendorRegistrationDetailRequestModel,VendorMasterFilesModel
 } from './../models/data-models';
 import { Component, OnInit } from '@angular/core';
 import { HomeService } from '../home/home.service';
@@ -38,6 +38,7 @@ export class VendorApprovalComponent implements OnInit {
     selectedCompanyCode: string = null;
     selectedCurrency: string = null;
     msg: string = "";
+    vendorDocList:VendorMasterFilesModel[] =[];
 
     constructor(private _homeService: HomeService,
         private _appService: AppService,
@@ -56,9 +57,10 @@ export class VendorApprovalComponent implements OnInit {
             this._homeService.updateBusy(<BusyDataModel>{ isBusy: false, msg: null });
 
             if (response.body) {
+                console.log(response.body);
                 let result: StatusModel = response.body as StatusModel;
                 if (result.status == 200 && result.isSuccess) {
-                    this.msg = this._appService.messages.vendorSendBackSuccess;
+                    this.msg = "Vendor sent back for correction successfully";
                 }
                 else {
                     this.msg = this._appService.messages.vendorSendBackFailure;
@@ -129,6 +131,8 @@ export class VendorApprovalComponent implements OnInit {
             this._homeService.updateBusy(<BusyDataModel>{ isBusy: true, msg: "Loading..." });
             this.vendorApprovalInitDetails = await this._vendorApprovalService.getVendorApprovalInitData(req);
             this.vendorDetails = this.vendorApprovalInitDetails.vendorMasterDetails;
+            this.vendorDocList = this.vendorApprovalInitDetails.filesList;
+            console.log(this.vendorDocList);
             this._homeService.updateBusy(<BusyDataModel>{ isBusy: false, msg: null });
             this.loadDropDown();
         }
