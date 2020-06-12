@@ -138,7 +138,9 @@ export class InvoiceApprovalsComponent implements OnInit {
                 approvalLevel: this.initDetails.approvalDetails.approvalLevel,
                 remarks: this.remarks,
                 createdBy: this.initDetails.approvalDetails.createdBy,
-                createdDate: this.initDetails.approvalDetails.createdDate
+                createdDate: this.initDetails.approvalDetails.createdDate,
+                updatedBy: null,
+                updatedDate: null
             }
         };
 

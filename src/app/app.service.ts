@@ -1,5 +1,5 @@
 import { VendorMasterDetailsModel, VendorRegistrationInitDataModel, 
-        PendingApprovalsModel, FileDetailsModel, PODetailsModel } from './models/data-models';
+        PendingApprovalsModel, FileDetailsModel, PODetailsModel, InvoiceModel } from './models/data-models';
 
 import { Injectable } from '@angular/core';
 import { DatePipe } from '@angular/common';
@@ -10,8 +10,8 @@ import { HttpClient } from '@angular/common/http';
 })
 export class AppService {
 
-    readonly domain = "http://localhost:8080";
-    // readonly domain = "https://mvendor-dev.marlabs.com";  
+    //readonly domain = "http://localhost:8080";
+    readonly domain = "https://mvendor-dev.marlabs.com";  
     //readonly domain = "https://mtime.marlabs.com";  
     readonly baseUrl = this.domain + "/mvendor/";
     readonly customerAuthUrl = this.domain + "/customerAuth/oauth/token";
@@ -50,6 +50,18 @@ export class AppService {
         sendBack: "sendBack"
     };
 
+    readonly statusNames: any = {
+        new: "In Progress",
+        approved: "Approved",
+        rejected: "Rejected"
+    };
+
+    readonly statusCodes: any = {
+        new: "new",
+        approved: "approved",
+        rejected: "rejected"
+    };
+
     readonly approvalLevels: any = {
         po: "po",
         functionalHead: "functional_head",
@@ -68,6 +80,8 @@ export class AppService {
     readonly dbDateTimeFormat: string = "yyyy-MM-dd HH:mm:ss";
 
     selectedPO: PODetailsModel = null;
+
+    selectedInvoice: InvoiceModel = null;
 
     getFormattedDate(dtStr: string) {
         if(dtStr) {

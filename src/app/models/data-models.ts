@@ -165,30 +165,51 @@ export class VendorRegistrationInitDataModel {
 
 export class InvoiceSearchResultModel {
     statusDetails: StatusModel;
-    invoiceList: InvoiceSearchModel[];
+    invoiceList: InvoiceModel[];
 }
 
-export class InvoiceSearchModel {
-    rowNumber: number;
+export class InvoiceModel {
+    purchaseOrderId: number;
     poNumber: string;
     vendorId: string;
     vendorName: string;
+    invoiceId: number;
     invoiceNumber: string;
     invoiceDate: string;
-    invTotalAmt: string;
-    departmentId: string;
-    approverId: string;
-    approvalLevel: string;
+    currencyType: string;
+    totalAmt: string;
+    totalTax: string;
+    remarks: string;
+    freightCharges: string;
+    grnSesNumber: string;
     statusCode: string;
-    statusDescription: string;
-    submittedDate: string;
-
 }
 
 export class InvoiceSearchRequestModel {
+    vendorId: string;
     employeeId: string;
     approvalLevels: string[];
     departments: string[];
+}
+
+export class InvoiceDetailsRequestModel {
+    purchaseOrderId: number;
+    invoiceId: number;
+}
+
+export class InvoiceDetailsResultModel {
+    statusDetails: StatusModel;
+    itemsList: ItemDisplayModel[];
+    invoiceFilesList: FileDetailsModel[];
+    supportFilesList: FileDetailsModel[];
+    approvalsList: InvoiceApprovalModel[];
+}
+
+export class ApprovalLevelsModel {
+    levelName: string;
+    status: string;
+    date: string;
+    remarks: string;
 }
 
 export class PendingApprovalResultModel {
@@ -377,6 +398,8 @@ export class InvoiceApprovalModel {
     remarks: string;
     createdBy: string;
     createdDate: string;
+    updatedBy: string;
+    updatedDate: string;
 }
 
 export class UpdateInvoiceApprovalReqModel {

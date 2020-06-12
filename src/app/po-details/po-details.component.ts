@@ -70,13 +70,13 @@ export class PoDetailsComponent implements OnInit {
     }
 
     ngOnInit() {
-        this.poDetails = this._appService.selectedPO;
-
         this.isDashboardCollapsed = true;
 
         this._sidebarExpansionSubscription = this._homeService.isSidebarCollapsed.subscribe(data => {
             this.isDashboardCollapsed = !data;
         });
+
+        this.poDetails = this._appService.selectedPO;
 
         setTimeout(() => {
            this.loadInitData();
