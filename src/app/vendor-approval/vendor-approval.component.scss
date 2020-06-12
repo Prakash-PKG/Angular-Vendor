@@ -48,6 +48,7 @@
   flex-wrap: wrap;
   padding: 0;
   padding-left: 2.75em;
+  align-items: center;
 }
 
 .Rtable--2cols > .Rtable-cell {
@@ -72,6 +73,11 @@
   padding: 0.2em 1em;
   overflow: hidden;
   list-style: none;
+}
+.Rtable .Rtable-cell .error-txt{
+  color: red;
+  font-size: x-small;
+  font-weight: 100;
 }
 
 @media screen and (max-width: 499px) {

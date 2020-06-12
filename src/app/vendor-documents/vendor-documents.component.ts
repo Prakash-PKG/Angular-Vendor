@@ -14,6 +14,15 @@ import { DatePipe } from '@angular/common';
 import { HomeService } from '../home/home.service';
 import { globalConstant } from '../common/global-constant';
 
+interface FileMap {
+    [key: number]: {
+        filesList?: FileDetailsModel[],
+        isMandatory?: boolean,
+        isAttached?: boolean,
+        isError?: boolean
+    }
+}
+
 @Component({
     selector: 'app-vendor-documents',
     templateUrl: './vendor-documents.component.html',
@@ -25,7 +34,7 @@ export class VendorDocumentsComponent implements OnInit {
     vendorDocumentForm: FormGroup;
     failureMsg: string = "";
     documentsList: VendorMasterDocumentModel[] = [];
-    filesMap: { [key: number]: { filesList?: FileDetailsModel[], isMandatory?: boolean, isAttached?: boolean, isError?: boolean } } = {};
+    filesMap: FileMap = {};
 
     vendorDocCtrl = {
         incCerCtrl: { documentTypeId: 1, browserId: 'incCerFileCtrl', placeholder: 'Incorporation Certificate' },
@@ -38,7 +47,8 @@ export class VendorDocumentsComponent implements OnInit {
         tdsCtrl: { documentTypeId: 8, browserId: 'tdsFileCtrl', placeholder: 'Has TDS lower deduction certificate?' },
         sezCtrl: { documentTypeId: 9, browserId: 'sezFileCtrl', placeholder: 'SEZ / Non-SEZ' },
         lutNoCtrl: { documentTypeId: 10, browserId: 'lutNoFileCtrl', placeholder: 'LUT No.' },
-        msmeSelfCtrl: { documentTypeId: 11, browserId: 'msmeSelfFileCtrl', placeholder: 'MSME Self Attested Certificate?' }
+        msmeSelfCtrl: { documentTypeId: 11, browserId: 'msmeSelfFileCtrl', placeholder: 'MSME Self Attested Certificate?' },
+        otherCtrl: { documentTypeId: 13, browserId: 'otherFileCtrl', placeholder: 'Document Description' }
     }
 
     constructor(private _appService: AppService,
@@ -105,11 +115,17 @@ export class VendorDocumentsComponent implements OnInit {
                     let results: VendorDocumentResultModel = response.body as VendorDocumentResultModel;
 
                     if (results.status.status == 200 && results.status.isSuccess) {
-                        // this.filesMap[documentTypeId].filesList = [];
+                        this.filesMap[documentTypeId].filesList = [];
                         this.filesMap[documentTypeId].filesList = results.fileDetails.concat();
                         this.filesMap[documentTypeId].isAttached = true;
+                        document.getElementById("attachmmsg").innerHTML = "Attached";
+
+                        setTimeout(function () {
+                            document.getElementById("attachmmsg").innerHTML = '';
+                        }, 3000);
                     }
                 }
+               
             },
                 (error) => {
                     this.filesMap[documentTypeId].isAttached = false;
@@ -147,6 +163,7 @@ export class VendorDocumentsComponent implements OnInit {
             this._appService.vendorRegistrationDetails.hasTdsLower = this.vendorDocumentForm.get("hasTdsLower").value;
             this._appService.vendorRegistrationDetails.lutNum = this.vendorDocumentForm.get("lutNum").value;
             this._appService.vendorRegistrationDetails.lutDate = this._datePipe.transform(this.vendorDocumentForm.get("lutDate").value, this._appService.dbDateFormat);
+            this._appService.vendorRegistrationDetails.otherDocDesc = this.vendorDocumentForm.get("otherDocDesc").value;
 
             let req: VendorRegistrationRequestModel = {
                 action: this._appService.updateOperations.submit,
@@ -173,10 +190,13 @@ export class VendorDocumentsComponent implements OnInit {
                         console.log(error);
                     });
         }
+        else {
+            this.failureMsg = this._appService.messages.vendorRegistrationFormInvalid;
+        }
     }
 
     onDeleteFileClick(fileDetails: FileDetailsModel, fileIndex: number, documentTypeId: number) {
-        if (fileDetails.fileId) {
+        if (fileDetails && fileDetails.fileId) {
             this._homeService.updateBusy(<BusyDataModel>{ isBusy: true, msg: "Deleting..." });
             this._vendorRegistrationService.deleteVendorFile(fileDetails)
                 .subscribe(response => {
@@ -224,6 +244,7 @@ export class VendorDocumentsComponent implements OnInit {
         this.vendorDocumentForm.get("hasTdsLower").setValue(this._appService.vendorRegistrationDetails.hasTdsLower);
         this.vendorDocumentForm.get("lutNum").setValue(this._appService.vendorRegistrationDetails.lutNum);
         this.vendorDocumentForm.get("lutDate").setValue(new Date(this._appService.vendorRegistrationDetails.lutDate));
+        this.vendorDocumentForm.get("otherDocDesc").setValue(this._appService.vendorRegistrationDetails.otherDocDesc);
 
     }
     initializeFilesList() {
@@ -234,16 +255,16 @@ export class VendorDocumentsComponent implements OnInit {
         }
     }
     updateMandatory(selfId: string, documentTypeId: number) {
-            if (!this.vendorDocumentForm.get(selfId).value) {
-                this.vendorDocumentForm.get(selfId).setValidators([]);
-                this.vendorDocumentForm.get(selfId).updateValueAndValidity();
-                this.filesMap[documentTypeId] = { filesList: [], isMandatory: false, isAttached: false, isError: false }
-                return;
-            }
-            this.vendorDocumentForm.get(selfId).enable();
-            this.vendorDocumentForm.get(selfId).setValidators([Validators.required]);
+        if (!this.vendorDocumentForm.get(selfId).value) {
+            this.vendorDocumentForm.get(selfId).setValidators([]);
             this.vendorDocumentForm.get(selfId).updateValueAndValidity();
-            this.filesMap[documentTypeId].isMandatory = true;
+            this.filesMap[documentTypeId] = { filesList: [], isMandatory: false, isAttached: false, isError: false }
+            return;
+        }
+        this.vendorDocumentForm.get(selfId).enable();
+        this.vendorDocumentForm.get(selfId).setValidators([Validators.required]);
+        this.vendorDocumentForm.get(selfId).updateValueAndValidity();
+        this.filesMap[documentTypeId].isMandatory = true;
     }
     ngOnInit() {
         this.initializeFilesList();
@@ -261,7 +282,8 @@ export class VendorDocumentsComponent implements OnInit {
             isMsmedRegistered: [null],
             hasTdsLower: [null],
             lutNum: [null, [Validators.required]],
-            lutDate: [null]
+            lutDate: [null],
+            otherDocDesc: [null]
 
         });
         this._homeService.updateCurrentPageDetails({ pageName: 'venDoc' });

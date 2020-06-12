@@ -158,7 +158,8 @@ export class AppService {
         procApprByName:  null,
         finApprByName: null,
         finRemark:  null,
-        isGSTReg:null
+        isGSTReg:null,
+        otherDocDesc:null
     };
 
     resetVendorRegistrationDetails() {
@@ -221,7 +222,8 @@ export class AppService {
             procApprByName:  null,
             finApprByName: null,
             finRemark:  null,
-            isGSTReg:null
+            isGSTReg:null,
+            otherDocDesc:null
         };
 
         return regDetails;
@@ -236,7 +238,8 @@ export class AppService {
         vendorRegistrationSubmitSuccessMsg: "Vendor details submitted successful",
         vendorApprovalFailure: "Vendor approval is failed",
         vendorSendBackSuccess:"Vendor Details are send back for correction",
-        vendorSendBackFailure: "Vendor details sent back for correction failed"
+        vendorSendBackFailure: "Vendor details sent back for correction failed",
+        vendorRegistrationFormInvalid: "Your Form Contains Error. Please Check"
     };
 
     getFileData(fileDetails: FileDetailsModel) {

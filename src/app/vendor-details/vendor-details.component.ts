@@ -7,6 +7,7 @@ import { VendorRegistrationService } from './../vendor-registration/vendor-regis
 
 import { BusyDataModel, VendorRegistrationRequestModel, VendorRegistrationResultModel } from './../models/data-models';
 import { HomeService } from '../home/home.service';
+import { equalValueValidator } from '../common/equal-value-validator';
 
 @Component({
     selector: 'app-vendor-details',
@@ -23,7 +24,7 @@ export class VendorDetailsComponent implements OnInit {
         private _vendorRegistrationService: VendorRegistrationService,
         private _router: Router,
         private _formBuilder: FormBuilder,
-        private _homeService:HomeService ) { }
+        private _homeService: HomeService) { }
 
     onNextClick() {
         // this._router.navigate([this._appService.routingConstants.vendorAddressDetails]);
@@ -52,7 +53,7 @@ export class VendorDetailsComponent implements OnInit {
                         if (result.status.status == 200 && result.status.isSuccess) {
                             this._appService.vendorRegistrationDetails = result.vendorMasterDetails;
                             this._router.navigate([this._appService.routingConstants.vendorAddressDetails]);
-                           
+
                         }
                         else {
                             this.failureMsg = this._appService.messages.vendorRegistrationSaveFailure;
@@ -63,6 +64,9 @@ export class VendorDetailsComponent implements OnInit {
                         this._vendorRegistrationService.updateBusy(<BusyDataModel>{ isBusy: false, msg: null });
                         console.log(error);
                     });
+        }
+        else {
+            this.failureMsg = this._appService.messages.vendorRegistrationFormInvalid;
         }
     }
 
@@ -86,9 +90,12 @@ export class VendorDetailsComponent implements OnInit {
             emailId: [null, [Validators.required, Validators.email]],
             password: [null, [Validators.required]],
             confirmPassword: [null, [Validators.required]]
-        });
+        },
+            { validator: equalValueValidator('password', 'confirmPassword') }
+        );
+
         this._homeService.updateCurrentPageDetails({ pageName: 'venDetails' });
-                this.updateVendorDetails();
+        this.updateVendorDetails();
     }
 
 }

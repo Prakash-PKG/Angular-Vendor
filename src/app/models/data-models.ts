@@ -149,6 +149,7 @@ export class VendorMasterDetailsModel {
     finApprByName: string;
     finRemark: string;
     isGSTReg: boolean;
+    otherDocDesc :string;
 }
 
 export class VendorMasterDocumentModel {
@@ -287,6 +288,7 @@ export class vendorApprovalDetails {
 
 export class VendorApprovalReqModel extends vendorApprovalDetails {
     action: string;
+    vendorMasterDetails :VendorMasterDetailsModel
 }
 
 export class CompanyCodeMasterList {

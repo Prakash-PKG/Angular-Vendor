@@ -69,6 +69,9 @@ export class VendorAddressComponent implements OnInit {
                     console.log(error);
                 });
         }
+        else {
+            this.failureMsg = this._appService.messages.vendorRegistrationFormInvalid;
+        }
     }
 
     updateVendorDetails() {
