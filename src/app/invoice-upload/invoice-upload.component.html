@@ -193,10 +193,11 @@
                 </div>
 
             </div>
-            <div style="color: blue">
-                {{ msg }}
-            </div>
+         
             <div class="row actions margin-unset">
+                <div class="error-txt">
+                    {{ msg }}
+                </div>
                 <button mat-raised-button class="footer-actions">Cancel</button>
                 <button mat-raised-button class="footer-actions" (click)="onSubmitClick()">Submit</button>
                 <button mat-raised-button class="footer-actions footer-actions-green"

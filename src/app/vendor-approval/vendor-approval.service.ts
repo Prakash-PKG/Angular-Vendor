@@ -1,7 +1,9 @@
 import {
     VendorApprovalInitResultModel, VendorApprovalInitReqModel,
     VendorApprovalReqModel,
-    VendorRegistrationRequestModel
+    VendorRegistrationRequestModel,
+    VendorRegistrationDetailRequestVO,
+    VendorRegistrationDetailRequestModel
 } from './../models/data-models';
 import { Injectable } from '@angular/core';
 import { AppService } from './../app.service';
@@ -48,8 +50,8 @@ export class VendorApprovalService {
         return this._http.post(url, updateReqModel, { responseType: 'json', observe: 'response' });
     }
     
-    sendBackForCorrection(sendVendorDetails: VendorRegistrationRequestModel) {
+    sendBackForCorrection(sendVendCorrId: VendorRegistrationDetailRequestModel) {
         let url = this._appService.baseUrl + "fetchVendor";
-        return this._http.post(url, sendVendorDetails, { responseType: 'json', observe: 'response' });
+        return this._http.post(url, sendVendCorrId, { responseType: 'json', observe: 'response' });
     }
 }

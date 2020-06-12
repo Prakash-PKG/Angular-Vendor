@@ -10,7 +10,9 @@ import {
     currencyMasterList,
     WithholdTypeList,
     WithholdTaxList,
-    VendorRegistrationRequestModel
+    VendorRegistrationRequestModel,
+    VendorRegistrationDetailRequestVO,
+    VendorRegistrationDetailRequestModel
 } from './../models/data-models';
 import { Component, OnInit } from '@angular/core';
 import { HomeService } from '../home/home.service';
@@ -48,9 +50,8 @@ export class VendorApprovalComponent implements OnInit {
     }
 
     onSendForCorrClick() {
-        let req: VendorRegistrationRequestModel = {
-            action: 'sendBack',
-            vendorMasterDetails: this.vendorApprovalInitDetails.vendorMasterDetails
+        let req: VendorRegistrationDetailRequestModel = {
+            vendorMasterId: this.vendorApprovalInitDetails.vendorMasterDetails.vendorMasterId
         }
         this._vendorApprovalService.sendBackForCorrection(req)
         .subscribe(response => {

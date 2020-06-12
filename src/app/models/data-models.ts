@@ -80,6 +80,9 @@ export class VendorRegistrationRequestModel {
     action: string;
     vendorMasterDetails: VendorMasterDetailsModel;
 }
+export class VendorRegistrationDetailRequestModel {
+    vendorMasterId: number;
+}
 
 export class VendorRegistrationResultModel {
     status: StatusModel;
@@ -304,7 +307,7 @@ export class ItemModel {
     createdDate: string;
 }
 
-export class ItemDisplayModel extends ItemModel{
+export class ItemDisplayModel extends ItemModel {
     unitsTotalAmount: number;
 }
 

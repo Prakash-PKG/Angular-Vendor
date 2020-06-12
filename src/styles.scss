@@ -55,6 +55,12 @@ textarea{
 .mat-radio-button.mat-accent .mat-radio-ripple .mat-ripple-element {
     background-color:rgba(36, 244, 213,.26)!important;
 }
+.error-txt{
+  color: blueviolet;
+  font-style: italic;
+  font-weight: 700;
+  margin-right: 10px;
+}
 // --------------------------------------------------------------css for data table starts here-----------------------------------------------------
 .dataTable tbody tr td.amount{
   text-align: right;
@@ -196,6 +202,7 @@ button {
 }
 .actions{
   justify-content: flex-end;
+  align-items: center;
 }
 
 .main{
