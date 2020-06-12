@@ -10,8 +10,6 @@ import {
     currencyMasterList,
     WithholdTypeList,
     WithholdTaxList,
-    VendorRegistrationRequestModel,
-    VendorRegistrationDetailRequestVO,
     VendorRegistrationDetailRequestModel
 } from './../models/data-models';
 import { Component, OnInit } from '@angular/core';

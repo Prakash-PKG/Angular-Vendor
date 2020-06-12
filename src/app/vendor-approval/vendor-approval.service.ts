@@ -1,8 +1,6 @@
 import {
     VendorApprovalInitResultModel, VendorApprovalInitReqModel,
     VendorApprovalReqModel,
-    VendorRegistrationRequestModel,
-    VendorRegistrationDetailRequestVO,
     VendorRegistrationDetailRequestModel
 } from './../models/data-models';
 import { Injectable } from '@angular/core';
