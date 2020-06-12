@@ -118,11 +118,6 @@ export class VendorDocumentsComponent implements OnInit {
                         this.filesMap[documentTypeId].filesList = [];
                         this.filesMap[documentTypeId].filesList = results.fileDetails.concat();
                         this.filesMap[documentTypeId].isAttached = true;
-                        document.getElementById("attachmmsg").innerHTML = "Attached";
-
-                        setTimeout(function () {
-                            document.getElementById("attachmmsg").innerHTML = '';
-                        }, 3000);
                     }
                 }
                

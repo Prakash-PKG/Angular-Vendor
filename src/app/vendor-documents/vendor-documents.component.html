@@ -18,7 +18,8 @@
                 (click)="onBrowseFileClick($event, vendorDocCtrl.incCerCtrl.browserId)">Browse</button>
             <button mat-raised-button class="footer-actions"
                 (click)="onAttachFileClick(vendorDocCtrl.incCerCtrl.documentTypeId)">Attach</button>
-            <div *ngIf="filesMap" style="display: inline-flex;">
+            <div *ngIf="filesMap" style="display: flex;
+    flex-wrap: wrap;">
                 <span class="filename"
                     *ngFor="let f of filesMap[vendorDocCtrl.incCerCtrl.documentTypeId]?.filesList; let fInd = index">
                     <span>
@@ -28,12 +29,12 @@
                             (click)="onDeleteFileClick(f, fInd, vendorDocCtrl.incCerCtrl.documentTypeId)">
                             <mat-icon>delete_outline</mat-icon>
                         </button>
-                        <!-- <button *ngIf="f.fileId != null" mat-button mat-icon-button aria-label="Download"
-                        (click)="downloadFile(f)"> -->
-                            <!-- <mat-icon>save_alt</mat-icon> -->
-                        <!-- </button> -->
+                        <button *ngIf="f.fileId != null" mat-button mat-icon-button aria-label="Download"
+                        (click)="downloadFile(f)">
+                            <mat-icon>save_alt</mat-icon>
+                        </button>
                     </span>
-                </span><span id="attachmmsg"></span>
+                </span>
                 <div *ngIf="filesMap[vendorDocCtrl.incCerCtrl.documentTypeId] && 
                 filesMap[vendorDocCtrl.incCerCtrl.documentTypeId].isError" class="errortxt">
                     Please attach the Documents
@@ -66,7 +67,8 @@
             <button mat-raised-button class="footer-actions"
                 (click)="onAttachFileClick(vendorDocCtrl.gstCtrl.documentTypeId)"
                 [disabled]="!vendorDocumentForm.get('gstNum').value">Attach</button>
-            <div *ngIf="filesMap" style="display: inline-flex;">
+            <div *ngIf="filesMap" style="display: flex;
+    flex-wrap: wrap;">
                 <span class="filename"
                     *ngFor="let f of filesMap[vendorDocCtrl.gstCtrl.documentTypeId]?.filesList; let fInd = index">
                     <span>
@@ -75,8 +77,12 @@
                             (click)="onDeleteFileClick(f, fInd, vendorDocCtrl.gstCtrl.documentTypeId)">
                             <mat-icon>delete_outline</mat-icon>
                         </button>
+                        <button *ngIf="f.fileId != null" mat-button mat-icon-button aria-label="Download"
+                        (click)="downloadFile(f)">
+                            <mat-icon>save_alt</mat-icon>
+                        </button>
                     </span>
-                </span><span id="attachmmsg"></span>
+                </span>
                 <div *ngIf="filesMap[vendorDocCtrl.gstCtrl.documentTypeId] && 
                 filesMap[vendorDocCtrl.gstCtrl.documentTypeId].isError" class="errortxt">
                     Please attach the Documents
@@ -102,7 +108,8 @@
                 (click)="onBrowseFileClick($event, vendorDocCtrl.panCtrl.browserId)">Browse</button>
             <button mat-raised-button class="footer-actions"
                 (click)="onAttachFileClick(vendorDocCtrl.panCtrl.documentTypeId)">Attach</button>
-            <div *ngIf="filesMap" style="display: inline-flex;">
+            <div *ngIf="filesMap" style="display: flex;
+    flex-wrap: wrap;">
                 <span class="filename"
                     *ngFor="let f of filesMap[vendorDocCtrl.panCtrl.documentTypeId]?.filesList; let fInd = index">
                     <span>
@@ -111,8 +118,12 @@
                             (click)="onDeleteFileClick(f, fInd, vendorDocCtrl.panCtrl.documentTypeId)">
                             <mat-icon>delete_outline</mat-icon>
                         </button>
+                        <button *ngIf="f.fileId != null" mat-button mat-icon-button aria-label="Download"
+                        (click)="downloadFile(f)">
+                            <mat-icon>save_alt</mat-icon>
+                        </button>
                     </span>
-                </span><span id="attachmmsg"></span>
+                </span>
                 <div *ngIf="filesMap[vendorDocCtrl.panCtrl.documentTypeId] && 
                 filesMap[vendorDocCtrl.panCtrl.documentTypeId].isError" class="errortxt">
                     Please attach the Documents
@@ -134,7 +145,8 @@
                 (click)="onBrowseFileClick($event, vendorDocCtrl.canChqCtrl.browserId)">Browse</button>
             <button mat-raised-button class="footer-actions"
                 (click)="onAttachFileClick(vendorDocCtrl.canChqCtrl.documentTypeId)">Attach</button>
-            <div *ngIf="filesMap" style="display: inline-flex;">
+            <div *ngIf="filesMap" style="display: flex;
+    flex-wrap: wrap;">
                 <span class="filename"
                     *ngFor="let f of filesMap[vendorDocCtrl.canChqCtrl.documentTypeId]?.filesList; let fInd = index">
                     <span>
@@ -143,8 +155,12 @@
                             (click)="onDeleteFileClick(f, fInd, vendorDocCtrl.canChqCtrl.documentTypeId)">
                             <mat-icon>delete_outline</mat-icon>
                         </button>
+                        <button *ngIf="f.fileId != null" mat-button mat-icon-button aria-label="Download"
+                        (click)="downloadFile(f)">
+                            <mat-icon>save_alt</mat-icon>
+                        </button>
                     </span>
-                </span><span id="attachmmsg"></span>
+                </span>
                 <div *ngIf="filesMap[vendorDocCtrl.canChqCtrl.documentTypeId] && 
                 filesMap[vendorDocCtrl.canChqCtrl.documentTypeId].isError" class="errortxt">
                     Please attach the Documents
@@ -175,7 +191,8 @@
                 (click)="onBrowseFileClick($event, vendorDocCtrl.lutNoCtrl.browserId)">Browse</button>
             <button mat-raised-button class="footer-actions"
                 (click)="onAttachFileClick(vendorDocCtrl.lutNoCtrl.documentTypeId)">Attach</button>
-            <div *ngIf="filesMap" style="display: inline-flex;">
+            <div *ngIf="filesMap" style="display: flex;
+    flex-wrap: wrap;">
                 <span class="filename"
                     *ngFor="let f of filesMap[vendorDocCtrl.lutNoCtrl.documentTypeId]?.filesList; let fInd = index">
                     <span>
@@ -183,10 +200,13 @@
                         <button mat-button mat-icon-button aria-label="Delete"
                             (click)="onDeleteFileClick(f, fInd, vendorDocCtrl.lutNoCtrl.documentTypeId)">
                             <mat-icon>delete_outline</mat-icon>
+                        </button>  <button *ngIf="f.fileId != null" mat-button mat-icon-button aria-label="Download"
+                        (click)="downloadFile(f)">
+                            <mat-icon>save_alt</mat-icon>
                         </button>
                     
                     </span>
-                </span><span id="attachmmsg"></span>
+                </span>
                 <div *ngIf="filesMap[vendorDocCtrl.lutNoCtrl.documentTypeId] && 
                 filesMap[vendorDocCtrl.lutNoCtrl.documentTypeId].isError" class="errortxt">
                     Please attach the Documents
@@ -212,7 +232,8 @@
                 (click)="onBrowseFileClick($event, vendorDocCtrl.pfCtrl.browserId)">Browse</button>
             <button mat-raised-button class="footer-actions" [disabled]="!vendorDocumentForm.get('otherDocDesc').value"
                 (click)="onAttachFileClick(vendorDocCtrl.pfCtrl.documentTypeId)">Attach</button>
-            <div *ngIf="filesMap" style="display: inline-flex;">
+            <div *ngIf="filesMap" style="display: flex;
+    flex-wrap: wrap;">
                 <span class="filename"
                     *ngFor="let f of filesMap[vendorDocCtrl.pfCtrl.documentTypeId]?.filesList; let fInd = index">
                     <span>
@@ -221,8 +242,12 @@
                             (click)="onDeleteFileClick(f, fInd, vendorDocCtrl.pfCtrl.documentTypeId)">
                             <mat-icon>delete_outline</mat-icon>
                         </button>
+                        <button *ngIf="f.fileId != null" mat-button mat-icon-button aria-label="Download"
+                        (click)="downloadFile(f)">
+                            <mat-icon>save_alt</mat-icon>
+                        </button>
                     </span>
-                </span><span id="attachmmsg"></span>
+                </span>
                 <div *ngIf="filesMap[vendorDocCtrl.pfCtrl.documentTypeId] && 
                 filesMap[vendorDocCtrl.pfCtrl.documentTypeId].isError" class="errortxt">
                     Please attach the Documents
@@ -248,7 +273,8 @@
                 (click)="onBrowseFileClick($event, vendorDocCtrl.esiCtrl.browserId)">Browse</button>
             <button mat-raised-button class="footer-actions" [disabled]="!vendorDocumentForm.get('esiNum').value"
                 (click)="onAttachFileClick(vendorDocCtrl.esiCtrl.documentTypeId)">Attach</button>
-            <div *ngIf="filesMap" style="display: inline-flex;">
+            <div *ngIf="filesMap" style="display: flex;
+    flex-wrap: wrap;">
                 <span class="filename"
                     *ngFor="let f of filesMap[vendorDocCtrl.esiCtrl.documentTypeId]?.filesList; let fInd = index">
                     <span>
@@ -257,8 +283,12 @@
                             (click)="onDeleteFileClick(f, fInd, vendorDocCtrl.esiCtrl.documentTypeId)">
                             <mat-icon>delete_outline</mat-icon>
                         </button>
+                        <button *ngIf="f.fileId != null" mat-button mat-icon-button aria-label="Download"
+                        (click)="downloadFile(f)">
+                            <mat-icon>save_alt</mat-icon>
+                        </button>
                     </span>
-                </span><span id="attachmmsg"></span>
+                </span>
                 <div *ngIf="filesMap[vendorDocCtrl.esiCtrl.documentTypeId] && 
                 filesMap[vendorDocCtrl.esiCtrl.documentTypeId].isError" class="errortxt">
                     Please attach the Documents
@@ -289,7 +319,8 @@
             <button mat-raised-button class="footer-actions"
                 [disabled]="!vendorDocumentForm.get('isMsmedRegistered').value"
                 (click)="onAttachFileClick(vendorDocCtrl.msmeCtrl.documentTypeId)">Attach</button>
-            <div *ngIf="filesMap" style="display: inline-flex;">
+            <div *ngIf="filesMap" style="display: flex;
+    flex-wrap: wrap;">
                 <span class="filename"
                     *ngFor="let f of filesMap[vendorDocCtrl.msmeCtrl.documentTypeId]?.filesList; let fInd = index">
                     <span>
@@ -298,8 +329,12 @@
                             (click)="onDeleteFileClick(f, fInd, vendorDocCtrl.msmeCtrl.documentTypeId)">
                             <mat-icon>delete_outline</mat-icon>
                         </button>
+                        <button *ngIf="f.fileId != null" mat-button mat-icon-button aria-label="Download"
+                        (click)="downloadFile(f)">
+                            <mat-icon>save_alt</mat-icon>
+                        </button>
                     </span>
-                </span><span id="attachmmsg"></span>
+                </span>
                 <div *ngIf="filesMap[vendorDocCtrl.msmeCtrl.documentTypeId] && 
                 filesMap[vendorDocCtrl.msmeCtrl.documentTypeId].isError" class="errortxt">
                     Please attach the Documents
@@ -328,7 +363,8 @@
                 (click)="onBrowseFileClick($event, vendorDocCtrl.tdsCtrl.browserId)">Browse</button>
             <button mat-raised-button class="footer-actions" [disabled]="!vendorDocumentForm.get('hasTdsLower').value"
                 (click)="onAttachFileClick(vendorDocCtrl.tdsCtrl.documentTypeId)">Attach</button>
-            <div *ngIf="filesMap" style="display: inline-flex;">
+            <div *ngIf="filesMap" style="display: flex;
+    flex-wrap: wrap;">
                 <span class="filename"
                     *ngFor="let f of filesMap[vendorDocCtrl.tdsCtrl.documentTypeId]?.filesList; let fInd = index">
                     <span>
@@ -337,8 +373,12 @@
                             (click)="onDeleteFileClick(f, fInd, vendorDocCtrl.tdsCtrl.documentTypeId)">
                             <mat-icon>delete_outline</mat-icon>
                         </button>
+                        <button *ngIf="f.fileId != null" mat-button mat-icon-button aria-label="Download"
+                        (click)="downloadFile(f)">
+                            <mat-icon>save_alt</mat-icon>
+                        </button>
                     </span>
-                </span><span id="attachmmsg"></span>
+                </span>
                 <div *ngIf="filesMap[vendorDocCtrl.tdsCtrl.documentTypeId] && 
                 filesMap[vendorDocCtrl.tdsCtrl.documentTypeId].isError" class="errortxt">
                     Please attach the Documents
@@ -367,7 +407,8 @@
                 (click)="onBrowseFileClick($event, vendorDocCtrl.sezCtrl.browserId)">Browse</button>
             <button mat-raised-button class="footer-actions" [disabled]="!vendorDocumentForm.get('isSez').value"
                 (click)="onAttachFileClick(vendorDocCtrl.sezCtrl.documentTypeId)">Attach</button>
-            <div *ngIf="filesMap" style="display: inline-flex;">
+            <div *ngIf="filesMap" style="display: flex;
+    flex-wrap: wrap;">
                 <span class="filename"
                     *ngFor="let f of filesMap[vendorDocCtrl.sezCtrl.documentTypeId]?.filesList; let fInd = index">
                     <span>
@@ -376,8 +417,12 @@
                             (click)="onDeleteFileClick(f, fInd, vendorDocCtrl.sezCtrl.documentTypeId)">
                             <mat-icon>delete_outline</mat-icon>
                         </button>
+                        <button *ngIf="f.fileId != null" mat-button mat-icon-button aria-label="Download"
+                        (click)="downloadFile(f)">
+                            <mat-icon>save_alt</mat-icon>
+                        </button>
                     </span>
-                </span><span id="attachmmsg"></span>
+                </span>
                 <div *ngIf="filesMap[vendorDocCtrl.sezCtrl.documentTypeId] && filesMap[vendorDocCtrl.sezCtrl.documentTypeId].isError"
                     class="errortxt">
                     Please attach the Documents
@@ -422,7 +467,8 @@
                 (click)="onBrowseFileClick($event, vendorDocCtrl.otherCtrl.browserId)">Browse</button>
             <button mat-raised-button class="footer-actions" [disabled]="!vendorDocumentForm.get('otherDocDesc').value"
                 (click)="onAttachFileClick(vendorDocCtrl.otherCtrl.documentTypeId)">Attach</button>
-            <div *ngIf="filesMap" style="display: inline-flex;">
+            <div *ngIf="filesMap" style="display: flex;
+    flex-wrap: wrap;">
                 <span class="filename"
                     *ngFor="let f of filesMap[vendorDocCtrl.otherCtrl.documentTypeId]?.filesList; let fInd = index">
                     <span>
@@ -431,8 +477,12 @@
                             (click)="onDeleteFileClick(f, fInd, vendorDocCtrl.otherCtrl.documentTypeId)">
                             <mat-icon>delete_outline</mat-icon>
                         </button>
+                        <button *ngIf="f.fileId != null" mat-button mat-icon-button aria-label="Download"
+                        (click)="downloadFile(f)">
+                            <mat-icon>save_alt</mat-icon>
+                        </button>
                     </span>
-                </span><span id="attachmmsg"></span>
+                </span>
                 <div *ngIf="filesMap[vendorDocCtrl.pfCtrl.documentTypeId] && 
                 filesMap[vendorDocCtrl.pfCtrl.documentTypeId].isError" class="errortxt">
                     Please attach the Documents

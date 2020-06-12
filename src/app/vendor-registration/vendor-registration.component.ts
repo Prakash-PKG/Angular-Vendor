@@ -7,6 +7,7 @@ import { NgxSpinnerService } from 'ngx-spinner';
 import { ActivatedRoute, ActivatedRouteSnapshot, Router } from '@angular/router';
 import { flatMap } from 'rxjs/operators';
 import { Route } from '@angular/compiler/src/core';
+import { Subscription } from 'rxjs';
 
 @Component({
     selector: 'app-vendor-registration',
@@ -20,6 +21,7 @@ export class VendorRegistrationComponent implements OnInit {
     spinnerCls: string = "";
     busyMsg: string = "Please wait...";
     currentPage: string;
+    subscription: any;
 
     vendorRegistrationInitDataModel: VendorRegistrationInitDataModel = null;
     constructor(private _appService: AppService,
@@ -38,6 +40,7 @@ export class VendorRegistrationComponent implements OnInit {
         if (this._busySubscription) {
             this._busySubscription.unsubscribe();
         }
+        if (this.subscription) { this.subscription.unsubscribe(); }
     }
 
     ngOnInit() {
@@ -54,9 +57,10 @@ export class VendorRegistrationComponent implements OnInit {
                 this.spinnerCls = "";
             }
         });
-        this._homeService.currentPageDetails.subscribe(page => {
+        this.subscription = this._homeService.currentPageDetails.subscribe(page => {
             this.currentPage = page.pageName;
-        })
+        });
+
         setTimeout(() => {
             this.loadInitData();
         }, 100);
