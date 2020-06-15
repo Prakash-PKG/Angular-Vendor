@@ -12,35 +12,35 @@
             </span>
         </li>
 
-        <li class="step" [ngClass]="poLevel?.status == 'Approved' ? 'completed' : ''">
-            <span class="upper-text">{{ poLevel?.date }}</span>
+        <li class="step" [ngClass]="(poLevel?.status == 'Approved' || poLevel?.status == 'Rejected') ? 'completed' : ''">
+            <span class="upper-text">{{ getStatusDetails(poLevel) }}</span>
             <span class="dot"></span>
             <span class="lower-text">
-                PO Approved
+                Buyer Approval
             </span>
         </li>
 
-        <li class="step" [ngClass]="fhLevel?.status == 'Approved' ? 'completed' : ''">
-            <span class="upper-text">{{ fhLevel?.date }}</span>
+        <li class="step" [ngClass]="(fhLevel?.status == 'Approved' || fhLevel?.status == 'Rejected') ? 'completed' : ''">
+            <span class="upper-text">{{ getStatusDetails(fhLevel) }}</span>
             <span class="dot"></span>
             <span class="lower-text">
-                Functional Head Approved
+                Business Head Approval
             </span>
         </li>
 
-        <li class="step" [ngClass]="financeLevel?.status == 'Approved' ? 'completed' : ''">
-            <span class="upper-text">{{ financeLevel?.date }}</span>
+        <li class="step" [ngClass]="(financeLevel?.status == 'Approved' || financeLevel?.status == 'Rejected') ? 'completed' : ''">
+            <span class="upper-text">{{ getStatusDetails(financeLevel) }}</span>
             <span class="dot"></span>
             <span class="lower-text">
-                Finance Approved
+                Finance Approval
             </span>
         </li>
 
-        <li class="step">
-            <span class="upper-text"></span>
+        <li class="step" [ngClass]="(getPaidStatus().length > 0) ? 'completed' : ''">
+            <span class="upper-text">{{ getPaymentStatusDetails() }}</span>
             <span class="dot"></span>
             <span class="lower-text">
-                Payment Done
+                Payment Status
             </span>
         </li>
     </ul>
@@ -48,7 +48,7 @@
     <div class="flex-container full-width details">
         <div class="description flex-item">
             <div class="flex-container">
-                <div class="flex-item">
+                <div class="flex-item" *ngIf = "isPOBasedInvoice == true">
                     PO No: {{ invoiceDetails?.poNumber }}
                 </div>
                 <div class="flex-item">
@@ -63,6 +63,15 @@
                 </div>
                 <div class="flex-item">
                     Remarks: {{ invoiceDetails?.remarks }}
+                </div>
+                <div class="flex-item">
+                    Amount Paid: {{ getPaidAmount() }}
+                </div>
+                <div class="flex-item">
+                    Paid Date: {{ getPaidDate() }}
+                </div>
+                <div class="flex-item">
+                    Paid Status: {{ getPaidStatus() }}
                 </div>
                 <div class="flex-item actions">
                     <button mat-raised-button class="footer-actions footer-actions-green">Invoice Attachments</button>
@@ -131,16 +140,19 @@
                     <td>
                         <span>{{ item.itemDescription }}</span>
                     </td>
+                    <td *ngIf = "isPOBasedInvoice == true">
+                        <span>{{ item.uom }}</span>
+                    </td>
                     <td>
                         <span>{{ item.hsn }}</span>
                     </td>
-                    <td>
+                    <td *ngIf = "isPOBasedInvoice == true">
                         <span>{{ item.orderedUnits }}</span>
                     </td>
-                    <td>
+                    <td *ngIf = "isPOBasedInvoice == true">
                         <span>{{ item.suppliedUnits }}</span>
                     </td>
-                    <td>
+                    <td *ngIf = "isPOBasedInvoice == true">
                         <span>{{ item.consumedUnits }}</span>
                     </td>
                     <td>

@@ -196,6 +196,9 @@ export class InvoiceSearchRequestModel {
 export class InvoiceDetailsRequestModel {
     purchaseOrderId: number;
     invoiceId: number;
+    poNumber: string;
+	invoiceNumber: string;
+	vendorId: string;
 }
 
 export class InvoiceDetailsResultModel {
@@ -204,6 +207,18 @@ export class InvoiceDetailsResultModel {
     invoiceFilesList: FileDetailsModel[];
     supportFilesList: FileDetailsModel[];
     approvalsList: InvoiceApprovalModel[];
+    paymentDetails: PaymentStatusDetailsModel;
+}
+
+export class PaymentStatusDetailsModel {
+    vendorId: string;
+	poNumber: string;
+	invoiceNumber: string;
+	currencyType: string;
+	invoiceAmountPaid: string;
+	paymentDate: string;
+	status: string;
+	remarks: string;
 }
 
 export class ApprovalLevelsModel {
@@ -320,6 +335,7 @@ export class ItemModel {
     itemNumber: string;
     itemId: number;
     itemDescription: string;
+    uom: string;
     orderedUnits: string;
     suppliedUnits: string;
     consumedUnits: string;
@@ -377,7 +393,7 @@ export class InvoiceApprovalInitReqModel {
 
 export class InvoiceApprovalInitResultModel {
     invoiceDetails: InvoiceDetailsModel;
-    itemsList: ItemModel[];
+    itemsList: ItemDisplayModel[];
     approvalDetails: InvoiceApprovalModel;
     poDetails: PODetailsModel;
     grnSesList: GrnSesModel[];

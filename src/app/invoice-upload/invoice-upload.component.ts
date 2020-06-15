@@ -19,9 +19,9 @@ export class InvoiceUploadComponent implements OnInit {
     _sidebarExpansionSubscription: any = null;
 
     headerArr: string[] = [];
-    nonPOHeaderArr: string [] = ['Item No.', 'Item Desc', "HSN/SAC", 'Invoive Qty', 'Rate', 'Amount'];
-    poHeaderArr: string[] = ['Item No.', 'Item Desc', "HSN/SAC", 'Order Qty', 'Supplied Qty', 'Balance Qty', 
-                            'Invoive Qty', 'Currency', 'Rate', 'Amount'];
+    nonPOHeaderArr: string [] = ['Item No.', 'Item Desc', "HSN/SAC", 'Invoive Units', 'Rate', 'Amount'];
+    poHeaderArr: string[] = ['Item No.', 'Item Desc', "UOM", "HSN/SAC", 'Order Units', 'Supplied Units', 'Balance Units', 
+                            'Invoive Units', 'Currency', 'Rate', 'Amount'];
 
     _initDetails: InvoiceUploadResultModel = null;
     _poItemsResultDetails: POItemsResultModel = null;
@@ -50,6 +50,11 @@ export class InvoiceUploadComponent implements OnInit {
 
     isSelectedInvoiceTypeVisible: boolean = true;
 
+    isSubmitted: boolean = false;
+
+    invoiceFilesErrMsg: string = "";
+    supportFilesErrMsg: string = "";
+
     constructor(private _homeService: HomeService, 
                 private _appService: AppService,
                 private _formBuilder: FormBuilder,
@@ -57,15 +62,22 @@ export class InvoiceUploadComponent implements OnInit {
 
     get f() { return this.invoiceUploadForm.controls; }
 
+    get fa() { return <FormArray>this.invoiceUploadForm.controls['itemsList']; }
+
     onInvoiceTypeChange(evtData) {
         this.resetAllFields();
         
         if(evtData.value == "po") {
             this.headerArr = this.poHeaderArr.concat();
+            this.invoiceUploadForm.get("poList").setValidators([Validators.required]);
         }
         else {
             this.headerArr = this.nonPOHeaderArr.concat();
+            this.invoiceUploadForm.get("currency").setValidators([Validators.required]);
         }
+
+        this.invoiceUploadForm.get("poList").updateValueAndValidity();
+        this.invoiceUploadForm.get("currency").updateValueAndValidity();
     }
 
     resetAllFields() {
@@ -73,6 +85,12 @@ export class InvoiceUploadComponent implements OnInit {
         this.removeItems();
         this.currency = "";
         this.selectedPOItem = null;
+
+        this.invoiceUploadForm.get("poList").setValidators([]);
+        this.invoiceUploadForm.get("currency").setValidators([]);
+
+        this.invoiceUploadForm.get("totalItemsAmt").setValue("");
+        this.invoiceUploadForm.get("totalInvAmt").setValue("");
     }
 
     onNewClick() {
@@ -83,15 +101,17 @@ export class InvoiceUploadComponent implements OnInit {
     createNonPOItem() {
         let fg: FormGroup = this._formBuilder.group({
             itemId: null,
-            itemNumber: null,
-            itemDescription: null,
+            itemNumber: [ null, Validators.required ],
+            itemDescription: [ null, Validators.required ],
+            uom: null,
             orderedUnits: null,
             suppliedUnits: null,
             consumedUnits: null,
-            invoiceUnits: null,
-            unitPrice: null,
+            balanceUnits: null,
+            invoiceUnits: [ null, Validators.required ],
+            unitPrice: [ null, Validators.required ],
             unitsAmt: null,
-            hsn: null,
+            hsn: [ null, [Validators.required, Validators.maxLength(8)] ],
             createdBy: null,
             createdDate: null
         });
@@ -311,8 +331,8 @@ export class InvoiceUploadComponent implements OnInit {
         this._initDetails = await this._invoiceUploadService.getInvoiceUploadInitData(req);
         if(this._initDetails) {
             this.prepareInvoiceFileTypes();
-            this.poList = this._initDetails.poList.concat();
-            this.currencyList = this._initDetails.currencyList.concat();
+            this.poList = (this._initDetails.poList && this._initDetails.poList.length > 0) ? this._initDetails.poList.concat() : [];
+            this.currencyList = (this._initDetails.currencyList && this._initDetails.currencyList.length > 0) ? this._initDetails.currencyList.concat() : [];
         }
         this._homeService.updateBusy(<BusyDataModel>{ isBusy: false, msg: null });
 
@@ -398,22 +418,47 @@ export class InvoiceUploadComponent implements OnInit {
 
     createItem(item: ItemModel) {
         let unitsAmt = (item.unitPrice && item.invoiceUnits) ? +item.unitPrice * +item.invoiceUnits : null;
+        let orderedUnits: number = (item.orderedUnits) ? +item.orderedUnits : 0.000;
+        let suppliedUnits: number = (item.suppliedUnits) ? +item.suppliedUnits : 0.000;
+        let balanceUnits: number = orderedUnits - suppliedUnits;
+
         let fg: FormGroup = this._formBuilder.group({
             itemId: item.itemId,
             itemNumber: item.itemNumber,
             itemDescription: item.itemDescription,
+            uom: item.uom,
             orderedUnits: item.orderedUnits,
             suppliedUnits: item.suppliedUnits,
             consumedUnits: item.consumedUnits,
+            balanceUnits: balanceUnits.toFixed(3),
             invoiceUnits: [ item.invoiceUnits, Validators.required ],
             unitPrice: item.unitPrice,
             unitsAmt: unitsAmt,
-            hsn: [ item.hsn, Validators.required ],
+            hsn: [ item.hsn, [Validators.required, Validators.maxLength(8)] ],
             createdBy: item.createdBy,
             createdDate: item.createdDate
-        });
+        },
+        { validator: [ this.invoiceGreaterThanBalance('invoiceUnits', 'balanceUnits', "Invoice units shouldn't greater than Balance units.") ] });
 
         return fg;
+    }
+
+    invoiceGreaterThanBalance(invoiceUnits: string, balanceUnits: string, errorMsg: string) {
+        return (group: FormGroup): { [key: string]: any } => {
+            let invCtrl = group.controls[invoiceUnits];
+            let balCtrl = group.controls[balanceUnits];
+           
+            if (invCtrl.value && balCtrl.value) {
+                let invUnits: number = +invCtrl.value;
+                let balUnits: number = +balCtrl.value
+                if (invUnits > balUnits) {
+                    return {
+                        invErrMsg: errorMsg
+                    };
+                }
+            }
+            return {};
+        }
     }
 
     onSaveClick() {
@@ -424,7 +469,52 @@ export class InvoiceUploadComponent implements OnInit {
         this.updateInvoiceDetails(this._appService.updateOperations.submit);
     }
 
+    isUploadFormValid() {
+        this.invoiceFilesErrMsg = "";
+        this.supportFilesErrMsg = "";
+
+        let isInvFilesValid: boolean = true;
+        if(this.invoiceFilesList && this.invoiceFilesList.length == 0) {
+            this.invoiceFilesErrMsg = "Please select invoice file.";
+            isInvFilesValid = false;
+        }
+        else {
+            let nonAttachInvFiles: FileDetailsModel[] = this.invoiceFilesList.filter(f => f.fileId == null);
+            if(nonAttachInvFiles && nonAttachInvFiles.length > 0) {
+                this.invoiceFilesErrMsg = "Please attach invoice file.";
+                isInvFilesValid = false;
+            }
+        }
+
+        let isSupportingFilesValid: boolean = true;
+        if(this.supportingFilesList && this.supportingFilesList.length > 0) {
+            let nonAttachSupportFiles: FileDetailsModel[] = this.supportingFilesList.filter(f => f.fileId == null);
+            if(nonAttachSupportFiles && nonAttachSupportFiles.length > 0) {
+                this.supportFilesErrMsg = "Please attach or remove selected support files.";
+                isSupportingFilesValid = false;
+            }
+        }
+
+        let isCntrlsValid: boolean = false;
+        if((this.invoiceUploadForm.controls['itemsList'] as FormArray).length > 0 && this.invoiceUploadForm.valid) {
+            isCntrlsValid = true;
+        }
+
+        if(isInvFilesValid && isSupportingFilesValid && isCntrlsValid) {
+            return true;
+        }
+
+        return false;
+    }
+
     updateInvoiceDetails(action: string) {
+        this.isSubmitted = true;
+
+        if(!this.isUploadFormValid()) {
+            return false;
+        }
+
+
         let poNumber = null;
         if(this.selectedInvoiceType == 'po') {
             if(!this.selectedPOItem) {
@@ -446,6 +536,7 @@ export class InvoiceUploadComponent implements OnInit {
                 itemNumber: itemsFa.controls[i].get("itemNumber").value,
                 itemId: itemsFa.controls[i].get("itemId").value,
                 itemDescription: itemsFa.controls[i].get("itemDescription").value,
+                uom: itemsFa.controls[i].get("uom").value,
                 orderedUnits: itemsFa.controls[i].get("orderedUnits").value,
                 suppliedUnits: itemsFa.controls[i].get("suppliedUnits").value,
                 consumedUnits: itemsFa.controls[i].get("consumedUnits").value,
@@ -534,14 +625,14 @@ export class InvoiceUploadComponent implements OnInit {
         });
 
         this.invoiceUploadForm = this._formBuilder.group({
-            poList: [ { value: null } ],
+            poList: [ null, Validators.required ],
             invoiceNumber: [ null, Validators.required ],
             invoiceDate: [ null, Validators.required ],
             remarks: [ null, Validators.required ],
             freightCharges: [ null, Validators.required ],
             totalTax: [ null, Validators.required ],
             totalItemsAmt: [ "" ],
-            totalInvAmt: [ "", Validators.required ],
+            totalInvAmt: [ "" ],
             currency: null,
             createdBy: null,
             createdDate: null,

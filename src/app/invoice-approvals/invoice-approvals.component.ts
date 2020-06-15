@@ -1,7 +1,7 @@
 import { globalConstant } from './../common/global-constant';
 import { AppService } from './../app.service';
 import { BusyDataModel, InvoiceApprovalInitResultModel, InvoiceApprovalInitReqModel, 
-    ItemModel, GrnSesModel, FileDetailsModel, 
+    ItemModel, ItemDisplayModel, GrnSesModel, FileDetailsModel, 
     StatusModel, UpdateInvoiceApprovalReqModel } from './../models/data-models';
 import { InvoiceApprovalsService } from './invoice-approvals.service';
 import { Component, OnInit } from '@angular/core';
@@ -17,11 +17,13 @@ export class InvoiceApprovalsComponent implements OnInit {
     _sidebarExpansionSubscription: any = null;
 
     headerArr: string[] = [];
-    nonPOHeaderArr: string [] = ['Item No.', 'Item Desc', "HSN/SAC", 'Invoive Qty', 'Rate', 'Amount'];
-    poHeaderArr: string[] = ['Item No.', 'Item Desc', "HSN/SAC", 'Order Qty', 'Supplied Qty', 'Balance Qty', 
+    nonPOHeaderArr: string [] = ['Item No.', 'Item Desc', "UOM", "HSN/SAC", 'Invoive Qty', 'Rate', 'Amount'];
+    poHeaderArr: string[] = ['Item No.', 'Item Desc', "UOM", "HSN/SAC", 'Order Qty', 'Supplied Qty', 'Balance Qty', 
                             'Invoive Qty', 'Currency', 'Rate', 'Amount'];
 
     initDetails: InvoiceApprovalInitResultModel = null;
+    itemsList: ItemDisplayModel[] = [];
+    totalAmount: number = 0;
 
     msg: string = "";
 
@@ -44,7 +46,7 @@ export class InvoiceApprovalsComponent implements OnInit {
                 private _appService: AppService,
                 private _invoiceApprovalsService: InvoiceApprovalsService) { }
 
-    getUnitsAmt(item: ItemModel) {
+    getUnitsAmt(item: ItemDisplayModel) {
         let unitsAmt = (item.unitPrice && item.invoiceUnits) ? +item.unitPrice * +item.invoiceUnits : null;
         return unitsAmt;
     }
@@ -77,6 +79,15 @@ export class InvoiceApprovalsComponent implements OnInit {
             if(this.initDetails) {
                 if(this.initDetails.poDetails && this.initDetails.poDetails.purchaseOrderId && this.initDetails.poDetails.poNumber) {
                     this.isPOInvoice = true;
+                }
+
+                this.itemsList = this.initDetails.itemsList.concat();
+                this.totalAmount = 0;
+                for(let i = 0; i < this.itemsList.length; i++) {
+                    this.itemsList[i].unitsTotalAmount = (this.itemsList[i].unitPrice && this.itemsList[i].invoiceUnits) ? +this.itemsList[i].unitPrice * +this.itemsList[i].invoiceUnits : null;
+                    if(this.itemsList[i].unitsTotalAmount && this.itemsList[i].unitsTotalAmount > 0) {
+                        this.totalAmount = this.totalAmount + this.itemsList[i].unitsTotalAmount;
+                    }
                 }
 
                 this.grnSesList = this.initDetails.grnSesList;

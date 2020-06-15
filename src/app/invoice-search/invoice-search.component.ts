@@ -67,7 +67,7 @@ export class InvoiceSearchComponent implements OnInit {
 
         this._homeService.updateBusy(<BusyDataModel>{ isBusy: true, msg: "Loading..." });
         this._initDetails = await this._invoiceSearchService.getInvoiceList(req);
-        if (this._initDetails) {
+        if (this._initDetails && this._initDetails.invoiceList && this._initDetails.invoiceList.length > 0) {
             this.invoiceList = this._initDetails.invoiceList.concat();
         }
         this._homeService.updateBusy(<BusyDataModel>{ isBusy: false, msg: null });

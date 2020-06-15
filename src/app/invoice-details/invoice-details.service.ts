@@ -29,6 +29,7 @@ export class InvoiceDetailsService {
             initModel.itemsList = data["itemsList"];
             initModel.statusDetails = data["statusDetails"];
             initModel.approvalsList = data["approvalsList"];
+            initModel.paymentDetails = data["paymentDetails"];
             initModel.invoiceFilesList = [];
             initModel.supportFilesList = [];
 

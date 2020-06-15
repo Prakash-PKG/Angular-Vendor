@@ -1,5 +1,6 @@
 import { InvoiceModel, BusyDataModel, InvoiceDetailsRequestModel, InvoiceDetailsResultModel, 
-    ItemDisplayModel, FileDetailsModel, InvoiceApprovalModel, ApprovalLevelsModel } from './../models/data-models';
+    ItemDisplayModel, FileDetailsModel, InvoiceApprovalModel, ApprovalLevelsModel,
+    PaymentStatusDetailsModel } from './../models/data-models';
 import { AppService } from './../app.service';
 import { InvoiceDetailsService } from './invoice-details.service';
 import { Component, OnInit } from '@angular/core';
@@ -15,8 +16,12 @@ export class InvoiceDetailsComponent implements OnInit {
     _sidebarExpansionSubscription: any = null;
 
     statusHeaderArr: string[] = ['Level', 'Status', 'Approved Date', 'Remarks'];
-    headerArr: string[] = ['Item No.', 'Item Desc', "HSN/SAC", 'Order Qty', 'Supplied Qty', 'Balance Qty', 
-                            'Invoive Qty', 'Currency', 'Rate', 'Amount'];
+    headerArr: string[] = [];
+
+    poInvHeaderArr: string[] = ['Item No.', 'Item Desc', "UOM", "HSN/SAC", 'Order Units', 'Supplied Units', 'Balance Units', 
+                            'Invoive Units', 'Currency', 'Rate', 'Amount'];
+
+    nonPoInvHeaderArr: string[] = ['Item No.', 'Item Desc', "HSN/SAC", 'Invoive Units', 'Currency', 'Rate', 'Amount'];
 
     invoiceDetails: InvoiceModel = null;
     currency: string = "";
@@ -35,9 +40,55 @@ export class InvoiceDetailsComponent implements OnInit {
     fhLevel: ApprovalLevelsModel = null;
     financeLevel: ApprovalLevelsModel = null;
 
+    invoicePaymentDetails: PaymentStatusDetailsModel = null;
+
+    isPOBasedInvoice: boolean = true;
+
     constructor(private _homeService: HomeService,
                 private _invoiceDetailsService: InvoiceDetailsService,
                 private _appService: AppService) { }
+
+    getPaymentStatusDetails() {
+        if(this.invoicePaymentDetails && this.invoicePaymentDetails.invoiceAmountPaid) {
+            if(+this.invoicePaymentDetails.invoiceAmountPaid > 0 && this.invoicePaymentDetails.paymentDate) {
+                return "Paid on " + this._appService.getFormattedDate(this.invoicePaymentDetails.paymentDate);
+            }
+        }
+
+        return "";
+    }
+
+    getPaidAmount() {
+        if(this.invoicePaymentDetails && this.invoicePaymentDetails.invoiceAmountPaid) {
+            return this.invoicePaymentDetails.invoiceAmountPaid + " " + this.invoicePaymentDetails.currencyType;
+        }
+
+        return "";
+    }
+
+    getPaidDate() {
+        if(this.invoicePaymentDetails && this.invoicePaymentDetails.paymentDate) {
+            return this._appService.getFormattedDate(this.invoicePaymentDetails.paymentDate);
+        }
+
+        return "";
+    }
+
+    getPaidStatus() {
+        if(this.invoicePaymentDetails && this.invoicePaymentDetails.status) {
+            return this.invoicePaymentDetails.status;
+        }
+
+        return "";
+    }
+
+    getStatusDetails(level: ApprovalLevelsModel) {
+        if(level && ( level.status == this._appService.statusNames.approved || level.status == this._appService.statusNames.rejected)) {
+            return level.status + " on " + level.date;
+        }
+
+        return "";
+    }
 
     downloadFile(fileDetails: FileDetailsModel) {
         this._appService.downloadInvoiceFile(fileDetails);
@@ -52,6 +103,8 @@ export class InvoiceDetailsComponent implements OnInit {
     }
 
     async loadInitData() {
+        this.isPOBasedInvoice = true;
+        this.headerArr = [];
 
         this.uploadLevel = null;
         this.poLevel = null;
@@ -63,13 +116,25 @@ export class InvoiceDetailsComponent implements OnInit {
             
             let req: InvoiceDetailsRequestModel = {
                 purchaseOrderId: this.invoiceDetails.purchaseOrderId,
-                invoiceId: this.invoiceDetails.invoiceId
+                invoiceId: this.invoiceDetails.invoiceId,
+                poNumber: this.invoiceDetails.poNumber,
+                invoiceNumber: this.invoiceDetails.invoiceNumber,
+                vendorId: this.invoiceDetails.vendorId
             };
+
+            if(!this.invoiceDetails.purchaseOrderId) {
+                this.isPOBasedInvoice = false;
+                this.headerArr = this.nonPoInvHeaderArr.concat();
+            }
+            else {
+                this.headerArr = this.poInvHeaderArr.concat();
+            }
 
             this._homeService.updateBusy(<BusyDataModel>{ isBusy: true, msg: "Loading..." });
             this._initDetails = await this._invoiceDetailsService.getInvoiceDetails(req);
             if(this._initDetails) {
-                this.itemsList = this._initDetails.itemsList.concat();
+                this.invoicePaymentDetails = this._initDetails.paymentDetails;
+                this.itemsList = (this._initDetails.itemsList && this._initDetails.itemsList.length > 0) ? this._initDetails.itemsList.concat() : [];
                 this.totalAmount = 0;
                 for(let i = 0; i < this.itemsList.length; i++) {
                     this.itemsList[i].unitsTotalAmount = (this.itemsList[i].unitPrice && this.itemsList[i].invoiceUnits) ? +this.itemsList[i].unitPrice * +this.itemsList[i].invoiceUnits : null;
@@ -121,6 +186,16 @@ export class InvoiceDetailsComponent implements OnInit {
                         remarks: financeApprovalModel.remarks
                     };
                     this.approvalLevelList.push(this.financeLevel);
+                }
+
+                if(this.invoicePaymentDetails) {
+                    let paymentLevel: ApprovalLevelsModel = {
+                        levelName: "Payment",
+                        status: this.getPaidStatus(),
+                        date: this.getPaidDate(),
+                        remarks: ""
+                    };
+                     this.approvalLevelList.push(paymentLevel);
                 }
             }
             this._homeService.updateBusy(<BusyDataModel>{ isBusy: false, msg: null });

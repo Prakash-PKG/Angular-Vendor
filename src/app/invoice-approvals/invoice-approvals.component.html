@@ -72,6 +72,9 @@
                 <div class="Rtable-cell Rtable-cell--head">Total Tax Amt</div>
                 <div class="Rtable-cell">{{ initDetails?.invoiceDetails?.totalTax }}</div>
 
+                <div class="Rtable-cell Rtable-cell--head">Total Amt</div>
+                <div class="Rtable-cell">{{ totalAmount }}</div>
+
                 <div class="Rtable-cell Rtable-cell--head">Total Inv Amt<small>(inc. tax)</small></div>
                 <div class="Rtable-cell">{{ initDetails?.invoiceDetails?.totalAmt }}</div>
 
@@ -123,12 +126,15 @@
                 </tr>
             </thead>
             <tbody>
-                <tr *ngFor="let item of initDetails?.itemsList; let itemInd = index">
+                <tr *ngFor="let item of itemsList; let itemInd = index">
                     <td>
                         {{ item.itemNumber }}
                     </td>
                     <td>
                         {{ item.itemDescription }}
+                    </td>
+                    <td>
+                        {{ item.uom }}
                     </td>
                     <td>
                         {{ item.hsn }}
@@ -152,7 +158,7 @@
                         {{ item.unitPrice }}
                     </td>
                     <td class="amount">
-                        {{ getUnitsAmt(item) }}
+                        {{ item.unitsTotalAmount }}
                     </td>
                 </tr>
             </tbody>
