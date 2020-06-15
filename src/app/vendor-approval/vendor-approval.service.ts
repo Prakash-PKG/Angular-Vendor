@@ -1,7 +1,9 @@
 import {
     VendorApprovalInitResultModel, VendorApprovalInitReqModel,
     VendorApprovalReqModel,
-    VendorRegistrationDetailRequestModel
+    VendorRegistrationDetailRequestModel,
+    VendorMasterFilesModel,
+    RemoveDocumentReqModel
 } from './../models/data-models';
 import { Injectable } from '@angular/core';
 import { AppService } from './../app.service';
@@ -51,5 +53,35 @@ export class VendorApprovalService {
     sendBackForCorrection(sendVendCorrId: VendorRegistrationDetailRequestModel) {
         let url = this._appService.baseUrl + "fetchVendor";
         return this._http.post(url, sendVendCorrId, { responseType: 'json', observe: 'response' });
+    }
+    
+    deleteVendorFile(fileDetails: VendorMasterFilesModel) {
+        let req: RemoveDocumentReqModel = {
+            fileId: fileDetails.vendorMasterFilesId
+        };
+        let url = this._appService.baseUrl + "removeVenDoc";
+        return this._http.post(url, req, { responseType: 'json', observe: 'response' });
+    }
+
+    getFileData(fileDetails: VendorMasterFilesModel) {
+        let url = this._appService.baseUrl + 'downloadInvDoc/' + fileDetails.uniqFileName;
+        return this._http.get(url, {responseType: 'arraybuffer', observe: 'response'});
+    }
+
+    downloadFile(fileDetails: VendorMasterFilesModel) {
+        this.getFileData(fileDetails).subscribe(
+            (data) => {
+                const blob = new Blob([data.body], { type: 'application/octet-stream' });
+                const url = window.URL.createObjectURL(blob);
+
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = fileDetails.actualFileName;
+                document.body.appendChild(a);
+                a.click();
+            },
+            error => {
+                console.log(error);
+            });
     }
 }
