@@ -200,9 +200,9 @@
         <div class="Rtable-cell">
           <div *ngFor="let file of incCertFilesList; let i = index">
             <mat-icon matTooltip="{{ file.actualFileName }}" (click)="downloadFile(file)">description</mat-icon>
-            <button mat-button mat-icon-button aria-label="Delete" (click)="onDeleteFileClick(f, fInd,1)">
+            <!-- <button mat-button mat-icon-button aria-label="Delete" (click)="onDeleteFileClick(f, fInd,1)">
               <mat-icon>delete_outline</mat-icon>
-            </button>
+            </button> -->
           </div>
           <div class="error-txt" *ngIf="!incCertFilesList">This attachment is mandatory</div>
         </div>
@@ -212,9 +212,9 @@
           <div *ngFor="let file of canChqFilesList; let i = index">
             <mat-icon matTooltip="{{ file.actualFileName }}" (click)="downloadFile(file)">description</mat-icon>
           </div>
-          <button mat-button mat-icon-button aria-label="Delete" (click)="onDeleteFileClick(f, fInd,6)">
+          <!-- <button mat-button mat-icon-button aria-label="Delete" (click)="onDeleteFileClick(f, fInd,6)">
             <mat-icon>delete_outline</mat-icon>
-          </button>
+          </button> -->
           <div class="error-txt" *ngIf="!canChqFilesList">This attachment is mandatory</div>
         </div>
 
@@ -230,9 +230,9 @@
           <div *ngFor="let file of gstFilesList; let i = index">
             <mat-icon matTooltip="{{ file.actualFileName }}" (click)="downloadFile(file)">description</mat-icon>
           </div>
-          <button mat-button mat-icon-button aria-label="Delete" (click)="onDeleteFileClick(f, fInd,2)">
+          <!-- <button mat-button mat-icon-button aria-label="Delete" (click)="onDeleteFileClick(f, fInd,2)">
             <mat-icon>delete_outline</mat-icon>
-          </button>
+          </button> -->
           <div class="error-txt" *ngIf="vendorDetails.gstNum && !gstFilesList">This attachment is mandatory if GST
             Registered</div>
         </div>
@@ -250,9 +250,9 @@
           <div *ngFor="let file of panFilesList; let i = index">
             <mat-icon matTooltip="{{ file.actualFileName }}" (click)="downloadFile(file)">description</mat-icon>
           </div>
-          <button mat-button mat-icon-button aria-label="Delete" (click)="onDeleteFileClick(f, fInd,3)">
+          <!-- <button mat-button mat-icon-button aria-label="Delete" (click)="onDeleteFileClick(f, fInd,3)">
             <mat-icon>delete_outline</mat-icon>
-          </button>
+          </button> -->
           <div class="error-txt" *ngIf="!panFilesList">This attachment is mandatory</div>
         </div>
 
@@ -270,9 +270,9 @@
           <div *ngFor="let file of lutFilesList; let i = index">
             <mat-icon matTooltip="{{ file.actualFileName }}" (click)="downloadFile(file)">description</mat-icon>
           </div>
-          <button mat-button mat-icon-button aria-label="Delete" (click)="onDeleteFileClick(f, fInd,10)">
+          <!-- <button mat-button mat-icon-button aria-label="Delete" (click)="onDeleteFileClick(f, fInd,10)">
             <mat-icon>delete_outline</mat-icon>
-          </button>
+          </button> -->
           <div class="error-txt" *ngIf="!lutFilesList">This attachment is mandatory</div>
         </div>
 
@@ -302,9 +302,9 @@
           <div *ngFor="let file of pfFilesList; let i = index">
             <mat-icon matTooltip="{{ file.actualFileName }}" (click)="downloadFile(file)">description</mat-icon>
           </div>
-          <button mat-button mat-icon-button aria-label="Delete" (click)="onDeleteFileClick(f, fInd,4)">
+          <!-- <button mat-button mat-icon-button aria-label="Delete" (click)="onDeleteFileClick(f, fInd,4)">
             <mat-icon>delete_outline</mat-icon>
-          </button>
+          </button> -->
           <div class="error-txt" *ngIf="vendorDetails.pfNum && !pfFilesList">Attachment is mandatory if PF exists</div>
         </div>
 
@@ -320,9 +320,9 @@
           <div *ngFor="let file of esiFilesList; let i = index">
             <mat-icon matTooltip="{{ file.actualFileName }}" (click)="downloadFile(file)">description</mat-icon>
           </div>
-          <button mat-button mat-icon-button aria-label="Delete" (click)="onDeleteFileClick(f, fInd,5)">
+          <!-- <button mat-button mat-icon-button aria-label="Delete" (click)="onDeleteFileClick(f, fInd,5)">
             <mat-icon>delete_outline</mat-icon>
-          </button>
+          </button> -->
           <div class="error-txt" *ngIf="vendorDetails.esiNum && !esiFilesList">Attachment is mandatory if ESI exists
           </div>
         </div>
@@ -342,9 +342,9 @@
           <div *ngFor="let file of msmeFilesList; let i = index">
             <mat-icon matTooltip="{{ file.actualFileName }}" (click)="downloadFile(file)">description</mat-icon>
           </div>
-          <button mat-button mat-icon-button aria-label="Delete" (click)="onDeleteFileClick(f, fInd,11)">
+          <!-- <button mat-button mat-icon-button aria-label="Delete" (click)="onDeleteFileClick(f, fInd,11)">
             <mat-icon>delete_outline</mat-icon>
-          </button>
+          </button> -->
           <div class="error-txt" *ngIf="vendorDetails.isMsmedRegistered && !msmeFilesList">Attachment is mandatory if
             MSME registered
           </div>
@@ -364,9 +364,9 @@
           <div *ngFor="let file of tdsFilesList; let i = index">
             <mat-icon matTooltip="{{ file.actualFileName }}" (click)="downloadFile(file)">description</mat-icon>
           </div>
-          <button mat-button mat-icon-button aria-label="Delete" (click)="onDeleteFileClick(f, fInd,8)">
+          <!-- <button mat-button mat-icon-button aria-label="Delete" (click)="onDeleteFileClick(f, fInd,8)">
             <mat-icon>delete_outline</mat-icon>
-          </button>
+          </button> -->
           <div class="error-txt" *ngIf="vendorDetails.hasTdsLower && !tdsFilesList">Attachment is mandatory if you have
             TDS certificate
           </div>
@@ -386,9 +386,9 @@
           <div *ngFor="let file of sezFilesList; let i = index">
             <mat-icon matTooltip="{{ file.actualFileName }}" (click)="downloadFile(file)">description</mat-icon>
           </div>
-          <button mat-button mat-icon-button aria-label="Delete" (click)="onDeleteFileClick(f, fInd,9)">
+          <!-- <button mat-button mat-icon-button aria-label="Delete" (click)="onDeleteFileClick(f, fInd,9)">
             <mat-icon>delete_outline</mat-icon>
-          </button>
+          </button> -->
           <div class="error-txt" *ngIf="vendorDetails.isSez && !sezFilesList">Attachment is mandatory if SEZ
           </div>
         </div>
@@ -452,7 +452,7 @@
             </mat-option>
           </mat-select>
         </mat-form-field>
-<!-- 
+        <!-- 
         <div class="actions search-row-element">
           <input style="display: none" [attr.id]="msaCtrl" type="file" multiple
             accept=".xls,.xlsx,.doc,.docx,.pdf,.png,.jpg,.zip"
@@ -481,33 +481,33 @@
               Please attach the Documents
             </div> -->
 
-          </div>
-        </div>
-        <div class="row" *ngIf="roleName=='Finance'">
-          <div class="col-6"><span style="color:black">Procurement Approver Remarks:</span>
-            {{ vendorDetails.procRemark }}</div>
+        <!-- </div> -->
+      </div>
+      <div class="row" *ngIf="roleName=='Finance'">
+        <div class="col-6"><span style="color:black">Procurement Approver Remarks:</span>
+          {{ vendorDetails.procRemark }}</div>
 
-          <div class="col-6"><span style="color:black">Approved By:</span>
-            {{ vendorDetails.procApprByName }}</div>
-        </div>
-
-        <div class="form-group">
-          <mat-form-field class="full-width">
-            <textarea matInput placeholder="Remarks" [(ngModel)]="remarks" autocomplete="off"></textarea>
-          </mat-form-field>
-        </div>
-
+        <div class="col-6"><span style="color:black">Approved By:</span>
+          {{ vendorDetails.procApprByName }}</div>
       </div>
 
-      <div class="row actions margin-unset">
-        <div class="error-txt">
-          {{ msg }}
-        </div>
-
-        <button mat-raised-button class="footer-actions" (click)="onEditClick()">Edit</button>
-        <!-- <button mat-raised-button class="footer-actions" (click)="onSendForCorrClick()">Send For Correction</button> -->
-        <button mat-raised-button class="footer-actions" (click)="onRejectClick()">Reject</button>
-        <button mat-raised-button class="footer-actions footer-actions-green"
-          (click)="onApproveClick()">Approve</button>
+      <div class="form-group">
+        <mat-form-field class="full-width">
+          <textarea matInput placeholder="Remarks" [(ngModel)]="remarks" autocomplete="off"></textarea>
+        </mat-form-field>
       </div>
+
+    </div>
+
+    <div class="row actions margin-unset">
+      <div class="error-txt">
+        {{ msg }}
+      </div>
+
+      <button mat-raised-button class="footer-actions" (click)="onEditClick()">Edit</button>
+      <!-- <button mat-raised-button class="footer-actions" (click)="onSendForCorrClick()">Send For Correction</button> -->
+      <button mat-raised-button class="footer-actions" (click)="onRejectClick()">Reject</button>
+      <button mat-raised-button class="footer-actions footer-actions-green" (click)="onApproveClick()">Approve</button>
+    </div>
   </div>
+</div>
