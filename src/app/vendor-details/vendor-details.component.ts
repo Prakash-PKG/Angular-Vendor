@@ -79,21 +79,27 @@ export class VendorDetailsComponent implements OnInit {
         this.vendorDetailsForm.get("password").setValue(this._appService.vendorRegistrationDetails.password);
         this.vendorDetailsForm.get("confirmPassword").setValue(this._appService.vendorRegistrationDetails.password);
     }
+    isNumberKey(evt)
+    {
+       let charCode = (evt.which) ? evt.which : evt.keyCode
+       if (charCode > 31 && (charCode < 48 || charCode > 57))
+          return false;
+
+       return true;
+    }
 
     ngOnInit() {
         this.vendorDetailsForm = this._formBuilder.group({
-            vendorName: [null, [Validators.required]],
+            vendorName: [null, [Validators.required,Validators.nullValidator]],
             contactPerson: [null],
-            // contactNum: [null, [Validators.required]],
-            mobileNum: [null, [Validators.required]],
-            telephoneNum: [null],
-            emailId: [null, [Validators.required, Validators.email]],
-            password: [null, [Validators.required]],
-            confirmPassword: [null, [Validators.required]]
+            mobileNum: [null, [Validators.required,Validators.minLength(10), Validators.maxLength(10),Validators.nullValidator]],
+            telephoneNum: [null,[Validators.minLength(12), Validators.maxLength(12)]],
+            emailId: [null, [Validators.required, Validators.email,Validators.nullValidator]],
+            password: [null, [Validators.required,Validators.nullValidator]],
+            confirmPassword: [null, [Validators.required,Validators.nullValidator]]
         },
             { validator: equalValueValidator('password', 'confirmPassword') }
         );
-
         this._homeService.updateCurrentPageDetails({ pageName: 'venDetails' });
         this.updateVendorDetails();
     }
