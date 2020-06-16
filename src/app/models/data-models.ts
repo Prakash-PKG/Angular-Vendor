@@ -496,3 +496,9 @@ export class PODetailsResultsModel {
     statusDetails: StatusModel;
     itemsList: ItemDisplayModel[];
 }
+
+export class VendorAutoCompleteModel {
+    vendorMasterId: number;
+	vendorId: string;
+    vendorName: string;
+}

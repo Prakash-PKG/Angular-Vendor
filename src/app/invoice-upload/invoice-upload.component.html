@@ -53,6 +53,19 @@
                 <div *ngIf="f.remarks.errors?.required" class="errortxt">Remarks is required</div>
             </div>
 
+            <mat-form-field >
+                <input matInput placeholder="Select Employee" aria-label="State" [matAutocomplete]="auto" formControlName="vendorId">
+                <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayEmployee" (optionSelected) = "onVendorOptionSelected($event)"
+                    (closed) = "onVendorOptionSelected()">
+                    <mat-option *ngIf="isLoading" class="is-loading">Loading...</mat-option>
+                    <ng-container *ngIf="!isLoading">
+                        <mat-option *ngFor="let v of filteredVendors" [value]="v">
+                            <span [innerHtml]="getDisplayVendorName(v)"><b>{{v.vendorName}}</b> ({{v.vendorId}})</span>
+                        </mat-option>
+                    </ng-container>
+                </mat-autocomplete>
+            </mat-form-field>
+
             <mat-form-field class="search-row-elemen currency" *ngIf="selectedInvoiceType == 'non-po'">
                 <mat-label>Choose Currency</mat-label>
                 <mat-select matNativeControl formControlName="currency">

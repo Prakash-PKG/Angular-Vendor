@@ -3,10 +3,12 @@ import { AppService } from './../app.service';
 import { InvoiceUploadService } from './invoice-upload.service';
 import { BusyDataModel, InvoiceUploadResultModel, InvoiceUploadReqModel, InvoiceDocumentReqModel, currencyMasterList, 
         PODetailsModel, POItemsRequestModel, POItemsResultModel, ItemModel, FileDetailsModel, InvoiceFileTypwModel, 
-        UpdateInvoiceRequestModel, UpdateInvoiceResultModel, InvoiceDocumentResultModel, StatusModel } from './../models/data-models';
+        UpdateInvoiceRequestModel, UpdateInvoiceResultModel, InvoiceDocumentResultModel, StatusModel,
+        VendorAutoCompleteModel } from './../models/data-models';
 import { Component, OnInit } from '@angular/core';
 import { HomeService } from '../home/home.service';
 import { FormBuilder, FormGroup, FormArray, Validators, FormControl, AbstractControl } from '@angular/forms';
+import { debounceTime, tap, switchMap, finalize } from 'rxjs/operators';
 
 @Component({
     selector: 'app-invoice-upload',
@@ -55,6 +57,9 @@ export class InvoiceUploadComponent implements OnInit {
     invoiceFilesErrMsg: string = "";
     supportFilesErrMsg: string = "";
 
+    filteredVendors: VendorAutoCompleteModel[] = [];
+    isLoading: boolean = false;
+
     constructor(private _homeService: HomeService, 
                 private _appService: AppService,
                 private _formBuilder: FormBuilder,
@@ -63,6 +68,47 @@ export class InvoiceUploadComponent implements OnInit {
     get f() { return this.invoiceUploadForm.controls; }
 
     get fa() { return <FormArray>this.invoiceUploadForm.controls['itemsList']; }
+
+    registerVendorAutoComplete() {
+        this.invoiceUploadForm.get("vendorId").valueChanges
+                    .pipe(debounceTime(300),
+                        tap( () =>  { this.isLoading = true; } ),
+                        switchMap( term => {
+                                            if(term && typeof term === 'string' ) {
+                                                let sText: string = term as string;
+
+                                                if(sText && sText.length > 1) {
+                                                    return this._invoiceUploadService.getVendorsData({ searchText: term });
+                                                }
+                                            }
+                                            
+                                            this.isLoading = false;
+                                            this.filteredVendors = [];
+                                            return [];
+                                            
+                                        } ),
+                        tap( () => { this.isLoading = false; } )
+                    )
+                    .subscribe(results => {
+                        this.filteredVendors = results as VendorAutoCompleteModel[];
+                    });
+    }
+
+    displayVendor(v: VendorAutoCompleteModel) {
+        if (v) { return v.vendorName + " ( " + v.vendorId + " )"; }
+    }
+
+    onVendorOptionSelected(evt: VendorAutoCompleteModel) {
+        this.filteredVendors = [];
+    }
+
+    getDisplayVendorName(v: VendorAutoCompleteModel) {
+        if(v) {
+            return "<b>" + v.vendorName + "</b> (" + v.vendorId + ")";
+        }
+
+        return "";
+    }
 
     onInvoiceTypeChange(evtData) {
         this.resetAllFields();
@@ -350,6 +396,8 @@ export class InvoiceUploadComponent implements OnInit {
                 this.currency = val;
             }
         });
+
+        this.registerVendorAutoComplete();
     }
 
     async loadPOItems() {
@@ -634,6 +682,7 @@ export class InvoiceUploadComponent implements OnInit {
             totalItemsAmt: [ "" ],
             totalInvAmt: [ "" ],
             currency: null,
+            vendorId: null,
             createdBy: null,
             createdDate: null,
             itemsList: this._formBuilder.array([], Validators.required)

@@ -1,9 +1,11 @@
 import { InvoiceUploadResultModel, InvoiceUploadReqModel, InvoiceDocumentReqModel, 
         POItemsRequestModel, POItemsResultModel, UpdateInvoiceRequestModel,
-    FileDetailsModel, RemoveDocumentReqModel } from './../models/data-models';
+    FileDetailsModel, RemoveDocumentReqModel, VendorAutoCompleteModel } from './../models/data-models';
 import { Injectable } from '@angular/core';
 import { AppService } from './../app.service';
 import { HttpClient } from '@angular/common/http';
+import { catchError, retry, tap, map, finalize } from 'rxjs/operators';
+import { Observable, throwError } from 'rxjs';
 
 @Injectable({
     providedIn: 'root'
@@ -74,5 +76,11 @@ export class InvoiceUploadService {
         };
         let url = this._appService.baseUrl + "removeInvDoc/";
         return this._http.post(url, req, { responseType: 'json', observe: 'response' });
+    }
+
+    getVendorsData(filter: { searchText: any } = { searchText: '' }): Observable<VendorAutoCompleteModel[]>  {
+        let url = this._appService.baseUrl + "vendorAutoSearch/" + filter.searchText;
+        return this._http.get(url, { responseType: 'json'}).pipe(
+                            tap((employeeList: any) => (employeeList as VendorAutoCompleteModel[]) ));
     }
 }
