@@ -29,6 +29,7 @@ export class AppService {
         invoiceUpload: "/home/invupload",
         pendingApprovals: "/home/pendingapprovals",
         poDetails: "/home/podetails",
+        poInvoiceDump: "/home/poinvoicedump",
         vendorApproval: "/home/venapproval",
         empanelment: "/home/empanelment",
         vendorDetails: "/vendor/vendetails",
@@ -76,7 +77,8 @@ export class AppService {
 
     readonly dbDateFormat: string = "yyyy-MM-dd"; // Server and DB expects this format, by changing this it will reflect in all places
     readonly displayDtFormat: string = "dd MMM yyyy"; // Displays dates in this format. By changing this, total application date formats will change
-    
+    readonly displayDateTimeFormat: string = "dd MMM yyyy HH:mm:ss";
+
     readonly dbDateTimeFormat: string = "yyyy-MM-dd HH:mm:ss";
 
     selectedPO: PODetailsModel = null;

@@ -102,8 +102,11 @@
     <mat-form-field class="full-width">
         <textarea matInput placeholder="Remarks" [(ngModel)]="remarks" autocomplete="off"></textarea>
     </mat-form-field>
+    <div class="error-txt">
+        {{ remarksErrMsg }}
+    </div>
 
-    <div *ngIf="isPOInvoice == true" style="margin-bottom:2em;">
+    <div *ngIf="isGrnSesRequired == true" style="margin-bottom:2em;">
         <mat-label style="color:black;">GRN/SES No.</mat-label>
         <mat-form-field class="full-width" *ngIf="isGrnDdlVisible == true">
             <mat-select matNativeControl [(ngModel)]="selectedGrnSesNumber">
@@ -113,6 +116,9 @@
             </mat-select>
         </mat-form-field>
         <span *ngIf="isGrnDdlVisible == false">{{ initDetails?.invoiceDetails?.grnSesNumber }}</span>
+    </div>
+    <div class="error-txt">
+        {{ grnSesErrMsg }}
     </div>
 
     <!-- table details [dataSource]="POData"-->
@@ -133,7 +139,7 @@
                     <td>
                         {{ item.itemDescription }}
                     </td>
-                    <td>
+                    <td *ngIf="isPOInvoice == true">
                         {{ item.uom }}
                     </td>
                     <td>
