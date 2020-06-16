@@ -53,6 +53,7 @@ export class VendorApprovalComponent implements OnInit {
     sezFilesList: VendorMasterFilesModel[] = [];
     lutFilesList: VendorMasterFilesModel[] = [];
     othersFilesList: VendorMasterFilesModel[] = [];
+    msaFilesList: VendorMasterFilesModel[] = [];
 
 
     constructor(private _homeService: HomeService,
@@ -60,9 +61,6 @@ export class VendorApprovalComponent implements OnInit {
         private _vendorApprovalService: VendorApprovalService,
         private _vendorRegistrationService: VendorRegistrationService) { }
 
-    onAttachMSAClick() {
-
-    }
     onEditClick() {
         this.isEditable = true;
     }
@@ -102,57 +100,53 @@ export class VendorApprovalComponent implements OnInit {
     getAttachments() {
         console.log(this.vendorDocList);
         if (this.vendorDocList) {
-            this.incCertFilesList = this.vendorDocList.filter(file =>  file.vendorMasterDocumentsId == 1 );
-            this.incCertFilesList = this.vendorDocList.filter(file => file.vendorMasterDocumentsId == 2 );
-            this.gstFilesList = this.vendorDocList.filter(file =>  file.vendorMasterDocumentsId == 3 );
-            this.panFilesList = this.vendorDocList.filter(file => file.vendorMasterDocumentsId == 4 );
-            this.pfFilesList = this.vendorDocList.filter(file => file.vendorMasterDocumentsId == 5 );
-            this.esiFilesList = this.vendorDocList.filter(file =>  file.vendorMasterDocumentsId == 6 );
-            this.canChqFilesList = this.vendorDocList.filter(file =>  file.vendorMasterDocumentsId == 7 );
-            this.msmeFilesList = this.vendorDocList.filter(file =>  file.vendorMasterDocumentsId == 8 );
-            this.tdsFilesList = this.vendorDocList.filter(file => file.vendorMasterDocumentsId == 9 );
-            this.sezFilesList = this.vendorDocList.filter(file =>  file.vendorMasterDocumentsId == 10 );
-            this.lutFilesList = this.vendorDocList.filter(file =>  file.vendorMasterDocumentsId == 11 );
-            this.othersFilesList == this.vendorDocList.filter(file =>  file.vendorMasterDocumentsId == 13 );
+            this.incCertFilesList = this.vendorDocList.filter(file => file.vendorMasterDocumentsId == 1);
+            this.gstFilesList = this.vendorDocList.filter(file => file.vendorMasterDocumentsId == 2);
+            this.panFilesList = this.vendorDocList.filter(file => file.vendorMasterDocumentsId == 3);
+            this.pfFilesList = this.vendorDocList.filter(file => file.vendorMasterDocumentsId == 4);
+            this.esiFilesList = this.vendorDocList.filter(file => file.vendorMasterDocumentsId == 5);
+            this.canChqFilesList = this.vendorDocList.filter(file => file.vendorMasterDocumentsId == 6);
+            this.msmeFilesList = this.vendorDocList.filter(file => file.vendorMasterDocumentsId == 7);
+            this.tdsFilesList = this.vendorDocList.filter(file => file.vendorMasterDocumentsId == 8);
+            this.sezFilesList = this.vendorDocList.filter(file => file.vendorMasterDocumentsId == 9);
+            this.lutFilesList = this.vendorDocList.filter(file => file.vendorMasterDocumentsId == 10);
+            this.othersFilesList == this.vendorDocList.filter(file => file.vendorMasterDocumentsId == 13);
+            this.msaFilesList == this.vendorDocList.filter(file => file.vendorMasterDocumentsId == 12);
         }
     }
 
-    downloadFile(fileDetails: FileDetailsModel) {
-        this._appService.downloadInvoiceFile(fileDetails);
+    downloadFile(fileDetails: VendorMasterFilesModel) {
+        this._vendorApprovalService.downloadFile(fileDetails);
     }
-    // onDeleteFileClick(fileDetails: VendorMasterFilesModel, fileIndex: number, fileType: string) {
-    //     if(fileDetails.fileId) {
-    //         this._homeService.updateBusy(<BusyDataModel>{isBusy: true, msg: "Deleting..."});
-    //         this._invoiceUploadService.deleteInvoiceFile(fileDetails)
-    //             .subscribe(response => {
-    //                 this._homeService.updateBusy(<BusyDataModel>{isBusy: false, msg: null});
-    //                 let result = response.body as StatusModel;
-    //                 if(result.isSuccess) {
-    //                     this.removefileFromList(fileIndex, fileType);
-    //                 }
-    //             },
-    //             (error) => {
-    //                 this._homeService.updateBusy(<BusyDataModel>{isBusy: false, msg: null});
-    //                 console.log(error);
-    //             });
-    //     }
-    //     else {
-    //         this.removefileFromList(fileIndex, fileType);
-    //     }
-    // }
 
-    // removefileFromList(fileIndex: number, fileType: string) {
-    //     if(fileType == 'invoice') {
-    //         if(this.invoiceFilesList.length > 0) {
-    //             this.invoiceFilesList.splice(fileIndex, 1);
-    //         }
-    //     } else {
-    //         if(this.supportingFilesList.length > 0) {
-    //             this.supportingFilesList.splice(fileIndex, 1);
-    //         }
-    //     }
-    // }
+    onDeleteFileClick(fileDetails: VendorMasterFilesModel, fileIndex: number, documentTypeId: number) {
+        if (fileDetails && fileDetails.vendorMasterFilesId) {
+            this._homeService.updateBusy(<BusyDataModel>{ isBusy: true, msg: "Deleting..." });
+            this._vendorApprovalService.deleteVendorFile(fileDetails)
+                .subscribe(response => {
+                    this._homeService.updateBusy(<BusyDataModel>{ isBusy: false, msg: null });
+                    let result = response.body as StatusModel;
+                    if (result.isSuccess) {
+                        this.removefileFromList(fileIndex, documentTypeId);
+                    }
+                },
+                    (error) => {
+                        this._homeService.updateBusy(<BusyDataModel>{ isBusy: false, msg: null });
+                        console.log(error);
+                    });
+        }
+        else {
+            this.removefileFromList(fileIndex, documentTypeId);
+        }
+    }
 
+    removefileFromList(fileIndex: number, documentTypeId: number) {
+        let filesList = this.vendorDocList.filter(f => f.vendorMasterDocumentsId == documentTypeId);
+        if (filesList.length > 0) {
+            filesList.splice(fileIndex, 1);
+        }
+
+    }
     updateVendorApprovals(action: string) {
         let req: VendorApprovalReqModel = {
             action: action,

@@ -61,6 +61,7 @@ export class VendorRegistrationService {
         let url = this._appService.baseUrl + "removeVenDoc";
         return this._http.post(url, req, { responseType: 'json', observe: 'response' });
     }
+
     getFileData(fileDetails: FileDetailsModel) {
         let url = this._appService.baseUrl + 'downloadInvDoc/' + fileDetails.uniqueFileName;
         return this._http.get(url, {responseType: 'arraybuffer', observe: 'response'});
