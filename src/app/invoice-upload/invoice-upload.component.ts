@@ -110,6 +110,19 @@ export class InvoiceUploadComponent implements OnInit {
         return "";
     }
 
+    onVendorPanelClosed() {
+        this.filteredVendors = [];
+    }
+
+    onVendorBlur() {
+        setTimeout(() => {
+            let val = this.invoiceUploadForm.get("vendorId").value;
+            if (!val || typeof val == "string") {
+                this.invoiceUploadForm.get("vendorId").setValue(null);
+            }
+        }, 500);
+    }
+
     onInvoiceTypeChange(evtData) {
         this.resetAllFields();
         
@@ -590,6 +603,7 @@ export class InvoiceUploadComponent implements OnInit {
                 consumedUnits: itemsFa.controls[i].get("consumedUnits").value,
                 invoiceUnits: itemsFa.controls[i].get("invoiceUnits").value,
                 unitPrice: itemsFa.controls[i].get("unitPrice").value,
+                totalAmt: itemsFa.controls[i].get("unitsAmt").value,
                 hsn: itemsFa.controls[i].get("hsn").value,
                 createdBy: itemsFa.controls[i].get("createdBy").value,
                 createdDate: itemsFa.controls[i].get("createdDate").value
@@ -611,6 +625,20 @@ export class InvoiceUploadComponent implements OnInit {
             }
         }
 
+        let venId: string = null;
+        let venName: string = null;
+        if(this.selectedInvoiceType == 'po') {
+            venId = this.selectedPOItem.vendorId;
+            venName = this.selectedPOItem.vendorName;
+        }
+        else {
+            let selVendor = this.invoiceUploadForm.get("vendorId").value;
+            if(typeof(selVendor) == "object") {
+                venId = (selVendor as VendorAutoCompleteModel).vendorId;
+                venName = (selVendor as VendorAutoCompleteModel).vendorName;
+            }
+        }
+
         let req: UpdateInvoiceRequestModel = {
             action: action,
             userId: (this.selectedInvoiceType == 'po' && globalConstant.userDetails.isVendor) ? globalConstant.userDetails.userEmail : globalConstant.userDetails.userId,
@@ -618,10 +646,12 @@ export class InvoiceUploadComponent implements OnInit {
             invoiceDetails: {
                 invoiceId: null,
                 purchaseOrderId: (this.selectedPOItem) ? this.selectedPOItem.purchaseOrderId : null,
+                vendorId: venId,
+                vendorName: venName,
                 invoiceNumber: this.invoiceUploadForm.get("invoiceNumber").value,
                 invoiceDate: this._appService.getFormattedDateTime(this.invoiceUploadForm.get("invoiceDate").value),
                 remarks: this.invoiceUploadForm.get("remarks").value,
-                freightCharges: this.invoiceUploadForm.get("freightCharges").value,
+                freightCharges: this.invoiceUploadForm.get("freightCharges").value ? this.invoiceUploadForm.get("freightCharges").value : null,
                 totalAmt: this.invoiceUploadForm.get("totalInvAmt").value,
                 grnSesNumber: null,
                 statusCode: null,
@@ -677,7 +707,7 @@ export class InvoiceUploadComponent implements OnInit {
             invoiceNumber: [ null, Validators.required ],
             invoiceDate: [ null, Validators.required ],
             remarks: [ null, Validators.required ],
-            freightCharges: [ null, Validators.required ],
+            freightCharges: null,
             totalTax: [ null, Validators.required ],
             totalItemsAmt: [ "" ],
             totalInvAmt: [ "" ],

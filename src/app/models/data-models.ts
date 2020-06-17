@@ -353,6 +353,7 @@ export class ItemModel {
     consumedUnits: string;
     invoiceUnits: string;
     unitPrice: string;
+    totalAmt: string;
     hsn: string;
     createdBy: string;
     createdDate: string;
@@ -365,6 +366,8 @@ export class ItemDisplayModel extends ItemModel {
 export class InvoiceDetailsModel {
     invoiceId: number;
     purchaseOrderId: number;
+    vendorId: string;
+    vendorName: string;
     invoiceNumber: string;
     invoiceDate: string;
     remarks: string;

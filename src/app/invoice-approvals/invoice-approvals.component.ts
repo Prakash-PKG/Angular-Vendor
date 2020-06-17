@@ -97,7 +97,8 @@ export class InvoiceApprovalsComponent implements OnInit {
                 this.itemsList = this.initDetails.itemsList.concat();
                 this.totalAmount = 0;
                 for(let i = 0; i < this.itemsList.length; i++) {
-                    this.itemsList[i].unitsTotalAmount = (this.itemsList[i].unitPrice && this.itemsList[i].invoiceUnits) ? +this.itemsList[i].unitPrice * +this.itemsList[i].invoiceUnits : null;
+                    //this.itemsList[i].unitsTotalAmount = (this.itemsList[i].unitPrice && this.itemsList[i].invoiceUnits) ? +this.itemsList[i].unitPrice * +this.itemsList[i].invoiceUnits : null;
+                    this.itemsList[i].unitsTotalAmount = (this.itemsList[i].totalAmt) ? +this.itemsList[i].totalAmt : null;
                     if(this.itemsList[i].unitsTotalAmount && this.itemsList[i].unitsTotalAmount > 0) {
                         this.totalAmount = this.totalAmount + this.itemsList[i].unitsTotalAmount;
                     }
@@ -155,7 +156,7 @@ export class InvoiceApprovalsComponent implements OnInit {
         }
 
         let isGrnSesValid: boolean = true;
-        if(this.isGrnSesRequired) {
+        if(this.isGrnSesRequired && this.isGrnDdlVisible) {
             if(!this.selectedGrnSesNumber) {
                 this.grnSesErrMsg = "Please select GRN/SES No.";
                 isGrnSesValid = false;
@@ -166,7 +167,7 @@ export class InvoiceApprovalsComponent implements OnInit {
             let req: UpdateInvoiceApprovalReqModel = {
                 action: action,
                 departmentHeadId: globalConstant.userDetails.departmentHead,
-                grnSesNumber: this.selectedGrnSesNumber,
+                grnSesNumber: (this.isGrnSesRequired && this.isGrnDdlVisible) ? this.selectedGrnSesNumber : this.initDetails.invoiceDetails.grnSesNumber,
                 approvalDetails: {
                     invoiceApprovalId: this.initDetails.approvalDetails.invoiceApprovalId,
                     purchaseOrderId: this.initDetails.approvalDetails.purchaseOrderId,

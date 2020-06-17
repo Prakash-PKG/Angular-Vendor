@@ -53,14 +53,15 @@
                 <div *ngIf="f.remarks.errors?.required" class="errortxt">Remarks is required</div>
             </div>
 
-            <mat-form-field >
-                <input matInput placeholder="Select Employee" aria-label="State" [matAutocomplete]="auto" formControlName="vendorId">
-                <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayEmployee" (optionSelected) = "onVendorOptionSelected($event)"
-                    (closed) = "onVendorOptionSelected()">
+            <mat-form-field *ngIf="selectedInvoiceType == 'non-po'">
+                <input matInput placeholder="Select Vendor" aria-label="State" [matAutocomplete]="auto" 
+                formControlName="vendorId" (blur)="onVendorBlur()">
+                <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayVendor" (optionSelected) = "onVendorOptionSelected($event)"
+                    (closed) = "onVendorPanelClosed()">
                     <mat-option *ngIf="isLoading" class="is-loading">Loading...</mat-option>
                     <ng-container *ngIf="!isLoading">
                         <mat-option *ngFor="let v of filteredVendors" [value]="v">
-                            <span [innerHtml]="getDisplayVendorName(v)"><b>{{v.vendorName}}</b> ({{v.vendorId}})</span>
+                            <span [innerHtml]="getDisplayVendorName(v)"></span>
                         </mat-option>
                     </ng-container>
                 </mat-autocomplete>
@@ -181,9 +182,6 @@
                                     (blur)="updateInvoiceTotalAmt()">
                                 <span style="margin-left: 10px">{{ currency }}</span>
                             </span>
-                            <div *ngIf="( isSubmitted ) && f.freightCharges.errors">
-                                <div *ngIf="f.freightCharges.errors?.required" class="errortxt">Freight Amount is required</div>
-                            </div>
                         </td>
                     </tr>
                     <tr>

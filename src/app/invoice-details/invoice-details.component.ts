@@ -137,7 +137,8 @@ export class InvoiceDetailsComponent implements OnInit {
                 this.itemsList = (this._initDetails.itemsList && this._initDetails.itemsList.length > 0) ? this._initDetails.itemsList.concat() : [];
                 this.totalAmount = 0;
                 for(let i = 0; i < this.itemsList.length; i++) {
-                    this.itemsList[i].unitsTotalAmount = (this.itemsList[i].unitPrice && this.itemsList[i].invoiceUnits) ? +this.itemsList[i].unitPrice * +this.itemsList[i].invoiceUnits : null;
+                    //this.itemsList[i].unitsTotalAmount = (this.itemsList[i].unitPrice && this.itemsList[i].invoiceUnits) ? +this.itemsList[i].unitPrice * +this.itemsList[i].invoiceUnits : null;
+                    this.itemsList[i].unitsTotalAmount = (this.itemsList[i].totalAmt) ? +this.itemsList[i].totalAmt : null;
                     if(this.itemsList[i].unitsTotalAmount && this.itemsList[i].unitsTotalAmount > 0) {
                         this.totalAmount = this.totalAmount + this.itemsList[i].unitsTotalAmount;
                     }
@@ -150,7 +151,7 @@ export class InvoiceDetailsComponent implements OnInit {
                 let poApprovalModel: InvoiceApprovalModel = this._initDetails.approvalsList.find(a => a.approvalLevel == this._appService.approvalLevels.po);
                 if(poApprovalModel != null) {
                     this.uploadLevel = {
-                        levelName: "Vendor/PO",
+                        levelName: "Upload",
                         status: "Submitted",
                         date: this._appService.getFormattedDate(poApprovalModel.createdDate),
                         remarks: this.invoiceDetails.remarks
@@ -158,7 +159,7 @@ export class InvoiceDetailsComponent implements OnInit {
                     this.approvalLevelList.push(this.uploadLevel);
 
                     this.poLevel = {
-                        levelName: "PO",
+                        levelName: "Buyer",
                         status: this._appService.statusNames[poApprovalModel.statusCode],
                         date: (poApprovalModel.statusCode == this._appService.statusCodes.approved || poApprovalModel.statusCode == this._appService.statusCodes.rejected) ? this._appService.getFormattedDate(poApprovalModel.updatedDate) : "",
                         remarks: poApprovalModel.remarks
@@ -169,7 +170,7 @@ export class InvoiceDetailsComponent implements OnInit {
                 let functionalHeadApprovalModel: InvoiceApprovalModel = this._initDetails.approvalsList.find(a => a.approvalLevel == this._appService.approvalLevels.functionalHead);
                 if(functionalHeadApprovalModel != null) {
                     this.fhLevel = {
-                        levelName: "Functional Head",
+                        levelName: "Business Head",
                         status: this._appService.statusNames[functionalHeadApprovalModel.statusCode],
                         date: (functionalHeadApprovalModel.statusCode == this._appService.statusCodes.approved || functionalHeadApprovalModel.statusCode == this._appService.statusCodes.rejected) ? this._appService.getFormattedDate(functionalHeadApprovalModel.updatedDate) : "",
                         remarks: poApprovalModel.remarks
