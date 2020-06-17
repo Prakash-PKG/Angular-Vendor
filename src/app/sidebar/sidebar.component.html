@@ -9,7 +9,7 @@
     </div>
 
     <ul class="menu">
-        <li class="removehover" style="padding:0px;">
+        <li class="removehover" style="padding:0px;" *ngIf = "isInvoiceCreateVisible == true">
             <div class="creation-btn actions">
                 <button mat-raised-button class="footer-actions" (click) = "onInvoiceUploadClick()" [ngClass]="{' btn-collapsed': isSidebarCollapsed ==  true }">
                     <span *ngIf="isSidebarCollapsed === false" >Invoice Creation</span>
@@ -23,7 +23,7 @@
             </div>
             <div class="navtxt">Dashboard</div>
         </li>
-        <li (click) = "onPendingApprovalClick()">
+        <li *ngIf = "isApprovalsVisible == true" (click) = "onPendingApprovalClick()">
             <div class="side-icon">
                 <mat-icon>done_outline</mat-icon>
             </div>
@@ -48,7 +48,7 @@
             <div class="navtxt">Reports</div>
         </li>
         <ul class="childdash">
-            <li [ngStyle]="{'padding-left': isSidebarCollapsed === true ? '1em': '2em' }" (click) = "onPOInvoiceDumpClick()">
+            <li *ngIf = "isPOInvoiceDumpVisible == true" [ngStyle]="{'padding-left': isSidebarCollapsed === true ? '1em': '2em' }" (click) = "onPOInvoiceDumpClick()">
                 <div class="side-icon">
                     <mat-icon>description</mat-icon>
                 </div>
@@ -68,13 +68,12 @@
                 </div>
                 <div class="navtxt">Vendor Registration</div>
             </li>
-            <li [ngStyle]="{'padding-left': isSidebarCollapsed === true ? '1em': '2em' }" (click) = "onEmpanelmentClick()">
+            <li *ngIf = "isEmpanelmentVisible == true" [ngStyle]="{'padding-left': isSidebarCollapsed === true ? '1em': '2em' }" (click) = "onEmpanelmentClick()">
                 <div class="side-icon">
                     <mat-icon>person</mat-icon>
                 </div>
                 <div class="navtxt">Vendor Empanelment</div>
             </li>
-
         </ul>
         <li (click) = "onLogoutClick()">
             <div class="side-icon">

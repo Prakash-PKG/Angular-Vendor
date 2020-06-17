@@ -48,6 +48,12 @@
     <div class="flex-container full-width details">
         <div class="description flex-item">
             <div class="flex-container">
+                <div class="flex-item">
+                    Vendor Id: {{ (invoiceDetails?.vendorId) ? invoiceDetails?.vendorId : "" }}
+                </div>
+                <div class="flex-item">
+                    Vendor Name: {{ (invoiceDetails?.vendorName) ? invoiceDetails?.vendorName : "" }}
+                </div>
                 <div class="flex-item" *ngIf = "isPOBasedInvoice == true">
                     PO No: {{ invoiceDetails?.poNumber }}
                 </div>

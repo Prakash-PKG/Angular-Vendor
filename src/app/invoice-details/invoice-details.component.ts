@@ -173,7 +173,7 @@ export class InvoiceDetailsComponent implements OnInit {
                         levelName: "Business Head",
                         status: this._appService.statusNames[functionalHeadApprovalModel.statusCode],
                         date: (functionalHeadApprovalModel.statusCode == this._appService.statusCodes.approved || functionalHeadApprovalModel.statusCode == this._appService.statusCodes.rejected) ? this._appService.getFormattedDate(functionalHeadApprovalModel.updatedDate) : "",
-                        remarks: poApprovalModel.remarks
+                        remarks: functionalHeadApprovalModel.remarks
                     };
                     this.approvalLevelList.push(this.fhLevel);
                 }

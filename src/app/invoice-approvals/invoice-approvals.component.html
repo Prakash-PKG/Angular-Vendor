@@ -50,6 +50,12 @@
 
             <div class="Rtable Rtable--2cols Rtable--collapse">
 
+                <div class="Rtable-cell Rtable-cell--head">Vendor Id</div>
+                <div class="Rtable-cell">{{ (initDetails?.invoiceDetails?.vendorId) ? initDetails?.invoiceDetails?.vendorId : "" }}</div>
+
+                <div class="Rtable-cell Rtable-cell--head">Vendor Name</div>
+                <div class="Rtable-cell">{{ (initDetails?.invoiceDetails?.vendorName) ? initDetails?.invoiceDetails?.vendorName : "" }}</div>
+
                 <div class="Rtable-cell Rtable-cell--head" *ngIf="isPOInvoice == true">PO No.</div>
                 <div class="Rtable-cell " *ngIf="isPOInvoice == true">{{ initDetails?.poDetails?.poNumber }}</div>
 
