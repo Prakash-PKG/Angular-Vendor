@@ -1,3 +1,4 @@
+import { globalConstant } from './../common/global-constant';
 import { Component, OnInit } from '@angular/core';
 import { AppService } from '../app.service';
 import { HomeService } from '../home/home.service';
@@ -24,6 +25,11 @@ import { LoginService } from '../login/login.service';
 export class SidebarComponent implements OnInit {
     isSidebarCollapsed: boolean = false;
     isMenuTextVisible: boolean = true;
+
+    isInvoiceCreateVisible: boolean = false;
+    isApprovalsVisible: boolean = true;
+    isPOInvoiceDumpVisible: boolean = false;
+    isEmpanelmentVisible: boolean = false;
 
     constructor(private _appService: AppService,
         private _router: Router,
@@ -73,8 +79,12 @@ export class SidebarComponent implements OnInit {
         this._router.navigate([this._appService.routingConstants.invoiceUpload]);
     }
 
-    onInvoiceApprovalClick() {
-        this._router.navigate([this._appService.routingConstants.invoiceApproval]);
+    onVendorRegistrationClickClick() {
+        this._router.navigate([this._appService.routingConstants.vendorDetails]);
+    }
+
+    onPOInvoiceDumpClick() {
+        this._router.navigate([this._appService.routingConstants.poInvoiceDump]);
     }
 
     onLogoutClick() {
@@ -95,5 +105,25 @@ export class SidebarComponent implements OnInit {
     ngOnInit() {
         this.isSidebarCollapsed = false;
         this._homeService.updateSidebarDetails(this.isSidebarCollapsed);
+
+        this.isInvoiceCreateVisible = false;
+        if(globalConstant.userDetails.isVendor || globalConstant.userDetails.isPurchaseOwner) {
+            this.isInvoiceCreateVisible = true;
+        }
+
+        this.isApprovalsVisible = true;
+        if(globalConstant.userDetails.isVendor || globalConstant.userDetails.isEmpanelment) {
+            this.isApprovalsVisible = false;
+        }
+
+        this.isPOInvoiceDumpVisible = false;
+        if(globalConstant.userDetails.isFinance) {
+            this.isPOInvoiceDumpVisible = true;
+        }
+
+        this.isEmpanelmentVisible = false;
+        if(globalConstant.userDetails.isEmpanelment) {
+            this.isEmpanelmentVisible = true;
+        }
     }
 }

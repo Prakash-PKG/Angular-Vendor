@@ -1,5 +1,10 @@
-import { VendorApprovalInitResultModel, VendorApprovalInitReqModel,
-        VendorApprovalReqModel } from './../models/data-models';
+import {
+    VendorApprovalInitResultModel, VendorApprovalInitReqModel,
+    VendorApprovalReqModel,
+    VendorRegistrationDetailRequestModel,
+    VendorMasterFilesModel,
+    RemoveDocumentReqModel
+} from './../models/data-models';
 import { Injectable } from '@angular/core';
 import { AppService } from './../app.service';
 import { HttpClient } from '@angular/common/http';
@@ -10,7 +15,7 @@ import { HttpClient } from '@angular/common/http';
 export class VendorApprovalService {
 
     constructor(private _appService: AppService,
-                private _http: HttpClient) { }
+        private _http: HttpClient) { }
 
     async getVendorApprovalInitData(req: VendorApprovalInitReqModel) {
         let url = this._appService.baseUrl + "venApprovalDetails";
@@ -29,10 +34,12 @@ export class VendorApprovalService {
             detailsModel.statusDetails = data["status"];
             detailsModel.filesList = data["filesList"];
             detailsModel.vendorMasterDetails = data["vendorMasterDetails"];
-            detailsModel.accGroupMasterList = data ["accGroupMasterList"];
-            detailsModel.companyCodeMasterList =data["companyCodeMasterList"];
+            detailsModel.accGroupMasterList = data["accGroupMasterList"];
+            detailsModel.companyCodeMasterList = data["companyCodeMasterList"];
             detailsModel.currencyMasterList = data["currencyMasterList"];
             detailsModel.vendorApprovalDetails = data["vendorApprovalDetail"];
+            detailsModel.withholdTaxVOList = data["withholdTaxVOList"];
+            detailsModel.withholdTypeVOList = data["withholdTypeVOList"];
         }
 
         return detailsModel;
@@ -40,6 +47,41 @@ export class VendorApprovalService {
 
     updateVendorApprovalDetails(updateReqModel: VendorApprovalReqModel) {
         let url = this._appService.baseUrl + "updateVendorApproval";
-        return this._http.post(url, updateReqModel, {responseType: 'json', observe: 'response'});
+        return this._http.post(url, updateReqModel, { responseType: 'json', observe: 'response' });
+    }
+    
+    sendBackForCorrection(sendVendCorrId: VendorRegistrationDetailRequestModel) {
+        let url = this._appService.baseUrl + "fetchVendor";
+        return this._http.post(url, sendVendCorrId, { responseType: 'json', observe: 'response' });
+    }
+    
+    deleteVendorFile(fileDetails: VendorMasterFilesModel) {
+        let req: RemoveDocumentReqModel = {
+            fileId: fileDetails.vendorMasterFilesId
+        };
+        let url = this._appService.baseUrl + "removeVenDoc";
+        return this._http.post(url, req, { responseType: 'json', observe: 'response' });
+    }
+
+    getFileData(fileDetails: VendorMasterFilesModel) {
+        let url = this._appService.baseUrl + 'downloadInvDoc/' + fileDetails.uniqFileName;
+        return this._http.get(url, {responseType: 'arraybuffer', observe: 'response'});
+    }
+
+    downloadFile(fileDetails: VendorMasterFilesModel) {
+        this.getFileData(fileDetails).subscribe(
+            (data) => {
+                const blob = new Blob([data.body], { type: 'application/octet-stream' });
+                const url = window.URL.createObjectURL(blob);
+
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = fileDetails.actualFileName;
+                document.body.appendChild(a);
+                a.click();
+            },
+            error => {
+                console.log(error);
+            });
     }
 }

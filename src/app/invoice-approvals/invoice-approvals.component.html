@@ -5,92 +5,126 @@
     <!-- -----------------------------------stepper---------------------------------------------- -->
     <ul class="stepper">
         <li class="step completed">
-            <span class="upper-text">06 Feb 2020</span>
+            <span class="upper-text"></span>
             <span class="dot"></span>
             <span class="lower-text">
-        Invoice Upload
-      </span>
+                Upload
+            </span>
         </li>
 
-        <li class="step completed">
-            <span class="upper-text">15 Feb 2020</span>
+        <li class="step" [ngClass]="isPOCompleted == true ? 'completed' : ''">
+            <span class="upper-text"></span>
             <span class="dot"></span>
             <span class="lower-text">
-        Invoice Validation
-      </span>
+                Buyer
+            </span>
         </li>
-        <li class="step completed">
-            <span class="upper-text">27 Feb 2020</span>
+
+        <li class="step" [ngClass]="isFunctionalHeadCompleted == true ? 'completed' : ''">
+            <span class="upper-text"></span>
             <span class="dot"></span>
             <span class="lower-text">
-        Buyer Approval
-      </span>
+                Business Head
+            </span>
         </li>
 
         <li class="step">
             <span class="upper-text"></span>
             <span class="dot"></span>
             <span class="lower-text">
-        Business Head Approval
-      </span>
+                Finance
+            </span>
         </li>
 
         <li class="step">
             <span class="upper-text"></span>
             <span class="dot"></span>
             <span class="lower-text">
-        Finance Approval
-      </span>
-        </li>
-
-        <li class="step">
-            <span class="upper-text"></span>
-            <span class="dot"></span>
-            <span class="lower-text">
-        Payment
-      </span>
+                Payment
+            </span>
         </li>
     </ul>
-
-
     <div class="search-row">
-        <div class="search-row-element">
-            <div class="search-row-element">
-                <mat-label>PO No.</mat-label>
-                <div class="value">{{ initDetails?.invoiceDetails?.purchaseOrderId }}</div>
-            </div>
 
-            <div class="search-row-element">
-                <mat-label>Invoice No.</mat-label>
-                <div class="value">{{ initDetails?.invoiceDetails?.invoiceNumber }}</div>
-            </div>
+        <div class="vendor-detail-section search-row-element">
 
-            <div class="search-row-element">
-                <mat-label>Invoice Date</mat-label>
-                <div class="value">{{ initDetails?.invoiceDetails?.invoiceDate }}</div>
+            <div class="Rtable Rtable--2cols Rtable--collapse">
+
+                <div class="Rtable-cell Rtable-cell--head">Vendor Id</div>
+                <div class="Rtable-cell">{{ (initDetails?.invoiceDetails?.vendorId) ? initDetails?.invoiceDetails?.vendorId : "" }}</div>
+
+                <div class="Rtable-cell Rtable-cell--head">Vendor Name</div>
+                <div class="Rtable-cell">{{ (initDetails?.invoiceDetails?.vendorName) ? initDetails?.invoiceDetails?.vendorName : "" }}</div>
+
+                <div class="Rtable-cell Rtable-cell--head" *ngIf="isPOInvoice == true">PO No.</div>
+                <div class="Rtable-cell " *ngIf="isPOInvoice == true">{{ initDetails?.poDetails?.poNumber }}</div>
+
+                <div class="Rtable-cell Rtable-cell--head">Invoice No.</div>
+                <div class="Rtable-cell">{{ initDetails?.invoiceDetails?.invoiceNumber }}</div>
+
+                <div class="Rtable-cell Rtable-cell--head">Invoice Date</div>
+                <div class="Rtable-cell">{{ getFormattedDate(initDetails?.invoiceDetails?.invoiceDate) }}</div>
+
+                <div *ngIf="isPOInvoice == false" class="Rtable-cell Rtable-cell--head">Currency</div>
+                <div *ngIf="isPOInvoice == false" class="Rtable-cell">{{ initDetails?.invoiceDetails?.currencyType }}
+                </div>
+
+                <div class="Rtable-cell Rtable-cell--head">Remarks</div>
+                <div class="Rtable-cell">{{ initDetails?.invoiceDetails?.remarks }}</div>
+
+                <div class="Rtable-cell Rtable-cell--head">Freight</div>
+                <div class="Rtable-cell ">{{ initDetails?.invoiceDetails?.freightCharges }}</div>
+
+                <div class="Rtable-cell Rtable-cell--head">Total Tax Amt</div>
+                <div class="Rtable-cell">{{ initDetails?.invoiceDetails?.totalTax }}</div>
+
+                <div class="Rtable-cell Rtable-cell--head">Total Amt</div>
+                <div class="Rtable-cell">{{ totalAmount }}</div>
+
+                <div class="Rtable-cell Rtable-cell--head">Total Inv Amt<small>(inc. tax)</small></div>
+                <div class="Rtable-cell">{{ initDetails?.invoiceDetails?.totalAmt }}</div>
+
             </div>
         </div>
-        <div class="search-row-element">
-            <div class="search-row-element">
-                <mat-label>Total Invoice Amount
-                    <div class="smaller-text">Including Tax</div>
-                </mat-label>
-                <div class="value">{{ initDetails?.invoiceDetails?.totalAmt }}</div>
-            </div>
 
-            <div class="search-row-element">
-                <mat-label>Remarks</mat-label>
-                <div class="value">{{ initDetails?.invoiceDetails?.remarks }}</div>
-            </div>
-        </div>
-        <div>
-            <mat-label>Remarks</mat-label>
-            <input class="inv-qty" [(ngModel)] = "remarks">
-        </div>
         <div class="actions search-row-element">
             <button mat-raised-button class="footer-actions footer-actions-green">Invoice Attachments</button>
+            <div *ngFor="let ifile of invoiceFilesList; let ifileInd = index">
+                {{ ifile.actualFileName }}
+                <button mat-button mat-icon-button aria-label="Download" (click)="downloadFile(ifile)">
+                    <mat-icon>save_alt</mat-icon>
+                </button>
+            </div>
             <button mat-raised-button class="footer-actions footer-actions-green">Supporting Attachments</button>
+            <div *ngFor="let sf of supportFilesList; let sfInd = index">
+                {{ sf.actualFileName }}
+                <button mat-button mat-icon-button aria-label="Download" (click)="downloadFile(sf)">
+                    <mat-icon>save_alt</mat-icon>
+                </button>
+            </div>
         </div>
+    </div>
+
+    <mat-form-field class="full-width">
+        <textarea matInput placeholder="Remarks" [(ngModel)]="remarks" autocomplete="off"></textarea>
+    </mat-form-field>
+    <div class="error-txt">
+        {{ remarksErrMsg }}
+    </div>
+
+    <div *ngIf="isGrnSesRequired == true" style="margin-bottom:2em;">
+        <mat-label style="color:black;">GRN/SES No.</mat-label>
+        <mat-form-field class="full-width" *ngIf="isGrnDdlVisible == true">
+            <mat-select matNativeControl [(ngModel)]="selectedGrnSesNumber">
+                <mat-option *ngFor="let gs of grnSesList" [value]="gs.grnSesNumber">
+                    {{ gs.grnSesNumber }}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+        <span *ngIf="isGrnDdlVisible == false">{{ initDetails?.invoiceDetails?.grnSesNumber }}</span>
+    </div>
+    <div class="error-txt">
+        {{ grnSesErrMsg }}
     </div>
 
     <!-- table details [dataSource]="POData"-->
@@ -104,48 +138,53 @@
                 </tr>
             </thead>
             <tbody>
-                <tr *ngFor="let item of initDetails?.itemsList; let itemInd = index">
+                <tr *ngFor="let item of itemsList; let itemInd = index">
                     <td>
                         {{ item.itemNumber }}
                     </td>
                     <td>
                         {{ item.itemDescription }}
                     </td>
+                    <td *ngIf="isPOInvoice == true">
+                        {{ item.uom }}
+                    </td>
                     <td>
                         {{ item.hsn }}
                     </td>
-                    <td>
+                    <td *ngIf="isPOInvoice == true">
                         {{ item.orderedUnits }}
                     </td>
-                    <td>
+                    <td *ngIf="isPOInvoice == true">
                         {{ item.suppliedUnits }}
                     </td>
-                    <td>
+                    <td *ngIf="isPOInvoice == true">
                         {{ item.consumedUnits }}
                     </td>
                     <td>
                         {{ item.invoiceUnits }}
                     </td>
-                    <td>
+                    <td *ngIf="isPOInvoice == true">
                         {{ getCurrencyType() }}
                     </td>
-                    <td>
+                    <td class="amount">
                         {{ item.unitPrice }}
                     </td>
-                    <td>
-                        {{ getUnitsAmt(item) }}
+                    <td class="amount">
+                        {{ item.unitsTotalAmount }}
                     </td>
                 </tr>
             </tbody>
         </table>
     </div>
 
-    <div style="color: blue">
-        {{ msg }}
-    </div>
+
     <div class="row actions margin-unset">
+        <div class="error-txt">
+            {{ msg }}
+        </div>
         <button mat-raised-button class="footer-actions">Cancel</button>
         <button mat-raised-button class="footer-actions" (click)="onRejectClick()">Reject</button>
-        <button mat-raised-button class="footer-actions footer-actions-green" (click)="onApproveClick()">Approve</button>
+        <button mat-raised-button class="footer-actions footer-actions-green"
+            (click)="onApproveClick()">Approve</button>
     </div>
 </div>

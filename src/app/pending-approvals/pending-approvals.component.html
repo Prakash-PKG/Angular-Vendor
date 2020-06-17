@@ -42,7 +42,7 @@
             <mat-tab label="Vendor Pending approvals">
                 <div class="ven-tab-container">
                     <mat-card class="card mat-elevation-z3" *ngFor="let appr of vendorPendingApprovals; let allInd = index">
-                        <div class="flex-container full-width">
+                        <div class="flex-container full-width" (click) = "onApprovalRecClick(appr)">
                             <div class="description flex-item">
                                 <div class="flex-container">
                                     <div class="flex-item">
@@ -67,7 +67,7 @@
             <mat-tab label="Invoice Pending approvals">
                 <div class="inv-tab-container">
                     <mat-card class="card mat-elevation-z3" *ngFor="let appr of invoicePendingApprovals; let allInd = index">
-                        <div class="flex-container full-width">
+                        <div class="flex-container full-width" (click) = "onApprovalRecClick(appr)">
                             <div class="description flex-item">
                                <div class="flex-container">
                                     <div class="flex-item">

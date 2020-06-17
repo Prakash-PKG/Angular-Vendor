@@ -1,58 +1,94 @@
+import { AppService } from './../app.service';
+import { BusyDataModel, POSearchResultModel, PODetailsModel, POSearchReqModel } from './../models/data-models';
+import { PoSearchService } from './po-search.service';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatSort, MatTableDataSource, MatDialog } from '@angular/material';
 import { HomeService } from '../home/home.service';
-import { AppService } from '../app.service';
-import { PoSearchService } from './po-search.service';
-import { POSearchResultModel } from '../models/data-models';
+import { globalConstant } from './../common/global-constant';
+import { Router } from '@angular/router';
 
 @Component({
-  selector: 'app-po-search',
-  templateUrl: './po-search.component.html',
-  styleUrls: ['./po-search.component.scss']
+    selector: 'app-po-search',
+    templateUrl: './po-search.component.html',
+    styleUrls: ['./po-search.component.scss']
 })
 export class PoSearchComponent implements OnInit {
 
-  headerArr: string[] = ['po', 'vendorid', 'vendorname', 'podate', 'currency', 'totalamt', 'billedamt', 'payrec', 'status'];
-  purchaseOrders: POSearchResultModel[] = [];
-  purcahseOrderData = new MatTableDataSource<POSearchResultModel>(this.purchaseOrders);
+    headerArr: string[] = [];
 
-  @ViewChild(MatSort) sort: MatSort;
+    isDashboardCollapsed: boolean = true;
+    _sidebarExpansionSubscription: any = null;
 
-  isDashboardCollapsed: boolean = true;
-  _sidebarExpansionSubscription: any = null;
+    _initDetails: POSearchResultModel = null;
+    poList: PODetailsModel[] = [];
 
-  constructor(public dialog: MatDialog,
-    private _homeService: HomeService,
-    private _appService: AppService,
-    private _poSearchService: PoSearchService) { }
+    constructor(private _homeService: HomeService,
+                private _appService: AppService,
+                private _router: Router,
+                private _poSearchService: PoSearchService) { }
 
-  loadPurchaseOrders() {
-    this._poSearchService.getPurchaseOrders()
-      .subscribe(response => {
-        this.purchaseOrders = response.body as POSearchResultModel[];
-        this.purcahseOrderData.sort = this.sort;
-      },
-        (error) => {
-          console.log(error);
-        });
-  }
-  applySearch(filterValue: string) {
-    this.purcahseOrderData.filter = filterValue.trim().toLowerCase();
-  }
-
-  ngOnDestroy() {
-    if (this._sidebarExpansionSubscription) {
-      this._sidebarExpansionSubscription.unsubscribe();
+    onPOClick(po: PODetailsModel) {
+        this._appService.selectedPO = po;
+        this._router.navigate([this._appService.routingConstants.poDetails]);
     }
-  }
 
-  ngOnInit() {
-    this.isDashboardCollapsed = true;
+    async loadInitData() {
 
-    this._sidebarExpansionSubscription = this._homeService.isSidebarCollapsed.subscribe(data => {
-      this.isDashboardCollapsed = !data;
-    });
-    this.loadPurchaseOrders();
-  }
+        let req: POSearchReqModel = {
+            vendorId: null,
+            employeeId: null,
+            approvalLevels: [],
+            departments: []
+        };
 
+        if(globalConstant.userDetails.isVendor) {
+            req.vendorId = globalConstant.userDetails.userId;
+        }
+        else {
+            req.employeeId = globalConstant.userDetails.isFunctionalHead ? globalConstant.userDetails.userId : null;
+
+            if(globalConstant.userDetails.isPurchaseOwner) {
+                req.departments = req.departments.concat(globalConstant.userDetails.poDepts);
+            }
+
+            if(globalConstant.userDetails.isFinance) {
+                req.approvalLevels.push(this._appService.approvalLevels.finance);
+            }
+        }
+
+        this._homeService.updateBusy(<BusyDataModel>{ isBusy: true, msg: "Loading..." });
+        this._initDetails = await this._poSearchService.getPOList(req);
+        if(this._initDetails && this._initDetails.poList && this._initDetails.poList.length > 0) {
+            this.poList = this._initDetails.poList.concat();
+        }
+        this._homeService.updateBusy(<BusyDataModel>{ isBusy: false, msg: null });
+    }
+
+    getFormattedDate(dtStr: string) {
+        if(dtStr) {
+            return this._appService.getFormattedDate(dtStr);
+        }
+        
+        return "";
+    }
+
+    ngOnDestroy() {
+        if (this._sidebarExpansionSubscription) {
+            this._sidebarExpansionSubscription.unsubscribe();
+        }
+    }
+
+    ngOnInit() {
+        this._appService.selectedPO = null;
+
+        this.isDashboardCollapsed = true;
+
+        this._sidebarExpansionSubscription = this._homeService.isSidebarCollapsed.subscribe(data => {
+            this.isDashboardCollapsed = !data;
+        });
+
+        setTimeout(() => {
+           this.loadInitData();
+        }, 100);
+    }
 }

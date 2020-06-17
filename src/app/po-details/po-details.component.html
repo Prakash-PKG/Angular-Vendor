@@ -1,86 +1,86 @@
 <div class="main">
-  <div class="title">
-    <h3>PO Details</h3>
-  </div>
-  <div class="search-row">
+    <div class="title">
+        <h3>PO Details</h3>
+    </div>
+    <div class="search-row">
 
-    <div class="search-row-element">
-      <mat-label>PO No.</mat-label>
-      <div class="value"></div>
+        <div class="search-row-element">
+            <mat-label>PO No.</mat-label>
+            <div class="value">{{ poDetails?.poNumber }}</div>
+        </div>
+
+        <div class="search-row-element">
+            <mat-label>PO Date</mat-label>
+            <div class="value">{{ getFormattedDate(poDetails?.poDate) }}</div>
+        </div>
+
+        <div class="search-row-element">
+            <mat-label>Total Amount</mat-label>
+            <div class="value">{{ poDetails?.totalAmount }}</div>
+        </div>
+
+        <div class="search-row-element">
+            <mat-label>Billed Amount</mat-label>
+            <div class="value">{{ poDetails?.billedAmount }}</div>
+        </div>
+
+        <div class="search-row-element">
+            <mat-label>Total Amount Paid</mat-label>
+            <div class="value"></div>
+        </div>
+
+        <div class="actions search-row-element">
+            <button mat-raised-button class="footer-actions">Export Excel</button>
+        </div>
     </div>
 
-    <div class="search-row-element">
-      <mat-label>PO Date</mat-label>
-      <div class="value"></div>
+    <!-- table details [dataSource]="POData" -->
+    <div class="container my-container margin-unset full-width">
+        <table class="dataTable full-width">
+            <thead>
+                <tr>
+                    <th class="headers" scope="col" *ngFor="let col of headerArr; let hInd = index">
+                        <span>{{ headerArr[hInd] }} </span>
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let item of itemsList; let itemInd = index">
+                    <td>
+                        <span>{{ item.itemNumber }}</span>
+                    </td>
+                    <td>
+                        <span>{{ item.itemDescription }}</span>
+                    </td>
+                    <td>
+                        <span>{{ item.hsn }}</span>
+                    </td>
+                    <td>
+                        <span>{{ item.orderedUnits }}</span>
+                    </td>
+                    <td>
+                        <span>{{ item.suppliedUnits }}</span>
+                    </td>
+                    <td>
+                        <span>{{ item.consumedUnits }}</span>
+                    </td>
+                    <td>
+                        <span>{{ item.invoiceUnits }}</span>
+                    </td>
+                    <td>
+                        <span>{{ currency }}</span>
+                    </td>
+                    <td>
+                        <span>{{ item.unitPrice }}</span>
+                    </td>
+                    <td>
+                        <span>{{ item.unitsTotalAmount }}</span>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <div style="text-align: right">
+            total Amount: {{ totalAmount + " " + currency }}
+        </div>
     </div>
-
-    <div class="search-row-element">
-      <mat-label>Total Amount</mat-label>
-      <div class="value"></div>
-    </div>
-
-    <div class="search-row-element">
-      <mat-label>Total Amount Paid</mat-label>
-      <div class="value"></div>
-    </div>
-    
-    <div class="search-row-element">
-      <mat-label>Status</mat-label>
-      <div class="value"></div>
-    </div>
-
-    <div class="actions search-row-element">
-      <button mat-raised-button class="footer-actions">Export Excel</button>
-    </div>
-  </div>
-
-  <!-- table details [dataSource]="POData" -->
-  <div class="container my-container margin-unset full-width">
-    <table mat-table matSort class="dataTable full-width">
-
-      <ng-container matColumnDef="po">
-        <th mat-header-cell *matHeaderCellDef  >Item No.</th>
-        <td mat-cell *matCellDef="let element"></td>
-      </ng-container>
-
-      <ng-container matColumnDef="vendorid">
-        <th mat-header-cell *matHeaderCellDef  >Item Description</th>
-        <td mat-cell *matCellDef="let element"></td>
-      </ng-container>
-
-      <ng-container matColumnDef="vendorname">
-        <th mat-header-cell *matHeaderCellDef  >Order Qty </th>
-        <td mat-cell *matCellDef="let element"> </td>
-      </ng-container>
-
-      <ng-container matColumnDef="podate">
-        <th mat-header-cell *matHeaderCellDef  >Invoice Qty </th>
-        <td mat-cell *matCellDef="let element"> </td>
-      </ng-container>
-
-      <ng-container matColumnDef="currency">
-        <th mat-header-cell *matHeaderCellDef  >Paid Qty </th>
-        <td mat-cell *matCellDef="let element"> </td>
-      </ng-container>
-
-      <ng-container matColumnDef="totalamt">
-        <th mat-header-cell *matHeaderCellDef  > Rate </th>
-        <td mat-cell class="amount" *matCellDef="let element"> </td>
-      </ng-container>
-
-      <ng-container matColumnDef="billedamt">
-        <th mat-header-cell *matHeaderCellDef  > Amount </th>
-        <td mat-cell class="amount" *matCellDef="let element"> </td>
-      </ng-container>
-
-      <ng-container matColumnDef="payrec">
-        <th mat-header-cell *matHeaderCellDef  > Total Paid Amount </th>
-        <td mat-cell class="amount" *matCellDef="let element"> </td>
-      </ng-container>
-
-      <tr mat-header-row *matHeaderRowDef="headerArr"></tr>
-      <tr mat-row *matRowDef="let row; columns: headerArr;"></tr>
-    </table>
-
-  </div>
 </div>

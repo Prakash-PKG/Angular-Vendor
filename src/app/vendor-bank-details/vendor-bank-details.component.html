@@ -58,7 +58,7 @@
         </div>
         <div class="col-6 form-group">
             <mat-form-field class="full-width">
-                <mat-select formControlName="bankCountry" placeholder="Country" required>
+                <mat-select formControlName="bankCountry" placeholder="Country" (selectionChange)="updateRegion()" required>
                     <mat-option *ngFor="let c of countryList" [value]="c.countryCode">
                         {{ c.countryName }}
                     </mat-option>
@@ -107,10 +107,11 @@
         </div>
     </div>
 </form>
-<div class="errortxt">
-    {{ failureMsg }}
-</div>
+
 <div class="row actions margin-unset">
+    <div class="errortxt" *ngIf="vendorBankForm.invalid">
+        {{ failureMsg }}
+    </div>
     <button mat-raised-button class="footer-actions" (click)="onPrevClick()">Previous</button>
     <button mat-raised-button class="footer-actions" (click)="onNextClick()">Next</button>
 </div>

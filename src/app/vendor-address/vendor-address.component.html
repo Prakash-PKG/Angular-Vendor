@@ -33,7 +33,7 @@
         </div>
         <div class="col-2 form-group">
             <mat-form-field class="full-width">
-                <input type="text" placeholder="Pincode " matInput formControlName="pincode" autocomplete="off">
+                <input type="text" placeholder="Pincode "  onkeypress='return event.charCode >= 48 && event.charCode <= 57' matInput formControlName="pincode" autocomplete="off" maxlength="6">
             </mat-form-field>
         </div>
     </div>
@@ -42,7 +42,7 @@
 
         <div class="col-6 form-group">
             <mat-form-field class="full-width">
-                <mat-select formControlName="countryCode" placeholder="Country" required>
+                <mat-select formControlName="countryCode" placeholder="Country" required (selectionChange)="updateRegion()">
                     <mat-option *ngFor="let c of countryList" [value]="c.countryCode">
                         {{ c.countryName }}
                     </mat-option>
@@ -61,10 +61,11 @@
         </div>
     </div>
 </form>
-<div class="errortxt">
-    {{ failureMsg }}
-</div>
+
 <div class="row actions margin-unset">
+    <div class="errortxt" *ngIf="vendorAddressForm.invalid">
+        {{ failureMsg }}
+    </div>
     <button mat-raised-button class="footer-actions" (click)="onPrevClick()">Previous</button>
     <button mat-raised-button class="footer-actions" (click)="onNextClick()">Next</button>
 </div>

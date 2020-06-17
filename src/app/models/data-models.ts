@@ -36,17 +36,32 @@ export class InvoiceUploadReqModel {
     departments: string[];
 }
 
+export class InvoiceFileTypwModel {
+    fileType: string;
+    invoiceFileTypesId: number;
+}
+
 export class InvoiceUploadResultModel {
     poList: PODetailsModel[];
+    invoiceFileTypes: InvoiceFileTypwModel[];
+    currencyList: currencyMasterList[];
     statusDetails: StatusModel;
 }
 
 export class PODetailsModel {
-    poNumber: string;
-    purchaseOrderId: number;
-    currencyType: string;
-    departmentId: string;
-    vendorId: string;
+    poNumber: string = null;
+    purchaseOrderId: number = null;
+    vendorId: string = null;
+    vendorName: string = null;
+    currencyType: string = null;
+    departmentId: string = null;
+    documentType: string = null;
+    accountAssignmenCategory: string;
+    poDate: string = null;
+    totalAmount: string = null;
+    billedAmount: string = null;
+    createdBy: string = null;
+    createdDate: string = null;
 }
 
 export class StatusModel {
@@ -56,20 +71,17 @@ export class StatusModel {
     exceptionMsg: string;
 }
 
-export class POSearchReqModel {
-    employeeId: string;
-    approvalLevels: string[];
-    departments: string[];
-}
-
 export class POSearchResultModel {
-    pODetailsVO: PODetailsModel[];
-    statusVO: StatusModel;
+    poList: PODetailsModel[];
+    statusDetails: StatusModel;
 }
 
 export class VendorRegistrationRequestModel {
     action: string;
     vendorMasterDetails: VendorMasterDetailsModel;
+}
+export class VendorRegistrationDetailRequestModel {
+    vendorMasterId: number;
 }
 
 export class VendorRegistrationResultModel {
@@ -133,16 +145,17 @@ export class VendorMasterDetailsModel {
     companyCode: string;
     currencyCode: string;
     procRemark: string;
-    procApprByName:  string;
+    procApprByName: string;
     finApprByName: string;
     finRemark: string;
-
+    isGSTReg: boolean;
+    otherDocDesc :string;
 }
 
 export class VendorMasterDocumentModel {
     vendorMasterDocumentsId: number;
     documentDescription: string;
-    isMandatory: string;
+    isMandatory: boolean;
 }
 
 export class VendorRegistrationInitDataModel {
@@ -153,30 +166,66 @@ export class VendorRegistrationInitDataModel {
 
 export class InvoiceSearchResultModel {
     statusDetails: StatusModel;
-    invoiceList: InvoiceSearchModel[];
+    invoiceList: InvoiceModel[];
 }
 
-export class InvoiceSearchModel {
-    rowNumber: number;
+export class InvoiceModel {
+    purchaseOrderId: number;
     poNumber: string;
     vendorId: string;
     vendorName: string;
+    invoiceId: number;
     invoiceNumber: string;
     invoiceDate: string;
-    invTotalAmt: string;
-    departmentId: string;
-    approverId: string;
-    approvalLevel: string;
+    currencyType: string;
+    totalAmt: string;
+    totalTax: string;
+    remarks: string;
+    freightCharges: string;
+    grnSesNumber: string;
     statusCode: string;
-    statusDescription: string;
-    submittedDate: string;
-
 }
 
 export class InvoiceSearchRequestModel {
+    vendorId: string;
     employeeId: string;
     approvalLevels: string[];
     departments: string[];
+}
+
+export class InvoiceDetailsRequestModel {
+    purchaseOrderId: number;
+    invoiceId: number;
+    poNumber: string;
+	invoiceNumber: string;
+	vendorId: string;
+}
+
+export class InvoiceDetailsResultModel {
+    statusDetails: StatusModel;
+    itemsList: ItemDisplayModel[];
+    invoiceFilesList: FileDetailsModel[];
+    supportFilesList: FileDetailsModel[];
+    approvalsList: InvoiceApprovalModel[];
+    paymentDetails: PaymentStatusDetailsModel;
+}
+
+export class PaymentStatusDetailsModel {
+    vendorId: string;
+	poNumber: string;
+	invoiceNumber: string;
+	currencyType: string;
+	invoiceAmountPaid: string;
+	paymentDate: string;
+	status: string;
+	remarks: string;
+}
+
+export class ApprovalLevelsModel {
+    levelName: string;
+    status: string;
+    date: string;
+    remarks: string;
 }
 
 export class PendingApprovalResultModel {
@@ -190,12 +239,28 @@ export class PendingApprovalRequestModel {
     departments: string[];
 }
 
+export class POSearchReqModel extends PendingApprovalRequestModel {
+    vendorId: string;
+}
+
+export class POInvoiceFinanceDumpReqModel {
+    startDate: string;
+    endDate: string;
+    employeeId: string;
+    isIncremental: boolean;
+}
+
+export class POInvoiceDumpInitResultModel {
+    lastDumpDt: string;
+}
+
 export class PendingApprovalsModel {
     approvalId: number;
     purchaseOrderId: number;
     invoiceId: number;
     poNumber: string;
     invoiceNumber: string;
+    accountAssignmenCategory: string;
     vendorId: string;
     vendorName: string;
     departmentId: string;
@@ -224,6 +289,8 @@ export class VendorApprovalInitResultModel {
     companyCodeMasterList: CompanyCodeMasterList[];
     currencyMasterList: currencyMasterList[];
     vendorApprovalDetails: vendorApprovalDetails;
+    withholdTypeVOList: WithholdTypeList[];
+    withholdTaxVOList: WithholdTaxList[];
 }
 
 export class VendorApprovalInitReqModel {
@@ -242,10 +309,13 @@ export class vendorApprovalDetails {
     currencyCode: string;
     createdBy: string;
     createDate: string;
+    withholdTypeCode: string;
+    withholdTaxCode: string;
 }
 
 export class VendorApprovalReqModel extends vendorApprovalDetails {
     action: string;
+    vendorMasterDetails :VendorMasterDetailsModel
 }
 
 export class CompanyCodeMasterList {
@@ -260,6 +330,7 @@ export class AccGroupMasterList {
 export class currencyMasterList {
     currencyCode: string;
     currencyDesc: string;
+    currencyMasterId: number;
 }
 
 export class POItemsRequestModel {
@@ -276,19 +347,27 @@ export class ItemModel {
     itemNumber: string;
     itemId: number;
     itemDescription: string;
+    uom: string;
     orderedUnits: string;
     suppliedUnits: string;
     consumedUnits: string;
     invoiceUnits: string;
     unitPrice: string;
+    totalAmt: string;
     hsn: string;
     createdBy: string;
     createdDate: string;
 }
 
+export class ItemDisplayModel extends ItemModel {
+    unitsTotalAmount: number;
+}
+
 export class InvoiceDetailsModel {
     invoiceId: number;
     purchaseOrderId: number;
+    vendorId: string;
+    vendorName: string;
     invoiceNumber: string;
     invoiceDate: string;
     remarks: string;
@@ -297,6 +376,7 @@ export class InvoiceDetailsModel {
     grnSesNumber: string;
     statusCode: string;
     totalTax: string;
+    currencyType: string;
     createdBy: string;
     createdDate: string;
 }
@@ -307,6 +387,7 @@ export class UpdateInvoiceRequestModel {
     poDetails: PODetailsModel;
     invoiceDetails: InvoiceDetailsModel;
     itemsDetails: ItemModel[];
+    filesList: FileDetailsModel[];
 }
 
 export class UpdateInvoiceResultModel {
@@ -319,17 +400,24 @@ export class UpdateInvoiceResultModel {
 export class InvoiceApprovalInitReqModel {
     approvalId: number;
     purchaseOrderId: number;
-	invoiceId: number;
-	poNumber: string;
-	poDeptId: string;
-	approvalLevel: string;
+    invoiceId: number;
+    poNumber: string;
+    poDeptId: string;
+    approvalLevel: string;
 }
 
 export class InvoiceApprovalInitResultModel {
     invoiceDetails: InvoiceDetailsModel;
-    itemsList: ItemModel[];
+    itemsList: ItemDisplayModel[];
     approvalDetails: InvoiceApprovalModel;
     poDetails: PODetailsModel;
+    grnSesList: GrnSesModel[];
+    invoiceFilesList: FileDetailsModel[];
+    supportFilesList: FileDetailsModel[];
+}
+
+export class GrnSesModel {
+    grnSesNumber: string;
 }
 
 export class InvoiceApprovalModel {
@@ -343,23 +431,77 @@ export class InvoiceApprovalModel {
     remarks: string;
     createdBy: string;
     createdDate: string;
+    updatedBy: string;
+    updatedDate: string;
 }
 
 export class UpdateInvoiceApprovalReqModel {
     action: string;
+    grnSesNumber: string;
     departmentHeadId: string;
     approvalDetails: InvoiceApprovalModel;
 }
 
 export class FileDetailsModel {
-    actualFileName: String;
+    actualFileName: string;
     uniqueFileName: string;
     fileData: any;
     documentTypeId: number;
     fileId: number;
+    createdDate: string;
+    createdBy: string;
 }
 
 export class InvoiceDocumentReqModel {
     invoiceId: number;
+    userId: string;
     fileDetails: FileDetailsModel[];
+}
+
+export class InvoiceDocumentResultModel {
+    status: StatusModel;
+    fileDetails: FileDetailsModel[];
+}
+
+export class WithholdTaxList {
+    withholdTaxId: number;
+    withholdTaxCode: string;
+    withholdTaxDesc: string;
+    withholdTypeCode: string;
+}
+export class WithholdTypeList {
+    withholdTypeId: number;
+    withholdTypeCode: string;
+    withholdTypeDesc: string;
+    countryCode: string;
+}
+
+export class RemoveDocumentReqModel {
+    fileId: number;
+}
+
+export class VendorDocumentReqModel {
+    userId: string;
+    fileDetails: FileDetailsModel[];
+    vendorMasterId: number;
+}
+
+export class VendorDocumentResultModel {
+    status: StatusModel;
+    fileDetails: FileDetailsModel[];
+}
+
+export class PODetailsRequestModel {
+    purchaseOrderId: number;
+}
+
+export class PODetailsResultsModel {
+    statusDetails: StatusModel;
+    itemsList: ItemDisplayModel[];
+}
+
+export class VendorAutoCompleteModel {
+    vendorMasterId: number;
+	vendorId: string;
+    vendorName: string;
 }

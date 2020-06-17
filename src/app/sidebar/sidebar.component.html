@@ -9,13 +9,12 @@
     </div>
 
     <ul class="menu">
-        <li class="removehover" style="padding:0px;">
+        <li class="removehover" style="padding:0px;" *ngIf = "isInvoiceCreateVisible == true">
             <div class="creation-btn actions">
-                    <button mat-raised-button class="footer-actions" (click) = "onInvoiceUploadClick()" [ngClass]="{' btn-collapsed': isSidebarCollapsed ==  true }">
-                        <span *ngIf="isSidebarCollapsed === false" >Invoice Creation</span>
-                        <span *ngIf="isSidebarCollapsed === true" ><mat-icon>create</mat-icon></span>
-                    </button>
-            
+                <button mat-raised-button class="footer-actions" (click) = "onInvoiceUploadClick()" [ngClass]="{' btn-collapsed': isSidebarCollapsed ==  true }">
+                    <span *ngIf="isSidebarCollapsed === false" >Invoice Creation</span>
+                    <span *ngIf="isSidebarCollapsed === true" ><mat-icon>create</mat-icon></span>
+                </button>
             </div>
         </li>
         <li>
@@ -24,7 +23,7 @@
             </div>
             <div class="navtxt">Dashboard</div>
         </li>
-        <li (click) = "onPendingApprovalClick()">
+        <li *ngIf = "isApprovalsVisible == true" (click) = "onPendingApprovalClick()">
             <div class="side-icon">
                 <mat-icon>done_outline</mat-icon>
             </div>
@@ -42,18 +41,20 @@
             </div>
             <div class="navtxt">Invoice Search</div>
         </li>
-        <li (click) = "onInvoiceApprovalClick()">
-            <div class="side-icon">
-                <mat-icon>local_offer</mat-icon>
-            </div>
-            <div class="navtxt">Invoice Approval</div>
-        </li>
         <li>
             <div class="side-icon">
                 <mat-icon>description</mat-icon>
             </div>
             <div class="navtxt">Reports</div>
         </li>
+        <ul class="childdash">
+            <li *ngIf = "isPOInvoiceDumpVisible == true" [ngStyle]="{'padding-left': isSidebarCollapsed === true ? '1em': '2em' }" (click) = "onPOInvoiceDumpClick()">
+                <div class="side-icon">
+                    <mat-icon>description</mat-icon>
+                </div>
+                <div class="navtxt">PO Invoice Dump</div>
+            </li>
+        </ul>
         <li class="removehover">
             <div class="side-icon">
                 <mat-icon>person</mat-icon>
@@ -61,19 +62,18 @@
             <div class="navtxt">Vendor</div>
         </li>
         <ul class="childdash">
-            <!--<li [ngStyle]="{'padding-left': isSidebarCollapsed === true ? '1em': '2em' }" (click) = "onVendorRegistrationClickClick()">
+            <li [ngStyle]="{'padding-left': isSidebarCollapsed === true ? '1em': '2em' }" (click) = "onVendorRegistrationClickClick()">
                 <div class="side-icon">
                     <mat-icon>how_to_reg</mat-icon>
                 </div>
                 <div class="navtxt">Vendor Registration</div>
-            </li>-->
-            <li [ngStyle]="{'padding-left': isSidebarCollapsed === true ? '1em': '2em' }" (click) = "onEmpanelmentClick()">
+            </li>
+            <li *ngIf = "isEmpanelmentVisible == true" [ngStyle]="{'padding-left': isSidebarCollapsed === true ? '1em': '2em' }" (click) = "onEmpanelmentClick()">
                 <div class="side-icon">
                     <mat-icon>person</mat-icon>
                 </div>
                 <div class="navtxt">Vendor Empanelment</div>
             </li>
-
         </ul>
         <li (click) = "onLogoutClick()">
             <div class="side-icon">

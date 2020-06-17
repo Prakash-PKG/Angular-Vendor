@@ -24,13 +24,13 @@
 
         <div class="col-6 form-group">
             <mat-form-field class="full-width">
-                <input type="text" matInput placeholder="Mobile No." formControlName="mobileNum" autocomplete="off"
+                <input type="text" onkeypress='return event.charCode >= 48 && event.charCode <= 57'  matInput placeholder="Mobile No." formControlName="mobileNum" autocomplete="off" maxlength="10" 
                     required>
             </mat-form-field>
         </div>
         <div class="col-6 form-group">
             <mat-form-field class="full-width">
-                <input type="text" matInput placeholder="Telephone No." formControlName="telephoneNum"
+                <input type="text"  onkeypress='return event.charCode >= 48 && event.charCode <= 57' matInput placeholder="Telephone No." formControlName="telephoneNum" maxlength="12" 
                     autocomplete="off">
             </mat-form-field>
         </div>
@@ -57,12 +57,15 @@
                 <input  type="password" matInput placeholder="Confirm Password"
                     formControlName="confirmPassword" autocomplete="off" required>
             </mat-form-field>
+            <mat-error class="errortxt" *ngIf="vendorDetailsForm.get('confirmPassword')?.hasError('equalValue')">
+                Confirm Password should be same as Password</mat-error>
         </div>
     </div>
 </form>
-<div class="errortxt">
-    {{ failureMsg }}
-</div>
+
 <div class="row actions margin-unset">
+    <div class="errortxt" *ngIf="vendorDetailsForm.invalid">
+        {{ failureMsg }}
+    </div>
     <button mat-raised-button class="footer-actions" (click)="onNextClick()">Next</button>
 </div>

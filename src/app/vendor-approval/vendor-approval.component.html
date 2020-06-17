@@ -2,7 +2,7 @@
   <div class="title">
     <h3>Pending Approvals - Vendor Approvals</h3>
   </div>
-   <div class="container my-container margin-unset full-width">
+  <div class="container my-container margin-unset full-width">
     <!--------------- vendor details -------------------------->
     <div class="vendor-detail-section">
       <div class="section-title">
@@ -16,19 +16,42 @@
       <div class="Rtable Rtable--2cols Rtable--collapse">
 
         <div class="Rtable-cell Rtable-cell--head">Supplier Name</div>
-        <div class="Rtable-cell ">{{ vendorDetails?.vendorName }}</div>
+        <div class="Rtable-cell">
+          <mat-form-field class="full-width">
+            <input type="text" matInput [(ngModel)]="vendorDetails.vendorName" [disabled]="isEditable" required>
+          </mat-form-field>
+          <div class="error-txt" *ngIf="!vendorDetails.vendorName">This field is mandatory</div>
+        </div>
 
         <div class="Rtable-cell Rtable-cell--head">Contact Person</div>
-        <div class="Rtable-cell">{{ vendorDetails?.contactPerson }}</div>
+        <div class="Rtable-cell">
+          <mat-form-field class="full-width">
+            <input type="text" matInput [(ngModel)]="vendorDetails.contactPerson" [disabled]="isEditable">
+          </mat-form-field>
+        </div>
 
         <div class="Rtable-cell Rtable-cell--head">Mobile No.</div>
-        <div class="Rtable-cell">{{ vendorDetails?.mobileNum }}</div>
+        <div class="Rtable-cell">
+          <mat-form-field class="full-width">
+            <input type="text" matInput [(ngModel)]="vendorDetails.mobileNum" [disabled]="isEditable" required>
+          </mat-form-field>
+          <div class="error-txt" *ngIf="!vendorDetails.mobileNum">This field is mandatory</div>
+        </div>
 
         <div class="Rtable-cell Rtable-cell--head">Telephone No.</div>
-        <div class="Rtable-cell">{{ vendorDetails?.telephoneNum }}</div>
+        <div class="Rtable-cell">
+          <mat-form-field class="full-width">
+            <input type="text" matInput [(ngModel)]="vendorDetails.telephoneNum" [disabled]="isEditable">
+          </mat-form-field>
+        </div>
 
         <div class="Rtable-cell Rtable-cell--head">Email Id</div>
-        <div class="Rtable-cell">{{ vendorDetails?.emailId }}</div>
+        <div class="Rtable-cell">
+          <mat-form-field class="full-width">
+            <input type="text" matInput [(ngModel)]="vendorDetails.emailId" [disabled]="isEditable" required>
+          </mat-form-field>
+          <div class="error-txt" *ngIf="!vendorDetails.emailId">This field is mandatory</div>
+        </div>
 
       </div>
     </div>
@@ -45,22 +68,55 @@
 
       <div class="Rtable Rtable--2cols Rtable--collapse">
         <div class="Rtable-cell Rtable-cell--head">Address Line 1</div>
-        <div class="Rtable-cell ">{{ vendorDetails?.address1 }}</div>
+        <div class="Rtable-cell">
+          <mat-form-field class="full-width">
+            <input type="text" matInput [(ngModel)]="vendorDetails.address1" [disabled]="isEditable" required>
+          </mat-form-field>
+          <div class="error-txt" *ngIf="!vendorDetails.address1">This field is mandatory</div>
+
+        </div>
 
         <div class="Rtable-cell Rtable-cell--head">Address Line 2</div>
-        <div class="Rtable-cell">{{ vendorDetails?.address2 }}</div>
+        <div class="Rtable-cell">
+          <mat-form-field class="full-width">
+            <input type="text" matInput [(ngModel)]="vendorDetails.address2" [disabled]="isEditable">
+          </mat-form-field>
+        </div>
 
         <div class="Rtable-cell Rtable-cell--head">Street</div>
-        <div class="Rtable-cell">{{ vendorDetails?.street }}</div>
+        <div class="Rtable-cell">
+          <mat-form-field class="full-width">
+            <input type="text" matInput [(ngModel)]="vendorDetails.street" [disabled]="isEditable" required>
+          </mat-form-field>
+          <div class="error-txt" *ngIf="!vendorDetails.street">This field is mandatory</div>
+        </div>
 
         <div class="Rtable-cell Rtable-cell--head">City</div>
-        <div class="Rtable-cell">{{ vendorDetails?.city }} - {{vendorDetails?.pincode}}</div>
+        <div class="Rtable-cell">
+          <mat-form-field class="full-width" style="width:50%">
+            <input type="text" matInput [(ngModel)]="vendorDetails.city" [disabled]="isEditable" required>
+          </mat-form-field> -
+          <mat-form-field class="full-width" style="width:45%">
+            <input type="text" matInput [(ngModel)]="vendorDetails.pincode" [disabled]="isEditable" required>
+          </mat-form-field>
+          <div class="error-txt" *ngIf="!vendorDetails.city || !vendorDetails.pincode">This field is mandatory</div>
+        </div>
 
         <div class="Rtable-cell Rtable-cell--head">State</div>
-        <div class="Rtable-cell">{{ vendorDetails?.stateName }}</div>
+        <div class="Rtable-cell">
+          <mat-form-field class="full-width">
+            <input type="text" matInput [(ngModel)]="vendorDetails.stateName" [disabled]="isEditable" required>
+          </mat-form-field>
+          <div class="error-txt" *ngIf="!vendorDetails.stateName">This field is mandatory</div>
+        </div>
 
         <div class="Rtable-cell Rtable-cell--head">Country</div>
-        <div class="Rtable-cell">{{ vendorDetails?.countryName }}</div>
+        <div class="Rtable-cell">
+          <mat-form-field class="full-width">
+            <input type="text" matInput [(ngModel)]="vendorDetails.countryName" [disabled]="isEditable" required>
+          </mat-form-field>
+          <div class="error-txt" *ngIf="!vendorDetails.countryName">This field is mandatory</div>
+        </div>
       </div>
 
     </div>
@@ -78,31 +134,31 @@
       <div class="Rtable Rtable--2cols Rtable--collapse">
 
         <div class="Rtable-cell Rtable-cell--head">Account No.</div>
-        <div class="Rtable-cell">{{ vendorDetails?.accountNum }}</div>
+        <div class="Rtable-cell">{{ vendorDetails.accountNum }}</div>
 
         <div class="Rtable-cell Rtable-cell--head">Account Name</div>
-        <div class="Rtable-cell">{{ vendorDetails?.accountName }}</div>
+        <div class="Rtable-cell">{{ vendorDetails.accountName }}</div>
 
         <div class="Rtable-cell Rtable-cell--head">Account Type</div>
-        <div class="Rtable-cell">{{ vendorDetails?.accountType }}</div>
+        <div class="Rtable-cell">{{ vendorDetails.accountType }}</div>
 
         <div class="Rtable-cell Rtable-cell--head">IFSC Code</div>
-        <div class="Rtable-cell">{{ vendorDetails?.ifscCode }}</div>
+        <div class="Rtable-cell">{{ vendorDetails.ifscCode }}</div>
 
         <div class="Rtable-cell Rtable-cell--head">Bank Name</div>
-        <div class="Rtable-cell">{{ vendorDetails?.bankName }}</div>
+        <div class="Rtable-cell">{{ vendorDetails.bankName }}</div>
 
         <div class="Rtable-cell Rtable-cell--head">Bank Branch Name</div>
-        <div class="Rtable-cell">{{ vendorDetails?.bankBranch }}</div>
+        <div class="Rtable-cell">{{ vendorDetails.bankBranch }}</div>
 
         <div class="Rtable-cell Rtable-cell--head">City</div>
-        <div class="Rtable-cell">{{ vendorDetails?.bankCity }}</div>
+        <div class="Rtable-cell">{{ vendorDetails.bankCity }}</div>
 
         <div class="Rtable-cell Rtable-cell--head">Country</div>
-        <div class="Rtable-cell">{{ vendorDetails?.bankCountryName }}</div>
+        <div class="Rtable-cell">{{ vendorDetails.bankCountryName }}</div>
 
         <div class="Rtable-cell Rtable-cell--head">Region</div>
-        <div class="Rtable-cell">{{ vendorDetails?.bankRegionName }}</div>
+        <div class="Rtable-cell">{{ vendorDetails.bankRegionName }}</div>
       </div>
 
       <div class="section-title" style="margin-top:1em">
@@ -115,15 +171,15 @@
 
       <div class="Rtable Rtable--2cols Rtable--collapse">
 
-        <div class="Rtable-cell Rtable-cell--head" style=" width: 30%; max-width: 30%;">Intermediatry/routing Bank</div>
-        <div class="Rtable-cell" style=" width: 70%;">{{ vendorDetails?.routingBank }}</div>
+        <div class="Rtable-cell Rtable-cell--head" style="width: 30%; max-width: 30%;">Intermediatry/routing Bank</div>
+        <div class="Rtable-cell" style="width: 70%;">{{ vendorDetails.routingBank }}</div>
 
-        <div class="Rtable-cell Rtable-cell--head" style=" width: 30%; max-width: 30%;">Swift Code of
+        <div class="Rtable-cell Rtable-cell--head" style="width: 30%; max-width: 30%;">Swift Code of
           Intermediatry/routing Bank</div>
-        <div class="Rtable-cell" style=" width: 70%;">{{ vendorDetails?.swiftInterm }}</div>
+        <div class="Rtable-cell" style="width: 70%;">{{ vendorDetails.swiftInterm }}</div>
 
-        <div class="Rtable-cell Rtable-cell--head" style=" width: 30%; max-width: 30%;">Swift Code/BAN</div>
-        <div class="Rtable-cell" style=" width: 70%;">{{ vendorDetails?.swiftIbanCode }}</div>
+        <div class="Rtable-cell Rtable-cell--head" style="width: 30%; max-width: 30%;">Swift Code/BAN</div>
+        <div class="Rtable-cell" style="width: 70%;">{{ vendorDetails.swiftIbanCode }}</div>
       </div>
 
     </div>
@@ -140,120 +196,318 @@
 
       <div class="Rtable Rtable--2cols Rtable--collapse">
 
+        <div class="Rtable-cell Rtable-cell--head">Incorporation Certificate</div>
+        <div class="Rtable-cell">
+          <div *ngFor="let file of incCertFilesList; let i = index">
+            <mat-icon matTooltip="{{ file.actualFileName }}" (click)="downloadFile(file)">description</mat-icon>
+            <!-- <button mat-button mat-icon-button aria-label="Delete" (click)="onDeleteFileClick(f, fInd,1)">
+              <mat-icon>delete_outline</mat-icon>
+            </button> -->
+          </div>
+          <div class="error-txt" *ngIf="!incCertFilesList">This attachment is mandatory</div>
+        </div>
+
+        <div class="Rtable-cell Rtable-cell--head">Cancelled Cheque</div>
+        <div class="Rtable-cell">
+          <div *ngFor="let file of canChqFilesList; let i = index">
+            <mat-icon matTooltip="{{ file.actualFileName }}" (click)="downloadFile(file)">description</mat-icon>
+          </div>
+          <!-- <button mat-button mat-icon-button aria-label="Delete" (click)="onDeleteFileClick(f, fInd,6)">
+            <mat-icon>delete_outline</mat-icon>
+          </button> -->
+          <div class="error-txt" *ngIf="!canChqFilesList">This attachment is mandatory</div>
+        </div>
+
         <div class="Rtable-cell Rtable-cell--head">GST No.</div>
-        <div class="Rtable-cell"> {{ vendorDetails?.gstNum }}</div>
+        <div class="Rtable-cell">
+          <mat-form-field class="full-width">
+            <input type="text" matInput [(ngModel)]="vendorDetails.gstNum" [disabled]="isEditable">
+          </mat-form-field>
+        </div>
+
+        <div class="Rtable-cell Rtable-cell--head">Attachments</div>
+        <div class="Rtable-cell">
+          <div *ngFor="let file of gstFilesList; let i = index">
+            <mat-icon matTooltip="{{ file.actualFileName }}" (click)="downloadFile(file)">description</mat-icon>
+          </div>
+          <!-- <button mat-button mat-icon-button aria-label="Delete" (click)="onDeleteFileClick(f, fInd,2)">
+            <mat-icon>delete_outline</mat-icon>
+          </button> -->
+          <div class="error-txt" *ngIf="vendorDetails.gstNum && !gstFilesList">This attachment is mandatory if GST
+            Registered</div>
+        </div>
 
         <div class="Rtable-cell Rtable-cell--head">Pan No.</div>
-        <div class="Rtable-cell">{{ vendorDetails?.panNum }}</div>
+        <div class="Rtable-cell">
+          <mat-form-field class="full-width">
+            <input type="text" matInput [(ngModel)]="vendorDetails.panNum" [disabled]="isEditable" required>
+          </mat-form-field>
+          <div class="error-txt" *ngIf="!vendorDetails.panNum">This field is mandatory</div>
+        </div>
 
-        <div class="Rtable-cell Rtable-cell--head">PF No.</div>
-        <div class="Rtable-cell"> {{ vendorDetails?.pfNum }}</div>
+        <div class="Rtable-cell Rtable-cell--head">Attachments</div>
+        <div class="Rtable-cell">
+          <div *ngFor="let file of panFilesList; let i = index">
+            <mat-icon matTooltip="{{ file.actualFileName }}" (click)="downloadFile(file)">description</mat-icon>
+          </div>
+          <!-- <button mat-button mat-icon-button aria-label="Delete" (click)="onDeleteFileClick(f, fInd,3)">
+            <mat-icon>delete_outline</mat-icon>
+          </button> -->
+          <div class="error-txt" *ngIf="!panFilesList">This attachment is mandatory</div>
+        </div>
 
-        <div class="Rtable-cell Rtable-cell--head">ESI No.</div>
-        <div class="Rtable-cell">{{ vendorDetails?.panNum }}</div>
+        <div class="Rtable-cell Rtable-cell--head">LUT No.</div>
+        <div class="Rtable-cell">
+          <mat-form-field class="full-width">
+            <input type="text" matInput [(ngModel)]="vendorDetails.lutNum" [disabled]="isEditable" required>
+          </mat-form-field>
+
+          <div class="error-txt" *ngIf="!vendorDetails.lutNum">This field is mandatory</div>
+        </div>
+
+        <div class="Rtable-cell Rtable-cell--head">Attachments</div>
+        <div class="Rtable-cell">
+          <div *ngFor="let file of lutFilesList; let i = index">
+            <mat-icon matTooltip="{{ file.actualFileName }}" (click)="downloadFile(file)">description</mat-icon>
+          </div>
+          <!-- <button mat-button mat-icon-button aria-label="Delete" (click)="onDeleteFileClick(f, fInd,10)">
+            <mat-icon>delete_outline</mat-icon>
+          </button> -->
+          <div class="error-txt" *ngIf="!lutFilesList">This attachment is mandatory</div>
+        </div>
+
+        <div class="Rtable-cell Rtable-cell--head">LUT Date</div>
+        <div class="Rtable-cell">
+          <mat-form-field class="full-width">
+            <input type="text" matInput [(ngModel)]="vendorDetails.lutDate" [disabled]="isEditable">
+          </mat-form-field>
+        </div>
 
         <div class="Rtable-cell Rtable-cell--head">CIN No.</div>
-        <div class="Rtable-cell">{{ vendorDetails?.cinNum }}</div>
-
-        <div class="Rtable-cell Rtable-cell--head">
-          <div>LUT No.</div>
-          <div>LUT Date</div>
-        </div>
         <div class="Rtable-cell">
-          <div>{{ vendorDetails?.lutNum }}</div>
-          <div>{{ vendorDetails?.lutDate }}</div>
+          <mat-form-field class="full-width">
+            <input type="text" matInput [(ngModel)]="vendorDetails.cinNum" [disabled]="isEditable">
+          </mat-form-field>
         </div>
 
-        <!-- <div class="Rtable-cell Rtable-cell--head">LUT Date</div>
-        <div class="Rtable-cell">{{ vendorDetails?.lutDate }}</div> -->
+        <div class="Rtable-cell Rtable-cell--head">PF No.</div>
+        <div class="Rtable-cell">
+          <mat-form-field class="full-width">
+            <input type="text" matInput [(ngModel)]="vendorDetails.pfNum" [disabled]="isEditable">
+          </mat-form-field>
+        </div>
 
+        <div class="Rtable-cell Rtable-cell--head">Attachments</div>
+        <div class="Rtable-cell">
+          <div *ngFor="let file of pfFilesList; let i = index">
+            <mat-icon matTooltip="{{ file.actualFileName }}" (click)="downloadFile(file)">description</mat-icon>
+          </div>
+          <!-- <button mat-button mat-icon-button aria-label="Delete" (click)="onDeleteFileClick(f, fInd,4)">
+            <mat-icon>delete_outline</mat-icon>
+          </button> -->
+          <div class="error-txt" *ngIf="vendorDetails.pfNum && !pfFilesList">Attachment is mandatory if PF exists</div>
+        </div>
 
-        <div class="Rtable-cell Rtable-cell--head">SEZ/Non SEZ </div>
-        <div class="Rtable-cell"> {{ vendorDetails?.isSez == true ? 'SEZ' : 'NON SEZ' }}</div>
+        <div class="Rtable-cell Rtable-cell--head">ESI No.</div>
+        <div class="Rtable-cell">
+          <mat-form-field class="full-width">
+            <input type="text" matInput [(ngModel)]="vendorDetails.esiNum" [disabled]="isEditable">
+          </mat-form-field>
+        </div>
 
-        <div class="Rtable-cell Rtable-cell--head">Is RCM applicable? </div>
-        <div class="Rtable-cell">{{ vendorDetails?.isRcmApplicable == true ? 'YES' : 'NO'}}</div>
+        <div class="Rtable-cell Rtable-cell--head">Attachments</div>
+        <div class="Rtable-cell">
+          <div *ngFor="let file of esiFilesList; let i = index">
+            <mat-icon matTooltip="{{ file.actualFileName }}" (click)="downloadFile(file)">description</mat-icon>
+          </div>
+          <!-- <button mat-button mat-icon-button aria-label="Delete" (click)="onDeleteFileClick(f, fInd,5)">
+            <mat-icon>delete_outline</mat-icon>
+          </button> -->
+          <div class="error-txt" *ngIf="vendorDetails.esiNum && !esiFilesList">Attachment is mandatory if ESI exists
+          </div>
+        </div>
 
-        <div class="Rtable-cell Rtable-cell--head">Have any TDS lower deduction certificate? </div>
-        <div class="Rtable-cell">{{ vendorDetails?.hasTdsLower  == true ? 'YES' : 'NO'}}</div>
 
         <div class="Rtable-cell Rtable-cell--head">Is MSME registered? </div>
-        <div class="Rtable-cell"> {{ vendorDetails?.isMsmedRegistered  == true ? 'YES' : 'NO'}}</div>
-
-
-      </div>
-    </div>
-    <!--------------- vendor Other Documents -------------------------->
-    <!-- <div class="vendor-detail-section">
-            <div class="section-title">
-                <span class="side-icon">
-          <mat-icon>add_box</mat-icon>
-        </span>
-                <span>Vendor Other Documents</span>
-            </div>
-
-            <div class="Rtable Rtable--2cols Rtable--collapse">
-                <div class="Rtable-cell Rtable-cell--head">Other (if any) </div>
-                <div class="Rtable-cell" style="width: 75%;">khadija Bohra</div>
-            </div>
-
-        </div> -->
-
-<div class="approver-section">
-    <div class="search-row">
-      <mat-form-field class="field search-row-element">
-        <mat-label>Account Group</mat-label>
-        <mat-select [(ngModel)]="selectedVendorGroup">
-          <mat-option *ngFor="let accGrp of vendoraccGroupList" [value]="accGrp.groupCode">{{accGrp.groupDesc}}
-          </mat-option>
-        </mat-select>
-      </mat-form-field>
-      <mat-form-field class="field search-row-element">
-        <mat-label>Company Code</mat-label>
-        <mat-select [(ngModel)]="selectedCompanyCode">
-          <mat-option *ngFor="let cocode of companyCodeList" [value]="cocode.companyCode">{{cocode.companyDesc}}
-          </mat-option>
-        </mat-select>
-      </mat-form-field>
-      <mat-form-field class="field search-row-element">
-        <mat-label>Currency</mat-label>
-        <mat-select [(ngModel)]="selectedCurrency">
-          <mat-option *ngFor="let currency of currencyList" [value]="currency.currencyCode">{{currency.currencyDesc}}
-          </mat-option>
-        </mat-select>
-      </mat-form-field>
-      <div class="actions search-row-element">
-        <button mat-raised-button class="footer-actions" (click)="onAttachMSAClick()">Attach MSA</button>
-      </div>
-    </div>
-    <div class="row field">
-        <div class="Rtable Rtable--2cols Rtable--collapse">
-
-            <div class="Rtable-cell Rtable-cell--head">Procurement Approver Remarks</div>
-            <div class="Rtable-cell"> {{ vendorDetails?.procRemark }}</div>
-    
-            <div class="Rtable-cell Rtable-cell--head">Approved By</div>
-            <div class="Rtable-cell">{{ vendorDetails?.procApprByName }}</div>
+        <div class="Rtable-cell" *ngIf="!isEditable"> {{ vendorDetails.isMsmedRegistered  == true ? 'YES' : 'NO'}}</div>
+        <div class="Rtable-cell" *ngIf="isEditable">
+          <mat-radio-group [(ngModel)]="vendorDetails.isMsmedRegistered">
+            <mat-radio-button [value]=true selected>YES</mat-radio-button>
+            <mat-radio-button [value]=false [checked]=true>NO</mat-radio-button>
+          </mat-radio-group>
         </div>
-        <!--div class="Rtable-cell Rtable-cell--head" style=" width: 30%; max-width: 30%;">Procurement Approver Remarks</div>
-        <div class="Rtable-cell" style=" width: 70%;">{{ vendorDetails?.procRemark }}</div-->
 
-      <div class="col-12 form-group">
+        <div class="Rtable-cell Rtable-cell--head">Attachments</div>
+        <div class="Rtable-cell">
+          <div *ngFor="let file of msmeFilesList; let i = index">
+            <mat-icon matTooltip="{{ file.actualFileName }}" (click)="downloadFile(file)">description</mat-icon>
+          </div>
+          <!-- <button mat-button mat-icon-button aria-label="Delete" (click)="onDeleteFileClick(f, fInd,11)">
+            <mat-icon>delete_outline</mat-icon>
+          </button> -->
+          <div class="error-txt" *ngIf="vendorDetails.isMsmedRegistered && !msmeFilesList">Attachment is mandatory if
+            MSME registered
+          </div>
+        </div>
+
+        <div class="Rtable-cell Rtable-cell--head">Have any TDS lower deduction certificate? </div>
+        <div class="Rtable-cell" *ngIf="!isEditable">{{ vendorDetails.hasTdsLower  == true ? 'YES' : 'NO'}}</div>
+        <div class="Rtable-cell" *ngIf="isEditable">
+          <mat-radio-group [(ngModel)]="vendorDetails.hasTdsLower">
+            <mat-radio-button [value]=true selected>YES</mat-radio-button>
+            <mat-radio-button [value]=false>No</mat-radio-button>
+          </mat-radio-group>
+        </div>
+
+        <div class="Rtable-cell Rtable-cell--head">Attachments</div>
+        <div class="Rtable-cell">
+          <div *ngFor="let file of tdsFilesList; let i = index">
+            <mat-icon matTooltip="{{ file.actualFileName }}" (click)="downloadFile(file)">description</mat-icon>
+          </div>
+          <!-- <button mat-button mat-icon-button aria-label="Delete" (click)="onDeleteFileClick(f, fInd,8)">
+            <mat-icon>delete_outline</mat-icon>
+          </button> -->
+          <div class="error-txt" *ngIf="vendorDetails.hasTdsLower && !tdsFilesList">Attachment is mandatory if you have
+            TDS certificate
+          </div>
+        </div>
+
+        <div class="Rtable-cell Rtable-cell--head">SEZ/Non SEZ </div>
+        <div class="Rtable-cell" *ngIf="!isEditable"> {{ vendorDetails.isSez == true ? 'SEZ' : 'NON SEZ' }}</div>
+        <div class="Rtable-cell" *ngIf="isEditable">
+          <mat-radio-group [(ngModel)]="vendorDetails.isSez">
+            <mat-radio-button [value]=true selected>SEZ</mat-radio-button>
+            <mat-radio-button [value]=false>Non-SEZ</mat-radio-button>
+          </mat-radio-group>
+        </div>
+
+        <div class="Rtable-cell Rtable-cell--head">Attachments</div>
+        <div class="Rtable-cell">
+          <div *ngFor="let file of sezFilesList; let i = index">
+            <mat-icon matTooltip="{{ file.actualFileName }}" (click)="downloadFile(file)">description</mat-icon>
+          </div>
+          <!-- <button mat-button mat-icon-button aria-label="Delete" (click)="onDeleteFileClick(f, fInd,9)">
+            <mat-icon>delete_outline</mat-icon>
+          </button> -->
+          <div class="error-txt" *ngIf="vendorDetails.isSez && !sezFilesList">Attachment is mandatory if SEZ
+          </div>
+        </div>
+
+        <div class="Rtable-cell Rtable-cell--head">Is RCM applicable? </div>
+        <div class="Rtable-cell" *ngIf="!isEditable">{{ vendorDetails.isRcmApplicable == true ? 'YES' : 'NO'}}</div>
+        <div class="Rtable-cell" *ngIf="isEditable">
+          <mat-radio-group [(ngModel)]="vendorDetails.isRcmApplicable">
+            <mat-radio-button [value]=true selected>YES</mat-radio-button>
+            <mat-radio-button [value]=false>No</mat-radio-button>
+          </mat-radio-group>
+        </div>
+
+        <div class="Rtable-cell Rtable-cell--head">Others</div>
+        <div class="Rtable-cell">
+          <div *ngFor="let file of othersFilesList; let i = index">
+            <mat-icon matTooltip="{{ file.actualFileName }}" (click)="downloadFile(file)">description</mat-icon>
+          </div>
+        </div>
+
+
+      </div>
+    </div>
+
+    <div class="approver-section">
+      <div class="search-row">
+        <mat-form-field class="field search-row-element">
+          <mat-label>Account Group</mat-label>
+          <mat-select [(ngModel)]="selectedVendorGroup">
+            <mat-option *ngFor="let accGrp of vendoraccGroupList" [value]="accGrp.groupCode">{{accGrp.groupDesc}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field class="field search-row-element">
+          <mat-label>Company Code</mat-label>
+          <mat-select [(ngModel)]="selectedCompanyCode">
+            <mat-option *ngFor="let cocode of companyCodeList" [value]="cocode.companyCode">{{cocode.companyDesc}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field class="field search-row-element">
+          <mat-label>Currency</mat-label>
+          <mat-select [(ngModel)]="selectedCurrency">
+            <mat-option *ngFor="let currency of currencyList" [value]="currency.currencyCode">{{currency.currencyDesc}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field class="field search-row-element" *ngIf="roleName=='Finance'">
+          <mat-label>with Hold Type</mat-label>
+          <mat-select [(ngModel)]="withholdType" (selectionChange)="onHoldTypeSelected($event)">
+            <mat-option *ngFor="let withholdType of withholdTypeList" [value]="withholdType.withholdTypeCode">
+              {{withholdType.withholdTypeDesc}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field class="field search-row-element" *ngIf="roleName=='Finance'">
+          <mat-label>with Hold Tax</mat-label>
+          <mat-select [(ngModel)]="withholdTax">
+            <mat-option *ngFor="let withholdTax of withholdTaxList" [value]="withholdTax.withholdTaxCode">
+              {{withholdTax.withholdTaxDesc}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+        <!-- 
+        <div class="actions search-row-element">
+          <input style="display: none" [attr.id]="msaCtrl" type="file" multiple
+            accept=".xls,.xlsx,.doc,.docx,.pdf,.png,.jpg,.zip"
+            (change)="onFileChange($event, 12)" />
+          <button mat-raised-button class="footer-actions"
+            (click)="onBrowseFileClick($event,msaCtrl)">Browse</button>
+          <button mat-raised-button class="footer-actions"
+            (click)="onAttachFileClick(12)">Attach MSA</button>
+          <div *ngIf="filesMap" style="display: flex;flex-wrap: wrap;">
+            <span class="filename"
+              *ngFor="let f of filesMap[12]?.filesList; let fInd = index">
+              <span>
+                <mat-icon matTooltip="{{ f.actualFileName }}" (click)="downloadFile(f)">description</mat-icon>
+                <button mat-button mat-icon-button aria-label="Delete"
+                  (click)="onDeleteFileClick(f, fInd, 12)">
+                  <mat-icon>delete_outline</mat-icon>
+                </button>
+                <button *ngIf="f.fileId != null" mat-button mat-icon-button aria-label="Download"
+                  (click)="downloadFile(f)">
+                  <mat-icon>save_alt</mat-icon>
+                </button>
+              </span>
+            </span>
+            <div *ngIf="filesMap[vendorDocCtrl.panCtrl.documentTypeId] && 
+                filesMap[vendorDocCtrl.panCtrl.documentTypeId].isError" class="errortxt">
+              Please attach the Documents
+            </div> -->
+
+        <!-- </div> -->
+      </div>
+      <div class="row" *ngIf="roleName=='Finance'">
+        <div class="col-6"><span style="color:black">Procurement Approver Remarks:</span>
+          {{ vendorDetails.procRemark }}</div>
+
+        <div class="col-6"><span style="color:black">Approved By:</span>
+          {{ vendorDetails.procApprByName }}</div>
+      </div>
+
+      <div class="form-group">
         <mat-form-field class="full-width">
           <textarea matInput placeholder="Remarks" [(ngModel)]="remarks" autocomplete="off"></textarea>
         </mat-form-field>
       </div>
 
     </div>
-      <div>
+
+    <div class="row actions margin-unset">
+      <div class="error-txt">
         {{ msg }}
       </div>
 
-      <div class="row actions margin-unset">
-        <button mat-raised-button class="footer-actions" (click)="onRejectClick()">Reject</button>
-        <button mat-raised-button class="footer-actions footer-actions-green"
-          (click)="onApproveClick()">Approve</button>
-      </div>
+      <button mat-raised-button class="footer-actions" (click)="onEditClick()">Edit</button>
+      <!-- <button mat-raised-button class="footer-actions" (click)="onSendForCorrClick()">Send For Correction</button> -->
+      <button mat-raised-button class="footer-actions" (click)="onRejectClick()">Reject</button>
+      <button mat-raised-button class="footer-actions footer-actions-green" (click)="onApproveClick()">Approve</button>
     </div>
   </div>
 </div>

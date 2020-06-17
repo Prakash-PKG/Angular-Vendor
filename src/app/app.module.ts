@@ -46,7 +46,8 @@ import {
     MatStepperModule,
     NativeDateModule,
     MAT_DATE_FORMATS,
-    MAT_NATIVE_DATE_FORMATS
+    MAT_NATIVE_DATE_FORMATS,
+    MAT_SNACK_BAR_DEFAULT_OPTIONS
 } from '@angular/material';
 
 import { AppComponent } from './app.component';
@@ -72,6 +73,7 @@ import { ForgotPasswordComponent } from './forgot-password/forgot-password.compo
 import { VendorApprovalComponent } from './vendor-approval/vendor-approval.component';
 import { InvoiceUploadComponent } from './invoice-upload/invoice-upload.component';
 import { VendorOthersComponent } from './vendor-others/vendor-others.component';
+import { PoInvoiceDumpComponent } from './po-invoice-dump/po-invoice-dump.component';
 
 
 @NgModule({
@@ -98,7 +100,8 @@ import { VendorOthersComponent } from './vendor-others/vendor-others.component';
         ForgotPasswordComponent,
         VendorApprovalComponent,
         InvoiceUploadComponent,
-        VendorOthersComponent
+        VendorOthersComponent,
+        PoInvoiceDumpComponent
     ],
     imports: [
         BrowserModule,
@@ -157,6 +160,7 @@ import { VendorOthersComponent } from './vendor-others/vendor-others.component';
         { provide: LocationStrategy, useClass: HashLocationStrategy },
         { provide: HTTP_INTERCEPTORS, useClass: XsrfInterceptor, multi: true },
         { provide: MAT_DATE_FORMATS, useValue: MAT_NATIVE_DATE_FORMATS },
+        {provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: {duration: 2500}},
         DatePipe
     ],
     bootstrap: [AppComponent]

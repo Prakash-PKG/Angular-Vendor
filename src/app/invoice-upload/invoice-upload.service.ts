@@ -1,8 +1,11 @@
 import { InvoiceUploadResultModel, InvoiceUploadReqModel, InvoiceDocumentReqModel, 
-        POItemsRequestModel, POItemsResultModel, UpdateInvoiceRequestModel } from './../models/data-models';
+        POItemsRequestModel, POItemsResultModel, UpdateInvoiceRequestModel,
+    FileDetailsModel, RemoveDocumentReqModel, VendorAutoCompleteModel } from './../models/data-models';
 import { Injectable } from '@angular/core';
 import { AppService } from './../app.service';
 import { HttpClient } from '@angular/common/http';
+import { catchError, retry, tap, map, finalize } from 'rxjs/operators';
+import { Observable, throwError } from 'rxjs';
 
 @Injectable({
     providedIn: 'root'
@@ -27,7 +30,9 @@ export class InvoiceUploadService {
         let initModel: InvoiceUploadResultModel = new InvoiceUploadResultModel();
         if(data) {
             initModel.poList = data["pODetailsVO"];
-            initModel.statusDetails = data["statusVO"];        
+            initModel.statusDetails = data["statusVO"];  
+            initModel.invoiceFileTypes = data["invoiceFileTypes"];     
+            initModel.currencyList =  data["currencyMasterList"];
         }
 
         return initModel;
@@ -62,6 +67,20 @@ export class InvoiceUploadService {
 
     uploadInvoiceDocuments(filesReq: InvoiceDocumentReqModel) {
         let url = this._appService.baseUrl + "updateInvDoc";
-        return this._http.post(url, filesReq, { responseType: 'text', observe: 'response' });
+        return this._http.post(url, filesReq, { responseType: 'json', observe: 'response' });
+    }
+
+    deleteInvoiceFile(fileDetails: FileDetailsModel) {
+        let req: RemoveDocumentReqModel = {
+            fileId: fileDetails.fileId
+        };
+        let url = this._appService.baseUrl + "removeInvDoc/";
+        return this._http.post(url, req, { responseType: 'json', observe: 'response' });
+    }
+
+    getVendorsData(filter: { searchText: any } = { searchText: '' }): Observable<VendorAutoCompleteModel[]>  {
+        let url = this._appService.baseUrl + "vendorAutoSearch/" + filter.searchText;
+        return this._http.get(url, { responseType: 'json'}).pipe(
+                            tap((employeeList: any) => (employeeList as VendorAutoCompleteModel[]) ));
     }
 }

@@ -1,7 +1,9 @@
-import { VendorMasterDetailsModel, VendorRegistrationInitDataModel, PendingApprovalsModel } from './models/data-models';
+import { VendorMasterDetailsModel, VendorRegistrationInitDataModel, 
+        PendingApprovalsModel, FileDetailsModel, PODetailsModel, InvoiceModel } from './models/data-models';
 
 import { Injectable } from '@angular/core';
 import { DatePipe } from '@angular/common';
+import { HttpClient } from '@angular/common/http';
 
 @Injectable({
     providedIn: 'root'
@@ -9,13 +11,13 @@ import { DatePipe } from '@angular/common';
 export class AppService {
 
     readonly domain = "http://localhost:8080";
-    //readonly domain = "https://mvendor-dev.marlabs.com";  
+    // readonly domain = "https://mvendor-dev.marlabs.com";
     //readonly domain = "https://mtime.marlabs.com";  
     readonly baseUrl = this.domain + "/mvendor/";
     readonly customerAuthUrl = this.domain + "/customerAuth/oauth/token";
     readonly isForProduction: boolean = false;
 
-    constructor(private _datePipe: DatePipe) { }
+    constructor(private _datePipe: DatePipe, private _http: HttpClient) { }
 
     readonly routingConstants: any = {
         login: "/",
@@ -27,6 +29,7 @@ export class AppService {
         invoiceUpload: "/home/invupload",
         pendingApprovals: "/home/pendingapprovals",
         poDetails: "/home/podetails",
+        poInvoiceDump: "/home/poinvoicedump",
         vendorApproval: "/home/venapproval",
         empanelment: "/home/empanelment",
         vendorDetails: "/vendor/vendetails",
@@ -44,7 +47,20 @@ export class AppService {
         save: "save",
         submit: "submit",
         approve: "approve",
-        reject: "reject"
+        reject: "reject",
+        sendBack: "sendBack"
+    };
+
+    readonly statusNames: any = {
+        new: "In Progress",
+        approved: "Approved",
+        rejected: "Rejected"
+    };
+
+    readonly statusCodes: any = {
+        new: "new",
+        approved: "approved",
+        rejected: "rejected"
     };
 
     readonly approvalLevels: any = {
@@ -61,8 +77,13 @@ export class AppService {
 
     readonly dbDateFormat: string = "yyyy-MM-dd"; // Server and DB expects this format, by changing this it will reflect in all places
     readonly displayDtFormat: string = "dd MMM yyyy"; // Displays dates in this format. By changing this, total application date formats will change
-    
+    readonly displayDateTimeFormat: string = "dd MMM yyyy HH:mm:ss";
+
     readonly dbDateTimeFormat: string = "yyyy-MM-dd HH:mm:ss";
+
+    selectedPO: PODetailsModel = null;
+
+    selectedInvoice: InvoiceModel = null;
 
     getFormattedDate(dtStr: string) {
         if(dtStr) {
@@ -106,16 +127,16 @@ export class AppService {
         swiftInterm: null,
         panNum: null,
         gstNum: null,
-        isSez: false,
-        isRcmApplicable: false,
+        isSez: null,
+        isRcmApplicable: null,
         lutNum: null,
         lutDate: null,
         // paymentTerms: null,
         cinNum: null,
-        isMsmedRegistered: false,
+        isMsmedRegistered: null,
         pfNum: null,
         esiNum: null,
-        hasTdsLower: false,
+        hasTdsLower: null,
         createdBy: null,
         updatedBy: null,
         createdDate: null,
@@ -138,7 +159,9 @@ export class AppService {
         procRemark:  null,
         procApprByName:  null,
         finApprByName: null,
-        finRemark:  null
+        finRemark:  null,
+        isGSTReg:null,
+        otherDocDesc:null
     };
 
     resetVendorRegistrationDetails() {
@@ -168,16 +191,16 @@ export class AppService {
             swiftInterm: null,
             panNum: null,
             gstNum: null,
-            isSez: false,
-            isRcmApplicable: false,
+            isSez: null,
+            isRcmApplicable: null,
             lutNum: null,
             lutDate: null,
             // paymentTerms: null,
             cinNum: null,
-            isMsmedRegistered: false,
+            isMsmedRegistered: null,
             pfNum: null,
             esiNum: null,
-            hasTdsLower: false,
+            hasTdsLower: null,
             createdBy: null,
             updatedBy: null,
             createdDate: null,
@@ -200,7 +223,9 @@ export class AppService {
             procRemark:  null,
             procApprByName:  null,
             finApprByName: null,
-            finRemark:  null
+            finRemark:  null,
+            isGSTReg:null,
+            otherDocDesc:null
         };
 
         return regDetails;
@@ -213,7 +238,32 @@ export class AppService {
     readonly messages: any = {
         vendorRegistrationSaveFailure: "Due to technical problems not able to proceed further. Please try later.",
         vendorRegistrationSubmitSuccessMsg: "Vendor details submitted successful",
-        vendorApprovalFailure: "Vendor approval is failed"
+        vendorApprovalFailure: "Vendor approval is failed",
+        vendorSendBackSuccess:"Vendor Details are send back for correction",
+        vendorSendBackFailure: "Vendor details sent back for correction failed",
+        vendorRegistrationFormInvalid: "Your Form Contains Error. Please Check"
     };
+
+    getFileData(fileDetails: FileDetailsModel) {
+        let url = this.baseUrl + 'downloadInvDoc/' + fileDetails.uniqueFileName;
+        return this._http.get(url, {responseType: 'arraybuffer', observe: 'response'});
+    }
+
+    downloadInvoiceFile(fileDetails: FileDetailsModel) {
+        this.getFileData(fileDetails).subscribe(
+            (data) => {
+                const blob = new Blob([data.body], { type: 'application/octet-stream' });
+                const url = window.URL.createObjectURL(blob);
+
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = fileDetails.actualFileName;
+                document.body.appendChild(a);
+                a.click();
+            },
+            error => {
+                console.log(error);
+            });
+    }
 
 }

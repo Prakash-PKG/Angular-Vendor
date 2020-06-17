@@ -10,10 +10,6 @@ export class HomeService {
     private busy = new BehaviorSubject<BusyDataModel>(<BusyDataModel>{isBusy: false, msg: null});
     isBusy = this.busy.asObservable();
 
-    // Based on this, can identify current page
-    private pgDetails = new BehaviorSubject<PageDetailsModel>(<PageDetailsModel>{pageName: ""});
-    currentPageDetails = this.pgDetails.asObservable();
-
      // Based on this, Sidebar expansion and collapse details can be identified
      private sidebarCollapsed = new BehaviorSubject<boolean>(false);
      isSidebarCollapsed = this.sidebarCollapsed.asObservable();
@@ -29,8 +25,5 @@ export class HomeService {
     updateSidebarDetails(obj: boolean) {
         this.sidebarCollapsed.next(obj)
     }
-    // Updates current page details
-    updateCurrentPageDetails(obj: PageDetailsModel) {
-         this.pgDetails.next(obj)
-    }
+  
 }
