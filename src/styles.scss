@@ -183,7 +183,8 @@ button {
   padding: 0em 1em 1em;
   max-width: unset;
   overflow: auto;
-  min-height: -webkit-fill-available;
+  min-height: 100%;
+    height: auto;
 }
 .actions .footer-actions {
   background-color: blueviolet;
@@ -210,7 +211,8 @@ padding: 20px;
 padding-bottom: 0px;
 display: flex;
 flex-direction: column;
-min-height: -webkit-fill-available;
+height: auto;
+min-height: 100%;
 }
 .errortxt {
   color: #ce2a0e;

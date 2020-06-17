@@ -1,27 +1,4 @@
-.main {
-  background-image: url(../../assets/images/bg.png);
-  margin: 0px;
-  padding: 3%;
-  background-repeat: repeat-y;
-  background-size: contain;
-  padding-bottom: 0px;
-  height: 100%;
-  padding-left: 25%;
-}
 
-.my-container {
-  box-shadow: 0px 0px 5px lightgrey;
-  border-radius: 10px;
-  z-index: 1000;
-  background: white;
-  padding: 20px;
-  border-bottom-right-radius: 0px;
-  border-bottom-left-radius: 0px;
-  height: 100%;
-  text-align: left;
-  padding: 1em 3em;
-  padding-right: 0px;;
-}
 .heading {
   color: blueviolet;
   margin: 2em;
@@ -67,9 +44,14 @@
 }
 .col-2{
   padding:0px;
+  justify-content: flex-end;
 }
 .filename{
   background: aliceblue;
   margin-right: 5px;
   cursor: pointer;
+}
+.col-7.actions{
+  display: flex;
+  justify-content: flex-start;
 }

@@ -13,6 +13,7 @@ import {
 import { DatePipe } from '@angular/common';
 import { HomeService } from '../home/home.service';
 import { globalConstant } from '../common/global-constant';
+import { MatSnackBar } from '@angular/material';
 
 interface FileMap {
     [key: number]: {
@@ -35,6 +36,7 @@ export class VendorDocumentsComponent implements OnInit {
     failureMsg: string = "";
     documentsList: VendorMasterDocumentModel[] = [];
     filesMap: FileMap = {};
+    enableSubmit:boolean=true;
 
     vendorDocCtrl = {
         incCerCtrl: { documentTypeId: 1, browserId: 'incCerFileCtrl', placeholder: 'Incorporation Certificate' },
@@ -55,9 +57,11 @@ export class VendorDocumentsComponent implements OnInit {
         private _vendorRegistrationService: VendorRegistrationService,
         private _router: Router,
         private _formBuilder: FormBuilder,
-        private _datePipe: DatePipe) { }
+        private _datePipe: DatePipe,
+        private _snackBar: MatSnackBar) { }
 
     onFileChange(event: any, documentTypeId: number) {
+        console.log(documentTypeId);
         if (!documentTypeId) return;
         this.filesMap[documentTypeId] = { filesList: [], isAttached: false };
         if (event.target.files && event.target.files.length > 0) {
@@ -76,14 +80,13 @@ export class VendorDocumentsComponent implements OnInit {
                     this.filesMap[documentTypeId].filesList.push(fileDetails);
 
                     let reader = new FileReader();
-                    reader.onload = this._handleFileReaderLoaded.bind(this, file.name, this.filesMap[documentTypeId].filesList);
+                    reader.onload = this._handleFileReaderLoaded.bind(this, file.name, this.filesMap[documentTypeId].filesList, documentTypeId);
                     reader.readAsBinaryString(file);
                 }
             }
         }
-        // this.onAttachFileClick();
     }
-    private _handleFileReaderLoaded(actualFileName, filesList: FileDetailsModel[], readerEvt) {
+    private _handleFileReaderLoaded(actualFileName, filesList: FileDetailsModel[], documentTypeId: number, readerEvt) {
         let binaryString = readerEvt.target.result;
         let base64textString = btoa(binaryString);
 
@@ -93,6 +96,7 @@ export class VendorDocumentsComponent implements OnInit {
                 break;
             }
         }
+        this.onAttachFileClick(documentTypeId);
     }
 
     onBrowseFileClick(event: any, controlName: string) {
@@ -103,28 +107,34 @@ export class VendorDocumentsComponent implements OnInit {
     }
     onAttachFileClick(documentTypeId: number) {
         let filesReq: VendorDocumentReqModel = {
-            userId: globalConstant.userDetails.isVendor ? globalConstant.userDetails.userEmail : globalConstant.userDetails.userId,
+            userId:'106994',
             fileDetails: this.filesMap[documentTypeId].filesList,
-            vendorMasterId: this._appService.vendorRegistrationDetails.vendorMasterId
+            vendorMasterId:166
+            // userId: globalConstant.userDetails.isVendor ? globalConstant.userDetails.userEmail : globalConstant.userDetails.userId,
+            // vendorMasterId: this._appService.vendorRegistrationDetails.vendorMasterId
         }
         this._vendorRegistrationService.updateBusy(<BusyDataModel>{ isBusy: true, msg: "Attaching..." });
         this._vendorRegistrationService.uploadVendorDocuments(filesReq)
             .subscribe(response => {
                 this._vendorRegistrationService.updateBusy(<BusyDataModel>{ isBusy: false, msg: null });
+                console.log(response.body)
                 if (response.body) {
                     let results: VendorDocumentResultModel = response.body as VendorDocumentResultModel;
 
                     if (results.status.status == 200 && results.status.isSuccess) {
-                        this.filesMap[documentTypeId].filesList = [];
+                        // this.filesMap[documentTypeId].filesList = [];
+                        this._snackBar.open("Files Attached Successfully");
                         this.filesMap[documentTypeId].filesList = results.fileDetails.concat();
                         this.filesMap[documentTypeId].isAttached = true;
                     }
+
                 }
                
             },
-                (error) => {
+                (error) => {       
                     this.filesMap[documentTypeId].isAttached = false;
                     this._vendorRegistrationService.updateBusy(<BusyDataModel>{ isBusy: false, msg: null });
+                    this._snackBar.open("Files Attachment Failed");
                     console.log(error);
                 });
         console.log(this.filesMap);
@@ -174,6 +184,7 @@ export class VendorDocumentsComponent implements OnInit {
                         if (result.status.status == 200 && result.status.isSuccess) {
                             this._appService.vendorRegistrationDetails = result.vendorMasterDetails;
                             this.failureMsg = this._appService.messages.vendorRegistrationSubmitSuccessMsg;
+                            this.enableSubmit = false;
                         }
                         else {
                             this.failureMsg = this._appService.messages.vendorRegistrationSaveFailure;
@@ -199,6 +210,7 @@ export class VendorDocumentsComponent implements OnInit {
                     let result = response.body as StatusModel;
                     if (result.isSuccess) {
                         this.removefileFromList(fileIndex, documentTypeId);
+                        this._snackBar.open("File deleted Successfully");
                     }
                 },
                     (error) => {

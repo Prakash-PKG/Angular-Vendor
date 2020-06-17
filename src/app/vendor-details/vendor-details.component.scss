@@ -1,37 +1,13 @@
-.main {
-  background-image: url(../../assets/images/bg.png);
-  margin: 0px;
-  padding: 3%;
-  background-repeat: repeat-y;
-  background-size: contain;
-  padding-bottom: 0px;
-  height: 100%;
-  padding-left: 25%;
-}
 
-.my-container {
-  box-shadow: 0px 0px 5px lightgrey;
-  border-radius: 10px;
-  z-index: 1000;
-  background: white;
-  padding: 20px;
-  border-bottom-right-radius: 0px;
-  border-bottom-left-radius: 0px;
-  height: 100%;
-  text-align: left;
-  padding: 1em 3em;
-}
-.heading {
-  color: blueviolet;
-  margin: 1em;
-  text-align: center;
-}
-.mat-icon {
-  height: 1em;
-  width: 1em;
-}
-.material-icons {
-  font-size: 3em;
+  
+  .heading {
+    color: blueviolet;
+    margin: 2em;
+    text-align: center;
+  }
+  .mat-icon{
+    height: 1em;
+    width: 1em;
 }
 .title {
   font-size: x-large;
