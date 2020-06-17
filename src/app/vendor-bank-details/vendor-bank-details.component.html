@@ -58,7 +58,7 @@
         </div>
         <div class="col-6 form-group">
             <mat-form-field class="full-width">
-                <mat-select formControlName="bankCountry" placeholder="Country" required>
+                <mat-select formControlName="bankCountry" placeholder="Country" (selectionChange)="updateRegion()" required>
                     <mat-option *ngFor="let c of countryList" [value]="c.countryCode">
                         {{ c.countryName }}
                     </mat-option>

@@ -46,7 +46,8 @@ import {
     MatStepperModule,
     NativeDateModule,
     MAT_DATE_FORMATS,
-    MAT_NATIVE_DATE_FORMATS
+    MAT_NATIVE_DATE_FORMATS,
+    MAT_SNACK_BAR_DEFAULT_OPTIONS
 } from '@angular/material';
 
 import { AppComponent } from './app.component';
@@ -159,6 +160,7 @@ import { PoInvoiceDumpComponent } from './po-invoice-dump/po-invoice-dump.compon
         { provide: LocationStrategy, useClass: HashLocationStrategy },
         { provide: HTTP_INTERCEPTORS, useClass: XsrfInterceptor, multi: true },
         { provide: MAT_DATE_FORMATS, useValue: MAT_NATIVE_DATE_FORMATS },
+        {provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: {duration: 2500}},
         DatePipe
     ],
     bootstrap: [AppComponent]

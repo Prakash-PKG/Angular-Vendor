@@ -23,15 +23,13 @@ export class VendorAddressComponent implements OnInit {
     constructor(private _appService: AppService,
         private _vendorRegistrationService: VendorRegistrationService,
         private _router: Router,
-        private _formBuilder: FormBuilder,
-        private _homeService: HomeService) { }
+        private _formBuilder: FormBuilder) { }
 
     onPrevClick() {
         this._router.navigate([this._appService.routingConstants.vendorDetails]);
     }
 
     onNextClick() {
-        // this._router.navigate([this._appService.routingConstants.vendorBankDetails]);
 
         this.failureMsg = "";
 
@@ -83,8 +81,13 @@ export class VendorAddressComponent implements OnInit {
         this.vendorAddressForm.get("stateCode").setValue(this._appService.vendorRegistrationDetails.stateCode);
         this.vendorAddressForm.get("countryCode").setValue(this._appService.vendorRegistrationDetails.countryCode);
     }
-    updateRegion(c: CountryDataModel) {
-        this.regionMasterVOList = this.regionMasterVOList.filter(r => r.countryCode == c.countryCode)
+    updateRegion() {
+        this.regionMasterVOList = [];
+        if (this._appService.vendorRegistrationInitDetails && this._appService.vendorRegistrationInitDetails.regionMasterVOList &&
+            this._appService.vendorRegistrationInitDetails.regionMasterVOList.length > 0) {
+            this.regionMasterVOList = this._appService.vendorRegistrationInitDetails.regionMasterVOList;
+        }
+        this.regionMasterVOList = this.regionMasterVOList.filter(r => r.countryCode == this.vendorAddressForm.get('countryCode').value)
     }
 
     ngOnInit() {
@@ -103,12 +106,12 @@ export class VendorAddressComponent implements OnInit {
             address2: [null],
             city: [null, [Validators.required]],
             street: [null, [Validators.required]],
-            pincode: [null, Validators.minLength(6), Validators.maxLength(6)],
+            pincode: [null],
             stateCode: [null, [Validators.required]],
             countryCode: [null, [Validators.required]]
         });
 
-        this._homeService.updateCurrentPageDetails({ pageName: 'venAdd' });
+        this._vendorRegistrationService.updateCurrentPageDetails({ pageName: 'venAdd' });
         this.updateVendorDetails();
     }
 

@@ -57,7 +57,8 @@
                 <input matInput type="password" class="form-control" placeholder="Confirm Password"
                     formControlName="confirmPassword" autocomplete="off" required>
             </mat-form-field>
-            <!-- <mat-error *ngIf="(vendorDetailsForm.controls['confirmPassword'].errors['equalValueValidator'])">Confirm Password should be same as Password</mat-error> -->
+            <mat-error class="errortxt" *ngIf="vendorDetailsForm.get('confirmPassword')?.hasError('equalValue')">
+                Confirm Password should be same as Password</mat-error>
         </div>
     </div>
 </form>

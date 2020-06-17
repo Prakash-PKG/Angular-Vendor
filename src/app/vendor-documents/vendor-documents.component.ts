@@ -55,8 +55,7 @@ export class VendorDocumentsComponent implements OnInit {
         private _vendorRegistrationService: VendorRegistrationService,
         private _router: Router,
         private _formBuilder: FormBuilder,
-        private _datePipe: DatePipe,
-        private _homeService: HomeService) { }
+        private _datePipe: DatePipe) { }
 
     onFileChange(event: any, documentTypeId: number) {
         if (!documentTypeId) return;
@@ -82,6 +81,7 @@ export class VendorDocumentsComponent implements OnInit {
                 }
             }
         }
+        // this.onAttachFileClick();
     }
     private _handleFileReaderLoaded(actualFileName, filesList: FileDetailsModel[], readerEvt) {
         let binaryString = readerEvt.target.result;
@@ -107,10 +107,10 @@ export class VendorDocumentsComponent implements OnInit {
             fileDetails: this.filesMap[documentTypeId].filesList,
             vendorMasterId: this._appService.vendorRegistrationDetails.vendorMasterId
         }
-        this._homeService.updateBusy(<BusyDataModel>{ isBusy: true, msg: "Attaching..." });
+        this._vendorRegistrationService.updateBusy(<BusyDataModel>{ isBusy: true, msg: "Attaching..." });
         this._vendorRegistrationService.uploadVendorDocuments(filesReq)
             .subscribe(response => {
-                this._homeService.updateBusy(<BusyDataModel>{ isBusy: false, msg: null });
+                this._vendorRegistrationService.updateBusy(<BusyDataModel>{ isBusy: false, msg: null });
                 if (response.body) {
                     let results: VendorDocumentResultModel = response.body as VendorDocumentResultModel;
 
@@ -124,7 +124,7 @@ export class VendorDocumentsComponent implements OnInit {
             },
                 (error) => {
                     this.filesMap[documentTypeId].isAttached = false;
-                    this._homeService.updateBusy(<BusyDataModel>{ isBusy: false, msg: null });
+                    this._vendorRegistrationService.updateBusy(<BusyDataModel>{ isBusy: false, msg: null });
                     console.log(error);
                 });
         console.log(this.filesMap);
@@ -192,17 +192,17 @@ export class VendorDocumentsComponent implements OnInit {
 
     onDeleteFileClick(fileDetails: FileDetailsModel, fileIndex: number, documentTypeId: number) {
         if (fileDetails && fileDetails.fileId) {
-            this._homeService.updateBusy(<BusyDataModel>{ isBusy: true, msg: "Deleting..." });
+            this._vendorRegistrationService.updateBusy(<BusyDataModel>{ isBusy: true, msg: "Deleting..." });
             this._vendorRegistrationService.deleteVendorFile(fileDetails)
                 .subscribe(response => {
-                    this._homeService.updateBusy(<BusyDataModel>{ isBusy: false, msg: null });
+                    this._vendorRegistrationService.updateBusy(<BusyDataModel>{ isBusy: false, msg: null });
                     let result = response.body as StatusModel;
                     if (result.isSuccess) {
                         this.removefileFromList(fileIndex, documentTypeId);
                     }
                 },
                     (error) => {
-                        this._homeService.updateBusy(<BusyDataModel>{ isBusy: false, msg: null });
+                        this._vendorRegistrationService.updateBusy(<BusyDataModel>{ isBusy: false, msg: null });
                         console.log(error);
                     });
         }
@@ -281,7 +281,7 @@ export class VendorDocumentsComponent implements OnInit {
             otherDocDesc: [null]
 
         });
-        this._homeService.updateCurrentPageDetails({ pageName: 'venDoc' });
+        this._vendorRegistrationService.updateCurrentPageDetails({ pageName: 'venDoc' });
         this.updateVendorDetails();
     }
 

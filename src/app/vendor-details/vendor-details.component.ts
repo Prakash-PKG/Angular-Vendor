@@ -23,8 +23,7 @@ export class VendorDetailsComponent implements OnInit {
     constructor(private _appService: AppService,
         private _vendorRegistrationService: VendorRegistrationService,
         private _router: Router,
-        private _formBuilder: FormBuilder,
-        private _homeService: HomeService) { }
+        private _formBuilder: FormBuilder) { }
 
     onNextClick() {
         // this._router.navigate([this._appService.routingConstants.vendorAddressDetails]);
@@ -100,7 +99,7 @@ export class VendorDetailsComponent implements OnInit {
         },
             { validator: equalValueValidator('password', 'confirmPassword') }
         );
-        this._homeService.updateCurrentPageDetails({ pageName: 'venDetails' });
+        this._vendorRegistrationService.updateCurrentPageDetails({ pageName: 'venDetails' });
         this.updateVendorDetails();
     }
 

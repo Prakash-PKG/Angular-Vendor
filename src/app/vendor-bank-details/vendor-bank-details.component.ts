@@ -23,8 +23,7 @@ export class VendorBankDetailsComponent implements OnInit {
     constructor(private _appService: AppService,
         private _vendorRegistrationService: VendorRegistrationService,
         private _router: Router,
-        private _formBuilder: FormBuilder,
-        private _homeService: HomeService) { }
+        private _formBuilder: FormBuilder) { }
 
     onPrevClick() {
         this._router.navigate([this._appService.routingConstants.vendorAddressDetails]);
@@ -96,17 +95,20 @@ export class VendorBankDetailsComponent implements OnInit {
         this.vendorBankForm.get("routingBank").setValue(this._appService.vendorRegistrationDetails.routingBank);
         this.vendorBankForm.get("swiftInterm").setValue(this._appService.vendorRegistrationDetails.swiftInterm);
     }
+    updateRegion() {
+        this.regionMasterVOList = [];
+        if (this._appService.vendorRegistrationInitDetails && this._appService.vendorRegistrationInitDetails.regionMasterVOList &&
+            this._appService.vendorRegistrationInitDetails.regionMasterVOList.length > 0) {
+            this.regionMasterVOList = this._appService.vendorRegistrationInitDetails.regionMasterVOList;
+        }
+        this.regionMasterVOList = this.regionMasterVOList.filter(r => r.countryCode == this.vendorBankForm.get('bankCountry').value)
+    }
 
     ngOnInit() {
         this.countryList = [];
         if (this._appService.vendorRegistrationInitDetails && this._appService.vendorRegistrationInitDetails.countriesList &&
             this._appService.vendorRegistrationInitDetails.countriesList.length > 0) {
             this.countryList = this._appService.vendorRegistrationInitDetails.countriesList;
-        }
-        this.regionMasterVOList = [];
-        if (this._appService.vendorRegistrationInitDetails && this._appService.vendorRegistrationInitDetails.regionMasterVOList &&
-            this._appService.vendorRegistrationInitDetails.regionMasterVOList.length > 0) {
-            this.regionMasterVOList = this._appService.vendorRegistrationInitDetails.regionMasterVOList;
         }
         this.vendorBankForm = this._formBuilder.group({
             // bankAddress: [null, [Validators.required]],
@@ -124,7 +126,7 @@ export class VendorBankDetailsComponent implements OnInit {
             swiftInterm: [null],
         });
 
-        this._homeService.updateCurrentPageDetails({ pageName: 'venBank' });
+        this._vendorRegistrationService.updateCurrentPageDetails({ pageName: 'venBank' });
         this.updateVendorDetails();
     }
 
