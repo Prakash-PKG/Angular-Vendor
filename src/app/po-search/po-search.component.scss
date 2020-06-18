@@ -32,7 +32,10 @@ div.actions {
 .search-row-element.actions {
   flex: 0 0 3em;
 }
-
+.search-row-element.actions .footer-actions {
+  height: 2em;
+  line-height: 1em;
+}
 .mat-form-field.field {
   margin-right: 2em;
   width: 7em;

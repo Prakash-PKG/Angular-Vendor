@@ -12,7 +12,8 @@
             </span>
         </li>
 
-        <li class="step" [ngClass]="(poLevel?.status == 'Approved' || poLevel?.status == 'Rejected') ? 'completed' : ''">
+        <li class="step"
+            [ngClass]="(poLevel?.status == 'Approved' || poLevel?.status == 'Rejected') ? 'completed' : ''">
             <span class="upper-text">{{ getStatusDetails(poLevel) }}</span>
             <span class="dot"></span>
             <span class="lower-text">
@@ -20,7 +21,8 @@
             </span>
         </li>
 
-        <li class="step" [ngClass]="(fhLevel?.status == 'Approved' || fhLevel?.status == 'Rejected') ? 'completed' : ''">
+        <li class="step"
+            [ngClass]="(fhLevel?.status == 'Approved' || fhLevel?.status == 'Rejected') ? 'completed' : ''">
             <span class="upper-text">{{ getStatusDetails(fhLevel) }}</span>
             <span class="dot"></span>
             <span class="lower-text">
@@ -28,7 +30,8 @@
             </span>
         </li>
 
-        <li class="step" [ngClass]="(financeLevel?.status == 'Approved' || financeLevel?.status == 'Rejected') ? 'completed' : ''">
+        <li class="step"
+            [ngClass]="(financeLevel?.status == 'Approved' || financeLevel?.status == 'Rejected') ? 'completed' : ''">
             <span class="upper-text">{{ getStatusDetails(financeLevel) }}</span>
             <span class="dot"></span>
             <span class="lower-text">
@@ -49,84 +52,148 @@
         <div class="description flex-item">
             <div class="flex-container">
                 <div class="flex-item">
-                    Vendor Id: {{ (invoiceDetails?.vendorId) ? invoiceDetails?.vendorId : "" }}
-                </div>
-                <div class="flex-item">
-                    Vendor Name: {{ (invoiceDetails?.vendorName) ? invoiceDetails?.vendorName : "" }}
-                </div>
-                <div class="flex-item" *ngIf = "isPOBasedInvoice == true">
-                    PO No: {{ invoiceDetails?.poNumber }}
-                </div>
-                <div class="flex-item">
-                    Invoice No: {{ invoiceDetails?.invoiceNumber }}
-                </div>
-                <div class="flex-item">
-                    Invoice Date: {{ getFormattedDate(invoiceDetails?.invoiceDate) }}
-                </div>
-                <div class="flex-item">
-                    Total Inv Amt: {{ invoiceDetails?.totalAmt + " " + currency }}
-                    <small> (inc tax) </small>
-                </div>
-                <div class="flex-item">
-                    Remarks: {{ invoiceDetails?.remarks }}
-                </div>
-                <div class="flex-item">
-                    Amount Paid: {{ getPaidAmount() }}
-                </div>
-                <div class="flex-item">
-                    Paid Date: {{ getPaidDate() }}
-                </div>
-                <div class="flex-item">
-                    Paid Status: {{ getPaidStatus() }}
-                </div>
-                <div class="flex-item actions">
-                    <button mat-raised-button class="footer-actions footer-actions-green">Invoice Attachments</button>
-                    <div *ngFor="let ifile of invoiceFilesList; let ifileInd = index">
-                        {{ ifile.actualFileName }}
-                        <button mat-button mat-icon-button aria-label="Download" (click)="downloadFile(ifile)">
-                            <mat-icon>save_alt</mat-icon>
-                        </button>
+                    <div class="header ">
+                        Vendor Id:
                     </div>
-                    <button mat-raised-button class="footer-actions footer-actions-green">Supporting Attachments</button>
-                    <div *ngFor="let sf of supportFilesList; let sfInd = index">
-                        {{ sf.actualFileName }}
-                        <button mat-button mat-icon-button aria-label="Download" (click)="downloadFile(sf)">
+                    <div class="value ">
+                        {{ (invoiceDetails?.vendorId) ? invoiceDetails?.vendorId : "" }}
+                    </div>
+
+                </div>
+                <div class="flex-item">
+                    <div class="header ">
+                        Vendor Name:
+                    </div>
+                    <div class="value ">
+                        {{ (invoiceDetails?.vendorName) ? invoiceDetails?.vendorName : "" }}
+                    </div>
+
+                </div>
+                <div class="flex-item" *ngIf="isPOBasedInvoice == true">
+                    <div class="header ">
+                        PO No:
+                    </div>
+                    <div class="value ">
+                        {{ invoiceDetails?.poNumber }}
+                    </div>
+
+                </div>
+                <div class="flex-item">
+                    <div class="header ">
+                        Invoice No:
+                    </div>
+                    <div class="value ">
+                        {{ invoiceDetails?.invoiceNumber }}
+                    </div>
+
+                </div>
+                <div class="flex-item">
+                    <div class="header ">
+                        Invoice Date:
+                    </div>
+                    <div class="value ">
+                        {{ getFormattedDate(invoiceDetails?.invoiceDate) }}
+                    </div>
+
+                </div>
+                <div class="flex-item">
+                    <div class="header ">
+                        Total Inv Amt: <small> (inc tax) </small>
+                    </div>
+                    <div class="value ">
+                        {{ invoiceDetails?.totalAmt + " " + currency }}
+                    </div>
+
+
+                </div>
+                <div class="flex-item">
+                    <div class="header ">
+                        Remarks:
+                    </div>
+                    <div class="value ">
+                        {{ invoiceDetails?.remarks }}
+                    </div>
+
+                </div>
+                <div class="flex-item">
+                    <div class="header ">
+                        Amount Paid:
+                    </div>
+                    <div class="value ">
+                        {{ getPaidAmount() }}
+                    </div>
+
+                </div>
+                <div class="flex-item">
+                    <div class="header ">
+                        Paid Date:
+                    </div>
+                    <div class="value ">
+                        {{ getPaidDate() }}
+                    </div>
+
+                </div>
+                <div class="flex-item">
+                    <div class="header ">
+                        Paid Status:
+                    </div>
+                    <div class="value ">
+                        {{ getPaidStatus() }}
+                    </div>
+
+                </div>
+                <div class="flex-item">
+                    <div class="header ">Invoice Attachments </div>
+                    <div class="filename value" *ngFor="let ifile of invoiceFilesList; let ifileInd = index">
+                        <mat-icon matTooltip="{{ifile.actualFileName}}" (click)="downloadFile(ifile)">description</mat-icon>
+                        <!-- <button mat-button mat-icon-button aria-label="Download" (click)="downloadFile(ifile)">
                             <mat-icon>save_alt</mat-icon>
-                        </button>
+                        </button> -->
                     </div>
                 </div>
-            </div>
-            <div class="flex-item" style="height:100%;">
-                <mat-card class="card mat-elevation-z3 full-width">
-                    <table class="dataTable full-width">
-                        <thead>
-                            <tr>
-                                <th class="headers" scope="col" *ngFor="let hdr of statusHeaderArr; let shInd = index">
-                                    <span>{{ hdr }}</span>
-                                </th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr *ngFor="let apprlevel of approvalLevelList; let levelInd = index">
-                                <td>
-                                    <span>{{ apprlevel.levelName }}</span>
-                                </td>
-                                <td>
-                                    <span>{{ apprlevel.status }}</span>
-                                </td>
-                                <td>
-                                    <span>{{ apprlevel.date }}</span>
-                                </td>
-                                <td>
-                                    <span>{{ apprlevel.remarks }}</span>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </mat-card>
+                <div class="flex-item">
+                    <div class="header ">Supporting Attachments</div>
+                    <div class="filename value" *ngFor="let sf of supportFilesList; let sfInd = index">
+                        <mat-icon matTooltip=" {{ sf.actualFileName }}" (click)="downloadFile(sf)">description</mat-icon>
+                        <!-- <button mat-button mat-icon-button aria-label="Download" (click)="downloadFile(sf)">
+                            <mat-icon>save_alt</mat-icon>
+                        </button> -->
+                    </div>
+                </div>
             </div>
         </div>
+
+        <div class="flex-item">
+            <mat-card class="card mat-elevation-z3 full-width">
+                <table class="dataTable full-width">
+                    <thead>
+                        <tr>
+                            <th class="headers" scope="col" *ngFor="let hdr of statusHeaderArr; let shInd = index">
+                                <span>{{ hdr }}</span>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let apprlevel of approvalLevelList; let levelInd = index">
+                            <td>
+                                <span>{{ apprlevel.levelName }}</span>
+                            </td>
+                            <td>
+                                <span>{{ apprlevel.status }}</span>
+                            </td>
+                            <td>
+                                <span>{{ apprlevel.date }}</span>
+                            </td>
+                            <td>
+                                <span>{{ apprlevel.remarks }}</span>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </mat-card>
+        </div>
     </div>
+
 
     <!-- table details [dataSource]="POData" -->
     <div class="container my-container margin-unset full-width">
@@ -146,19 +213,19 @@
                     <td>
                         <span>{{ item.itemDescription }}</span>
                     </td>
-                    <td *ngIf = "isPOBasedInvoice == true">
+                    <td *ngIf="isPOBasedInvoice == true">
                         <span>{{ item.uom }}</span>
                     </td>
                     <td>
                         <span>{{ item.hsn }}</span>
                     </td>
-                    <td *ngIf = "isPOBasedInvoice == true">
+                    <td *ngIf="isPOBasedInvoice == true">
                         <span>{{ item.orderedUnits }}</span>
                     </td>
-                    <td *ngIf = "isPOBasedInvoice == true">
+                    <td *ngIf="isPOBasedInvoice == true">
                         <span>{{ item.suppliedUnits }}</span>
                     </td>
-                    <td *ngIf = "isPOBasedInvoice == true">
+                    <td *ngIf="isPOBasedInvoice == true">
                         <span>{{ item.consumedUnits }}</span>
                     </td>
                     <td>
@@ -167,20 +234,26 @@
                     <td>
                         <span>{{ currency }}</span>
                     </td>
-                    <td>
+                    <td class="amount">
                         <span>{{ item.unitPrice }}</span>
                     </td>
-                    <td>
+                    <td class="amount">
                         <span>{{ item.unitsTotalAmount }}</span>
                     </td>
                 </tr>
             </tbody>
         </table>
-        <div style="text-align: right">
-            total Amount: {{ totalAmount + " " + currency }}
+        <div class="footer">
+            <div class="header ">
+                Total Amount:
+            </div>
+            <div class="value ">
+                {{ totalAmount + " " + currency }}
+            </div>
         </div>
-    </div>
-    <div class="row actions margin-unset">
-        <button mat-raised-button class="footer-actions">Back</button>
+
+        <div class="row actions margin-unset">
+            <button mat-raised-button class="footer-actions">Back</button>
+        </div>
     </div>
 </div>

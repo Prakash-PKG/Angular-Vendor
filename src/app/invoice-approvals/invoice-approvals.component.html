@@ -44,89 +44,171 @@
             </span>
         </li>
     </ul>
-    <div class="search-row">
-
-        <div class="vendor-detail-section search-row-element">
-
-            <div class="Rtable Rtable--2cols Rtable--collapse">
-
-                <div class="Rtable-cell Rtable-cell--head">Vendor Id</div>
-                <div class="Rtable-cell">{{ (initDetails?.invoiceDetails?.vendorId) ? initDetails?.invoiceDetails?.vendorId : "" }}</div>
-
-                <div class="Rtable-cell Rtable-cell--head">Vendor Name</div>
-                <div class="Rtable-cell">{{ (initDetails?.invoiceDetails?.vendorName) ? initDetails?.invoiceDetails?.vendorName : "" }}</div>
-
-                <div class="Rtable-cell Rtable-cell--head" *ngIf="isPOInvoice == true">PO No.</div>
-                <div class="Rtable-cell " *ngIf="isPOInvoice == true">{{ initDetails?.poDetails?.poNumber }}</div>
-
-                <div class="Rtable-cell Rtable-cell--head">Invoice No.</div>
-                <div class="Rtable-cell">{{ initDetails?.invoiceDetails?.invoiceNumber }}</div>
-
-                <div class="Rtable-cell Rtable-cell--head">Invoice Date</div>
-                <div class="Rtable-cell">{{ getFormattedDate(initDetails?.invoiceDetails?.invoiceDate) }}</div>
-
-                <div *ngIf="isPOInvoice == false" class="Rtable-cell Rtable-cell--head">Currency</div>
-                <div *ngIf="isPOInvoice == false" class="Rtable-cell">{{ initDetails?.invoiceDetails?.currencyType }}
+    <div class="flex-container ">
+        <div class="flex-item">
+            <div class="flex-container">
+                <div class="flex-item">
+                    <div class="header">
+                        Vendor Id
+                    </div>
+                    <div class="value">
+                        {{ (initDetails?.invoiceDetails?.vendorId) ? initDetails?.invoiceDetails?.vendorId : "" }}
+                    </div>
+                </div>
+                <div class="flex-item">
+                    <div class="header">
+                        Vendor Name
+                    </div>
+                    <div class="value">
+                        {{ (initDetails?.invoiceDetails?.vendorName) ? initDetails?.invoiceDetails?.vendorName : "" }}
+                    </div>
+                </div>
+                <div class="flex-item">
+                    <div class="header" *ngIf="isPOInvoice == true">
+                        PO No.
+                    </div>
+                    <div class="value" *ngIf="isPOInvoice == true">
+                        {{ initDetails?.poDetails?.poNumber }}
+                    </div>
                 </div>
 
-                <div class="Rtable-cell Rtable-cell--head">Remarks</div>
-                <div class="Rtable-cell">{{ initDetails?.invoiceDetails?.remarks }}</div>
-
-                <div class="Rtable-cell Rtable-cell--head">Freight</div>
-                <div class="Rtable-cell ">{{ initDetails?.invoiceDetails?.freightCharges }}</div>
-
-                <div class="Rtable-cell Rtable-cell--head">Total Tax Amt</div>
-                <div class="Rtable-cell">{{ initDetails?.invoiceDetails?.totalTax }}</div>
-
-                <div class="Rtable-cell Rtable-cell--head">Total Amt</div>
-                <div class="Rtable-cell">{{ totalAmount }}</div>
-
-                <div class="Rtable-cell Rtable-cell--head">Total Inv Amt<small>(inc. tax)</small></div>
-                <div class="Rtable-cell">{{ initDetails?.invoiceDetails?.totalAmt }}</div>
+            </div>
+        </div>
+        <div class="flex-item">
+            <div class="flex-container">
+                <div class="flex-item">
+                    <div class="header">
+                        Invoice No.
+                    </div>
+                    <div class="value">
+                        {{ initDetails?.invoiceDetails?.invoiceNumber }}
+                    </div>
+                </div>
+                <div class="flex-item">
+                    <div class="header">
+                        Invoice Date
+                    </div>
+                    <div class="value">
+                        {{ getFormattedDate(initDetails?.invoiceDetails?.invoiceDate) }}
+                    </div>
+                </div>
+                <div class="flex-item">
+                    <div class="header" *ngIf="isPOInvoice == false">
+                        Currency
+                    </div>
+                    <div class="value" *ngIf="isPOInvoice == false">
+                        {{ initDetails?.invoiceDetails?.currencyType }}
+                    </div>
+                </div>
+                <div class="flex-item">
+                    <div class="header">
+                        Remarks
+                    </div>
+                    <div class="value">
+                        {{ initDetails?.invoiceDetails?.remarks }}
+                    </div>
+                </div>
 
             </div>
         </div>
+        <div class="flex-item">
+            <div class="flex-container">
+                <div class="flex-item">
+                    <div class="header">
+                        Total Tax Amt
+                    </div>
+                    <div class="value">
+                        {{ initDetails?.invoiceDetails?.totalTax }}
+                    </div>
+                </div>
+                <div class="flex-item">
+                    <div class="header">
+                        Total Amt
+                    </div>
+                    <div class="value">
+                        {{ totalAmount }}
+                    </div>
+                </div>
 
-        <div class="actions search-row-element">
-            <button mat-raised-button class="footer-actions footer-actions-green">Invoice Attachments</button>
-            <div *ngFor="let ifile of invoiceFilesList; let ifileInd = index">
-                {{ ifile.actualFileName }}
-                <button mat-button mat-icon-button aria-label="Download" (click)="downloadFile(ifile)">
-                    <mat-icon>save_alt</mat-icon>
-                </button>
-            </div>
-            <button mat-raised-button class="footer-actions footer-actions-green">Supporting Attachments</button>
-            <div *ngFor="let sf of supportFilesList; let sfInd = index">
-                {{ sf.actualFileName }}
-                <button mat-button mat-icon-button aria-label="Download" (click)="downloadFile(sf)">
-                    <mat-icon>save_alt</mat-icon>
-                </button>
+                <div class="flex-item">
+                    <div class="header">
+                        Freight
+                    </div>
+                    <div class="value">
+                        {{ initDetails?.invoiceDetails?.freightCharges }}
+                    </div>
+                </div>
+                <div class="flex-item">
+                    <div class="header">
+                        Total Inv Amt<small>(inc. tax)</small>
+                    </div>
+                    <div class="value">
+                        {{ initDetails?.invoiceDetails?.totalAmt }}
+                    </div>
+                </div>
             </div>
         </div>
     </div>
-
-    <mat-form-field class="full-width">
-        <textarea matInput placeholder="Remarks" [(ngModel)]="remarks" autocomplete="off"></textarea>
-    </mat-form-field>
-    <div class="error-txt">
-        {{ remarksErrMsg }}
+    <div class="flex-container files">
+        <div class="flex-item">
+            <div class="header">
+                Invoice Attachments
+            </div>
+            <div class="value">
+                <div *ngFor="let ifile of invoiceFilesList; let ifileInd = index">
+                    {{ ifile.actualFileName }}
+                    <button mat-button mat-icon-button aria-label="Download" (click)="downloadFile(ifile)">
+                        <mat-icon>save_alt</mat-icon>
+                    </button>
+                </div>
+            </div>
+        </div>
     </div>
-
-    <div *ngIf="isGrnSesRequired == true" style="margin-bottom:2em;">
-        <mat-label style="color:black;">GRN/SES No.</mat-label>
-        <mat-form-field class="full-width" *ngIf="isGrnDdlVisible == true">
-            <mat-select matNativeControl [(ngModel)]="selectedGrnSesNumber">
-                <mat-option *ngFor="let gs of grnSesList" [value]="gs.grnSesNumber">
-                    {{ gs.grnSesNumber }}
-                </mat-option>
-            </mat-select>
-        </mat-form-field>
-        <span *ngIf="isGrnDdlVisible == false">{{ initDetails?.invoiceDetails?.grnSesNumber }}</span>
+    <div class="flex-container files">
+        <div class="flex-item">
+            <div class="header">
+                Supporting Attachments
+            </div>
+            <div class="value">
+                <div *ngFor="let sf of supportFilesList; let sfInd = index">
+                    {{ sf.actualFileName }}
+                    <button mat-button mat-icon-button aria-label="Download" (click)="downloadFile(sf)">
+                        <mat-icon>save_alt</mat-icon>
+                    </button>
+                </div>
+            </div>
+        </div>
     </div>
-    <div class="error-txt">
-        {{ grnSesErrMsg }}
+    <div class="flex-container details">
+        <div class="flex-item" style=" flex-grow: 0;width: 20%;">
+            <div class="flex-container">
+                <div class="flex-item">
+                    <div *ngIf="isGrnSesRequired == true">
+                        <mat-label style="color:black;">GRN/SES No.</mat-label>
+                        <span *ngIf="isGrnDdlVisible == false">{{ initDetails?.invoiceDetails?.grnSesNumber }}</span>
+                    </div>
+                </div>
+                <div class="flex-item" *ngIf="isGrnDdlVisible == true">
+                    <mat-select matNativeControl [(ngModel)]="selectedGrnSesNumber">
+                        <mat-option *ngFor="let gs of grnSesList" [value]="gs.grnSesNumber">
+                            {{ gs.grnSesNumber }}
+                        </mat-option>
+                    </mat-select>
+                </div>
+                <div class="error-txt">
+                    {{ grnSesErrMsg }}
+                </div>
+            </div>
+        </div>
+        <div class="flex-item">
+            <mat-form-field class="full-width">
+                <textarea matInput placeholder="Remarks" [(ngModel)]="remarks" autocomplete="off"></textarea>
+            </mat-form-field>
+            <div class="error-txt">
+                {{ remarksErrMsg }}
+            </div>
+        </div>
     </div>
-
     <!-- table details [dataSource]="POData"-->
     <div class="container my-container margin-unset full-width">
         <table class="dataTable full-width">
@@ -175,16 +257,14 @@
                 </tr>
             </tbody>
         </table>
-    </div>
-
-
-    <div class="row actions margin-unset">
-        <div class="error-txt">
-            {{ msg }}
+        <div class="row actions margin-unset">
+            <div class="error-txt">
+                {{ msg }}
+            </div>
+            <button mat-raised-button class="footer-actions">Cancel</button>
+            <button mat-raised-button class="footer-actions" (click)="onRejectClick()">Reject</button>
+            <button mat-raised-button class="footer-actions footer-actions-green"
+                (click)="onApproveClick()">Approve</button>
         </div>
-        <button mat-raised-button class="footer-actions">Cancel</button>
-        <button mat-raised-button class="footer-actions" (click)="onRejectClick()">Reject</button>
-        <button mat-raised-button class="footer-actions footer-actions-green"
-            (click)="onApproveClick()">Approve</button>
     </div>
 </div>

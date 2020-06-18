@@ -20,6 +20,10 @@ div.actions {
 .search-row-element {
   flex-grow: 1;
 }
+.search-row-element mat-label{
+  color:black;
+  font-weight:600;
+  }
 .search-row-element.search-btn {
   flex-grow: 0;
   flex-shrink: 0;

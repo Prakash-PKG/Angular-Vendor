@@ -1,191 +1,146 @@
 //---------------------css for stepper---------------------------
 
 .stepper {
-    list-style: none;
+  list-style: none;
+  display: flex;
+  flex-direction: row;
+  padding: 0;
+  margin: 2em 0px;
+
+  .step {
+    position: relative;
+    width: 100%;
     display: flex;
-    flex-direction: row;
-    padding: 0;
-    margin: 2em 0px;
-    
-    .step {
-       position: relative;
-       width: 100%;
-       display: flex;
-       flex-direction: column;
-       align-items: center;
-      
-        &.completed {
-          .dot {
-             background-color: blueviolet; 
-          }
-          
-          .lower-text {
-            color: blueviolet;
-          }
-          
-          &:after {
-            background-color: blueviolet;
-          }
-        }
-      
-      &:last-child {      
-        &:after {
-          width: 50%;
-          transform: translateX(-50%)
-        }
-      }
-      
-      &:first-child {      
-        &:after {
-          width: 50%;
-          transform: translateX(50%)
-        }
-      }
-      
-       &:after {
-          content: "";
-          width: 100%;
-          height: 3px;
-          position: absolute;
-          top: 25px; 
-          background-color: #d5d5d5;
-          z-index: 0;
-       }
-      
-      .upper-text {
-        font-size: 11px;
-        line-height: 1.5;
-        text-align: center;
-        color: #999;
-        height: 20px;
-        display: block;
-      }
-      
-      .lower-text {
-        font-size: 14px;
-        line-height: 1.57;
-        text-align: center;
-        color: #999;
-        display: block;
-        margin-top:.5em;
-      }
-      
+    flex-direction: column;
+    align-items: center;
+
+    &.completed {
       .dot {
-        width: 1em;
-        height: 1em;
-        border-radius: 50%;
-        position: relative;
-        z-index: 1;
-        display: inline-block;
-        background-color: #fff;
-        border: 2px solid blueviolet;
+        background-color: blueviolet;
+      }
+
+      .lower-text {
+        color: blueviolet;
+      }
+
+      &:after {
+        background-color: blueviolet;
       }
     }
+
+    &:last-child {
+      &:after {
+        width: 50%;
+        transform: translateX(-50%);
+      }
+    }
+
+    &:first-child {
+      &:after {
+        width: 50%;
+        transform: translateX(50%);
+      }
+    }
+
+    &:after {
+      content: "";
+      width: 100%;
+      height: 3px;
+      position: absolute;
+      top: 25px;
+      background-color: #d5d5d5;
+      z-index: 0;
+    }
+
+    .upper-text {
+      font-size: 11px;
+      line-height: 1.5;
+      text-align: center;
+      color: #999;
+      height: 20px;
+      display: block;
+    }
+
+    .lower-text {
+      font-size: 14px;
+      line-height: 1.57;
+      text-align: center;
+      color: #999;
+      display: block;
+      margin-top: 0.5em;
+    }
+
+    .dot {
+      width: 1em;
+      height: 1em;
+      border-radius: 50%;
+      position: relative;
+      z-index: 1;
+      display: inline-block;
+      background-color: #fff;
+      border: 2px solid blueviolet;
+    }
   }
+}
 // ----------------------------css for stepper ends------------------------------
 
-.search-row .footer-actions{
-    height:2em;
-    padding: 0 1em;
-    width: 100%;
+.search-row .footer-actions {
+  height: 2em;
+  padding: 0 1em;
+  width: 100%;
 }
 
-  div.actions {
-    padding: 0px;
-  }
-  .dataTable {
-    margin-top: 0px;
-  }
-  .amount {
-    text-align: right;
-  }
-  .search-row {
-    display: flex;
-    // flex-wrap: wrap;
-    justify-content: space-between;
-    align-items: center;
-    // margin-bottom:2em;
-  }
-  
-  .search-row-element {
-    flex-grow: 1;
-  }
+div.actions {
+  padding: 0px;
+}
+.dataTable {
+  margin-top: 0px;
+}
+.amount {
+  text-align: right;
+}
 
-  .search-row-element.actions {
-    flex: 0 0 3em;
-  }
-
-  td.mat-cell:first-of-type,
-  th.mat-header-cell:first-of-type,
-  td.mat-cell:first-of-type,
-  th.mat-header-cell:first-of-type {
-    padding-left: 0px;
-  }
-  td.mat-cell:last-of-type,
-  th.mat-header-cell:last-of-type,
-  td.mat-cell:last-of-type,
-  th.mat-header-cell:last-of-type {
-    padding-right: 0px;
-  }
-  .material-icons {
-    font-size: 1.25em;
-  }
-  
-  // ================css for table=================== */
-.Rtable {
-  position: relative;
+.flex-container {
   display: flex;
-  flex-wrap: wrap;
-  padding: 0;
+  justify-content: space-between;
+  align-items: stretch;
 }
-.Rtable-cell--head{
-padding-left:0px;
+
+.flex-item {
+  display: flex;
+  flex-grow: 1;
+  align-items: flex-start;
 }
-.Rtable--2cols > .Rtable-cell {
-  width: 25%;
+
+ .flex-container .flex-item .value {
+  width: 60%;
 }
-.Rtable--2cols > .Rtable-cell:nth-child(odd) {
-  width: 18.5%;
-  max-width: 18.5%;
-}
-.Rtable--2cols > .Rtable-cell::nth-child(even) {
-  width: 33.5%;
-}
-.Rtable-cell--head {
+ .flex-container .flex-item .header {
+  width: 40%;
   color: black;
 }
-.Rtable-cell {
-  margin: -3px 0 0 -3px;
-  box-sizing: border-box;
-  -webkit-box-flex: 1;
+.flex-container>.flex-item>.flex-container{
+  flex-direction: column;
   flex-grow: 1;
-  width: 100%;
-  padding: 0.2em 1em;
-  overflow: hidden;
-  list-style: none;
 }
-
-@media screen and (max-width: 499px) {
-  .Rtable--collapse {
-    display: block;
-    > .Rtable-cell {
-      width: 100% !important;
-    }
-    > .Rtable-cell--foot {
-      margin-bottom: 1em;
-    }
-  }
+.flex-container.files>.flex-item>.header{
+  width:20%;
 }
-@media screen and (max-width: 499px) {
-  .Rtable {
-    padding-left: 3.5em;
-  }
-  .Rtable--collapse {
-    display: block;
-    > .Rtable-cell {
-      width: 50% !important;
-      max-width: 50%;
-      display: inline-flex !important;
-    }
-  }
+.flex-container.files>.flex-item, .flex-container.details>.flex-item{
+  align-items: center;
+}
+td.mat-cell:first-of-type,
+th.mat-header-cell:first-of-type,
+td.mat-cell:first-of-type,
+th.mat-header-cell:first-of-type {
+  padding-left: 0px;
+}
+td.mat-cell:last-of-type,
+th.mat-header-cell:last-of-type,
+td.mat-cell:last-of-type,
+th.mat-header-cell:last-of-type {
+  padding-right: 0px;
+}
+.material-icons {
+  font-size: 1.25em;
 }
