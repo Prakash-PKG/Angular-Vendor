@@ -30,6 +30,10 @@ const routes: Routes = [
         component: LoginComponent
     },
     {
+        path: 'forpass',
+        component: ForgotPasswordComponent
+    },
+    {
         path: 'home',
         component: HomeComponent,
         children: [
