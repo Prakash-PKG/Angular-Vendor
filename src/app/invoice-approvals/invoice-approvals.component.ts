@@ -17,9 +17,9 @@ export class InvoiceApprovalsComponent implements OnInit {
     _sidebarExpansionSubscription: any = null;
 
     headerArr: string[] = [];
-    nonPOHeaderArr: string [] = ['Item No.', 'Item Desc', "HSN/SAC", 'Invoive Units', 'Rate', 'Amount'];
+    nonPOHeaderArr: string [] = ['Item No.', 'Item Desc', "HSN/SAC", 'Invoice Units', 'Rate', 'Amount'];
     poHeaderArr: string[] = ['Item No.', 'Item Desc', "UOM", "HSN/SAC", 'Order Units', 'Supplied Units', 'Balance Units', 
-                            'Invoive Units', 'Currency', 'Rate', 'Amount'];
+                            'Invoice Units', 'Currency', 'Rate', 'Amount'];
 
     initDetails: InvoiceApprovalInitResultModel = null;
     itemsList: ItemDisplayModel[] = [];

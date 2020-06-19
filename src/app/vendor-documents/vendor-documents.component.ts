@@ -36,7 +36,7 @@ export class VendorDocumentsComponent implements OnInit {
     failureMsg: string = "";
     documentsList: VendorMasterDocumentModel[] = [];
     filesMap: FileMap = {};
-    enableSubmit:boolean=true;
+    enableSubmit:boolean=false;
 
     vendorDocCtrl = {
         incCerCtrl: { documentTypeId: 1, browserId: 'incCerFileCtrl', placeholder: 'Incorporation Certificate' },
@@ -117,10 +117,8 @@ export class VendorDocumentsComponent implements OnInit {
         this._vendorRegistrationService.uploadVendorDocuments(filesReq)
             .subscribe(response => {
                 this._vendorRegistrationService.updateBusy(<BusyDataModel>{ isBusy: false, msg: null });
-                console.log(response.body)
                 if (response.body) {
                     let results: VendorDocumentResultModel = response.body as VendorDocumentResultModel;
-
                     if (results.status.status == 200 && results.status.isSuccess) {
                         // this.filesMap[documentTypeId].filesList = [];
                         this._snackBar.open("Files Attached Successfully");
@@ -128,8 +126,7 @@ export class VendorDocumentsComponent implements OnInit {
                         this.filesMap[documentTypeId].isAttached = true;
                     }
 
-                }
-               
+                }  
             },
                 (error) => {       
                     this.filesMap[documentTypeId].isAttached = false;
@@ -137,13 +134,14 @@ export class VendorDocumentsComponent implements OnInit {
                     this._snackBar.open("Files Attachment Failed");
                     console.log(error);
                 });
-        console.log(this.filesMap);
     }
     onPrevClick() {
         this._router.navigate([this._appService.routingConstants.vendorBankDetails]);
     }
 
     onSubmitClick() {
+        this.failureMsg = "";
+
         this.isValid = true;
         for (let key in this.filesMap) {
             this.filesMap[key].isError = false;
@@ -153,8 +151,7 @@ export class VendorDocumentsComponent implements OnInit {
             }
         }
         if (!this.isValid) { return };
-        this.failureMsg = "";
-
+       
         if (this.vendorDocumentForm.valid) {
             this._appService.vendorRegistrationDetails.isGSTReg = this.vendorDocumentForm.get("isGSTReg").value;
             this._appService.vendorRegistrationDetails.panNum = this.vendorDocumentForm.get("panNum").value;
@@ -184,7 +181,7 @@ export class VendorDocumentsComponent implements OnInit {
                         if (result.status.status == 200 && result.status.isSuccess) {
                             this._appService.vendorRegistrationDetails = result.vendorMasterDetails;
                             this.failureMsg = this._appService.messages.vendorRegistrationSubmitSuccessMsg;
-                            this.enableSubmit = false;
+                            this.enableSubmit = true;
                         }
                         else {
                             this.failureMsg = this._appService.messages.vendorRegistrationSaveFailure;
@@ -272,6 +269,7 @@ export class VendorDocumentsComponent implements OnInit {
         this.vendorDocumentForm.get(selfId).setValidators([Validators.required]);
         this.vendorDocumentForm.get(selfId).updateValueAndValidity();
         this.filesMap[documentTypeId].isMandatory = true;
+        this.filesMap[documentTypeId].isError = true;
     }
     ngOnInit() {
         this.initializeFilesList();

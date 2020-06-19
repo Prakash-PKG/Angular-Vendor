@@ -15,13 +15,13 @@ export class InvoiceDetailsComponent implements OnInit {
     isDashboardCollapsed: boolean = true;
     _sidebarExpansionSubscription: any = null;
 
-    statusHeaderArr: string[] = ['Level', 'Status', 'Approved Date', 'Remarks'];
+    statusHeaderArr: string[] = ['Stages', 'Status', 'Action Date', 'Remarks'];
     headerArr: string[] = [];
 
     poInvHeaderArr: string[] = ['Item No.', 'Item Desc', "UOM", "HSN/SAC", 'Order Units', 'Supplied Units', 'Balance Units', 
-                            'Invoive Units', 'Currency', 'Rate', 'Amount'];
+                            'Invoice Units', 'Currency', 'Rate', 'Amount'];
 
-    nonPoInvHeaderArr: string[] = ['Item No.', 'Item Desc', "HSN/SAC", 'Invoive Units', 'Currency', 'Rate', 'Amount'];
+    nonPoInvHeaderArr: string[] = ['Item No.', 'Item Desc', "HSN/SAC", 'Invoice Units', 'Currency', 'Rate', 'Amount'];
 
     invoiceDetails: InvoiceModel = null;
     currency: string = "";

@@ -84,14 +84,6 @@
 }
 // ----------------------------css for stepper ends------------------------------
 
-.flex-container div.actions {
-  padding: 0px;
-  flex-direction: column;
-}
-.flex-container div.actions .footer-actions{
-  height: 2em;
-  padding: 0 1em;
-}
 .dataTable {
   margin-top: 0px;
 }
@@ -119,21 +111,24 @@ th.mat-header-cell:last-of-type {
   display: flex;
   justify-content: space-between;
   align-items: stretch;
-}
-
-.flex-item {
-  display: flex;
   flex-grow: 1;
 }
-.description {
-  justify-content: space-between;
-  align-items: center;
+
+.flex-item  {
+  display: flex;
+  flex-grow: 1;
+  align-items: stretch;
 }
+.description .flex-container .flex-item .value{
+  width: 60%;
+}
+
+.description .flex-container .flex-item .header{
+  width: 40%;
+}
+
 .description .flex-container {
   flex-direction: column;
-  align-items: flex-start;
-  margin-right: 1em;
-
 }
 .details {
   margin-bottom: 2em;
@@ -141,4 +136,16 @@ th.mat-header-cell:last-of-type {
 .card {
   border-radius: 10px;
   padding-top: 0px;
+}
+.header{
+  color: black;
+}
+.filename{
+  cursor:pointer;
+}
+.footer{
+  display: flex;
+  justify-content: flex-end;
+  align-items: stretch;
+  flex-direction: row;
 }

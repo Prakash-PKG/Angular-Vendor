@@ -59,6 +59,14 @@
 .search-row-element {
   flex-grow: 0;
 }
+.search-row-element mat-label{
+  color:black;
+  font-weight:600;
+  }
+  .search-row-element.actions .footer-actions {
+    height: 2em;
+    line-height: 1em;
+  }
 .search-row .mat-form-field {
   margin-right: 2em;
 }

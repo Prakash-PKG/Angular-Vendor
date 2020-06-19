@@ -30,12 +30,16 @@
   flex-grow: 0;
   flex-shrink: 0;
 }
+.search-row-element mat-label{
+  color:black;
+  font-weight:600;
+  }
+  .search-row-element.actions .footer-actions {
+    height: 2em;
+    line-height: 1em;
+  }
 .search-row-element.actions {
   flex: 0 0 3em;
-}
-.search-row-element .footer-actions{
-  height: 2em;
-  line-height: 1em;
 }
 .mat-form-field.field {
   margin-right: 2em;
