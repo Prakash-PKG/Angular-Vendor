@@ -110,8 +110,8 @@ export class VendorApprovalComponent implements OnInit {
             this.tdsFilesList = this.vendorDocList.filter(file => file.vendorMasterDocumentsId == 8);
             this.sezFilesList = this.vendorDocList.filter(file => file.vendorMasterDocumentsId == 9);
             this.lutFilesList = this.vendorDocList.filter(file => file.vendorMasterDocumentsId == 10);
-            this.othersFilesList == this.vendorDocList.filter(file => file.vendorMasterDocumentsId == 13);
-            this.msaFilesList == this.vendorDocList.filter(file => file.vendorMasterDocumentsId == 12);
+            this.othersFilesList = this.vendorDocList.filter(file => file.vendorMasterDocumentsId == 13);
+            this.msaFilesList = this.vendorDocList.filter(file => file.vendorMasterDocumentsId == 12);
         }
     }
 
