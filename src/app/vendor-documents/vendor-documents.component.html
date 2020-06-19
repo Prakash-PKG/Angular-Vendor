@@ -29,10 +29,10 @@
                         </button>
                     </span>
                 </span>
-                <div *ngIf="filesMap[vendorDocCtrl.incCerCtrl.documentTypeId] && 
-                filesMap[vendorDocCtrl.incCerCtrl.documentTypeId].isError" class="errortxt">
-                    Please attach the Documents
-                </div>
+            </div>
+            <div *ngIf="filesMap[vendorDocCtrl.incCerCtrl.documentTypeId] && 
+            filesMap[vendorDocCtrl.incCerCtrl.documentTypeId]?.isError" class="errortxt">
+                Please attach the Documents
             </div>
         </div>
 
@@ -45,7 +45,7 @@
                     autocomplete="off" (blur)="updateMandatory('gstNum',vendorDocCtrl.gstCtrl.documentTypeId)">
             </mat-form-field>
         </div>
-      
+
         <div class="col-7 actions">
             <input style="display: none" [attr.id]="vendorDocCtrl.gstCtrl.browserId" type="file" multiple
                 accept=".xls,.xlsx,.doc,.docx,.pdf,.png,.jpg,.zip"
@@ -53,7 +53,7 @@
             <button mat-raised-button class="footer-actions"
                 (click)="onBrowseFileClick($event, vendorDocCtrl.gstCtrl.browserId)"
                 [disabled]="!vendorDocumentForm.get('gstNum').value">Attach</button>
-  
+
             <div *ngIf="filesMap[vendorDocCtrl.gstCtrl.documentTypeId]?.isAttached" style="display: flex;
     flex-wrap: wrap;">
                 <span class="filename"
@@ -64,13 +64,14 @@
                             (click)="onDeleteFileClick(f, fInd, vendorDocCtrl.gstCtrl.documentTypeId)">
                             <mat-icon>delete_outline</mat-icon>
                         </button>
-            
+
                     </span>
                 </span>
-                <div *ngIf="filesMap[vendorDocCtrl.gstCtrl.documentTypeId] && 
-                filesMap[vendorDocCtrl.gstCtrl.documentTypeId].isError" class="errortxt">
-                    Please attach the Documents
-                </div>
+
+            </div>
+            <div *ngIf="filesMap[vendorDocCtrl.gstCtrl.documentTypeId] && 
+            filesMap[vendorDocCtrl.gstCtrl.documentTypeId]?.isError" class="errortxt">
+                Please attach the Documents
             </div>
         </div>
 
@@ -102,10 +103,11 @@
                         </button>
                     </span>
                 </span>
-                <div *ngIf="filesMap[vendorDocCtrl.panCtrl.documentTypeId] && 
-                filesMap[vendorDocCtrl.panCtrl.documentTypeId].isError" class="errortxt">
-                    Please attach the Documents
-                </div>
+            
+            </div>
+            <div *ngIf="filesMap[vendorDocCtrl.panCtrl.documentTypeId] && 
+            filesMap[vendorDocCtrl.panCtrl.documentTypeId]?.isError" class="errortxt">
+                Please attach the Documents
             </div>
         </div>
 
@@ -133,10 +135,11 @@
                         </button>
                     </span>
                 </span>
-                <div *ngIf="filesMap[vendorDocCtrl.canChqCtrl.documentTypeId] && 
-                filesMap[vendorDocCtrl.canChqCtrl.documentTypeId].isError" class="errortxt">
-                    Please attach the Documents
-                </div>
+            
+            </div>
+            <div *ngIf="filesMap[vendorDocCtrl.canChqCtrl.documentTypeId] && 
+            filesMap[vendorDocCtrl.canChqCtrl.documentTypeId]?.isError" class="errortxt">
+                Please attach the Documents
             </div>
         </div>
 
@@ -170,14 +173,15 @@
                         <button mat-button mat-icon-button aria-label="Delete"
                             (click)="onDeleteFileClick(f, fInd, vendorDocCtrl.lutNoCtrl.documentTypeId)">
                             <mat-icon>delete_outline</mat-icon>
-                          </button>
+                        </button>
 
                     </span>
                 </span>
-                <div *ngIf="filesMap[vendorDocCtrl.lutNoCtrl.documentTypeId] && 
-                filesMap[vendorDocCtrl.lutNoCtrl.documentTypeId].isError" class="errortxt">
-                    Please attach the Documents
-                </div>
+           
+            </div>
+            <div *ngIf="filesMap[vendorDocCtrl.lutNoCtrl.documentTypeId] && 
+            filesMap[vendorDocCtrl.lutNoCtrl.documentTypeId]?.isError" class="errortxt">
+                Please attach the Documents
             </div>
         </div>
 
@@ -210,10 +214,11 @@
                         </button>
                     </span>
                 </span>
-                <div *ngIf="filesMap[vendorDocCtrl.pfCtrl.documentTypeId] && 
-                filesMap[vendorDocCtrl.pfCtrl.documentTypeId].isError" class="errortxt">
-                    Please attach the Documents
-                </div>
+        
+            </div>
+            <div *ngIf="filesMap[vendorDocCtrl.pfCtrl.documentTypeId] && 
+            filesMap[vendorDocCtrl.pfCtrl.documentTypeId]?.isError" class="errortxt">
+                Please attach the Documents
             </div>
         </div>
 
@@ -245,10 +250,10 @@
                         </button>
                     </span>
                 </span>
-                <div *ngIf="filesMap[vendorDocCtrl.esiCtrl.documentTypeId] && 
-                filesMap[vendorDocCtrl.esiCtrl.documentTypeId].isError" class="errortxt">
-                    Please attach the Documents
-                </div>
+            </div>
+            <div *ngIf="filesMap[vendorDocCtrl.esiCtrl.documentTypeId] && 
+            filesMap[vendorDocCtrl.esiCtrl.documentTypeId]?.isError" class="errortxt">
+                Please attach the Documents
             </div>
         </div>
 
@@ -284,10 +289,10 @@
                         </button>
                     </span>
                 </span>
-                <div *ngIf="filesMap[vendorDocCtrl.msmeCtrl.documentTypeId] && 
-                filesMap[vendorDocCtrl.msmeCtrl.documentTypeId].isError" class="errortxt">
-                    Please attach the Documents
-                </div>
+            </div>
+            <div *ngIf="filesMap[vendorDocCtrl.msmeCtrl.documentTypeId] && 
+            filesMap[vendorDocCtrl.msmeCtrl.documentTypeId]?.isError" class="errortxt">
+                Please attach the Documents
             </div>
         </div>
 
@@ -322,10 +327,11 @@
                         </button>
                     </span>
                 </span>
-                <div *ngIf="filesMap[vendorDocCtrl.tdsCtrl.documentTypeId] && 
-                filesMap[vendorDocCtrl.tdsCtrl.documentTypeId].isError" class="errortxt">
-                    Please attach the Documents
-                </div>
+            
+            </div>
+            <div *ngIf="filesMap[vendorDocCtrl.tdsCtrl.documentTypeId] && 
+            filesMap[vendorDocCtrl.tdsCtrl.documentTypeId]?.isError" class="errortxt">
+                Please attach the Documents
             </div>
         </div>
 
@@ -360,10 +366,11 @@
                         </button>
                     </span>
                 </span>
-                <div *ngIf="filesMap[vendorDocCtrl.sezCtrl.documentTypeId] && filesMap[vendorDocCtrl.sezCtrl.documentTypeId].isError"
-                    class="errortxt">
-                    Please attach the Documents
-                </div>
+
+            </div>
+            <div *ngIf="filesMap[vendorDocCtrl.sezCtrl.documentTypeId] && filesMap[vendorDocCtrl.sezCtrl.documentTypeId]?.isError"
+                class="errortxt">
+                Please attach the Documents
             </div>
         </div>
 
@@ -416,7 +423,7 @@
                     </span>
                 </span>
                 <div *ngIf="filesMap[vendorDocCtrl.otherCtrl.documentTypeId] && 
-                filesMap[vendorDocCtrl.otherCtrl.documentTypeId].isError" class="errortxt">
+                filesMap[vendorDocCtrl.otherCtrl.documentTypeId]?.isError" class="errortxt">
                     Please attach the Documents
                 </div>
             </div>
@@ -426,10 +433,11 @@
 </form>
 
 <div class="row actions margin-unset">
-    <div class="errortxt" *ngIf="vendorDocumentForm.invalid">
+    <div class="errortxt" *ngIf="vendorDocumentForm.invalid || isServerError">
         {{ failureMsg }}
     </div>
+    
     <button mat-raised-button class="footer-actions" (click)="onPrevClick()">Previous</button>
-    <button mat-raised-button class="footer-actions footer-actions-green" [disabled]="enableSubmit"
+    <button mat-raised-button class="footer-actions footer-actions-green" [disabled]="disableSubmit"
         (click)="onSubmitClick()">Submit</button>
 </div>

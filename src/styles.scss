@@ -229,3 +229,6 @@ min-height: 100%;
   color: blueviolet;
   font-size: x-large;
 }
+::ng-deep input:-internal-autofill-selected{
+  background-color: white!important;
+}

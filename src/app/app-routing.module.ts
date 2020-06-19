@@ -30,7 +30,7 @@ const routes: Routes = [
         component: LoginComponent
     },
     {
-        path: 'forpass',
+        path: 'forgotpass',
         component: ForgotPasswordComponent
     },
     {

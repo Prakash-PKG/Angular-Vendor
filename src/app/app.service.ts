@@ -36,7 +36,8 @@ export class AppService {
         vendorAddressDetails: "/vendor/venaddr",
         vendorBankDetails: "/vendor/venbank",
         vendorDocuments: "/vendor/vendocs",
-        vendorOther: "/vendor/venothers"
+        vendorOther: "/vendor/venothers",
+        forgotPass:"/forgotpass"
     };
 
     readonly pageConstants: any = {

@@ -65,8 +65,8 @@ export class LoginComponent implements OnInit {
         );
     }
 
-    onVendorRegistrationClickClick() {
-        this._router.navigate([this._appService.routingConstants.vendorDetails]);
+    onForgotPasswordClick() {
+        this._router.navigate([this._appService.routingConstants.forgotPass]);
     }
 
     OnLoginClick() {
