@@ -19,10 +19,10 @@ import { scan, takeWhile, takeLast } from 'rxjs/operators';
 
 interface FileMap {
     [key: number]: {
-        filesList?: FileDetailsModel[],
-        isMandatory?: boolean,
-        isAttached?: boolean,
-        isError?: boolean
+        filesList: FileDetailsModel[],
+        isMandatory: boolean,
+        isAttached: boolean,
+        isError: boolean
     }
 }
 
@@ -69,7 +69,7 @@ export class VendorDocumentsComponent implements OnInit {
     onFileChange(event: any, documentTypeId: number) {
         if (!documentTypeId) return;
         this._vendorRegistrationService.updateBusy(<BusyDataModel>{ isBusy: true, msg: "Attaching..." });
-        this.filesMap[documentTypeId] = { filesList: [], isAttached: false };
+        this.filesMap[documentTypeId] = { filesList: [],isMandatory:true, isAttached: false,isError:false };
         if (event.target.files && event.target.files.length > 0) {
             this.counterSubject = new BehaviorSubject(0);
             this.counterSubscription = this.counterSubject
@@ -124,7 +124,7 @@ export class VendorDocumentsComponent implements OnInit {
         event.preventDefault();
         let element: HTMLElement = document.getElementById(controlName);
         element.click();
-        console.log(this.filesMap);
+
     }
     onAttachFileClick(documentTypeId: number) {
         let filesReq: VendorDocumentReqModel = {
