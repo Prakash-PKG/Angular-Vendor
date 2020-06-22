@@ -183,17 +183,20 @@
         <div class="flex-item" style=" flex-grow: 0;width: 20%;">
             <div class="flex-container">
                 <div class="flex-item">
-                    <div *ngIf="isGrnSesRequired == true">
+                    <div *ngIf="isGrnSesRequired == true && isGrnDdlVisible == false">
                         <mat-label style="color:black;">GRN/SES No.</mat-label>
-                        <span *ngIf="isGrnDdlVisible == false">{{ initDetails?.invoiceDetails?.grnSesNumber }}</span>
+                        <span>{{ initDetails?.invoiceDetails?.grnSesNumber }}</span>
                     </div>
                 </div>
-                <div class="flex-item" *ngIf="isGrnDdlVisible == true">
-                    <mat-select matNativeControl [(ngModel)]="selectedGrnSesNumber">
-                        <mat-option *ngFor="let gs of grnSesList" [value]="gs.grnSesNumber">
-                            {{ gs.grnSesNumber }}
-                        </mat-option>
-                    </mat-select>
+                <div class="flex-item" *ngIf="isGrnSesRequired == true && isGrnDdlVisible == true">
+                    <mat-form-field>
+                        <mat-label>GRN/SES No.</mat-label>
+                        <mat-select matNativeControl [(ngModel)]="selectedGrnSesNumber">
+                            <mat-option *ngFor="let gs of grnSesList" [value]="gs.grnSesNumber">
+                                {{ gs.grnSesNumber }}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
                 </div>
                 <div class="error-txt">
                     {{ grnSesErrMsg }}
