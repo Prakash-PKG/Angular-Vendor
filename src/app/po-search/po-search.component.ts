@@ -47,7 +47,7 @@ export class PoSearchComponent implements OnInit {
         else {
             req.employeeId = globalConstant.userDetails.isFunctionalHead ? globalConstant.userDetails.userId : null;
 
-            if(globalConstant.userDetails.isPurchaseOwner) {
+            if(globalConstant.userDetails.isPurchaseOwner || globalConstant.userDetails.isInvoiceUploader) {
                 req.departments = req.departments.concat(globalConstant.userDetails.poDepts);
             }
 

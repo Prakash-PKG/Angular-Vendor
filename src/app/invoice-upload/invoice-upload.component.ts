@@ -384,7 +384,7 @@ export class InvoiceUploadComponent implements OnInit {
         let req: InvoiceUploadReqModel = {
             vendorId: (globalConstant.userDetails.isVendor) ? globalConstant.userDetails.userId : null,
             approvalLevels: [],
-            departments: (globalConstant.userDetails.isPurchaseOwner) ? globalConstant.userDetails.poDepts : []
+            departments: (globalConstant.userDetails.isInvoiceUploader) ? globalConstant.userDetails.poDepts : []
         }
         this._homeService.updateBusy(<BusyDataModel>{ isBusy: true, msg: "Loading..." });
         this._initDetails = await this._invoiceUploadService.getInvoiceUploadInitData(req);
