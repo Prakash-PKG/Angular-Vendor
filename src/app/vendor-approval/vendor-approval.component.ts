@@ -40,7 +40,7 @@ export class VendorApprovalComponent implements OnInit {
     selectedCurrency: string = null;
     msg: string = "";
     vendorDocList: VendorMasterFilesModel[] = [];
-    isEditable = false
+    isEditable = true
 
     incCertFilesList: VendorMasterFilesModel[] = [];
     gstFilesList: VendorMasterFilesModel[] = [];
@@ -62,7 +62,7 @@ export class VendorApprovalComponent implements OnInit {
         private _vendorRegistrationService: VendorRegistrationService) { }
 
     onEditClick() {
-        this.isEditable = true;
+        this.isEditable = false;
     }
     onSendForCorrClick() {
         let req: VendorRegistrationDetailRequestModel = {

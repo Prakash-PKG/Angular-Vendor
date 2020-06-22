@@ -148,7 +148,7 @@ export class VendorMasterDetailsModel {
     procApprByName: string;
     finApprByName: string;
     finRemark: string;
-    isGSTReg: boolean;
+    // isGSTReg: boolean;
     otherDocDesc :string;
 }
 

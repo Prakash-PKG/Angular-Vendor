@@ -161,7 +161,7 @@ export class AppService {
         procApprByName:  null,
         finApprByName: null,
         finRemark:  null,
-        isGSTReg:null,
+        // isGSTReg:null,
         otherDocDesc:null
     };
 
@@ -225,7 +225,7 @@ export class AppService {
             procApprByName:  null,
             finApprByName: null,
             finRemark:  null,
-            isGSTReg:null,
+            // isGSTReg:null,
             otherDocDesc:null
         };
 

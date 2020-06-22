@@ -196,7 +196,6 @@ export class VendorDocumentsComponent implements OnInit {
             this._vendorRegistrationService.updateVendorRegistrationDetails(req)
                 .subscribe(response => {
                     this._vendorRegistrationService.updateBusy(<BusyDataModel>{ isBusy: false, msg: null });
-
                     if (response.body) {
                         let result: VendorRegistrationResultModel = response.body as VendorRegistrationResultModel;
                         if (result.status.status == 200 && result.status.isSuccess) {

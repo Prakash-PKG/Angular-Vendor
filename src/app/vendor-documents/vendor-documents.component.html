@@ -437,7 +437,7 @@
         {{ failureMsg }}
     </div>
     
-    <button mat-raised-button class="footer-actions" (click)="onPrevClick()">Previous</button>
+    <button mat-raised-button class="footer-actions" (click)="onPrevClick()" [disabled]="disableSubmit">Previous</button>
     <button mat-raised-button class="footer-actions footer-actions-green" [disabled]="disableSubmit"
         (click)="onSubmitClick()">Submit</button>
 </div>

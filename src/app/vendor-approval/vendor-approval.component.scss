@@ -53,6 +53,7 @@
 
 .Rtable--2cols > .Rtable-cell {
   width: 25%;
+  display: flex;
 }
 .Rtable--2cols > .Rtable-cell:nth-child(odd) {
   width: 18.5%;
@@ -116,4 +117,7 @@
 }
 .approver-section{
   margin:0px 3em;
+}
+.mat-radio-button{
+  margin-right: 10px;
 }

@@ -97,9 +97,9 @@
             <input type="text" matInput [(ngModel)]="vendorDetails.city" [disabled]="isEditable" required>
           </mat-form-field> -
           <mat-form-field class="full-width" style="width:45%">
-            <input type="text" matInput [(ngModel)]="vendorDetails.pincode" [disabled]="isEditable" required>
+            <input type="text" matInput [(ngModel)]="vendorDetails.pincode" [disabled]="isEditable">
           </mat-form-field>
-          <div class="error-txt" *ngIf="!vendorDetails.city || !vendorDetails.pincode">This field is mandatory</div>
+          <div class="error-txt" *ngIf="!vendorDetails.city">This field is mandatory</div>
         </div>
 
         <div class="Rtable-cell Rtable-cell--head">State</div>
@@ -200,9 +200,9 @@
         <div class="Rtable-cell">
           <div *ngFor="let file of incCertFilesList; let i = index">
             <mat-icon matTooltip="{{ file.actualFileName }}" (click)="downloadFile(file)">description</mat-icon>
-            <!-- <button mat-button mat-icon-button aria-label="Delete" (click)="onDeleteFileClick(f, fInd,1)">
+            <button mat-button mat-icon-button aria-label="Delete" (click)="onDeleteFileClick(file, i,1)">
               <mat-icon>delete_outline</mat-icon>
-            </button> -->
+            </button>
           </div>
           <div class="error-txt" *ngIf="!incCertFilesList">This attachment is mandatory</div>
         </div>
@@ -329,8 +329,8 @@
 
 
         <div class="Rtable-cell Rtable-cell--head">Is MSME registered? </div>
-        <div class="Rtable-cell" *ngIf="!isEditable"> {{ vendorDetails.isMsmedRegistered  == true ? 'YES' : 'NO'}}</div>
-        <div class="Rtable-cell" *ngIf="isEditable">
+        <div class="Rtable-cell" *ngIf="isEditable"> {{ vendorDetails.isMsmedRegistered  == true ? 'YES' : 'NO'}}</div>
+        <div class="Rtable-cell" *ngIf="!isEditable">
           <mat-radio-group [(ngModel)]="vendorDetails.isMsmedRegistered">
             <mat-radio-button [value]=true selected>YES</mat-radio-button>
             <mat-radio-button [value]=false [checked]=true>NO</mat-radio-button>
@@ -351,8 +351,8 @@
         </div>
 
         <div class="Rtable-cell Rtable-cell--head">Have any TDS lower deduction certificate? </div>
-        <div class="Rtable-cell" *ngIf="!isEditable">{{ vendorDetails.hasTdsLower  == true ? 'YES' : 'NO'}}</div>
-        <div class="Rtable-cell" *ngIf="isEditable">
+        <div class="Rtable-cell" *ngIf="isEditable">{{ vendorDetails.hasTdsLower  == true ? 'YES' : 'NO'}}</div>
+        <div class="Rtable-cell" *ngIf="!isEditable">
           <mat-radio-group [(ngModel)]="vendorDetails.hasTdsLower">
             <mat-radio-button [value]=true selected>YES</mat-radio-button>
             <mat-radio-button [value]=false>No</mat-radio-button>
@@ -373,8 +373,8 @@
         </div>
 
         <div class="Rtable-cell Rtable-cell--head">SEZ/Non SEZ </div>
-        <div class="Rtable-cell" *ngIf="!isEditable"> {{ vendorDetails.isSez == true ? 'SEZ' : 'NON SEZ' }}</div>
-        <div class="Rtable-cell" *ngIf="isEditable">
+        <div class="Rtable-cell" *ngIf="isEditable"> {{ vendorDetails.isSez == true ? 'SEZ' : 'NON SEZ' }}</div>
+        <div class="Rtable-cell" *ngIf="!isEditable">
           <mat-radio-group [(ngModel)]="vendorDetails.isSez">
             <mat-radio-button [value]=true selected>SEZ</mat-radio-button>
             <mat-radio-button [value]=false>Non-SEZ</mat-radio-button>
@@ -385,17 +385,17 @@
         <div class="Rtable-cell">
           <div *ngFor="let file of sezFilesList; let i = index">
             <mat-icon matTooltip="{{ file.actualFileName }}" (click)="downloadFile(file)">description</mat-icon>
+            <button mat-button mat-icon-button aria-label="Delete" (click)="onDeleteFileClick(file, i , 9)">
+              <mat-icon>delete_outline</mat-icon>
+            </button>
           </div>
-          <!-- <button mat-button mat-icon-button aria-label="Delete" (click)="onDeleteFileClick(f, fInd,9)">
-            <mat-icon>delete_outline</mat-icon>
-          </button> -->
           <div class="error-txt" *ngIf="vendorDetails.isSez && !sezFilesList">Attachment is mandatory if SEZ
           </div>
         </div>
 
         <div class="Rtable-cell Rtable-cell--head">Is RCM applicable? </div>
-        <div class="Rtable-cell" *ngIf="!isEditable">{{ vendorDetails.isRcmApplicable == true ? 'YES' : 'NO'}}</div>
-        <div class="Rtable-cell" *ngIf="isEditable">
+        <div class="Rtable-cell" *ngIf="isEditable">{{ vendorDetails.isRcmApplicable == true ? 'YES' : 'NO'}}</div>
+        <div class="Rtable-cell" *ngIf="!isEditable">
           <mat-radio-group [(ngModel)]="vendorDetails.isRcmApplicable">
             <mat-radio-button [value]=true selected>YES</mat-radio-button>
             <mat-radio-button [value]=false>No</mat-radio-button>
