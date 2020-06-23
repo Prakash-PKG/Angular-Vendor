@@ -107,12 +107,12 @@ export class SidebarComponent implements OnInit {
         this._homeService.updateSidebarDetails(this.isSidebarCollapsed);
 
         this.isInvoiceCreateVisible = false;
-        if(globalConstant.userDetails.isVendor || globalConstant.userDetails.isPurchaseOwner) {
+        if(globalConstant.userDetails.isVendor || globalConstant.userDetails.isInvoiceUploader) {
             this.isInvoiceCreateVisible = true;
         }
 
         this.isApprovalsVisible = true;
-        if(globalConstant.userDetails.isVendor || globalConstant.userDetails.isEmpanelment) {
+        if(globalConstant.userDetails.isVendor || globalConstant.userDetails.isEmpanelment || globalConstant.userDetails.isInvoiceUploader) {
             this.isApprovalsVisible = false;
         }
 
