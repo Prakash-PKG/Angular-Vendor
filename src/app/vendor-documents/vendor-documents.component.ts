@@ -40,7 +40,6 @@ export class VendorDocumentsComponent implements OnInit {
     documentsList: VendorMasterDocumentModel[] = [];
     filesMap: FileMap = {};
     disableSubmit: boolean = false;
-    subscription: Subscription;
     private counterSubject: BehaviorSubject<number>;
     private counterSubscription: Subscription;
 
@@ -162,7 +161,7 @@ export class VendorDocumentsComponent implements OnInit {
 
     onSubmitClick() {
         this.failureMsg = "";
-        console.log(this.vendorDocumentForm);
+
         this.isValid = true;
         for (let key in this.filesMap) {
             this.filesMap[key].isError = false;
@@ -174,8 +173,7 @@ export class VendorDocumentsComponent implements OnInit {
         if (!this.isValid) { return };
 
         if (this.vendorDocumentForm.valid) {
-            // this._appService.vendorRegistrationDetails.isGSTReg = this.vendorDocumentForm.get("isGSTReg").value;
-            this._appService.vendorRegistrationDetails.panNum = this.vendorDocumentForm.get("panNum").value;
+             this._appService.vendorRegistrationDetails.panNum = this.vendorDocumentForm.get("panNum").value;
             this._appService.vendorRegistrationDetails.gstNum = this.vendorDocumentForm.get("gstNum").value;
             this._appService.vendorRegistrationDetails.pfNum = this.vendorDocumentForm.get("pfNum").value;
             this._appService.vendorRegistrationDetails.esiNum = this.vendorDocumentForm.get("esiNum").value;
@@ -260,8 +258,7 @@ export class VendorDocumentsComponent implements OnInit {
     }
 
     updateVendorDetails() {
-        // this.vendorDocumentForm.get("isGSTReg").setValue(this._appService.vendorRegistrationDetails.isGSTReg);
-        this.vendorDocumentForm.get("panNum").setValue(this._appService.vendorRegistrationDetails.panNum);
+          this.vendorDocumentForm.get("panNum").setValue(this._appService.vendorRegistrationDetails.panNum);
         this.vendorDocumentForm.get("gstNum").setValue(this._appService.vendorRegistrationDetails.gstNum);
         this.vendorDocumentForm.get("pfNum").setValue(this._appService.vendorRegistrationDetails.pfNum);
         this.vendorDocumentForm.get("esiNum").setValue(this._appService.vendorRegistrationDetails.esiNum);
@@ -302,7 +299,6 @@ export class VendorDocumentsComponent implements OnInit {
 
             panNum: [null, [Validators.required]],
             gstNum: [null],
-            // isGSTReg: [null, [Validators.required]],
             pfNum: [null],
             esiNum: [null],
             cinNum: [null],

@@ -30,17 +30,21 @@
   flex-grow: 0;
   flex-shrink: 0;
 }
-  .search-row-element.actions .footer-actions {
-    height: 2em;
-    line-height: 1em;
-  }
+.search-row-element.actions .footer-actions {
+  height: 2em;
+  line-height: 1em;
+}
 .search-row-element.actions {
   flex: 0 0 3em;
 }
-.mat-form-field.field {
+.approver-section .search-row .mat-form-field {
   margin-right: 2em;
   width: 7em;
 }
+.approver-section .search-row .mat-form-field:last-child {
+  margin-right: 0;
+}
+
 // ================css for table=================== */
 .Rtable {
   position: relative;
@@ -53,8 +57,12 @@
 
 .Rtable--2cols > .Rtable-cell {
   width: 25%;
-  display: flex;
 }
+.Rtable--2cols > .Rtable-cell.attachments {
+  display: flex;
+  flex-wrap: wrap;
+}
+
 .Rtable--2cols > .Rtable-cell:nth-child(odd) {
   width: 18.5%;
   max-width: 18.5%;
@@ -75,7 +83,7 @@
   overflow: hidden;
   list-style: none;
 }
-.Rtable .Rtable-cell .error-txt{
+.Rtable .Rtable-cell .error-txt {
   color: red;
   font-size: x-small;
   font-weight: 100;
@@ -111,13 +119,26 @@
   border-top-width: 1px;
   border-top-style: solid;
 }
-.actions{
+.actions {
   width: 100%;
-
 }
-.approver-section{
-  margin:0px 3em;
+.approver-section {
+  margin: 0px 3em;
 }
-.mat-radio-button{
+.mat-radio-button {
   margin-right: 10px;
+}
+.attachments .attach-btn {
+  background: blueviolet;
+  color: white;
+  transform: rotate(145deg);
+}
+.attachments .attach-btn:hover {
+  box-shadow: 0px 0px 5px lightgray;
+}
+.filename{
+  background: aliceblue;
+  margin-right: 5px;
+  cursor: pointer;
+  align-items: center;
 }
