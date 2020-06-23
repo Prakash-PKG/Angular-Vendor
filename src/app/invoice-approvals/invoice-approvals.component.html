@@ -68,7 +68,8 @@
                         Project Name
                     </div>
                     <div class="value">
-                        {{ (initDetails?.invoiceDetails?.projectId) ? initDetails?.invoiceDetails?.projectName + " (" + initDetails?.invoiceDetails?.projectId + ")" : "" }}
+                        {{ (initDetails?.invoiceDetails?.projectId) ? initDetails?.invoiceDetails?.projectName + " (" + initDetails?.invoiceDetails?.projectId
+                        + ")" : "" }}
                     </div>
                 </div>
                 <div class="flex-item">
@@ -101,10 +102,10 @@
                     </div>
                 </div>
                 <div class="flex-item">
-                    <div class="header" *ngIf="isPOInvoice == false">
+                    <div class="header">
                         Currency
                     </div>
-                    <div class="value" *ngIf="isPOInvoice == false">
+                    <div class="value">
                         {{ initDetails?.invoiceDetails?.currencyType }}
                     </div>
                 </div>
@@ -123,27 +124,26 @@
             <div class="flex-container">
                 <div class="flex-item">
                     <div class="header">
-                        Total Tax Amt
-                    </div>
-                    <div class="value">
-                        {{ initDetails?.invoiceDetails?.totalTax }}
-                    </div>
-                </div>
-                <div class="flex-item">
-                    <div class="header">
                         Total Amt
                     </div>
                     <div class="value">
                         {{ totalAmount }}
                     </div>
                 </div>
-
                 <div class="flex-item">
                     <div class="header">
                         Freight
                     </div>
                     <div class="value">
                         {{ initDetails?.invoiceDetails?.freightCharges }}
+                    </div>
+                </div>
+                <div class="flex-item">
+                    <div class="header">
+                        Total Tax Amt
+                    </div>
+                    <div class="value">
+                        {{ initDetails?.invoiceDetails?.totalTax }}
                     </div>
                 </div>
                 <div class="flex-item">
@@ -274,8 +274,7 @@
             </div>
             <button mat-raised-button class="footer-actions">Cancel</button>
             <button mat-raised-button class="footer-actions" (click)="onRejectClick()">Reject</button>
-            <button mat-raised-button class="footer-actions footer-actions-green"
-                (click)="onApproveClick()">Approve</button>
+            <button mat-raised-button class="footer-actions footer-actions-green" (click)="onApproveClick()">Approve</button>
         </div>
     </div>
 </div>

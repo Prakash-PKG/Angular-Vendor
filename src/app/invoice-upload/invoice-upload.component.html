@@ -93,7 +93,7 @@
                 <div *ngIf="f.currency.errors?.required" class="errortxt">Currency is required</div>
             </div>
             <div class=" search-row-element actions" *ngIf="selectedInvoiceType == 'non-po'">
-                <button mat-raised-button class="footer-actions footer-actions-green" (click)="onNewClick()">New</button>
+                <button mat-raised-button class="footer-actions footer-actions-green" (click)="onNewClick()">+</button>
             </div>
         </div>
        
@@ -173,6 +173,11 @@
                         </td>
                         <td class="amount">
                             {{ item.get("unitsAmt").value }}
+                        </td>
+                        <td>
+                            <button mat-button mat-icon-button aria-label="Delete" (click) = "onDeleteItemClick(itemInd)">
+                                <mat-icon>delete_outline</mat-icon>
+                            </button>
                         </td>
                     </tr>
                 </tbody>

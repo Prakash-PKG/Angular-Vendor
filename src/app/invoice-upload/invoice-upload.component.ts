@@ -186,6 +186,12 @@ export class InvoiceUploadComponent implements OnInit {
     
     //projects auto complete end
 
+    onDeleteItemClick(rowInd: number) {
+        const formsList = <FormArray>this.invoiceUploadForm.controls['itemsList'];
+        formsList.removeAt(rowInd);
+        this.updateAmountDetails();
+    }
+
     onInvoiceTypeChange(evtData) {
         this.resetAllFields();
         

@@ -28,6 +28,20 @@
       }
     }
 
+    &.notcompleted {
+      .dot {
+        background-color: red;
+      }
+
+      .lower-text {
+        color: red;
+      }
+
+      &:after {
+        background-color: red;
+      }
+    }
+
     &:last-child {
       &:after {
         width: 50%;
