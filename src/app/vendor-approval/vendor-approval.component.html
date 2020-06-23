@@ -215,7 +215,7 @@
               <mat-icon>attachment</mat-icon>
             </button>
           </div>
-          <div class="error-txt" *ngIf="updateError(vendorDocCtrl.incCerCtrl.documentTypeId,)" class="errortxt">
+          <div class="error-txt" *ngIf="filesMap[vendorDocCtrl.incCerCtrl.documentTypeId]?.filesList" class="errortxt">
             This attachment is mandatory</div>
         </div>
 
