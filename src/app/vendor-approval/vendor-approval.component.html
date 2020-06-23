@@ -197,25 +197,49 @@
       <div class="Rtable Rtable--2cols Rtable--collapse">
 
         <div class="Rtable-cell Rtable-cell--head">Incorporation Certificate</div>
-        <div class="Rtable-cell">
-          <div *ngFor="let file of incCertFilesList; let i = index">
+        <div class="Rtable-cell attachments">
+          <div *ngFor="let file of filesMap[vendorDocCtrl.incCerCtrl.documentTypeId]?.filesList; let i = index"
+            class="attachments filename">
             <mat-icon matTooltip="{{ file.actualFileName }}" (click)="downloadFile(file)">description</mat-icon>
-            <button mat-button mat-icon-button aria-label="Delete" (click)="onDeleteFileClick(file, i,1)">
+            <button mat-button mat-icon-button aria-label="Delete"
+              (click)="onDeleteFileClick(file, i,vendorDocCtrl.incCerCtrl.documentTypeId)">
               <mat-icon>delete_outline</mat-icon>
             </button>
           </div>
-          <div class="error-txt" *ngIf="!incCertFilesList">This attachment is mandatory</div>
+          <div *ngIf="!isEditable">
+            <input style="display: none" [attr.id]="vendorDocCtrl.incCerCtrl.browserId" type="file" multiple
+              accept=".xls,.xlsx,.doc,.docx,.pdf,.png,.jpg,.zip"
+              (change)="onFileChange($event, vendorDocCtrl.incCerCtrl.documentTypeId)" />
+            <button mat-button mat-icon-button aria-label="Attach" class="attach-btn"
+              (click)="onBrowseFileClick($event, vendorDocCtrl.incCerCtrl.browserId)">
+              <mat-icon>attachment</mat-icon>
+            </button>
+          </div>
+          <div class="error-txt" *ngIf="filesMap[vendorDocCtrl.incCerCtrl.documentTypeId]?.filesList" class="errortxt">
+            This attachment is mandatory</div>
         </div>
 
         <div class="Rtable-cell Rtable-cell--head">Cancelled Cheque</div>
-        <div class="Rtable-cell">
-          <div *ngFor="let file of canChqFilesList; let i = index">
+        <div class="Rtable-cell attachments">
+          <div *ngFor="let file of filesMap[vendorDocCtrl.canChqCtrl.documentTypeId]?.filesList; let i = index"
+            class="attachments filename">
             <mat-icon matTooltip="{{ file.actualFileName }}" (click)="downloadFile(file)">description</mat-icon>
+            <button mat-button mat-icon-button aria-label="Delete"
+              (click)="onDeleteFileClick(file, i,vendorDocCtrl.canChqCtrl.documentTypeId)">
+              <mat-icon>delete_outline</mat-icon>
+            </button>
           </div>
-          <!-- <button mat-button mat-icon-button aria-label="Delete" (click)="onDeleteFileClick(f, fInd,6)">
-            <mat-icon>delete_outline</mat-icon>
-          </button> -->
-          <div class="error-txt" *ngIf="!canChqFilesList">This attachment is mandatory</div>
+          <div *ngIf="!isEditable">
+            <input style="display: none" [attr.id]="vendorDocCtrl.canChqCtrl.browserId" type="file" multiple
+              accept=".xls,.xlsx,.doc,.docx,.pdf,.png,.jpg,.zip"
+              (change)="onFileChange($event, vendorDocCtrl.canChqCtrl.documentTypeId)" />
+            <button mat-button mat-icon-button aria-label="Attach" class="attach-btn"
+              (click)="onBrowseFileClick($event, vendorDocCtrl.canChqCtrl.browserId)">
+              <mat-icon>attachment</mat-icon>
+            </button>
+          </div>
+          <div class="error-txt" *ngIf="!filesMap[vendorDocCtrl.canChqCtrl.documentTypeId]?.filesList" class="errortxt">
+            This attachment is mandatory</div>
         </div>
 
         <div class="Rtable-cell Rtable-cell--head">GST No.</div>
@@ -226,14 +250,28 @@
         </div>
 
         <div class="Rtable-cell Rtable-cell--head">Attachments</div>
-        <div class="Rtable-cell">
-          <div *ngFor="let file of gstFilesList; let i = index">
+        <div class="Rtable-cell attachments">
+          <div *ngFor="let file of filesMap[vendorDocCtrl.gstCtrl.documentTypeId]?.filesList; let i = index"
+            class="attachments filename">
             <mat-icon matTooltip="{{ file.actualFileName }}" (click)="downloadFile(file)">description</mat-icon>
+            <button mat-button mat-icon-button aria-label="Delete"
+              (click)="onDeleteFileClick(file, i,vendorDocCtrl.gstCtrl.documentTypeId)">
+              <mat-icon>delete_outline</mat-icon>
+            </button>
           </div>
-          <!-- <button mat-button mat-icon-button aria-label="Delete" (click)="onDeleteFileClick(f, fInd,2)">
-            <mat-icon>delete_outline</mat-icon>
-          </button> -->
-          <div class="error-txt" *ngIf="vendorDetails.gstNum && !gstFilesList">This attachment is mandatory if GST
+          <div *ngIf="!isEditable">
+            <input style="display: none" [attr.id]="vendorDocCtrl.gstCtrl.browserId" type="file" multiple
+              accept=".xls,.xlsx,.doc,.docx,.pdf,.png,.jpg,.zip"
+              (change)="onFileChange($event, vendorDocCtrl.gstCtrl.documentTypeId)" />
+            <button mat-button mat-icon-button aria-label="Attach" class="attach-btn"
+              (click)="onBrowseFileClick($event, vendorDocCtrl.gstCtrl.browserId)">
+              <mat-icon>attachment</mat-icon>
+            </button>
+          </div>
+          <div class="error-txt"
+            *ngIf="vendorDetails.gstNum && !filesMap[vendorDocCtrl.gstCtrl.documentTypeId]?.filesList">This attachment
+            is
+            mandatory if GST
             Registered</div>
         </div>
 
@@ -246,14 +284,26 @@
         </div>
 
         <div class="Rtable-cell Rtable-cell--head">Attachments</div>
-        <div class="Rtable-cell">
-          <div *ngFor="let file of panFilesList; let i = index">
+        <div class="Rtable-cell attachments">
+          <div *ngFor="let file of filesMap[vendorDocCtrl.panCtrl.documentTypeId]?.filesList; let i = index"
+            class="attachments filename">
             <mat-icon matTooltip="{{ file.actualFileName }}" (click)="downloadFile(file)">description</mat-icon>
+            <button mat-button mat-icon-button aria-label="Delete"
+              (click)="onDeleteFileClick(file, i,vendorDocCtrl.panCtrl.documentTypeId)">
+              <mat-icon>delete_outline</mat-icon>
+            </button>
           </div>
-          <!-- <button mat-button mat-icon-button aria-label="Delete" (click)="onDeleteFileClick(f, fInd,3)">
-            <mat-icon>delete_outline</mat-icon>
-          </button> -->
-          <div class="error-txt" *ngIf="!panFilesList">This attachment is mandatory</div>
+          <div *ngIf="!isEditable">
+            <input style="display: none" [attr.id]="vendorDocCtrl.panCtrl.browserId" type="file" multiple
+              accept=".xls,.xlsx,.doc,.docx,.pdf,.png,.jpg,.zip"
+              (change)="onFileChange($event, vendorDocCtrl.panCtrl.documentTypeId)" />
+            <button mat-button mat-icon-button aria-label="Attach" class="attach-btn"
+              (click)="onBrowseFileClick($event, vendorDocCtrl.panCtrl.browserId)">
+              <mat-icon>attachment</mat-icon>
+            </button>
+          </div>
+          <div class="error-txt" *ngIf="!filesMap[vendorDocCtrl.panCtrl.documentTypeId]?.filesList">This attachment is
+            mandatory.</div>
         </div>
 
         <div class="Rtable-cell Rtable-cell--head">LUT No.</div>
@@ -266,14 +316,27 @@
         </div>
 
         <div class="Rtable-cell Rtable-cell--head">Attachments</div>
-        <div class="Rtable-cell">
-          <div *ngFor="let file of lutFilesList; let i = index">
+        <div class="Rtable-cell attachments">
+          <div *ngFor="let file of filesMap[vendorDocCtrl.lutNoCtrl.documentTypeId]?.filesList; let i = index"
+            class="attachments filename">
             <mat-icon matTooltip="{{ file.actualFileName }}" (click)="downloadFile(file)">description</mat-icon>
+            <button mat-button mat-icon-button aria-label="Delete"
+              (click)="onDeleteFileClick(file, i,vendorDocCtrl.lutNoCtrl.documentTypeId)">
+              <mat-icon>delete_outline</mat-icon>
+            </button>
           </div>
-          <!-- <button mat-button mat-icon-button aria-label="Delete" (click)="onDeleteFileClick(f, fInd,10)">
-            <mat-icon>delete_outline</mat-icon>
-          </button> -->
-          <div class="error-txt" *ngIf="!lutFilesList">This attachment is mandatory</div>
+          <div *ngIf="!isEditable">
+            <input style="display: none" [attr.id]="vendorDocCtrl.lutNoCtrl.browserId" type="file" multiple
+              accept=".xls,.xlsx,.doc,.docx,.pdf,.png,.jpg,.zip"
+              (change)="onFileChange($event, vendorDocCtrl.lutNoCtrl.documentTypeId)" />
+            <button mat-button mat-icon-button aria-label="Attach" class="attach-btn"
+              (click)="onBrowseFileClick($event, vendorDocCtrl.lutNoCtrl.browserId)">
+              <mat-icon>attachment</mat-icon>
+            </button>
+          </div>
+          <div class="error-txt" *ngIf="!filesMap[vendorDocCtrl.lutNoCtrl.documentTypeId]?.filesList">This attachment is
+            mandatory.</div>
+
         </div>
 
         <div class="Rtable-cell Rtable-cell--head">LUT Date</div>
@@ -298,14 +361,28 @@
         </div>
 
         <div class="Rtable-cell Rtable-cell--head">Attachments</div>
-        <div class="Rtable-cell">
-          <div *ngFor="let file of pfFilesList; let i = index">
+        <div class="Rtable-cell attachments">
+          <div *ngFor="let file of filesMap[vendorDocCtrl.pfCtrl.documentTypeId]?.filesList; let i = index"
+            class="attachments filename">
             <mat-icon matTooltip="{{ file.actualFileName }}" (click)="downloadFile(file)">description</mat-icon>
+            <button mat-button mat-icon-button aria-label="Delete"
+              (click)="onDeleteFileClick(file, i,vendorDocCtrl.pfCtrl.documentTypeId)">
+              <mat-icon>delete_outline</mat-icon>
+            </button>
           </div>
-          <!-- <button mat-button mat-icon-button aria-label="Delete" (click)="onDeleteFileClick(f, fInd,4)">
-            <mat-icon>delete_outline</mat-icon>
-          </button> -->
-          <div class="error-txt" *ngIf="vendorDetails.pfNum && !pfFilesList">Attachment is mandatory if PF exists</div>
+          <div *ngIf="!isEditable">
+            <input style="display: none" [attr.id]="vendorDocCtrl.pfCtrl.browserId" type="file" multiple
+              accept=".xls,.xlsx,.doc,.docx,.pdf,.png,.jpg,.zip"
+              (change)="onFileChange($event, vendorDocCtrl.pfCtrl.documentTypeId)" />
+            <button mat-button mat-icon-button aria-label="Attach" class="attach-btn"
+              (click)="onBrowseFileClick($event, vendorDocCtrl.pfCtrl.browserId)">
+              <mat-icon>attachment</mat-icon>
+            </button>
+          </div>
+          <div class="error-txt"
+            *ngIf="vendorDetails.pfNum && !filesMap[vendorDocCtrl.pfCtrl.documentTypeId]?.filesList">This attachment is
+            mandatory if PF exists.</div>
+
         </div>
 
         <div class="Rtable-cell Rtable-cell--head">ESI No.</div>
@@ -316,15 +393,27 @@
         </div>
 
         <div class="Rtable-cell Rtable-cell--head">Attachments</div>
-        <div class="Rtable-cell">
-          <div *ngFor="let file of esiFilesList; let i = index">
+        <div class="Rtable-cell attachments">
+          <div *ngFor="let file of filesMap[vendorDocCtrl.esiCtrl.documentTypeId]?.filesList; let i = index"
+            class="attachments filename">
             <mat-icon matTooltip="{{ file.actualFileName }}" (click)="downloadFile(file)">description</mat-icon>
+            <button mat-button mat-icon-button aria-label="Delete"
+              (click)="onDeleteFileClick(file, i,vendorDocCtrl.esiCtrl.documentTypeId)">
+              <mat-icon>delete_outline</mat-icon>
+            </button>
           </div>
-          <!-- <button mat-button mat-icon-button aria-label="Delete" (click)="onDeleteFileClick(f, fInd,5)">
-            <mat-icon>delete_outline</mat-icon>
-          </button> -->
-          <div class="error-txt" *ngIf="vendorDetails.esiNum && !esiFilesList">Attachment is mandatory if ESI exists
+          <div *ngIf="!isEditable">
+            <input style="display: none" [attr.id]="vendorDocCtrl.esiCtrl.browserId" type="file" multiple
+              accept=".xls,.xlsx,.doc,.docx,.pdf,.png,.jpg,.zip"
+              (change)="onFileChange($event, vendorDocCtrl.esiCtrl.documentTypeId)" />
+            <button mat-button mat-icon-button aria-label="Attach" class="attach-btn"
+              (click)="onBrowseFileClick($event, vendorDocCtrl.esiCtrl.browserId)">
+              <mat-icon>attachment</mat-icon>
+            </button>
           </div>
+          <div class="error-txt"
+            *ngIf="vendorDetails.esiNum && !filesMap[vendorDocCtrl.esiCtrl.documentTypeId]?.filesList">This attachment
+            is mandatory if ESI exists.</div>
         </div>
 
 
@@ -338,16 +427,28 @@
         </div>
 
         <div class="Rtable-cell Rtable-cell--head">Attachments</div>
-        <div class="Rtable-cell">
-          <div *ngFor="let file of msmeFilesList; let i = index">
+        <div class="Rtable-cell attachments">
+          <div *ngFor="let file of filesMap[vendorDocCtrl.msmeCtrl.documentTypeId]?.filesList; let i = index"
+            class="attachments filename">
             <mat-icon matTooltip="{{ file.actualFileName }}" (click)="downloadFile(file)">description</mat-icon>
+            <button mat-button mat-icon-button aria-label="Delete"
+              (click)="onDeleteFileClick(file, i,vendorDocCtrl.msmeCtrl.documentTypeId)">
+              <mat-icon>delete_outline</mat-icon>
+            </button>
           </div>
-          <!-- <button mat-button mat-icon-button aria-label="Delete" (click)="onDeleteFileClick(f, fInd,11)">
-            <mat-icon>delete_outline</mat-icon>
-          </button> -->
-          <div class="error-txt" *ngIf="vendorDetails.isMsmedRegistered && !msmeFilesList">Attachment is mandatory if
-            MSME registered
+          <div *ngIf="!isEditable">
+            <input style="display: none" [attr.id]="vendorDocCtrl.msmeCtrl.browserId" type="file" multiple
+              accept=".xls,.xlsx,.doc,.docx,.pdf,.png,.jpg,.zip"
+              (change)="onFileChange($event, vendorDocCtrl.msmeCtrl.documentTypeId)" />
+            <button mat-button mat-icon-button aria-label="Attach" class="attach-btn"
+              (click)="onBrowseFileClick($event, vendorDocCtrl.msmeCtrl.browserId)">
+              <mat-icon>attachment</mat-icon>
+            </button>
           </div>
+          <div class="error-txt"
+            *ngIf="vendorDetails.isMsmedRegistered && !filesMap[vendorDocCtrl.msmeCtrl.documentTypeId]?.filesList">This
+            attachment is mandatory if MSME.</div>
+
         </div>
 
         <div class="Rtable-cell Rtable-cell--head">Have any TDS lower deduction certificate? </div>
@@ -360,16 +461,28 @@
         </div>
 
         <div class="Rtable-cell Rtable-cell--head">Attachments</div>
-        <div class="Rtable-cell">
-          <div *ngFor="let file of tdsFilesList; let i = index">
+        <div class="Rtable-cell attachments">
+          <div *ngFor="let file of filesMap[vendorDocCtrl.tdsCtrl.documentTypeId]?.filesList; let i = index"
+            class="attachments filename">
             <mat-icon matTooltip="{{ file.actualFileName }}" (click)="downloadFile(file)">description</mat-icon>
+            <button mat-button mat-icon-button aria-label="Delete"
+              (click)="onDeleteFileClick(file, i,vendorDocCtrl.tdsCtrl.documentTypeId)">
+              <mat-icon>delete_outline</mat-icon>
+            </button>
           </div>
-          <!-- <button mat-button mat-icon-button aria-label="Delete" (click)="onDeleteFileClick(f, fInd,8)">
-            <mat-icon>delete_outline</mat-icon>
-          </button> -->
-          <div class="error-txt" *ngIf="vendorDetails.hasTdsLower && !tdsFilesList">Attachment is mandatory if you have
-            TDS certificate
+          <div *ngIf="!isEditable">
+            <input style="display: none" [attr.id]="vendorDocCtrl.tdsCtrl.browserId" type="file" multiple
+              accept=".xls,.xlsx,.doc,.docx,.pdf,.png,.jpg,.zip"
+              (change)="onFileChange($event, vendorDocCtrl.tdsCtrl.documentTypeId)" />
+            <button mat-button mat-icon-button aria-label="Attach" class="attach-btn"
+              (click)="onBrowseFileClick($event, vendorDocCtrl.tdsCtrl.browserId)">
+              <mat-icon>attachment</mat-icon>
+            </button>
           </div>
+          <div class="error-txt"
+            *ngIf="vendorDetails.hasTdsLower && !filesMap[vendorDocCtrl.tdsCtrl.documentTypeId]?.filesList">This
+            attachment is mandatory if TDS available</div>
+
         </div>
 
         <div class="Rtable-cell Rtable-cell--head">SEZ/Non SEZ </div>
@@ -382,15 +495,27 @@
         </div>
 
         <div class="Rtable-cell Rtable-cell--head">Attachments</div>
-        <div class="Rtable-cell">
-          <div *ngFor="let file of sezFilesList; let i = index">
+        <div class="Rtable-cell attachments">
+          <div *ngFor="let file of filesMap[vendorDocCtrl.sezCtrl.documentTypeId]?.filesList; let i = index"
+            class="attachments filename">
             <mat-icon matTooltip="{{ file.actualFileName }}" (click)="downloadFile(file)">description</mat-icon>
-            <button mat-button mat-icon-button aria-label="Delete" (click)="onDeleteFileClick(file, i , 9)">
+            <button mat-button mat-icon-button aria-label="Delete"
+              (click)="onDeleteFileClick(file, i,vendorDocCtrl.sezCtrl.documentTypeId)">
               <mat-icon>delete_outline</mat-icon>
             </button>
           </div>
-          <div class="error-txt" *ngIf="vendorDetails.isSez && !sezFilesList">Attachment is mandatory if SEZ
+          <div *ngIf="!isEditable">
+            <input style="display: none" [attr.id]="vendorDocCtrl.sezCtrl.browserId" type="file" multiple
+              accept=".xls,.xlsx,.doc,.docx,.pdf,.png,.jpg,.zip"
+              (change)="onFileChange($event, vendorDocCtrl.sezCtrl.documentTypeId)" />
+            <button mat-button mat-icon-button aria-label="Attach" class="attach-btn"
+              (click)="onBrowseFileClick($event, vendorDocCtrl.sezCtrl.browserId)">
+              <mat-icon>attachment</mat-icon>
+            </button>
           </div>
+          <div class="error-txt"
+            *ngIf="vendorDetails.isSez && !filesMap[vendorDocCtrl.sezCtrl.documentTypeId]?.filesList">This
+            attachment is mandatory if SEZ is available</div>
         </div>
 
         <div class="Rtable-cell Rtable-cell--head">Is RCM applicable? </div>
@@ -403,9 +528,23 @@
         </div>
 
         <div class="Rtable-cell Rtable-cell--head">Others</div>
-        <div class="Rtable-cell">
-          <div *ngFor="let file of othersFilesList; let i = index">
+        <div class="Rtable-cell attachments">
+          <div *ngFor="let file of filesMap[vendorDocCtrl.otherCtrl.documentTypeId]?.filesList; let i = index"
+            class="attachments filename">
             <mat-icon matTooltip="{{ file.actualFileName }}" (click)="downloadFile(file)">description</mat-icon>
+            <button mat-button mat-icon-button aria-label="Delete"
+              (click)="onDeleteFileClick(file, i,vendorDocCtrl.otherCtrl.documentTypeId)">
+              <mat-icon>delete_outline</mat-icon>
+            </button>
+          </div>
+          <div *ngIf="!isEditable">
+            <input style="display: none" [attr.id]="vendorDocCtrl.otherCtrl.browserId" type="file" multiple
+              accept=".xls,.xlsx,.doc,.docx,.pdf,.png,.jpg,.zip"
+              (change)="onFileChange($event, vendorDocCtrl.otherCtrl.documentTypeId)" />
+            <button mat-button mat-icon-button aria-label="Attach" class="attach-btn"
+              (click)="onBrowseFileClick($event, vendorDocCtrl.otherCtrl.browserId)">
+              <mat-icon>attachment</mat-icon>
+            </button>
           </div>
         </div>
 
@@ -452,36 +591,26 @@
             </mat-option>
           </mat-select>
         </mat-form-field>
-        <!-- 
-        <div class="actions search-row-element">
-          <input style="display: none" [attr.id]="msaCtrl" type="file" multiple
+        <div class="actions">
+          <input style="display: none" [attr.id]="vendorDocCtrl.msaCtrl.browserId" type="file" multiple
             accept=".xls,.xlsx,.doc,.docx,.pdf,.png,.jpg,.zip"
-            (change)="onFileChange($event, 12)" />
+            (change)="onFileChange($event, vendorDocCtrl.msaCtrl.documentTypeId)" />
           <button mat-raised-button class="footer-actions"
-            (click)="onBrowseFileClick($event,msaCtrl)">Browse</button>
-          <button mat-raised-button class="footer-actions"
-            (click)="onAttachFileClick(12)">Attach MSA</button>
-          <div *ngIf="filesMap" style="display: flex;flex-wrap: wrap;">
+            (click)="onBrowseFileClick($event, vendorDocCtrl.msaCtrl.browserId)">{{vendorDocCtrl.msaCtrl.placeholder}}</button>
+          <div *ngIf="filesMap[vendorDocCtrl.msaCtrl.documentTypeId]?.isAttached" style="display: flex;
+  flex-wrap: wrap;">
             <span class="filename"
-              *ngFor="let f of filesMap[12]?.filesList; let fInd = index">
+              *ngFor="let f of filesMap[vendorDocCtrl.msaCtrl.documentTypeId]?.filesList; let fInd = index">
               <span>
                 <mat-icon matTooltip="{{ f.actualFileName }}" (click)="downloadFile(f)">description</mat-icon>
                 <button mat-button mat-icon-button aria-label="Delete"
-                  (click)="onDeleteFileClick(f, fInd, 12)">
+                  (click)="onDeleteFileClick(f, fInd, vendorDocCtrl.msaCtrl.documentTypeId)">
                   <mat-icon>delete_outline</mat-icon>
-                </button>
-                <button *ngIf="f.fileId != null" mat-button mat-icon-button aria-label="Download"
-                  (click)="downloadFile(f)">
-                  <mat-icon>save_alt</mat-icon>
                 </button>
               </span>
             </span>
-            <div *ngIf="filesMap[vendorDocCtrl.panCtrl.documentTypeId] && 
-                filesMap[vendorDocCtrl.panCtrl.documentTypeId].isError" class="errortxt">
-              Please attach the Documents
-            </div> -->
-
-        <!-- </div> -->
+          </div>
+        </div>
       </div>
       <div class="row" *ngIf="roleName=='Finance'">
         <div class="col-6"><span style="color:black">Procurement Approver Remarks:</span>
@@ -504,7 +633,7 @@
         {{ msg }}
       </div>
 
-      <button mat-raised-button class="footer-actions" (click)="onEditClick()">Edit</button>
+      <button mat-raised-button class="footer-actions" [disabled]="!isEditable" (click)="onEditClick()">Edit</button>
       <!-- <button mat-raised-button class="footer-actions" (click)="onSendForCorrClick()">Send For Correction</button> -->
       <button mat-raised-button class="footer-actions" (click)="onRejectClick()">Reject</button>
       <button mat-raised-button class="footer-actions footer-actions-green" (click)="onApproveClick()">Approve</button>

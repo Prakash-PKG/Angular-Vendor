@@ -283,7 +283,7 @@ export class VendorMasterFilesModel {
 
 export class VendorApprovalInitResultModel {
     statusDetails: StatusModel;
-    filesList: VendorMasterFilesModel[];
+    fileDetails: FileDetailsModel[];
     vendorMasterDetails: VendorMasterDetailsModel;
     accGroupMasterList: AccGroupMasterList[];
     companyCodeMasterList: CompanyCodeMasterList[];
@@ -291,6 +291,7 @@ export class VendorApprovalInitResultModel {
     vendorApprovalDetails: vendorApprovalDetails;
     withholdTypeVOList: WithholdTypeList[];
     withholdTaxVOList: WithholdTaxList[];
+    vendorMasterDocumentVOList:VendorMasterDocumentModel[];
 }
 
 export class VendorApprovalInitReqModel {

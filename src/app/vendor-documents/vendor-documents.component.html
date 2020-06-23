@@ -103,7 +103,7 @@
                         </button>
                     </span>
                 </span>
-            
+
             </div>
             <div *ngIf="filesMap[vendorDocCtrl.panCtrl.documentTypeId] && 
             filesMap[vendorDocCtrl.panCtrl.documentTypeId]?.isError" class="errortxt">
@@ -135,7 +135,7 @@
                         </button>
                     </span>
                 </span>
-            
+
             </div>
             <div *ngIf="filesMap[vendorDocCtrl.canChqCtrl.documentTypeId] && 
             filesMap[vendorDocCtrl.canChqCtrl.documentTypeId]?.isError" class="errortxt">
@@ -177,7 +177,7 @@
 
                     </span>
                 </span>
-           
+
             </div>
             <div *ngIf="filesMap[vendorDocCtrl.lutNoCtrl.documentTypeId] && 
             filesMap[vendorDocCtrl.lutNoCtrl.documentTypeId]?.isError" class="errortxt">
@@ -214,7 +214,7 @@
                         </button>
                     </span>
                 </span>
-        
+
             </div>
             <div *ngIf="filesMap[vendorDocCtrl.pfCtrl.documentTypeId] && 
             filesMap[vendorDocCtrl.pfCtrl.documentTypeId]?.isError" class="errortxt">
@@ -327,7 +327,7 @@
                         </button>
                     </span>
                 </span>
-            
+
             </div>
             <div *ngIf="filesMap[vendorDocCtrl.tdsCtrl.documentTypeId] && 
             filesMap[vendorDocCtrl.tdsCtrl.documentTypeId]?.isError" class="errortxt">
@@ -436,8 +436,9 @@
     <div class="errortxt" *ngIf="vendorDocumentForm.invalid || isServerError">
         {{ failureMsg }}
     </div>
-    
-    <button mat-raised-button class="footer-actions" (click)="onPrevClick()" [disabled]="disableSubmit">Previous</button>
+
+    <button mat-raised-button class="footer-actions" (click)="onPrevClick()"
+        [disabled]="disableSubmit">Previous</button>
     <button mat-raised-button class="footer-actions footer-actions-green" [disabled]="disableSubmit"
         (click)="onSubmitClick()">Submit</button>
 </div>
