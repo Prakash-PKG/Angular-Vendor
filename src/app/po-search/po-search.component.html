@@ -54,6 +54,9 @@
                     <th class="headers" scope="col">
                         <span>Billed Amount</span>
                     </th>
+                    <th class="headers" scope="col">
+                        <span>Paid Amount</span>
+                    </th>
                 </tr>
             </thead>
             <tbody>
@@ -73,8 +76,11 @@
                     <td>
                         {{ po.totalAmount }}
                     </td>
-                    <td class="amount">
+                    <td>
                         {{ po.billedAmount }}
+                    </td>
+                    <td class="amount">
+                        {{ po.paidAmount }}
                     </td>
                 </tr>
             </tbody>

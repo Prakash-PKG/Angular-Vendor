@@ -63,6 +63,14 @@
                         {{ (initDetails?.invoiceDetails?.vendorName) ? initDetails?.invoiceDetails?.vendorName : "" }}
                     </div>
                 </div>
+                <div class="flex-item" *ngIf="isPOInvoice == false">
+                    <div class="header">
+                        Project Name
+                    </div>
+                    <div class="value">
+                        {{ (initDetails?.invoiceDetails?.projectId) ? initDetails?.invoiceDetails?.projectName + " (" + initDetails?.invoiceDetails?.projectId + ")" : "" }}
+                    </div>
+                </div>
                 <div class="flex-item">
                     <div class="header" *ngIf="isPOInvoice == true">
                         PO No.

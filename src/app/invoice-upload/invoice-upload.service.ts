@@ -1,6 +1,6 @@
 import { InvoiceUploadResultModel, InvoiceUploadReqModel, InvoiceDocumentReqModel, 
         POItemsRequestModel, POItemsResultModel, UpdateInvoiceRequestModel,
-    FileDetailsModel, RemoveDocumentReqModel, VendorAutoCompleteModel } from './../models/data-models';
+    FileDetailsModel, RemoveDocumentReqModel, VendorAutoCompleteModel, ProjectAutoCompleteModel } from './../models/data-models';
 import { Injectable } from '@angular/core';
 import { AppService } from './../app.service';
 import { HttpClient } from '@angular/common/http';
@@ -82,5 +82,11 @@ export class InvoiceUploadService {
         let url = this._appService.baseUrl + "vendorAutoSearch/" + filter.searchText;
         return this._http.get(url, { responseType: 'json'}).pipe(
                             tap((employeeList: any) => (employeeList as VendorAutoCompleteModel[]) ));
+    }
+
+    getProjectsData(filter: { searchText: any } = { searchText: '' }): Observable<ProjectAutoCompleteModel[]>  {
+        let url = this._appService.baseUrl + "projectAutoSearch/" + filter.searchText;
+        return this._http.get(url, { responseType: 'json'}).pipe(
+                            tap((projectsList: any) => (projectsList as ProjectAutoCompleteModel[]) ));
     }
 }

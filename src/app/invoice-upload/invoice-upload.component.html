@@ -67,6 +67,20 @@
                 </mat-autocomplete>
             </mat-form-field>
 
+            <mat-form-field *ngIf="selectedInvoiceType == 'non-po'">
+                <input matInput placeholder="Select Project" aria-label="State" [matAutocomplete]="auto" 
+                        formControlName="projectId" (blur)="onProjectBlur()">
+                <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayProject" (optionSelected) = "onProjectOptionSelected($event)"
+                    (closed) = "onProjectPanelClosed()">
+                    <mat-option *ngIf="isLoading" class="is-loading">Loading...</mat-option>
+                    <ng-container *ngIf="!isLoading">
+                        <mat-option *ngFor="let p of filteredProjects" [value]="p">
+                            <span [innerHtml]="getDisplayProjectName(p)"></span>
+                        </mat-option>
+                    </ng-container>
+                </mat-autocomplete>
+            </mat-form-field>
+
             <mat-form-field class="search-row-elemen currency" *ngIf="selectedInvoiceType == 'non-po'">
                 <mat-label>Choose Currency</mat-label>
                 <mat-select matNativeControl formControlName="currency">
