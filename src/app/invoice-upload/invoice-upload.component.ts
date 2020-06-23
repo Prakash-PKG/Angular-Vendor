@@ -4,7 +4,7 @@ import { InvoiceUploadService } from './invoice-upload.service';
 import { BusyDataModel, InvoiceUploadResultModel, InvoiceUploadReqModel, InvoiceDocumentReqModel, currencyMasterList, 
         PODetailsModel, POItemsRequestModel, POItemsResultModel, ItemModel, FileDetailsModel, InvoiceFileTypwModel, 
         UpdateInvoiceRequestModel, UpdateInvoiceResultModel, InvoiceDocumentResultModel, StatusModel,
-        VendorAutoCompleteModel } from './../models/data-models';
+        VendorAutoCompleteModel, ProjectAutoCompleteModel } from './../models/data-models';
 import { Component, OnInit } from '@angular/core';
 import { HomeService } from '../home/home.service';
 import { FormBuilder, FormGroup, FormArray, Validators, FormControl, AbstractControl } from '@angular/forms';
@@ -60,6 +60,8 @@ export class InvoiceUploadComponent implements OnInit {
     filteredVendors: VendorAutoCompleteModel[] = [];
     isLoading: boolean = false;
 
+    filteredProjects: ProjectAutoCompleteModel[] = [];
+
     constructor(private _homeService: HomeService, 
                 private _appService: AppService,
                 private _formBuilder: FormBuilder,
@@ -69,6 +71,7 @@ export class InvoiceUploadComponent implements OnInit {
 
     get fa() { return <FormArray>this.invoiceUploadForm.controls['itemsList']; }
 
+    // vendor auto complete start
     registerVendorAutoComplete() {
         this.invoiceUploadForm.get("vendorId").valueChanges
                     .pipe(debounceTime(300),
@@ -122,6 +125,66 @@ export class InvoiceUploadComponent implements OnInit {
             }
         }, 500);
     }
+
+    
+    // vendor auto complete end
+
+    // projects auto complete start
+    registerProjectAutoComplete() {
+        this.invoiceUploadForm.get("projectId").valueChanges
+                    .pipe(debounceTime(300),
+                        tap( () =>  { this.isLoading = true; } ),
+                        switchMap( term => {
+                                            if(term && typeof term === 'string' ) {
+                                                let sText: string = term as string;
+
+                                                if(sText && sText.length > 1) {
+                                                    return this._invoiceUploadService.getProjectsData({ searchText: term });
+                                                }
+                                            }
+                                            
+                                            this.isLoading = false;
+                                            this.filteredProjects = [];
+                                            return [];
+                                            
+                                        } ),
+                        tap( () => { this.isLoading = false; } )
+                    )
+                    .subscribe(results => {
+                        this.filteredProjects = results as ProjectAutoCompleteModel[];
+                    });
+    }
+
+    displayProject(p: ProjectAutoCompleteModel) {
+        if (p) { return p.projectName + " ( " + p.projectId + " )"; }
+    }
+
+    onProjectOptionSelected(evt: ProjectAutoCompleteModel) {
+        this.filteredProjects = [];
+    }
+
+    getDisplayProjectName(p: ProjectAutoCompleteModel) {
+        if(p) {
+            return "<b>" + p.projectName + "</b> (" + p.projectId + ")";
+        }
+
+        return "";
+    }
+
+    onProjectPanelClosed() {
+        this.filteredProjects = [];
+    }
+
+    onProjectBlur() {
+        setTimeout(() => {
+            let val = this.invoiceUploadForm.get("projectId").value;
+            if (!val || typeof val == "string") {
+                this.invoiceUploadForm.get("projectId").setValue(null);
+            }
+        }, 500);
+    }
+    
+    //projects auto complete end
 
     onInvoiceTypeChange(evtData) {
         this.resetAllFields();
@@ -411,6 +474,7 @@ export class InvoiceUploadComponent implements OnInit {
         });
 
         this.registerVendorAutoComplete();
+        this.registerProjectAutoComplete();
     }
 
     async loadPOItems() {
@@ -627,6 +691,8 @@ export class InvoiceUploadComponent implements OnInit {
 
         let venId: string = null;
         let venName: string = null;
+        let projId: string = null;
+        let projName: string = null;
         if(this.selectedInvoiceType == 'po') {
             venId = this.selectedPOItem.vendorId;
             venName = this.selectedPOItem.vendorName;
@@ -636,6 +702,12 @@ export class InvoiceUploadComponent implements OnInit {
             if(typeof(selVendor) == "object") {
                 venId = (selVendor as VendorAutoCompleteModel).vendorId;
                 venName = (selVendor as VendorAutoCompleteModel).vendorName;
+            }
+
+            let selProject = this.invoiceUploadForm.get("projectId").value;
+            if(typeof(selProject) == "object") {
+                projId = (selProject as ProjectAutoCompleteModel).projectId;
+                projName = (selProject as ProjectAutoCompleteModel).projectName;
             }
         }
 
@@ -657,6 +729,8 @@ export class InvoiceUploadComponent implements OnInit {
                 statusCode: null,
                 totalTax: this.invoiceUploadForm.get("totalTax").value,
                 currencyType: this.currency,
+                projectId: projId,
+                projectName: projName,
                 createdBy: null,
                 createdDate: null
             },
@@ -713,6 +787,7 @@ export class InvoiceUploadComponent implements OnInit {
             totalInvAmt: [ "" ],
             currency: null,
             vendorId: null,
+            projectId: null,
             createdBy: null,
             createdDate: null,
             itemsList: this._formBuilder.array([], Validators.required)

@@ -60,6 +60,7 @@ export class PODetailsModel {
     poDate: string = null;
     totalAmount: string = null;
     billedAmount: string = null;
+    paidAmount: string = null;
     createdBy: string = null;
     createdDate: string = null;
 }
@@ -377,6 +378,8 @@ export class InvoiceDetailsModel {
     statusCode: string;
     totalTax: string;
     currencyType: string;
+    projectId: string;
+    projectName: string;
     createdBy: string;
     createdDate: string;
 }
@@ -504,4 +507,9 @@ export class VendorAutoCompleteModel {
     vendorMasterId: number;
 	vendorId: string;
     vendorName: string;
+}
+
+export class ProjectAutoCompleteModel {
+	projectId: string;
+    projectName: string;
 }
