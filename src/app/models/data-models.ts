@@ -188,6 +188,8 @@ export class InvoiceModel {
     freightCharges: string;
     grnSesNumber: string;
     statusCode: string;
+    companyCode: string;
+    companyName: string;
 }
 
 export class InvoiceSearchRequestModel {
