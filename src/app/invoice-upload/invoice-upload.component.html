@@ -81,6 +81,15 @@
                 </mat-autocomplete>
             </mat-form-field>
 
+            <mat-form-field class="search-row-element" *ngIf="selectedInvoiceType == 'non-po'">
+                <mat-label>Choose Company</mat-label>
+                <mat-select matNativeControl formControlName="companyCode">
+                    <mat-option *ngFor="let c of companiesList" [value]="c.companyCode">
+                        {{ c.companyDesc }}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+
             <mat-form-field class="search-row-elemen currency" *ngIf="selectedInvoiceType == 'non-po'">
                 <mat-label>Choose Currency</mat-label>
                 <mat-select matNativeControl formControlName="currency">
@@ -93,7 +102,7 @@
                 <div *ngIf="f.currency.errors?.required" class="errortxt">Currency is required</div>
             </div>
             <div class=" search-row-element actions" *ngIf="selectedInvoiceType == 'non-po'">
-                <button mat-raised-button class="footer-actions footer-actions-green" (click)="onNewClick()">New</button>
+                <button mat-raised-button class="footer-actions footer-actions-green" (click)="onNewClick()">+</button>
             </div>
         </div>
        
@@ -173,6 +182,11 @@
                         </td>
                         <td class="amount">
                             {{ item.get("unitsAmt").value }}
+                        </td>
+                        <td>
+                            <button mat-button mat-icon-button aria-label="Delete" (click) = "onDeleteItemClick(itemInd)">
+                                <mat-icon>delete_outline</mat-icon>
+                            </button>
                         </td>
                     </tr>
                 </tbody>

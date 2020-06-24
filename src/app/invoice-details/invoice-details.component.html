@@ -13,7 +13,7 @@
         </li>
 
         <li class="step"
-            [ngClass]="(poLevel?.status == 'Approved' || poLevel?.status == 'Rejected') ? 'completed' : ''">
+            [ngClass]="{ 'completed': poLevel?.status == 'Approved', 'notcompleted': poLevel?.status == 'Rejected' }">
             <span class="upper-text">{{ getStatusDetails(poLevel) }}</span>
             <span class="dot"></span>
             <span class="lower-text">
@@ -22,7 +22,7 @@
         </li>
 
         <li class="step"
-            [ngClass]="(fhLevel?.status == 'Approved' || fhLevel?.status == 'Rejected') ? 'completed' : ''">
+            [ngClass]="{ 'completed': fhLevel?.status == 'Approved', 'notcompleted': fhLevel?.status == 'Rejected' }">
             <span class="upper-text">{{ getStatusDetails(fhLevel) }}</span>
             <span class="dot"></span>
             <span class="lower-text">
@@ -30,8 +30,8 @@
             </span>
         </li>
 
-        <li class="step"
-            [ngClass]="(financeLevel?.status == 'Approved' || financeLevel?.status == 'Rejected') ? 'completed' : ''">
+        <li class="step" 
+            [ngClass]="{ 'completed': financeLevel?.status == 'Approved', 'notcompleted': financeLevel?.status == 'Rejected' }">
             <span class="upper-text">{{ getStatusDetails(financeLevel) }}</span>
             <span class="dot"></span>
             <span class="lower-text">
@@ -67,7 +67,14 @@
                     <div class="value ">
                         {{ (invoiceDetails?.vendorName) ? invoiceDetails?.vendorName : "" }}
                     </div>
-
+                </div>
+                <div class="flex-item">
+                    <div class="header ">
+                        Company Name:
+                    </div>
+                    <div class="value ">
+                        {{ (invoiceDetails?.companyName) ? invoiceDetails?.companyName : "" }}
+                    </div>
                 </div>
                 <div class="flex-item" *ngIf="isPOBasedInvoice == true">
                     <div class="header ">
@@ -76,7 +83,6 @@
                     <div class="value ">
                         {{ invoiceDetails?.poNumber }}
                     </div>
-
                 </div>
                 <div class="flex-item">
                     <div class="header ">

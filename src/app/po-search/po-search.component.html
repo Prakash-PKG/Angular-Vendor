@@ -46,6 +46,9 @@
                         <span>Vendor Name</span>
                     </th>
                     <th class="headers" scope="col">
+                        <span>Company Name</span>
+                    </th>
+                    <th class="headers" scope="col">
                         <span>PO Date</span>
                     </th>
                     <th class="headers" scope="col">
@@ -69,6 +72,9 @@
                     </td>
                     <td>
                         {{ po.vendorName }}
+                    </td>
+                    <td>
+                        {{ po.companyName }}
                     </td>
                     <td>
                         {{ getFormattedDate(po.poDate) }}
