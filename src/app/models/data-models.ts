@@ -46,6 +46,7 @@ export class InvoiceUploadResultModel {
     invoiceFileTypes: InvoiceFileTypwModel[];
     currencyList: currencyMasterList[];
     statusDetails: StatusModel;
+    companiesList: CompanyCodeMasterList[];
 }
 
 export class PODetailsModel {
@@ -61,6 +62,8 @@ export class PODetailsModel {
     totalAmount: string = null;
     billedAmount: string = null;
     paidAmount: string = null;
+    companyCode: string = null;
+    companyName: string = null;
     createdBy: string = null;
     createdDate: string = null;
 }
@@ -381,6 +384,8 @@ export class InvoiceDetailsModel {
     currencyType: string;
     projectId: string;
     projectName: string;
+    companyCode: string;
+    companyName: string;
     createdBy: string;
     createdDate: string;
 }

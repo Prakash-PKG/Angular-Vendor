@@ -63,6 +63,14 @@
                         {{ (initDetails?.invoiceDetails?.vendorName) ? initDetails?.invoiceDetails?.vendorName : "" }}
                     </div>
                 </div>
+                <div class="flex-item">
+                    <div class="header">
+                        Company Name
+                    </div>
+                    <div class="value">
+                        {{ (initDetails?.invoiceDetails?.companyName) ? initDetails?.invoiceDetails?.companyName : "" }}
+                    </div>
+                </div>
                 <div class="flex-item" *ngIf="isPOInvoice == false">
                     <div class="header">
                         Project Name
@@ -213,7 +221,7 @@
         </div>
         <div class="flex-item">
             <mat-form-field class="full-width">
-                <textarea matInput placeholder="Remarks" [(ngModel)]="remarks" autocomplete="off"></textarea>
+                <input matInput placeholder="Remarks" [(ngModel)]="remarks" autocomplete="off">
             </mat-form-field>
             <div class="error-txt">
                 {{ remarksErrMsg }}

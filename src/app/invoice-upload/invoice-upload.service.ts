@@ -33,6 +33,7 @@ export class InvoiceUploadService {
             initModel.statusDetails = data["statusVO"];  
             initModel.invoiceFileTypes = data["invoiceFileTypes"];     
             initModel.currencyList =  data["currencyMasterList"];
+            initModel.companiesList = data["companiesList"];
         }
 
         return initModel;

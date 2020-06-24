@@ -67,7 +67,14 @@
                     <div class="value ">
                         {{ (invoiceDetails?.vendorName) ? invoiceDetails?.vendorName : "" }}
                     </div>
-
+                </div>
+                <div class="flex-item">
+                    <div class="header ">
+                        Company Name:
+                    </div>
+                    <div class="value ">
+                        {{ (invoiceDetails?.companyName) ? invoiceDetails?.companyName : "" }}
+                    </div>
                 </div>
                 <div class="flex-item" *ngIf="isPOBasedInvoice == true">
                     <div class="header ">
@@ -76,7 +83,6 @@
                     <div class="value ">
                         {{ invoiceDetails?.poNumber }}
                     </div>
-
                 </div>
                 <div class="flex-item">
                     <div class="header ">

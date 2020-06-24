@@ -4,7 +4,7 @@ import { InvoiceUploadService } from './invoice-upload.service';
 import { BusyDataModel, InvoiceUploadResultModel, InvoiceUploadReqModel, InvoiceDocumentReqModel, currencyMasterList, 
         PODetailsModel, POItemsRequestModel, POItemsResultModel, ItemModel, FileDetailsModel, InvoiceFileTypwModel, 
         UpdateInvoiceRequestModel, UpdateInvoiceResultModel, InvoiceDocumentResultModel, StatusModel,
-        VendorAutoCompleteModel, ProjectAutoCompleteModel } from './../models/data-models';
+        VendorAutoCompleteModel, ProjectAutoCompleteModel, CompanyCodeMasterList } from './../models/data-models';
 import { Component, OnInit } from '@angular/core';
 import { HomeService } from '../home/home.service';
 import { FormBuilder, FormGroup, FormArray, Validators, FormControl, AbstractControl } from '@angular/forms';
@@ -61,6 +61,8 @@ export class InvoiceUploadComponent implements OnInit {
     isLoading: boolean = false;
 
     filteredProjects: ProjectAutoCompleteModel[] = [];
+
+    companiesList: CompanyCodeMasterList[] = [];
 
     constructor(private _homeService: HomeService, 
                 private _appService: AppService,
@@ -461,6 +463,7 @@ export class InvoiceUploadComponent implements OnInit {
             this.prepareInvoiceFileTypes();
             this.poList = (this._initDetails.poList && this._initDetails.poList.length > 0) ? this._initDetails.poList.concat() : [];
             this.currencyList = (this._initDetails.currencyList && this._initDetails.currencyList.length > 0) ? this._initDetails.currencyList.concat() : [];
+            this.companiesList = (this._initDetails.companiesList && this._initDetails.companiesList.length > 0) ? this._initDetails.companiesList.concat() : [];
         }
         this._homeService.updateBusy(<BusyDataModel>{ isBusy: false, msg: null });
 
@@ -699,9 +702,13 @@ export class InvoiceUploadComponent implements OnInit {
         let venName: string = null;
         let projId: string = null;
         let projName: string = null;
+        let companyCode: string = null;
+        let companyName: string = null;
         if(this.selectedInvoiceType == 'po') {
             venId = this.selectedPOItem.vendorId;
             venName = this.selectedPOItem.vendorName;
+            companyCode = this.selectedPOItem.companyCode;
+            companyName = this.selectedPOItem.companyName;
         }
         else {
             let selVendor = this.invoiceUploadForm.get("vendorId").value;
@@ -714,6 +721,13 @@ export class InvoiceUploadComponent implements OnInit {
             if(typeof(selProject) == "object") {
                 projId = (selProject as ProjectAutoCompleteModel).projectId;
                 projName = (selProject as ProjectAutoCompleteModel).projectName;
+            }
+
+            let selCompanyCode = this.invoiceUploadForm.get("companyCode").value;
+            let selCompanyCodeObj: CompanyCodeMasterList = this.companiesList.find(c => c.companyCode == selCompanyCode);
+            if(selCompanyCodeObj) {
+                companyCode = selCompanyCodeObj.companyCode;
+                companyName = selCompanyCodeObj.companyDesc;
             }
         }
 
@@ -737,13 +751,15 @@ export class InvoiceUploadComponent implements OnInit {
                 currencyType: this.currency,
                 projectId: projId,
                 projectName: projName,
+                companyCode: companyCode,
+                companyName: companyName,
                 createdBy: null,
                 createdDate: null
             },
             itemsDetails: itemsList,
             filesList: filesList
         }
-
+       
         this._homeService.updateBusy(<BusyDataModel>{ isBusy: true, msg: null });
         this._invoiceUploadService.updateInvoiceDetails(req)
             .subscribe(response => {
@@ -794,6 +810,7 @@ export class InvoiceUploadComponent implements OnInit {
             currency: null,
             vendorId: null,
             projectId: null,
+            companyCode: null,
             createdBy: null,
             createdDate: null,
             itemsList: this._formBuilder.array([], Validators.required)

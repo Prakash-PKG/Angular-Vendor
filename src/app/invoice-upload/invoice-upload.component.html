@@ -81,6 +81,15 @@
                 </mat-autocomplete>
             </mat-form-field>
 
+            <mat-form-field class="search-row-element" *ngIf="selectedInvoiceType == 'non-po'">
+                <mat-label>Choose Company</mat-label>
+                <mat-select matNativeControl formControlName="companyCode">
+                    <mat-option *ngFor="let c of companiesList" [value]="c.companyCode">
+                        {{ c.companyDesc }}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+
             <mat-form-field class="search-row-elemen currency" *ngIf="selectedInvoiceType == 'non-po'">
                 <mat-label>Choose Currency</mat-label>
                 <mat-select matNativeControl formControlName="currency">
