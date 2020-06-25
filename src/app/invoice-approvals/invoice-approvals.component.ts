@@ -6,6 +6,7 @@ import { BusyDataModel, InvoiceApprovalInitResultModel, InvoiceApprovalInitReqMo
 import { InvoiceApprovalsService } from './invoice-approvals.service';
 import { Component, OnInit } from '@angular/core';
 import { HomeService } from '../home/home.service';
+import { Router } from '@angular/router';
 
 @Component({
     selector: 'app-invoice-approvals',
@@ -50,7 +51,12 @@ export class InvoiceApprovalsComponent implements OnInit {
 
     constructor(private _homeService: HomeService,
                 private _appService: AppService,
+                private _router: Router,
                 private _invoiceApprovalsService: InvoiceApprovalsService) { }
+
+    onBackBtnClick() {
+        this._router.navigate([this._appService.routingConstants.pendingApprovals]);
+    }
 
     getUnitsAmt(item: ItemDisplayModel) {
         let unitsAmt = (item.unitPrice && item.invoiceUnits) ? +item.unitPrice * +item.invoiceUnits : null;
@@ -105,6 +111,10 @@ export class InvoiceApprovalsComponent implements OnInit {
                 }
 
                 this.grnSesList = this.initDetails.grnSesList;
+
+                if(this.grnSesList && this.grnSesList.length > 0) {
+                    this.selectedGrnSesNumber = this.grnSesList[0].grnSesNumber;
+                }
 
                 this.updateStatusFlow();
 
