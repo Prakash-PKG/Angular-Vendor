@@ -52,6 +52,8 @@ export class VendorApprovalComponent implements OnInit {
     selectedCurrency: string = null;
     msg: string = "";
     isEditable = true;
+    isValid = true;
+    isServerError = false;
 
     documentsList: VendorMasterDocumentModel[] = [];
     vendorDocList: FileDetailsModel[] = [];
@@ -73,7 +75,7 @@ export class VendorApprovalComponent implements OnInit {
         lutNoCtrl: { documentTypeId: 10, browserId: 'lutNoFileCtrl', placeholder: 'LUT No.' },
         msmeSelfCtrl: { documentTypeId: 11, browserId: 'msmeSelfFileCtrl', placeholder: 'MSME Self Attested Certificate?' },
         otherCtrl: { documentTypeId: 13, browserId: 'otherFileCtrl', placeholder: 'Document Description' },
-        msaCtrl:{ documentTypeId: 12, browserId: 'msaFileCtrl', placeholder: 'Attach MSA' }
+        msaCtrl: { documentTypeId: 12, browserId: 'msaFileCtrl', placeholder: 'Attach MSA' }
     }
 
     constructor(private _homeService: HomeService,
@@ -274,28 +276,36 @@ export class VendorApprovalComponent implements OnInit {
         this.updateVendorApprovals(this._appService.updateOperations.reject);
     }
 
-    updateMandatory(selfId: string, documentTypeId: number) {
-        // if (!this.vendorDocumentForm.get(selfId).value) {
-        //     this.vendorDocumentForm.get(selfId).setValidators([]);
-        //     this.vendorDocumentForm.get(selfId).updateValueAndValidity();
-        //     this.filesMap[documentTypeId] = { filesList: [], isMandatory: false, isAttached: false, isError: false }
-        //     return;
-        // }
-        // this.vendorDocumentForm.get(selfId).enable();
-        // this.vendorDocumentForm.get(selfId).setValidators([Validators.required]);
-        // this.vendorDocumentForm.get(selfId).updateValueAndValidity();
-        // this.filesMap[documentTypeId].isMandatory = true;
-        // this.filesMap[documentTypeId].isError = true;
+    updateMandatory(selfValue: any, documentTypeId: number) {
+        if (!selfValue) {
+            this.filesMap[documentTypeId].isAttached = false;
+            this.filesMap[documentTypeId].isError = false;
+            this.filesMap[documentTypeId].isMandatory = false
+            return;
+        }
+        this.filesMap[documentTypeId].isMandatory = true;
+        this.filesMap[documentTypeId].isError = true;
     }
 
     // functions for document attachment ends here
 
     updateVendorApprovals(action: string) {
+        this.isValid = true;
+        for (let key in this.filesMap) {
+            this.filesMap[key].isError = false;
+            if (this.filesMap[key].isMandatory && !this.filesMap[key].isAttached) {
+                this.isValid = false;
+                this.filesMap[key].isError = true;
+            }
+        }
+        if (!this.isValid) { return };
+
         let req: VendorApprovalReqModel = {
             action: action,
             vendorApprovalID: this.vendorApprovalInitDetails.vendorApprovalDetails.vendorApprovalID,
             vendorMasterId: this.vendorApprovalInitDetails.vendorApprovalDetails.vendorMasterId,
-            departmentCode: this.vendorApprovalInitDetails.vendorApprovalDetails.departmentCode,
+            departmentCode: this.vendorApprovalInitDetails.vendorApprovalDetails.departmentCode ? 
+                            this.vendorApprovalInitDetails.vendorApprovalDetails.departmentCode : globalConstant.userDetails.userRoles[0].roleCode,
             approverId: globalConstant.userDetails.userId,
             remarks: this.remarks,
             groupCode: this.selectedVendorGroup,
@@ -319,11 +329,14 @@ export class VendorApprovalComponent implements OnInit {
                         this.msg = "Vendor approval is success";
                     }
                     else {
+                        this.isEditable = true;
+                        this.isServerError = true;
                         this.msg = this._appService.messages.vendorApprovalFailure;
                     }
                 }
             },
                 (error) => {
+                    this.isEditable = true;
                     this._homeService.updateBusy(<BusyDataModel>{ isBusy: false, msg: null });
                     this.msg = this._appService.messages.vendorApprovalFailure;
                     console.log(error);
