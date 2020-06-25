@@ -304,8 +304,8 @@ export class VendorApprovalComponent implements OnInit {
             action: action,
             vendorApprovalID: this.vendorApprovalInitDetails.vendorApprovalDetails.vendorApprovalID,
             vendorMasterId: this.vendorApprovalInitDetails.vendorApprovalDetails.vendorMasterId,
-            departmentCode: this.vendorApprovalInitDetails.vendorApprovalDetails.departmentCode ? 
-                            this.vendorApprovalInitDetails.vendorApprovalDetails.departmentCode : globalConstant.userDetails.userRoles[0].roleCode,
+            departmentCode: this.vendorApprovalInitDetails.vendorApprovalDetails.departmentCode ?
+                this.vendorApprovalInitDetails.vendorApprovalDetails.departmentCode : globalConstant.userDetails.userRoles[0].roleCode,
             approverId: globalConstant.userDetails.userId,
             remarks: this.remarks,
             groupCode: this.selectedVendorGroup,
@@ -313,8 +313,8 @@ export class VendorApprovalComponent implements OnInit {
             currencyCode: this.selectedCurrency,
             withholdTaxCode: this.withholdTax,
             withholdTypeCode: this.withholdType,
-            createdBy: this.vendorApprovalInitDetails.vendorApprovalDetails.createdBy,
-            createDate: this.vendorApprovalInitDetails.vendorApprovalDetails.createDate,
+            createdBy: this.vendorApprovalInitDetails.vendorApprovalDetails.createdBy ? this.vendorApprovalInitDetails.vendorApprovalDetails.createdBy : globalConstant.userId,
+            createDate: this.vendorApprovalInitDetails.vendorApprovalDetails.createDate ? this.vendorApprovalInitDetails.vendorApprovalDetails.createDate : null,
             vendorMasterDetails: this.vendorDetails
         }
 
@@ -348,10 +348,10 @@ export class VendorApprovalComponent implements OnInit {
         if (this._appService.selectedPendingApprovalRecord) {
 
             let req: VendorApprovalInitReqModel = {
-                // vendorMasterId: this._appService.selectedPendingApprovalRecord.vendorMasterId,
-                // departmentCode: this._appService.selectedPendingApprovalRecord.approvalLevel
-                vendorMasterId: 181,
-                departmentCode: 'procurement'
+                vendorMasterId: this._appService.selectedPendingApprovalRecord.vendorMasterId,
+                departmentCode: this._appService.selectedPendingApprovalRecord.approvalLevel
+                // vendorMasterId: 181,
+                // departmentCode: 'procurement'
             };
             this._homeService.updateBusy(<BusyDataModel>{ isBusy: true, msg: "Loading..." });
             this.vendorApprovalInitDetails = await this._vendorApprovalService.getVendorApprovalInitData(req);
