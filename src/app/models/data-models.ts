@@ -517,6 +517,11 @@ export class VendorAutoCompleteModel {
     vendorName: string;
 }
 
+export class InvoiceExistReqModel {
+    vendorId: string;
+    innvoiceNumber: string;
+}
+
 export class ProjectAutoCompleteModel {
 	projectId: string;
     projectName: string;
