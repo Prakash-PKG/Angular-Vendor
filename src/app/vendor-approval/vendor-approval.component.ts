@@ -46,7 +46,7 @@ export class VendorApprovalComponent implements OnInit {
     withholdTax: string = "";
     withholdType: string = "";
     remarks: string = "";
-    roleName: string = "";
+    role: string = "";
     selectedVendorGroup: string = null;
     selectedCompanyCode: string = null;
     selectedCurrency: string = null;
@@ -305,7 +305,7 @@ export class VendorApprovalComponent implements OnInit {
             vendorApprovalID: this.vendorApprovalInitDetails.vendorApprovalDetails.vendorApprovalID,
             vendorMasterId: this.vendorApprovalInitDetails.vendorApprovalDetails.vendorMasterId,
             departmentCode: this.vendorApprovalInitDetails.vendorApprovalDetails.departmentCode ?
-                this.vendorApprovalInitDetails.vendorApprovalDetails.departmentCode : globalConstant.userDetails.userRoles[0].roleCode,
+                this.vendorApprovalInitDetails.vendorApprovalDetails.departmentCode : this.role,
             approverId: globalConstant.userDetails.userId,
             remarks: this.remarks,
             groupCode: this.selectedVendorGroup,
@@ -423,7 +423,7 @@ export class VendorApprovalComponent implements OnInit {
         this._sidebarExpansionSubscription = this._homeService.isSidebarCollapsed.subscribe(data => {
             this.isDashboardCollapsed = !data;
         });
-        this.roleName = globalConstant.userDetails.userRoles[0].roleName;
+        this.role = globalConstant.userDetails.userRoles[0].roleCode;
 
         setTimeout(() => {
             this.loadInitData();
