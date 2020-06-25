@@ -205,13 +205,16 @@
                     </div>
                 </div>
                 <div class="flex-item" *ngIf="isGrnSesRequired == true && isGrnDdlVisible == true">
-                    <mat-form-field>
+                    <!--<mat-form-field>
                         <mat-label>GRN/SES No.</mat-label>
                         <mat-select matNativeControl [(ngModel)]="selectedGrnSesNumber">
                             <mat-option *ngFor="let gs of grnSesList" [value]="gs.grnSesNumber">
                                 {{ gs.grnSesNumber }}
                             </mat-option>
                         </mat-select>
+                    </mat-form-field>-->
+                    <mat-form-field class="full-width">
+                        <input matInput placeholder="GRN/SES No." [(ngModel)]="selectedGrnSesNumber" autocomplete="off">
                     </mat-form-field>
                 </div>
                 <div class="error-txt">
@@ -220,7 +223,7 @@
             </div>
         </div>
         <div class="flex-item">
-            <mat-form-field class="full-width">
+            <mat-form-field class="full-width" style="margin-left: 20px">
                 <input matInput placeholder="Remarks" [(ngModel)]="remarks" autocomplete="off">
             </mat-form-field>
             <div class="error-txt">
@@ -280,7 +283,7 @@
             <div class="error-txt">
                 {{ msg }}
             </div>
-            <button mat-raised-button class="footer-actions">Cancel</button>
+            <button mat-raised-button class="footer-actions" (click)="onBackBtnClick()">Back</button>
             <button mat-raised-button class="footer-actions" (click)="onRejectClick()">Reject</button>
             <button mat-raised-button class="footer-actions footer-actions-green" (click)="onApproveClick()">Approve</button>
         </div>

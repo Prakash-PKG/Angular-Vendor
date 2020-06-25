@@ -245,7 +245,8 @@
         <div class="Rtable-cell Rtable-cell--head">GST No.</div>
         <div class="Rtable-cell">
           <mat-form-field class="full-width">
-            <input type="text" matInput [(ngModel)]="vendorDetails.gstNum" [disabled]="isEditable">
+            <input type="text" matInput [(ngModel)]="vendorDetails.gstNum" [disabled]="isEditable"
+              (blur)="updateMandatory(vendorDetails.gstNum,vendorDocCtrl.gstCtrl.documentTypeId)">
           </mat-form-field>
         </div>
 

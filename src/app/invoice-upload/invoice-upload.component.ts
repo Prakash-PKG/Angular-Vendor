@@ -4,7 +4,7 @@ import { InvoiceUploadService } from './invoice-upload.service';
 import { BusyDataModel, InvoiceUploadResultModel, InvoiceUploadReqModel, InvoiceDocumentReqModel, currencyMasterList, 
         PODetailsModel, POItemsRequestModel, POItemsResultModel, ItemModel, FileDetailsModel, InvoiceFileTypwModel, 
         UpdateInvoiceRequestModel, UpdateInvoiceResultModel, InvoiceDocumentResultModel, StatusModel,
-        VendorAutoCompleteModel, ProjectAutoCompleteModel, CompanyCodeMasterList } from './../models/data-models';
+        VendorAutoCompleteModel, ProjectAutoCompleteModel, CompanyCodeMasterList, InvoiceExistReqModel } from './../models/data-models';
 import { Component, OnInit } from '@angular/core';
 import { HomeService } from '../home/home.service';
 import { FormBuilder, FormGroup, FormArray, Validators, FormControl, AbstractControl } from '@angular/forms';
@@ -64,6 +64,10 @@ export class InvoiceUploadComponent implements OnInit {
 
     companiesList: CompanyCodeMasterList[] = [];
 
+    isInvoiceValid: boolean = false;
+
+    invoiceNumberErrMsg: string = "";
+
     constructor(private _homeService: HomeService, 
                 private _appService: AppService,
                 private _formBuilder: FormBuilder,
@@ -72,6 +76,50 @@ export class InvoiceUploadComponent implements OnInit {
     get f() { return this.invoiceUploadForm.controls; }
 
     get fa() { return <FormArray>this.invoiceUploadForm.controls['itemsList']; }
+
+    onInvoiceBlur() {
+        this.validateInvoiceNumber();
+    }
+
+    async validateInvoiceNumber() {
+        this.invoiceNumberErrMsg = "";
+
+        this.isInvoiceValid = false;
+
+        let venId: string = null;
+        if(this.selectedInvoiceType == 'po') {
+            venId = (this.selectedPOItem && this.selectedPOItem.vendorId) ? this.selectedPOItem.vendorId : "";
+        }
+        else {
+            let selVendor = this.invoiceUploadForm.get("vendorId").value;
+            if(typeof(selVendor) == "object") {
+                venId = (selVendor as VendorAutoCompleteModel).vendorId;
+            }
+        }
+        
+        let innvoiceNumber = this.invoiceUploadForm.get("invoiceNumber").value;
+        if(innvoiceNumber && venId) {
+            let req: InvoiceExistReqModel = {
+                vendorId: venId,
+                innvoiceNumber: innvoiceNumber
+            };
+            this._homeService.updateBusy(<BusyDataModel>{ isBusy: true, msg: "Loading..." });
+            let results = await this._invoiceUploadService.isInvoiceExist(req);
+            if(results) {
+                if(results.isSuccess) {
+                    this.isInvoiceValid = true;
+                }
+                else {
+                    this.invoiceNumberErrMsg = results.message;
+                }
+            }
+            else {
+                this.invoiceNumberErrMsg = "Invoice number is not valid."
+            }
+            
+            this._homeService.updateBusy(<BusyDataModel>{ isBusy: false, msg: null });
+        }
+    }
 
     // vendor auto complete start
     registerVendorAutoComplete() {
@@ -105,6 +153,7 @@ export class InvoiceUploadComponent implements OnInit {
 
     onVendorOptionSelected(evt: VendorAutoCompleteModel) {
         this.filteredVendors = [];
+        this.validateInvoiceNumber();
     }
 
     getDisplayVendorName(v: VendorAutoCompleteModel) {
@@ -451,6 +500,7 @@ export class InvoiceUploadComponent implements OnInit {
     }
 
     async loadInitData() {
+        this.invoiceNumberErrMsg = "";
 
         let req: InvoiceUploadReqModel = {
             vendorId: (globalConstant.userDetails.isVendor) ? globalConstant.userDetails.userId : null,
@@ -474,6 +524,8 @@ export class InvoiceUploadComponent implements OnInit {
                 this.currency = this.selectedPOItem.currencyType;
                 this.loadPOItems();
             }
+
+            this.validateInvoiceNumber();
         });
 
         this.invoiceUploadForm.get("currency").valueChanges.subscribe(val => {

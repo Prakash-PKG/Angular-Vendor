@@ -1,6 +1,7 @@
 import { InvoiceUploadResultModel, InvoiceUploadReqModel, InvoiceDocumentReqModel, 
         POItemsRequestModel, POItemsResultModel, UpdateInvoiceRequestModel,
-    FileDetailsModel, RemoveDocumentReqModel, VendorAutoCompleteModel, ProjectAutoCompleteModel } from './../models/data-models';
+    FileDetailsModel, RemoveDocumentReqModel, VendorAutoCompleteModel, 
+    ProjectAutoCompleteModel, InvoiceExistReqModel, StatusModel } from './../models/data-models';
 import { Injectable } from '@angular/core';
 import { AppService } from './../app.service';
 import { HttpClient } from '@angular/common/http';
@@ -58,6 +59,21 @@ export class InvoiceUploadService {
         }
 
         return initModel;
+    }
+
+    async isInvoiceExist(req: InvoiceExistReqModel) {
+        let url = this._appService.baseUrl + "isInvExist";
+        try {
+            let response = await this._http.post(url, req).toPromise();
+            return this.prepareInvoiceExistResult(response);
+        } catch (error) {
+            await console.log(error);
+            return (new StatusModel());
+        }
+    }
+
+    prepareInvoiceExistResult(data) {
+        return data as StatusModel;
     }
 
     updateInvoiceDetails(updateReqModel: UpdateInvoiceRequestModel) {
