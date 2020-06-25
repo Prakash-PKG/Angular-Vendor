@@ -702,8 +702,8 @@
 
       <button mat-raised-button class="footer-actions" [disabled]="!isEditable" (click)="onEditClick()">Edit</button>
       <!-- <button mat-raised-button class="footer-actions" (click)="onSendForCorrClick()">Send For Correction</button> -->
-      <button mat-raised-button class="footer-actions" (click)="onRejectClick()">Reject</button>
-      <button mat-raised-button class="footer-actions footer-actions-green" (click)="onApproveClick()">Approve</button>
+      <button mat-raised-button class="footer-actions" (click)="onRejectClick()" [disabled]="disableSubmit">Reject</button>
+      <button mat-raised-button class="footer-actions footer-actions-green" (click)="onApproveClick()" [disabled]="disableSubmit">Approve</button>
     </div>
   </div>
 </div>

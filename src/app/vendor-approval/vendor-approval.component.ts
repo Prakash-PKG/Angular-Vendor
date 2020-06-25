@@ -54,11 +54,11 @@ export class VendorApprovalComponent implements OnInit {
     isEditable = true;
     isValid = true;
     isServerError = false;
+    disableSubmit: boolean = false;
 
     documentsList: VendorMasterDocumentModel[] = [];
     vendorDocList: FileDetailsModel[] = [];
     filesMap: FileMap = {};
-    disableSubmit: boolean = false;
     private counterSubject: BehaviorSubject<number>;
     private counterSubscription: Subscription;
 
@@ -326,17 +326,20 @@ export class VendorApprovalComponent implements OnInit {
                 if (response.body) {
                     let result: StatusModel = response.body as StatusModel;
                     if (result.status == 200 && result.isSuccess) {
+                        this.disableSubmit = true;
                         this.msg = "Vendor approval is success";
                     }
                     else {
                         this.isEditable = true;
                         this.isServerError = true;
+                        this.disableSubmit = false;
                         this.msg = this._appService.messages.vendorApprovalFailure;
                     }
                 }
             },
                 (error) => {
                     this.isEditable = true;
+                    this.disableSubmit = false;
                     this._homeService.updateBusy(<BusyDataModel>{ isBusy: false, msg: null });
                     this.msg = this._appService.messages.vendorApprovalFailure;
                     console.log(error);
