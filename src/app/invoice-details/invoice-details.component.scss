@@ -133,19 +133,17 @@ th.mat-header-cell:last-of-type {
   flex-grow: 1;
   align-items: stretch;
 }
-.description .flex-container .flex-item .value{
-  width: 60%;
-}
+.description .flex-container .flex-item .value,
 
 .description .flex-container .flex-item .header{
-  width: 40%;
+  width: 50%;
 }
 
 .description .flex-container {
   flex-direction: column;
 }
 .details {
-  margin-bottom: 2em;
+  margin-bottom: 1em;
 }
 .card {
   border-radius: 10px;
