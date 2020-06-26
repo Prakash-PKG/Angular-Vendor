@@ -46,7 +46,8 @@ export class VendorApprovalComponent implements OnInit {
     withholdTax: string = "";
     withholdType: string = "";
     remarks: string = "";
-    role: string = "";
+    isFinance: boolean = false;
+    isProcurement: boolean = false;
     selectedVendorGroup: string = null;
     selectedCompanyCode: string = null;
     selectedCurrency: string = null;
@@ -276,28 +277,41 @@ export class VendorApprovalComponent implements OnInit {
         this.updateVendorApprovals(this._appService.updateOperations.reject);
     }
 
-    updateMandatory(selfValue: any, documentTypeId: number) {
+    updateMandatoryDocs(selfValue: any, documentTypeId: number) {
         if (!selfValue) {
             this.filesMap[documentTypeId].isAttached = false;
             this.filesMap[documentTypeId].isError = false;
-            this.filesMap[documentTypeId].isMandatory = false
+            this.filesMap[documentTypeId].isMandatory = false;
+            console.log(this.filesMap);
             return;
         }
         this.filesMap[documentTypeId].isMandatory = true;
         this.filesMap[documentTypeId].isError = true;
+        console.log(this.filesMap);
     }
-
     // functions for document attachment ends here
 
-    updateVendorApprovals(action: string) {
+    // updateMandatoryFields(selfValue: any) {
+    //     if (!selfValue) {
+    //         this.isValid = false;
+    //         return;
+    //     }
+    // }
+
+    isFormValid() {
         this.isValid = true;
         for (let key in this.filesMap) {
             this.filesMap[key].isError = false;
             if (this.filesMap[key].isMandatory && !this.filesMap[key].isAttached) {
                 this.isValid = false;
                 this.filesMap[key].isError = true;
+                return;
             }
         }
+    }
+
+    updateVendorApprovals(action: string) {
+        this.isFormValid();
         if (!this.isValid) { return };
 
         let req: VendorApprovalReqModel = {
@@ -305,7 +319,7 @@ export class VendorApprovalComponent implements OnInit {
             vendorApprovalID: this.vendorApprovalInitDetails.vendorApprovalDetails.vendorApprovalID,
             vendorMasterId: this.vendorApprovalInitDetails.vendorApprovalDetails.vendorMasterId,
             departmentCode: this.vendorApprovalInitDetails.vendorApprovalDetails.departmentCode ?
-                this.vendorApprovalInitDetails.vendorApprovalDetails.departmentCode : this.role,
+                this.vendorApprovalInitDetails.vendorApprovalDetails.departmentCode : globalConstant.userDetails.userRoles[0].roleCode,
             approverId: globalConstant.userDetails.userId,
             remarks: this.remarks,
             groupCode: this.selectedVendorGroup,
@@ -418,12 +432,17 @@ export class VendorApprovalComponent implements OnInit {
     }
 
     ngOnInit() {
+
         this.isDashboardCollapsed = true;
 
         this._sidebarExpansionSubscription = this._homeService.isSidebarCollapsed.subscribe(data => {
             this.isDashboardCollapsed = !data;
         });
-        this.role = globalConstant.userDetails.userRoles[0].roleCode;
+        if (globalConstant.userDetails.userRoles[0].roleCode == 'finance') {
+            this.isFinance = true;
+        } else if (globalConstant.userDetails.userRoles[0].roleCode == 'procurement') {
+            this.isProcurement = true;
+        }
 
         setTimeout(() => {
             this.loadInitData();
