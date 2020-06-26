@@ -162,3 +162,10 @@ th.mat-header-cell:last-of-type {
   align-items: stretch;
   flex-direction: row;
 }
+.description .dataTable tr{
+  height:auto;
+  border: 0px;
+}
+.description .dataTable tr td{
+  border:0px;
+}
