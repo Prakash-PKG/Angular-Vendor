@@ -526,3 +526,7 @@ export class ProjectAutoCompleteModel {
 	projectId: string;
     projectName: string;
 }
+
+export class ForgotPasswordData {
+    email: string;
+  }

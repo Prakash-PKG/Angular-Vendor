@@ -47,121 +47,107 @@
 
     <div class="flex-container full-width details">
         <div class="description flex-item">
-            <div class="flex-container">
-                <div class="flex-item">
-                    <div class="header ">
-                        Vendor Id:
-                    </div>
-                    <div class="value ">
-                        {{ (invoiceDetails?.vendorId) ? invoiceDetails?.vendorId : "" }}
-                    </div>
-
-                </div>
-                <div class="flex-item">
-                    <div class="header ">
-                        Vendor Name:
-                    </div>
-                    <div class="value ">
-                        {{ (invoiceDetails?.vendorName) ? invoiceDetails?.vendorName : "" }}
-                    </div>
-                </div>
-                <div class="flex-item">
-                    <div class="header ">
-                        Project Name:
-                    </div>
-                    <div class="value ">
-                        {{ (invoiceDetails?.projectName) ? invoiceDetails?.projectName : "" }}
-                    </div>
-                </div>
-                <div class="flex-item">
-                    <div class="header ">
-                        Company Name:
-                    </div>
-                    <div class="value ">
-                        {{ (invoiceDetails?.companyName) ? invoiceDetails?.companyName : "" }}
-                    </div>
-                </div>
-                <div class="flex-item" *ngIf="isPOBasedInvoice == true">
-                    <div class="header ">
-                        PO No:
-                    </div>
-                    <div class="value ">
-                        {{ invoiceDetails?.poNumber }}
-                    </div>
-                </div>
-                <div class="flex-item">
-                    <div class="header ">
-                        Invoice No:
-                    </div>
-                    <div class="value ">
-                        {{ invoiceDetails?.invoiceNumber }}
-                    </div>
-
-                </div>
-                <div class="flex-item">
-                    <div class="header ">
-                        Invoice Date:
-                    </div>
-                    <div class="value ">
-                        {{ getFormattedDate(invoiceDetails?.invoiceDate) }}
-                    </div>
-
-                </div>
-                <div class="flex-item">
-                    <div class="header ">
-                        Total Inv Amt: <small> (inc tax) </small>
-                    </div>
-                    <div class="value ">
-                        {{ invoiceDetails?.totalAmt + " " + currency }}
-                    </div>
-                </div>
-
-                <div class="flex-item">
-                    <div class="header ">
-                        Amount Paid:
-                    </div>
-                    <div class="value ">
-                        {{ getPaidAmount() }}
-                    </div>
-
-                </div>
-                <div class="flex-item">
-                    <div class="header ">
-                        Paid Date:
-                    </div>
-                    <div class="value ">
-                        {{ getPaidDate() }}
-                    </div>
-
-                </div>
-                <div class="flex-item">
-                    <div class="header ">
-                        Paid Status:
-                    </div>
-                    <div class="value ">
-                        {{ getPaidStatus() }}
-                    </div>
-
-                </div>
-                <div class="flex-item">
-                    <div class="header ">Invoice Documents </div>
-                    <div class="filename value" *ngFor="let ifile of invoiceFilesList; let ifileInd = index">
-                        <mat-icon matTooltip="{{ifile.actualFileName}}" (click)="downloadFile(ifile)">description</mat-icon>
-                        <!-- <button mat-button mat-icon-button aria-label="Download" (click)="downloadFile(ifile)">
+            <table class="dataTable full-width">
+                <tbody>
+                    <tr>
+                        <th>
+                            Vendor Id:
+                        </th>
+                        <td>
+                            {{ (invoiceDetails?.vendorId) ? invoiceDetails?.vendorId : "" }}
+                        </td>
+                        <th>
+                            Company Name:
+                        </th>
+                        <td>
+                            {{ (invoiceDetails?.companyName) ? invoiceDetails?.companyName : "" }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
+                            Vendor Name:
+                        </th>
+                        <td>
+                            {{ (invoiceDetails?.vendorName) ? invoiceDetails?.vendorName : "" }}
+                        </td>
+                        <th>
+                            Total Inv Amt: <small> (inc tax) </small>
+                        </th>
+                        <td>
+                            {{ invoiceDetails?.totalAmt + " " + currency }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
+                            PO No:
+                        </th>
+                        <td>
+                            {{ invoiceDetails?.poNumber }}
+                        </td>
+                        <th>
+                            Amount Paid:
+                        </th>
+                        <td>
+                            {{ getPaidAmount() }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
+                            Invoice No:
+                        </th>
+                        <td>
+                            {{ invoiceDetails?.invoiceNumber }}
+                        </td>
+                        <th>
+                            Paid Date:
+                        </th>
+                        <td>
+                            {{ getPaidDate() }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
+                            Invoice Date:
+                        </th>
+                        <td>
+                            {{ getFormattedDate(invoiceDetails?.invoiceDate) }}
+                        </td>
+                        <th>
+                            Paid Status:
+                        </th>
+                        <td>
+                            {{ getPaidStatus() }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
+                            Invoice Documents:
+                        </th>
+                        <td>
+                            <div class="filename value" *ngFor="let ifile of invoiceFilesList; let ifileInd = index">
+                                <mat-icon matTooltip="{{ifile.actualFileName}}" (click)="downloadFile(ifile)">
+                                    description
+                                </mat-icon>
+                                <!-- <button mat-button mat-icon-button aria-label="Download" (click)="downloadFile(ifile)">
+                                <mat-icon>save_alt</mat-icon>
+                            </button> -->
+                            </div>
+                        </td>
+                        <th>
+                            Supporting Documents:
+                        </th>
+                        <td>
+                            <div class="filename value" *ngFor="let sf of supportFilesList; let sfInd = index">
+                                <mat-icon matTooltip=" {{ sf.actualFileName }}" (click)="downloadFile(sf)">description
+                                </mat-icon>
+                                <!-- <button mat-button mat-icon-button aria-label="Download" (click)="downloadFile(sf)">
                             <mat-icon>save_alt</mat-icon>
                         </button> -->
-                    </div>
-                </div>
-                <div class="flex-item">
-                    <div class="header ">Supporting Documents</div>
-                    <div class="filename value" *ngFor="let sf of supportFilesList; let sfInd = index">
-                        <mat-icon matTooltip=" {{ sf.actualFileName }}" (click)="downloadFile(sf)">description</mat-icon>
-                        <!-- <button mat-button mat-icon-button aria-label="Download" (click)="downloadFile(sf)">
-                            <mat-icon>save_alt</mat-icon>
-                        </button> -->
-                    </div>
-                </div>
-            </div>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
 
         <div class="flex-item">
@@ -194,8 +180,6 @@
             </mat-card>
         </div>
     </div>
-
-
     <!-- table details [dataSource]="POData" -->
     <div class="container my-container margin-unset full-width">
         <table class="dataTable full-width">

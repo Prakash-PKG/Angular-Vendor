@@ -3,9 +3,11 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { CryptoService } from './../common/crypto.service';
-
 import { AppService } from './../app.service';
 import { LoginService } from './login.service';
+import { MatDialog } from '@angular/material';
+import { ForgotPasswordComponent } from '../forgot-password/forgot-password.component';
+import { ForgotPasswordData } from '../models/data-models';
 
 @Component({
     selector: 'app-login',
@@ -25,7 +27,8 @@ export class LoginComponent implements OnInit {
             private _appService: AppService,
             private _homeService: HomeService,
             private _loginService: LoginService,
-            private _cryptoService: CryptoService
+            private _cryptoService: CryptoService,
+            public dialog: MatDialog
         ) {
     }
 
@@ -66,7 +69,11 @@ export class LoginComponent implements OnInit {
     }
 
     onForgotPasswordClick() {
-        this._router.navigate([this._appService.routingConstants.forgotPass]);
+            const dialogRef = this.dialog.open(ForgotPasswordComponent, {
+              width: '400px',
+              data: ForgotPasswordData
+            });
+        
     }
 
     OnLoginClick() {
