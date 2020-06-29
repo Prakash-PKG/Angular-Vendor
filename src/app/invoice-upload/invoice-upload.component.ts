@@ -9,6 +9,7 @@ import { Component, OnInit } from '@angular/core';
 import { HomeService } from '../home/home.service';
 import { FormBuilder, FormGroup, FormArray, Validators, FormControl, AbstractControl } from '@angular/forms';
 import { debounceTime, tap, switchMap, finalize } from 'rxjs/operators';
+import { Router } from '@angular/router';
 
 @Component({
     selector: 'app-invoice-upload',
@@ -71,11 +72,16 @@ export class InvoiceUploadComponent implements OnInit {
     constructor(private _homeService: HomeService, 
                 private _appService: AppService,
                 private _formBuilder: FormBuilder,
+                private _router: Router,
                 private _invoiceUploadService: InvoiceUploadService) { }
 
     get f() { return this.invoiceUploadForm.controls; }
 
     get fa() { return <FormArray>this.invoiceUploadForm.controls['itemsList']; }
+
+    onCancelClick() {
+        this._router.navigate([this._appService.routingConstants.posearch]);
+    }
 
     onInvoiceBlur() {
         this.validateInvoiceNumber();
@@ -280,7 +286,7 @@ export class InvoiceUploadComponent implements OnInit {
     createNonPOItem() {
         let fg: FormGroup = this._formBuilder.group({
             itemId: null,
-            itemNumber: [ null, Validators.required ],
+            itemNumber: [ null, [Validators.required, Validators.pattern("^[0-9]*$")] ],
             itemDescription: [ null, Validators.required ],
             uom: null,
             orderedUnits: null,
@@ -448,11 +454,39 @@ export class InvoiceUploadComponent implements OnInit {
 
     onInvoiceUnitsBlur(itemInd: number) {
         const itemsFa: FormArray = <FormArray>this.invoiceUploadForm.controls['itemsList'];
+        let invoiceUnitsVal = itemsFa.controls[itemInd].get("invoiceUnits").value;
+        if(invoiceUnitsVal && !isNaN(invoiceUnitsVal)) {
+            let invoiceUnits = Number(invoiceUnitsVal).toFixed(3);
+            itemsFa.controls[itemInd].get("invoiceUnits").setValue(invoiceUnits);
+        }
+        else {
+            itemsFa.controls[itemInd].get("invoiceUnits").setValue(null);
+        }
+
+        this.updateItemTotalAmount(itemInd);
+    }
+
+    onUnitPriceBlur(itemInd: number) {
+        const itemsFa: FormArray = <FormArray>this.invoiceUploadForm.controls['itemsList'];
+        let UnitPriceVal = itemsFa.controls[itemInd].get("unitPrice").value;
+        if(UnitPriceVal && !isNaN(UnitPriceVal)) {
+            let unitPrice = Number(UnitPriceVal).toFixed(3);
+            itemsFa.controls[itemInd].get("unitPrice").setValue(unitPrice);
+        }
+        else {
+            itemsFa.controls[itemInd].get("unitPrice").setValue(null);
+        }
+
+        this.updateItemTotalAmount(itemInd);
+    }
+
+    updateItemTotalAmount(itemInd: number) {
+        const itemsFa: FormArray = <FormArray>this.invoiceUploadForm.controls['itemsList'];
         let unitPriceVal = itemsFa.controls[itemInd].get("unitPrice").value;
         let invoiceUnits = itemsFa.controls[itemInd].get("invoiceUnits").value;
 
-        let unitsAmt = (unitPriceVal && invoiceUnits) ? +unitPriceVal * +invoiceUnits : null;
-        itemsFa.controls[itemInd].get("unitsAmt").setValue(unitsAmt);
+        let unitsAmt: number = (unitPriceVal && invoiceUnits) ? +unitPriceVal * +invoiceUnits : 0;
+        itemsFa.controls[itemInd].get("unitsAmt").setValue(unitsAmt.toFixed(3));
 
         this.updateAmountDetails();
     }
@@ -463,10 +497,37 @@ export class InvoiceUploadComponent implements OnInit {
         let totalItemsAmt = 0;
         const itemsFa: FormArray = <FormArray>this.invoiceUploadForm.controls['itemsList'];
         for(let i = 0; i < itemsFa.length; i++) {
-            let unitsAmt = +itemsFa.controls[i].get("unitsAmt").value;
+            let unitsAmtVal = itemsFa.controls[i].get("unitsAmt").value;
+            let unitsAmt = (unitsAmtVal) ? +unitsAmtVal : 0;
             totalItemsAmt = totalItemsAmt + unitsAmt;
         }
-        this.invoiceUploadForm.get("totalItemsAmt").setValue(totalItemsAmt);
+        this.invoiceUploadForm.get("totalItemsAmt").setValue(totalItemsAmt.toFixed(3));
+
+        this.updateInvoiceTotalAmt();
+    }
+
+    onFreightChargesBlur() {
+        let freightChargesVal = this.invoiceUploadForm.get("freightCharges").value;
+        if(freightChargesVal && !isNaN(freightChargesVal)) {
+            let freightCharges = Number(freightChargesVal).toFixed(3);
+            this.invoiceUploadForm.get("freightCharges").setValue(freightCharges);
+        }
+        else {
+            this.invoiceUploadForm.get("freightCharges").setValue(null);
+        }
+
+        this.updateInvoiceTotalAmt();
+    }
+
+    onTotalTaxBlur() {
+        let totalTaxVal = this.invoiceUploadForm.get("totalTax").value;
+        if(totalTaxVal && !isNaN(totalTaxVal)) {
+            let totalTax = Number(totalTaxVal).toFixed(3);
+            this.invoiceUploadForm.get("totalTax").setValue(totalTax);
+        }
+        else {
+            this.invoiceUploadForm.get("totalTax").setValue(null);
+        }
 
         this.updateInvoiceTotalAmt();
     }
@@ -482,7 +543,7 @@ export class InvoiceUploadComponent implements OnInit {
         let totalTax = totalTaxVal ? +totalTaxVal : 0;
 
         let totalInvAmt: number = totalItemsAmt + fregihtCharges + totalTax;
-        this.invoiceUploadForm.get("totalInvAmt").setValue(totalInvAmt);
+        this.invoiceUploadForm.get("totalInvAmt").setValue(totalInvAmt.toFixed(3));
     }
 
     prepareInvoiceFileTypes() {
@@ -607,10 +668,10 @@ export class InvoiceUploadComponent implements OnInit {
         let orderedUnits: number = (item.orderedUnits) ? +item.orderedUnits : 0.000;
         let suppliedUnits: number = (item.suppliedUnits) ? +item.suppliedUnits : 0.000;
         let balanceUnits: number = orderedUnits - suppliedUnits;
-
+Validators.pattern("^[0-9]*$")
         let fg: FormGroup = this._formBuilder.group({
             itemId: item.itemId,
-            itemNumber: item.itemNumber,
+            itemNumber: [item.itemNumber, [Validators.pattern("^[0-9]*$")]],
             itemDescription: item.itemDescription,
             uom: item.uom,
             orderedUnits: item.orderedUnits,

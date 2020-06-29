@@ -12,8 +12,7 @@
             </span>
         </li>
 
-        <li class="step"
-            [ngClass]="{ 'completed': poLevel?.status == 'Approved', 'notcompleted': poLevel?.status == 'Rejected' }">
+        <li class="step" [ngClass]="{ 'completed': poLevel?.status == 'Approved', 'notcompleted': poLevel?.status == 'Rejected' }">
             <span class="upper-text">{{ getStatusDetails(poLevel) }}</span>
             <span class="dot"></span>
             <span class="lower-text">
@@ -21,8 +20,7 @@
             </span>
         </li>
 
-        <li class="step"
-            [ngClass]="{ 'completed': fhLevel?.status == 'Approved', 'notcompleted': fhLevel?.status == 'Rejected' }">
+        <li class="step" [ngClass]="{ 'completed': fhLevel?.status == 'Approved', 'notcompleted': fhLevel?.status == 'Rejected' }">
             <span class="upper-text">{{ getStatusDetails(fhLevel) }}</span>
             <span class="dot"></span>
             <span class="lower-text">
@@ -30,8 +28,7 @@
             </span>
         </li>
 
-        <li class="step" 
-            [ngClass]="{ 'completed': financeLevel?.status == 'Approved', 'notcompleted': financeLevel?.status == 'Rejected' }">
+        <li class="step" [ngClass]="{ 'completed': financeLevel?.status == 'Approved', 'notcompleted': financeLevel?.status == 'Rejected' }">
             <span class="upper-text">{{ getStatusDetails(financeLevel) }}</span>
             <span class="dot"></span>
             <span class="lower-text">
@@ -66,6 +63,14 @@
                     </div>
                     <div class="value ">
                         {{ (invoiceDetails?.vendorName) ? invoiceDetails?.vendorName : "" }}
+                    </div>
+                </div>
+                <div class="flex-item">
+                    <div class="header ">
+                        Project Name:
+                    </div>
+                    <div class="value ">
+                        {{ (invoiceDetails?.projectName) ? invoiceDetails?.projectName : "" }}
                     </div>
                 </div>
                 <div class="flex-item">
@@ -109,18 +114,8 @@
                     <div class="value ">
                         {{ invoiceDetails?.totalAmt + " " + currency }}
                     </div>
-
-
                 </div>
-                <div class="flex-item">
-                    <div class="header ">
-                        Remarks:
-                    </div>
-                    <div class="value ">
-                        {{ invoiceDetails?.remarks }}
-                    </div>
 
-                </div>
                 <div class="flex-item">
                     <div class="header ">
                         Amount Paid:
@@ -259,7 +254,7 @@
         </div>
 
         <div class="row actions margin-unset">
-            <button mat-raised-button class="footer-actions">Back</button>
+            <button mat-raised-button class="footer-actions" (click) = "onBackBtnClick()">Back</button>
         </div>
     </div>
 </div>
