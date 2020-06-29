@@ -71,47 +71,57 @@
                             {{ (invoiceDetails?.vendorName) ? invoiceDetails?.vendorName : "" }}
                         </td>
                         <th>
+                            Project Name:
+                        </th>
+                        <td>
+                            {{ (invoiceDetails?.projectName) ? invoiceDetails?.projectName : "" }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
                             Total Inv Amt: <small> (inc tax) </small>
                         </th>
                         <td>
                             {{ invoiceDetails?.totalAmt + " " + currency }}
                         </td>
-                    </tr>
-                    <tr>
                         <th>
                             PO No:
                         </th>
                         <td>
                             {{ invoiceDetails?.poNumber }}
                         </td>
+                        
+                    </tr>
+                    <tr>
                         <th>
                             Amount Paid:
                         </th>
                         <td>
                             {{ getPaidAmount() }}
                         </td>
-                    </tr>
-                    <tr>
                         <th>
                             Invoice No:
                         </th>
                         <td>
                             {{ invoiceDetails?.invoiceNumber }}
                         </td>
+                        
+                    </tr>
+                    <tr>
                         <th>
                             Paid Date:
                         </th>
                         <td>
                             {{ getPaidDate() }}
                         </td>
-                    </tr>
-                    <tr>
                         <th>
                             Invoice Date:
                         </th>
                         <td>
                             {{ getFormattedDate(invoiceDetails?.invoiceDate) }}
                         </td>
+                    </tr>
+                    <tr>
                         <th>
                             Paid Status:
                         </th>
