@@ -69,6 +69,8 @@ export class InvoiceUploadComponent implements OnInit {
 
     invoiceNumberErrMsg: string = "";
 
+    //totalItemsAmtValid: boolean = false;
+
     constructor(private _homeService: HomeService, 
                 private _appService: AppService,
                 private _formBuilder: FormBuilder,
@@ -455,7 +457,7 @@ export class InvoiceUploadComponent implements OnInit {
     onInvoiceUnitsBlur(itemInd: number) {
         const itemsFa: FormArray = <FormArray>this.invoiceUploadForm.controls['itemsList'];
         let invoiceUnitsVal = itemsFa.controls[itemInd].get("invoiceUnits").value;
-        if(invoiceUnitsVal && !isNaN(invoiceUnitsVal)) {
+        if(invoiceUnitsVal && !isNaN(invoiceUnitsVal) && Number(invoiceUnitsVal) > 0) {
             let invoiceUnits = Number(invoiceUnitsVal).toFixed(3);
             itemsFa.controls[itemInd].get("invoiceUnits").setValue(invoiceUnits);
         }
@@ -668,7 +670,7 @@ export class InvoiceUploadComponent implements OnInit {
         let orderedUnits: number = (item.orderedUnits) ? +item.orderedUnits : 0.000;
         let suppliedUnits: number = (item.suppliedUnits) ? +item.suppliedUnits : 0.000;
         let balanceUnits: number = orderedUnits - suppliedUnits;
-Validators.pattern("^[0-9]*$")
+
         let fg: FormGroup = this._formBuilder.group({
             itemId: item.itemId,
             itemNumber: [item.itemNumber, [Validators.pattern("^[0-9]*$")]],
@@ -746,6 +748,12 @@ Validators.pattern("^[0-9]*$")
         if((this.invoiceUploadForm.controls['itemsList'] as FormArray).length > 0 && this.invoiceUploadForm.valid) {
             isCntrlsValid = true;
         }
+
+        // this.totalItemsAmtValid = false;
+        // let totalItemsAmtVal = this.invoiceUploadForm.get("totalItemsAmt").value;
+        // if(totalItemsAmtVal && !isNaN(totalItemsAmtVal) && Number(totalItemsAmtVal) > 0) {
+        //     this.totalItemsAmtValid = true;
+        // }
 
         if(isInvFilesValid && isSupportingFilesValid && isCntrlsValid) {
             return true;
@@ -894,6 +902,22 @@ Validators.pattern("^[0-9]*$")
             });
     }
 
+    totalItemsAmtValidator(control: AbstractControl) {
+        if(this.invoiceUploadForm) {
+            let totalItemsAmtVal = this.invoiceUploadForm.get("totalItemsAmt").value;
+            if(totalItemsAmtVal && (Number(totalItemsAmtVal) > 0)) {
+                return {};
+            }
+            else {
+                return {
+                    totalItemsAmtErr: "Invoice Net Amount should be greater than zero"
+                }
+            }
+        }
+        
+        return {};
+    }
+
     ngOnDestroy() {
         if (this._sidebarExpansionSubscription) {
             this._sidebarExpansionSubscription.unsubscribe();
@@ -918,7 +942,7 @@ Validators.pattern("^[0-9]*$")
             remarks: [ null, Validators.required ],
             freightCharges: null,
             totalTax: [ null, Validators.required ],
-            totalItemsAmt: [ "" ],
+            totalItemsAmt: [ "", [this.totalItemsAmtValidator.bind(this)] ],
             totalInvAmt: [ "" ],
             currency: null,
             vendorId: null,

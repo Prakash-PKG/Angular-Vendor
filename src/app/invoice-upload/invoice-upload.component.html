@@ -200,6 +200,9 @@
                         </td>
                         <td style="margin-left: 10px" class="amount">
                             <span>{{ f["totalItemsAmt"].value + " " + currency }}</span>
+                            <div *ngIf = "isSubmitted && f.totalItemsAmt.errors">
+                                <div *ngIf="f.totalItemsAmt.errors?.totalItemsAmtErr" class="errortxt">{{ f.totalItemsAmt.errors?.totalItemsAmtErr }}</div>
+                            </div>
                         </td>
                     </tr>
                     <tr>
