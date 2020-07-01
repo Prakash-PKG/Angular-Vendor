@@ -1,3 +1,5 @@
+import { MessageDialogModel } from './../models/popup-models';
+import { MessageDialogComponent } from './../message-dialog/message-dialog.component';
 import { globalConstant } from './../common/global-constant';
 import { AppService } from './../app.service';
 import { InvoiceUploadService } from './invoice-upload.service';
@@ -10,6 +12,7 @@ import { HomeService } from '../home/home.service';
 import { FormBuilder, FormGroup, FormArray, Validators, FormControl, AbstractControl } from '@angular/forms';
 import { debounceTime, tap, switchMap, finalize } from 'rxjs/operators';
 import { Router } from '@angular/router';
+import { MatSort, MatPaginator, MatTableDataSource, MatDialogRef, MAT_DIALOG_DATA, MatDialog } from '@angular/material';
 
 @Component({
     selector: 'app-invoice-upload',
@@ -75,6 +78,7 @@ export class InvoiceUploadComponent implements OnInit {
                 private _appService: AppService,
                 private _formBuilder: FormBuilder,
                 private _router: Router,
+                public _dialog: MatDialog,
                 private _invoiceUploadService: InvoiceUploadService) { }
 
     get f() { return this.invoiceUploadForm.controls; }
@@ -82,7 +86,7 @@ export class InvoiceUploadComponent implements OnInit {
     get fa() { return <FormArray>this.invoiceUploadForm.controls['itemsList']; }
 
     onCancelClick() {
-        this._router.navigate([this._appService.routingConstants.posearch]);
+        this._router.navigate([this._appService.routingConstants.invoiceSearch]);
     }
 
     onInvoiceBlur() {
@@ -323,7 +327,7 @@ export class InvoiceUploadComponent implements OnInit {
             invoiceUnits: [ null, Validators.required ],
             unitPrice: [ null, Validators.required ],
             unitsAmt: null,
-            hsn: [ null, [Validators.required, Validators.maxLength(8)] ],
+            hsn: [ null, [Validators.required, Validators.maxLength(8), Validators.pattern("^[0-9]*$")] ],
             createdBy: null,
             createdDate: null
         });
@@ -685,7 +689,8 @@ export class InvoiceUploadComponent implements OnInit {
 
     removeItems() {
         const controlsList: FormArray = <FormArray>this.invoiceUploadForm.controls['itemsList'];
-        for(let i = 0; i < controlsList.length; i++) {
+        let cnt = 0;
+        while (cnt < controlsList.length) {
             controlsList.removeAt(0);
         }
     }
@@ -708,7 +713,7 @@ export class InvoiceUploadComponent implements OnInit {
             invoiceUnits: [ item.invoiceUnits, Validators.required ],
             unitPrice: item.unitPrice,
             unitsAmt: unitsAmt,
-            hsn: [ item.hsn, [Validators.required, Validators.maxLength(8)] ],
+            hsn: [ item.hsn, [Validators.required, Validators.maxLength(8), Validators.pattern("^[0-9]*$")] ],
             createdBy: item.createdBy,
             createdDate: item.createdDate
         },
@@ -914,10 +919,10 @@ export class InvoiceUploadComponent implements OnInit {
                 if (response.body) {
                     this.invoiceUpdateResults = response.body as UpdateInvoiceResultModel;
                     if (this.invoiceUpdateResults.statusDetails.status == 200 && this.invoiceUpdateResults.statusDetails.isSuccess) {
-                        this.msg = this.invoiceUpdateResults.statusDetails.message;
+                        this.displayInvoiceUploadStatus(this.invoiceUpdateResults.statusDetails.message, true);
                     }
                     else {
-                        this.msg = "failed";
+                        this.displayInvoiceUploadStatus(this.invoiceUpdateResults.statusDetails.message, false);
                     }
                 }
             },
@@ -925,6 +930,24 @@ export class InvoiceUploadComponent implements OnInit {
                 this._homeService.updateBusy(<BusyDataModel>{ isBusy: false, msg: null });
                 console.log(error);
             });
+    }
+
+    displayInvoiceUploadStatus(msg: string, status: boolean) {
+        const dialogRef = this._dialog.open(MessageDialogComponent, {
+            disableClose: true,
+            panelClass: 'dialog-box',
+            width: '550px',
+            data: <MessageDialogModel>{
+                title: "Invoice Upload Action",
+                message: msg
+            }
+        });
+
+        dialogRef.afterClosed().subscribe(result => {
+            if (result && status) {
+                this._router.navigate([this._appService.routingConstants.invoiceSearch]);
+            }
+        });
     }
 
     totalItemsAmtValidator(control: AbstractControl) {

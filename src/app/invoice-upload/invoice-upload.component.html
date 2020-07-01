@@ -156,6 +156,7 @@
                             <div *ngIf="( isSubmitted ) && fa.controls[itemInd].controls.hsn.errors">
                                 <div *ngIf="fa.controls[itemInd].controls.hsn.errors?.required" class="errortxt">HSN is required</div>
                                 <div *ngIf="fa.controls[itemInd].controls.hsn.errors?.maxlength" class="errortxt">HSN Max length is 8</div>
+                                <div *ngIf="fa.controls[itemInd].controls.hsn.errors?.pattern" class="errortxt">Allows numbers only</div>
                             </div>
                         </td>
                         <td *ngIf="selectedInvoiceType == 'po'">

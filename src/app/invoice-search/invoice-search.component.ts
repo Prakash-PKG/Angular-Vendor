@@ -1,6 +1,8 @@
 import { InvoiceSearchService } from './invoice-search.service';
-import { InvoiceSearchRequestModel, BusyDataModel, 
-        InvoiceSearchResultModel, InvoiceModel } from './../models/data-models';
+import {
+    InvoiceSearchRequestModel, BusyDataModel,
+    InvoiceSearchResultModel, InvoiceModel
+} from './../models/data-models';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatSort, MatTableDataSource } from '@angular/material';
 import { HomeService } from '../home/home.service';
@@ -8,11 +10,50 @@ import { trigger, state, style, transition, animate } from '@angular/animations'
 import { globalConstant } from './../common/global-constant';
 import { Router } from '@angular/router';
 import { AppService } from './../app.service';
+import { FormBuilder, FormGroup, FormArray, Validators, FormControl, AbstractControl } from '@angular/forms';
+import { MomentDateAdapter, MAT_MOMENT_DATE_ADAPTER_OPTIONS } from '@angular/material-moment-adapter';
+import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
+
+// Depending on whether rollup is used, moment needs to be imported differently.
+// Since Moment.js doesn't have a default export, we normally need to import using the `* as`
+// syntax. However, rollup creates a synthetic default module and we thus need to import it using
+// the `default as` syntax.
+import * as _moment from 'moment';
+// tslint:disable-next-line:no-duplicate-imports
+import { default as _rollupMoment } from 'moment';
+
+const moment = _rollupMoment || _moment;
+
+// See the Moment.js docs for the meaning of these formats:
+// https://momentjs.com/docs/#/displaying/format/
+export const MY_FORMATS = {
+    parse: {
+        dateInput: 'LL',
+    },
+    display: {
+        dateInput: 'LL',
+        monthYearLabel: 'MMM YYYY',
+        dateA11yLabel: 'LL',
+        monthYearA11yLabel: 'MMMM YYYY',
+    },
+};
 
 @Component({
     selector: 'app-invoice-search',
     templateUrl: './invoice-search.component.html',
     styleUrls: ['./invoice-search.component.scss'],
+    providers: [
+        // `MomentDateAdapter` can be automatically provided by importing `MomentDateModule` in your
+        // application's root module. We provide it at the component level here, due to limitations of
+        // our example generation script.
+        {
+            provide: DateAdapter,
+            useClass: MomentDateAdapter,
+            deps: [MAT_DATE_LOCALE, MAT_MOMENT_DATE_ADAPTER_OPTIONS]
+        },
+
+        { provide: MAT_DATE_FORMATS, useValue: MY_FORMATS },
+    ]
 })
 export class InvoiceSearchComponent implements OnInit {
 
@@ -22,10 +63,14 @@ export class InvoiceSearchComponent implements OnInit {
     _initDetails: InvoiceSearchResultModel = null;
 
     invoiceList: InvoiceModel[] = [];
+    totalInvoiceList: InvoiceModel[] = [];
+
+    invoiceSearchForm: FormGroup;
 
     constructor(private _homeService: HomeService,
         private _appService: AppService,
         private _router: Router,
+        private _formBuilder: FormBuilder,
         private _invoiceSearchService: InvoiceSearchService) { }
 
     onInvoiceClick(inv: InvoiceModel) {
@@ -34,14 +79,16 @@ export class InvoiceSearchComponent implements OnInit {
     }
 
     getFormattedDate(dtStr: string) {
-        if(dtStr) {
+        if (dtStr) {
             return this._appService.getFormattedDate(dtStr);
         }
-        
+
         return "";
     }
 
     async loadInitData() {
+        this.invoiceList = [];
+        this.totalInvoiceList = [];
 
         let req: InvoiceSearchRequestModel = {
             vendorId: null,
@@ -69,8 +116,37 @@ export class InvoiceSearchComponent implements OnInit {
         this._initDetails = await this._invoiceSearchService.getInvoiceList(req);
         if (this._initDetails && this._initDetails.invoiceList && this._initDetails.invoiceList.length > 0) {
             this.invoiceList = this._initDetails.invoiceList.concat();
+            this.totalInvoiceList = this.invoiceList.concat();
         }
         this._homeService.updateBusy(<BusyDataModel>{ isBusy: false, msg: null });
+    }
+
+    onClearClick() {
+        this.invoiceSearchForm.reset();
+        this.invoiceList = this.totalInvoiceList.concat();
+    }
+
+    onSearchChange() {
+
+        let poNumberVal = this.invoiceSearchForm.get("poNumber").value;
+        let lcPoNumberVal = (poNumberVal) ? poNumberVal.toLowerCase() : "";
+
+        let invoiceNumberVal = this.invoiceSearchForm.get("invoiceNumber").value;
+        let lcInvoiceNumberVal = (invoiceNumberVal) ? invoiceNumberVal.toLowerCase() : "";
+
+        let startDateVal = this.invoiceSearchForm.get("startDate").value;
+
+        let endDateVal = this.invoiceSearchForm.get("endDate").value;
+
+        this.invoiceList = this.totalInvoiceList.filter(function (req) {
+            if ((req.poNumber && req.poNumber.toString().toLowerCase().indexOf(lcPoNumberVal) > -1) &&
+                (req.invoiceNumber && req.invoiceNumber.toString().toLowerCase().indexOf(lcInvoiceNumberVal) > -1) &&
+                ((req.invoiceDate && startDateVal) ? new Date(req.invoiceDate) > startDateVal : true) &&
+                ((req.invoiceDate && endDateVal) ? new Date(req.invoiceDate) < endDateVal : true)) {
+                return true;
+            }
+        });
+
     }
 
     ngOnDestroy() {
@@ -84,6 +160,29 @@ export class InvoiceSearchComponent implements OnInit {
 
         this._sidebarExpansionSubscription = this._homeService.isSidebarCollapsed.subscribe(data => {
             this.isDashboardCollapsed = !data;
+        });
+
+        this.invoiceSearchForm = this._formBuilder.group({
+            poNumber: null,
+            invoiceNumber: null,
+            startDate: null,
+            endDate: null
+        });
+
+        this.invoiceSearchForm.get("poNumber").valueChanges.subscribe(val => {
+            this.onSearchChange();
+        });
+
+        this.invoiceSearchForm.get("invoiceNumber").valueChanges.subscribe(val => {
+            this.onSearchChange();
+        });
+
+        this.invoiceSearchForm.get("startDate").valueChanges.subscribe(val => {
+            this.onSearchChange();
+        });
+
+        this.invoiceSearchForm.get("endDate").valueChanges.subscribe(val => {
+            this.onSearchChange();
         });
 
         setTimeout(() => {
