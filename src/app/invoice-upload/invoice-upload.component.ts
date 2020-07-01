@@ -100,7 +100,7 @@ export class InvoiceUploadComponent implements OnInit {
         }
         else {
             let selVendor = this.invoiceUploadForm.get("vendorId").value;
-            if(typeof(selVendor) == "object") {
+            if(selVendor && typeof(selVendor) == "object") {
                 venId = (selVendor as VendorAutoCompleteModel).vendorId;
             }
         }
@@ -257,14 +257,27 @@ export class InvoiceUploadComponent implements OnInit {
         if(evtData.value == "po") {
             this.headerArr = this.poHeaderArr.concat();
             this.invoiceUploadForm.get("poList").setValidators([Validators.required]);
+
+            this.invoiceUploadForm.get("currency").setValidators([]);
+            this.invoiceUploadForm.get("vendorId").setValidators([]);
+            this.invoiceUploadForm.get("projectId").setValidators([]);
+            this.invoiceUploadForm.get("companyCode").setValidators([]);
         }
         else {
             this.headerArr = this.nonPOHeaderArr.concat();
             this.invoiceUploadForm.get("currency").setValidators([Validators.required]);
+            this.invoiceUploadForm.get("vendorId").setValidators([Validators.required]);
+            this.invoiceUploadForm.get("projectId").setValidators([Validators.required]);
+            this.invoiceUploadForm.get("companyCode").setValidators([Validators.required]);
+
+            this.invoiceUploadForm.get("poList").setValidators([]);
         }
 
         this.invoiceUploadForm.get("poList").updateValueAndValidity();
         this.invoiceUploadForm.get("currency").updateValueAndValidity();
+        this.invoiceUploadForm.get("vendorId").updateValueAndValidity();
+        this.invoiceUploadForm.get("projectId").updateValueAndValidity();
+        this.invoiceUploadForm.get("companyCode").updateValueAndValidity();
     }
 
     resetAllFields() {
@@ -880,7 +893,7 @@ export class InvoiceUploadComponent implements OnInit {
             itemsDetails: itemsList,
             filesList: filesList
         }
-       
+
         this._homeService.updateBusy(<BusyDataModel>{ isBusy: true, msg: null });
         this._invoiceUploadService.updateInvoiceDetails(req)
             .subscribe(response => {

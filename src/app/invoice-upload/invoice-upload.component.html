@@ -67,6 +67,9 @@
                     </ng-container>
                 </mat-autocomplete>
             </mat-form-field>
+            <div *ngIf="( isSubmitted ) && f.vendorId.errors">
+                <div *ngIf="f.vendorId.errors?.required" class="errortxt">Vendor is required</div>
+            </div>
 
             <mat-form-field *ngIf="selectedInvoiceType == 'non-po'">
                 <input matInput placeholder="Select Project" aria-label="State" [matAutocomplete]="auto" 
@@ -81,6 +84,9 @@
                     </ng-container>
                 </mat-autocomplete>
             </mat-form-field>
+            <div *ngIf="( isSubmitted ) && f.projectId.errors">
+                <div *ngIf="f.projectId.errors?.required" class="errortxt">Project is required</div>
+            </div>
 
             <mat-form-field class="search-row-element" *ngIf="selectedInvoiceType == 'non-po'">
                 <mat-label>Choose Company</mat-label>
@@ -90,6 +96,9 @@
                     </mat-option>
                 </mat-select>
             </mat-form-field>
+            <div *ngIf="( isSubmitted ) && f.companyCode.errors">
+                <div *ngIf="f.companyCode.errors?.required" class="errortxt">Company is required</div>
+            </div>
 
             <mat-form-field class="search-row-elemen currency" *ngIf="selectedInvoiceType == 'non-po'">
                 <mat-label>Choose Currency</mat-label>
