@@ -5,6 +5,7 @@ import { AppService } from './../app.service';
 import { InvoiceDetailsService } from './invoice-details.service';
 import { Component, OnInit } from '@angular/core';
 import { HomeService } from '../home/home.service';
+import { Router } from '@angular/router';
 
 @Component({
     selector: 'app-invoice-details',
@@ -45,8 +46,13 @@ export class InvoiceDetailsComponent implements OnInit {
     isPOBasedInvoice: boolean = true;
 
     constructor(private _homeService: HomeService,
+                private _router: Router,
                 private _invoiceDetailsService: InvoiceDetailsService,
                 private _appService: AppService) { }
+
+    onBackBtnClick() {
+        this._router.navigate([this._appService.routingConstants.invoiceSearch]);
+    }
 
     getPaymentStatusDetails() {
         if(this.invoicePaymentDetails && this.invoicePaymentDetails.invoiceAmountPaid) {

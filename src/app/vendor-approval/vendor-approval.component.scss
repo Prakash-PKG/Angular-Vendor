@@ -34,9 +34,9 @@
   height: 2em;
   line-height: 1em;
 }
-.search-row-element.actions {
-  flex: 0 0 3em;
-}
+// .search-row-element.actions {
+//   flex: 0 0 3em;
+// }
 .approver-section .search-row .mat-form-field {
   margin-right: 2em;
   width: 7em;
@@ -58,9 +58,14 @@
 .Rtable--2cols > .Rtable-cell {
   width: 25%;
 }
-.Rtable--2cols > .Rtable-cell.attachments {
+.Rtable--2cols > .Rtable-cell .attachments {
+  display: flex;
+  justify-content: space-between;
+}
+.Rtable--2cols > .Rtable-cell .flex-item {
   display: flex;
   flex-wrap: wrap;
+  justify-content: flex-start;
 }
 
 .Rtable--2cols > .Rtable-cell:nth-child(odd) {
@@ -120,7 +125,10 @@
   border-top-style: solid;
 }
 .actions {
-  width: 100%;
+  // width: 100%;
+  display: flex;
+  flex-grow: 0;
+  flex-shrink: 0;
 }
 .approver-section {
   margin: 0px 3em;
@@ -128,15 +136,15 @@
 .mat-radio-button {
   margin-right: 10px;
 }
-.attachments .attach-btn {
+.Rtable--2cols > .Rtable-cell .attach-btn {
   background: blueviolet;
   color: white;
   transform: rotate(145deg);
 }
-.attachments .attach-btn:hover {
+.Rtable--2cols > .Rtable-cell .attach-btn:hover {
   box-shadow: 0px 0px 5px lightgray;
 }
-.filename{
+.filename {
   background: aliceblue;
   margin-right: 5px;
   cursor: pointer;

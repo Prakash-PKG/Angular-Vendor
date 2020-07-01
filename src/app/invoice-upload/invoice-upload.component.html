@@ -67,6 +67,9 @@
                     </ng-container>
                 </mat-autocomplete>
             </mat-form-field>
+            <div *ngIf="( isSubmitted ) && f.vendorId.errors">
+                <div *ngIf="f.vendorId.errors?.required" class="errortxt">Vendor is required</div>
+            </div>
 
             <mat-form-field *ngIf="selectedInvoiceType == 'non-po'">
                 <input matInput placeholder="Select Project" aria-label="State" [matAutocomplete]="auto" 
@@ -81,6 +84,9 @@
                     </ng-container>
                 </mat-autocomplete>
             </mat-form-field>
+            <div *ngIf="( isSubmitted ) && f.projectId.errors">
+                <div *ngIf="f.projectId.errors?.required" class="errortxt">Project is required</div>
+            </div>
 
             <mat-form-field class="search-row-element" *ngIf="selectedInvoiceType == 'non-po'">
                 <mat-label>Choose Company</mat-label>
@@ -90,6 +96,9 @@
                     </mat-option>
                 </mat-select>
             </mat-form-field>
+            <div *ngIf="( isSubmitted ) && f.companyCode.errors">
+                <div *ngIf="f.companyCode.errors?.required" class="errortxt">Company is required</div>
+            </div>
 
             <mat-form-field class="search-row-elemen currency" *ngIf="selectedInvoiceType == 'non-po'">
                 <mat-label>Choose Currency</mat-label>
@@ -127,6 +136,7 @@
                                 formControlName="itemNumber">
                             <div *ngIf="( isSubmitted ) && fa.controls[itemInd].controls.itemNumber.errors">
                                 <div *ngIf="fa.controls[itemInd].controls.itemNumber.errors?.required" class="errortxt">Item No. is required</div>
+                                <div *ngIf="fa.controls[itemInd].controls.itemNumber.errors?.pattern" class="errortxt">Allows numbers only</div>
                             </div>
                         </td>
                         <td>
@@ -146,6 +156,7 @@
                             <div *ngIf="( isSubmitted ) && fa.controls[itemInd].controls.hsn.errors">
                                 <div *ngIf="fa.controls[itemInd].controls.hsn.errors?.required" class="errortxt">HSN is required</div>
                                 <div *ngIf="fa.controls[itemInd].controls.hsn.errors?.maxlength" class="errortxt">HSN Max length is 8</div>
+                                <div *ngIf="fa.controls[itemInd].controls.hsn.errors?.pattern" class="errortxt">Allows numbers only</div>
                             </div>
                         </td>
                         <td *ngIf="selectedInvoiceType == 'po'">
@@ -176,7 +187,7 @@
                             <span *ngIf="selectedInvoiceType == 'po'">{{ item.get("unitPrice").value }}</span>
                             <input *ngIf="selectedInvoiceType == 'non-po'" class="inv-qty" 
                                 [ngClass]="{ 'errorinput': isSubmitted && fa.controls[itemInd].controls.unitPrice.errors }"  
-                                formControlName="unitPrice" (blur)="onInvoiceUnitsBlur(itemInd)">
+                                formControlName="unitPrice" (blur)="onUnitPriceBlur(itemInd)">
                             <div *ngIf="( isSubmitted ) && fa.controls[itemInd].controls.unitPrice.errors">
                                 <div *ngIf="fa.controls[itemInd].controls.unitPrice.errors?.required" class="errortxt">Unit Price is required</div>
                             </div>
@@ -184,7 +195,7 @@
                         <td class="amount">
                             {{ item.get("unitsAmt").value }}
                         </td>
-                        <td>
+                        <td *ngIf="selectedInvoiceType == 'non-po'">
                             <button mat-button mat-icon-button aria-label="Delete" (click) = "onDeleteItemClick(itemInd)">
                                 <mat-icon>delete_outline</mat-icon>
                             </button>
@@ -199,6 +210,9 @@
                         </td>
                         <td style="margin-left: 10px" class="amount">
                             <span>{{ f["totalItemsAmt"].value + " " + currency }}</span>
+                            <div *ngIf = "isSubmitted && f.totalItemsAmt.errors">
+                                <div *ngIf="f.totalItemsAmt.errors?.totalItemsAmtErr" class="errortxt">{{ f.totalItemsAmt.errors?.totalItemsAmtErr }}</div>
+                            </div>
                         </td>
                     </tr>
                     <tr>
@@ -208,7 +222,7 @@
                             <span>
                                 <input class="inv-qty" formControlName="freightCharges" 
                                     [ngClass]="{ 'errorinput': isSubmitted && f.freightCharges.errors }"
-                                    (blur)="updateInvoiceTotalAmt()">
+                                    (blur)="onFreightChargesBlur()">
                                 <span style="margin-left: 10px">{{ currency }}</span>
                             </span>
                         </td>
@@ -220,7 +234,7 @@
                             <span>
                                 <input class="inv-qty" formControlName="totalTax" 
                                 [ngClass]="{ 'errorinput': isSubmitted && f.totalTax.errors }" 
-                                (blur)="updateInvoiceTotalAmt()">
+                                (blur)="onTotalTaxBlur()">
                                 <span style="margin-left: 10px">{{ currency }}</span>
                             </span>
                             <div *ngIf="( isSubmitted ) && f.totalTax.errors">
@@ -300,7 +314,7 @@
                 <div class="error-txt">
                     {{ msg }}
                 </div>
-                <button mat-raised-button class="footer-actions">Cancel</button>
+                <button mat-raised-button class="footer-actions" (click)="onCancelClick()">Cancel</button>
                 <button mat-raised-button class="footer-actions" (click)="onSubmitClick()">Submit</button>
                 <!--<button mat-raised-button class="footer-actions footer-actions-green"
                     (click)="onSaveClick()">Save</button>-->

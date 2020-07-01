@@ -3,40 +3,41 @@
         <h3>Invoice Search</h3>
     </div>
     <div class="search-row">
-        <mat-form-field class="field search-row-element">
-            <mat-label>PO No.</mat-label>
-            <mat-select>
-                <mat-option>PO list</mat-option>
-            </mat-select>
-        </mat-form-field>
+        <form [formGroup]="invoiceSearchForm">
+            <mat-form-field class="search-row-element">
+                <mat-label>PO No.</mat-label>
+                <input type="text" matInput formControlName="poNumber" autocomplete="off">
+            </mat-form-field>
 
-        <mat-form-field class="field search-row-element">
-            <mat-label>Invoice No.</mat-label>
-            <mat-select>
-                <mat-option>Invoice list</mat-option>
-            </mat-select>
-        </mat-form-field>
+            <mat-form-field class="search-row-element" style="margin-left: 20px">
+                <mat-label>Invoice No.</mat-label>
+                <input type="text" matInput formControlName="invoiceNumber" autocomplete="off">
+            </mat-form-field>
 
-        <mat-form-field class="field search-row-element">
-            <mat-label>Pick Start Date</mat-label>
-            <input matInput [matDatepicker]="picker" disabled>
-            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-            <mat-datepicker #picker disabled="false"></mat-datepicker>
-        </mat-form-field>
+            <mat-form-field class="field search-row-element" style="margin-left: 20px">
+                <mat-label>Pick Start Date</mat-label>
+                <input matInput [matDatepicker]="picker" disabled formControlName="startDate" autocomplete="off">
+                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-datepicker #picker disabled="false"></mat-datepicker>
+            </mat-form-field>
 
-        <mat-form-field class="field search-row-element">
-            <mat-label>Pick End Date</mat-label>
-            <input matInput [matDatepicker]="picker1" disabled>
-            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-            <mat-datepicker #picker1 disabled="false"></mat-datepicker>
-        </mat-form-field>
+            <mat-form-field class="field search-row-element">
+                <mat-label>Pick End Date</mat-label>
+                <input matInput [matDatepicker]="picker1" disabled formControlName="endDate" autocomplete="off">
+                <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+                <mat-datepicker #picker1 disabled="false"></mat-datepicker>
+            </mat-form-field>
+        </form>
 
-        <mat-icon class="search-btn mat-elevation-z3 search-row-element">search</mat-icon>
+        <div class="actions search-row-element">
+            <button mat-raised-button class="footer-actions" (click) = "onClearClick()">Clear</button>
+        </div>
+
+        <!--<mat-icon class="search-btn mat-elevation-z3 search-row-element">search</mat-icon>-->
 
         <div class="actions search-row-element">
             <button mat-raised-button class="footer-actions">Export Excel</button>
         </div>
-
     </div>
 
     <div class="container my-container margin-unset full-width">
