@@ -249,6 +249,7 @@ export class InvoiceUploadComponent implements OnInit {
         const formsList = <FormArray>this.invoiceUploadForm.controls['itemsList'];
         formsList.removeAt(rowInd);
         this.updateAmountDetails();
+        this.updateNonPOItemNumbers();
     }
 
     onInvoiceTypeChange(evtData) {
@@ -293,15 +294,26 @@ export class InvoiceUploadComponent implements OnInit {
         this.invoiceUploadForm.get("totalInvAmt").setValue("");
     }
 
+    updateNonPOItemNumbers() {
+        const itemsFa: FormArray = <FormArray>this.invoiceUploadForm.controls['itemsList'];
+        let itemNoVal: number = 0;
+        for(let i = 0; i < itemsFa.length; i++) {
+            itemNoVal = itemNoVal + 10;
+            itemsFa.controls[i].get("itemNumber").setValue(itemNoVal);
+        }
+    }
+
     onNewClick() {
         const formsList = <FormArray>this.invoiceUploadForm.controls['itemsList'];
         formsList.insert(formsList.length, this.createNonPOItem());
+
+        this.updateNonPOItemNumbers();
     }
 
     createNonPOItem() {
         let fg: FormGroup = this._formBuilder.group({
             itemId: null,
-            itemNumber: [ null, [Validators.required, Validators.pattern("^[0-9]*$")] ],
+            itemNumber: [ { value: null, disabled: true }, [Validators.required, Validators.pattern("^[0-9]*$")] ],
             itemDescription: [ null, Validators.required ],
             uom: null,
             orderedUnits: null,
