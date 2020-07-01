@@ -23,7 +23,7 @@
                     <span>
                         <mat-icon matTooltip="{{ f.actualFileName }}" (click)="downloadFile(f)">description</mat-icon>
 
-                        <button mat-button mat-icon-button aria-label="Delete"
+                        <button mat-button mat-icon-button aria-label="Delete" *ngIf="!disableSubmit"
                             (click)="onDeleteFileClick(f, fInd, vendorDocCtrl.incCerCtrl.documentTypeId)">
                             <mat-icon>delete_outline</mat-icon>
                         </button>
@@ -60,7 +60,7 @@
                     *ngFor="let f of filesMap[vendorDocCtrl.gstCtrl.documentTypeId]?.filesList; let fInd = index">
                     <span>
                         <mat-icon matTooltip="{{ f.actualFileName }}" (click)="downloadFile(f)">description</mat-icon>
-                        <button mat-button mat-icon-button aria-label="Delete"
+                        <button mat-button mat-icon-button aria-label="Delete" *ngIf="!disableSubmit"
                             (click)="onDeleteFileClick(f, fInd, vendorDocCtrl.gstCtrl.documentTypeId)">
                             <mat-icon>delete_outline</mat-icon>
                         </button>
@@ -97,7 +97,7 @@
                     *ngFor="let f of filesMap[vendorDocCtrl.panCtrl.documentTypeId]?.filesList; let fInd = index">
                     <span>
                         <mat-icon matTooltip="{{ f.actualFileName }}" (click)="downloadFile(f)">description</mat-icon>
-                        <button mat-button mat-icon-button aria-label="Delete"
+                        <button mat-button mat-icon-button aria-label="Delete" *ngIf="!disableSubmit"
                             (click)="onDeleteFileClick(f, fInd, vendorDocCtrl.panCtrl.documentTypeId)">
                             <mat-icon>delete_outline</mat-icon>
                         </button>
@@ -129,7 +129,7 @@
                     *ngFor="let f of filesMap[vendorDocCtrl.canChqCtrl.documentTypeId]?.filesList; let fInd = index">
                     <span>
                         <mat-icon matTooltip="{{ f.actualFileName }}" (click)="downloadFile(f)">description</mat-icon>
-                        <button mat-button mat-icon-button aria-label="Delete"
+                        <button mat-button mat-icon-button aria-label="Delete" *ngIf="!disableSubmit"
                             (click)="onDeleteFileClick(f, fInd, vendorDocCtrl.canChqCtrl.documentTypeId)">
                             <mat-icon>delete_outline</mat-icon>
                         </button>
@@ -170,7 +170,7 @@
                     *ngFor="let f of filesMap[vendorDocCtrl.lutNoCtrl.documentTypeId]?.filesList; let fInd = index">
                     <span>
                         <mat-icon matTooltip="{{ f.actualFileName }}" (click)="downloadFile(f)">description</mat-icon>
-                        <button mat-button mat-icon-button aria-label="Delete"
+                        <button mat-button mat-icon-button aria-label="Delete" *ngIf="!disableSubmit"
                             (click)="onDeleteFileClick(f, fInd, vendorDocCtrl.lutNoCtrl.documentTypeId)">
                             <mat-icon>delete_outline</mat-icon>
                         </button>
@@ -208,7 +208,7 @@
                     *ngFor="let f of filesMap[vendorDocCtrl.pfCtrl.documentTypeId]?.filesList; let fInd = index">
                     <span>
                         <mat-icon matTooltip="{{ f.actualFileName }}" (click)="downloadFile(f)">description</mat-icon>
-                        <button mat-button mat-icon-button aria-label="Delete"
+                        <button mat-button mat-icon-button aria-label="Delete" *ngIf="!disableSubmit"
                             (click)="onDeleteFileClick(f, fInd, vendorDocCtrl.pfCtrl.documentTypeId)">
                             <mat-icon>delete_outline</mat-icon>
                         </button>
@@ -244,7 +244,7 @@
                     *ngFor="let f of filesMap[vendorDocCtrl.esiCtrl.documentTypeId]?.filesList; let fInd = index">
                     <span>
                         <mat-icon matTooltip="{{ f.actualFileName }}" (click)="downloadFile(f)">description</mat-icon>
-                        <button mat-button mat-icon-button aria-label="Delete"
+                        <button mat-button mat-icon-button aria-label="Delete" *ngIf="!disableSubmit"
                             (click)="onDeleteFileClick(f, fInd, vendorDocCtrl.esiCtrl.documentTypeId)">
                             <mat-icon>delete_outline</mat-icon>
                         </button>
@@ -283,7 +283,7 @@
                     *ngFor="let f of filesMap[vendorDocCtrl.msmeCtrl.documentTypeId]?.filesList; let fInd = index">
                     <span>
                         <mat-icon matTooltip="{{ f.actualFileName }}" (click)="downloadFile(f)">description</mat-icon>
-                        <button mat-button mat-icon-button aria-label="Delete"
+                        <button mat-button mat-icon-button aria-label="Delete" *ngIf="!disableSubmit"
                             (click)="onDeleteFileClick(f, fInd, vendorDocCtrl.msmeCtrl.documentTypeId)">
                             <mat-icon>delete_outline</mat-icon>
                         </button>
@@ -321,7 +321,7 @@
                     *ngFor="let f of filesMap[vendorDocCtrl.tdsCtrl.documentTypeId]?.filesList; let fInd = index">
                     <span>
                         <mat-icon matTooltip="{{ f.actualFileName }}" (click)="downloadFile(f)">description</mat-icon>
-                        <button mat-button mat-icon-button aria-label="Delete"
+                        <button mat-button mat-icon-button aria-label="Delete" *ngIf="!disableSubmit"
                             (click)="onDeleteFileClick(f, fInd, vendorDocCtrl.tdsCtrl.documentTypeId)">
                             <mat-icon>delete_outline</mat-icon>
                         </button>
@@ -360,7 +360,7 @@
                     *ngFor="let f of filesMap[vendorDocCtrl.sezCtrl.documentTypeId]?.filesList; let fInd = index">
                     <span>
                         <mat-icon matTooltip="{{ f.actualFileName }}" (click)="downloadFile(f)">description</mat-icon>
-                        <button mat-button mat-icon-button aria-label="Delete"
+                        <button mat-button mat-icon-button aria-label="Delete" *ngIf="!disableSubmit" *ngIf="!disableSubmit"
                             (click)="onDeleteFileClick(f, fInd, vendorDocCtrl.sezCtrl.documentTypeId)">
                             <mat-icon>delete_outline</mat-icon>
                         </button>
@@ -416,7 +416,7 @@
                     *ngFor="let f of filesMap[vendorDocCtrl.otherCtrl.documentTypeId]?.filesList; let fInd = index">
                     <span>
                         <mat-icon matTooltip="{{ f.actualFileName }}" (click)="downloadFile(f)">description</mat-icon>
-                        <button mat-button mat-icon-button aria-label="Delete"
+                        <button mat-button mat-icon-button aria-label="Delete" *ngIf="!disableSubmit"
                             (click)="onDeleteFileClick(f, fInd, vendorDocCtrl.otherCtrl.documentTypeId)">
                             <mat-icon>delete_outline</mat-icon>
                         </button>

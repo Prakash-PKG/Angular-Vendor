@@ -22,7 +22,8 @@ interface FileMap {
         filesList: FileDetailsModel[],
         isMandatory: boolean,
         isAttached: boolean,
-        isError: boolean
+        isError: boolean,
+        toAttach: FileDetailsModel[],
     }
 }
 
@@ -69,7 +70,15 @@ export class VendorDocumentsComponent implements OnInit {
     onFileChange(event: any, documentTypeId: number) {
         if (!documentTypeId) return;
         this._vendorRegistrationService.updateBusy(<BusyDataModel>{ isBusy: true, msg: "Attaching..." });
-        this.filesMap[documentTypeId] = { filesList: [], isMandatory: true, isAttached: false, isError: false };
+        if (!this.filesMap[documentTypeId]) {
+            this.filesMap[documentTypeId] = { filesList: [], toAttach: [], isMandatory: true, isAttached: false, isError: false };
+        }
+        else {
+            this.filesMap[documentTypeId].toAttach = [];
+            this.filesMap[documentTypeId].isMandatory = true;
+            this.filesMap[documentTypeId].isAttached = false;
+            this.filesMap[documentTypeId].isError = false;
+        }
         if (event.target.files && event.target.files.length > 0) {
             this.counterSubject = new BehaviorSubject(0);
             this.counterSubscription = this.counterSubject
@@ -94,10 +103,10 @@ export class VendorDocumentsComponent implements OnInit {
                         createdDate: null,
                         createdBy: null
                     };
-                    this.filesMap[documentTypeId].filesList.push(fileDetails);
+                    this.filesMap[documentTypeId].toAttach.push(fileDetails);
 
                     let reader = new FileReader();
-                    reader.onload = this._handleFileReaderLoaded.bind(this, file.name, this.filesMap[documentTypeId].filesList, documentTypeId);
+                    reader.onload = this._handleFileReaderLoaded.bind(this, file.name, this.filesMap[documentTypeId].toAttach, documentTypeId);
                     reader.readAsBinaryString(file);
                 }
             }
@@ -107,11 +116,11 @@ export class VendorDocumentsComponent implements OnInit {
             this._vendorRegistrationService.updateBusy(<BusyDataModel>{ isBusy: false, msg: "Attaching..." });
         }
     }
-    private _handleFileReaderLoaded(actualFileName, filesList: FileDetailsModel[], documentTypeId: number, readerEvt) {
+    private _handleFileReaderLoaded(actualFileName, toAttach: FileDetailsModel[], documentTypeId: number, readerEvt) {
         let binaryString = readerEvt.target.result;
         let base64textString = btoa(binaryString);
 
-        for (let fileItem of filesList) {
+        for (let fileItem of toAttach) {
             if (fileItem.actualFileName == actualFileName) {
                 fileItem.fileData = base64textString;
                 break;
@@ -129,7 +138,7 @@ export class VendorDocumentsComponent implements OnInit {
     onAttachFileClick(documentTypeId: number) {
         let filesReq: VendorDocumentReqModel = {
             // userId: '106994',
-            fileDetails: this.filesMap[documentTypeId].filesList,
+            fileDetails: this.filesMap[documentTypeId].toAttach,
             // vendorMasterId: 166
             userId: globalConstant.userDetails.isVendor ? globalConstant.userDetails.userEmail : globalConstant.userDetails.userId,
             vendorMasterId: this._appService.vendorRegistrationDetails.vendorMasterId
@@ -142,14 +151,16 @@ export class VendorDocumentsComponent implements OnInit {
                     if (results.status.status == 200 && results.status.isSuccess) {
                         // this.filesMap[documentTypeId].filesList = [];
                         this._snackBar.open("Files Attached Successfully");
-                        this.filesMap[documentTypeId].filesList = results.fileDetails.concat();
+                        results.fileDetails.forEach(f => this.filesMap[documentTypeId].filesList.push(f));
                         this.filesMap[documentTypeId].isAttached = true;
+                        this.filesMap[documentTypeId].toAttach = [];
                     }
 
                 }
             },
                 (error) => {
                     this.filesMap[documentTypeId].isAttached = false;
+                    this.filesMap[documentTypeId].toAttach = [];
                     this._vendorRegistrationService.updateBusy(<BusyDataModel>{ isBusy: false, msg: null });
                     this._snackBar.open("Files Attachment Failed");
                     console.log(error);

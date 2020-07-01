@@ -9,10 +9,12 @@
   border: 1px solid gray;
   text-align: right;
 }
-.add-ons {
+.add-ons tbody tr td.header {
   font-weight: 700;
   text-align: right;
+  width:80%
 }
+
 
 .attachment-row {
   display: flex;
