@@ -190,6 +190,8 @@ export class InvoiceModel {
     statusCode: string;
     companyCode: string;
     companyName: string;
+    projectId: string;
+    projectName: string;
 }
 
 export class InvoiceSearchRequestModel {
