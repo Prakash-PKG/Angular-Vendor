@@ -360,7 +360,7 @@
                     *ngFor="let f of filesMap[vendorDocCtrl.sezCtrl.documentTypeId]?.filesList; let fInd = index">
                     <span>
                         <mat-icon matTooltip="{{ f.actualFileName }}" (click)="downloadFile(f)">description</mat-icon>
-                        <button mat-button mat-icon-button aria-label="Delete" *ngIf="!disableSubmit" *ngIf="!disableSubmit"
+                        <button mat-button mat-icon-button aria-label="Delete" *ngIf="!disableSubmit"
                             (click)="onDeleteFileClick(f, fInd, vendorDocCtrl.sezCtrl.documentTypeId)">
                             <mat-icon>delete_outline</mat-icon>
                         </button>
