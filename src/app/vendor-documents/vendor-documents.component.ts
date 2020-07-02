@@ -184,7 +184,7 @@ export class VendorDocumentsComponent implements OnInit {
         if (!this.isValid) { return };
 
         if (this.vendorDocumentForm.valid) {
-             this._appService.vendorRegistrationDetails.panNum = this.vendorDocumentForm.get("panNum").value;
+            this._appService.vendorRegistrationDetails.panNum = this.vendorDocumentForm.get("panNum").value;
             this._appService.vendorRegistrationDetails.gstNum = this.vendorDocumentForm.get("gstNum").value;
             this._appService.vendorRegistrationDetails.pfNum = this.vendorDocumentForm.get("pfNum").value;
             this._appService.vendorRegistrationDetails.esiNum = this.vendorDocumentForm.get("esiNum").value;
@@ -269,7 +269,7 @@ export class VendorDocumentsComponent implements OnInit {
     }
 
     updateVendorDetails() {
-          this.vendorDocumentForm.get("panNum").setValue(this._appService.vendorRegistrationDetails.panNum);
+        this.vendorDocumentForm.get("panNum").setValue(this._appService.vendorRegistrationDetails.panNum);
         this.vendorDocumentForm.get("gstNum").setValue(this._appService.vendorRegistrationDetails.gstNum);
         this.vendorDocumentForm.get("pfNum").setValue(this._appService.vendorRegistrationDetails.pfNum);
         this.vendorDocumentForm.get("esiNum").setValue(this._appService.vendorRegistrationDetails.esiNum);
@@ -287,14 +287,14 @@ export class VendorDocumentsComponent implements OnInit {
         if (this._appService.vendorRegistrationInitDetails && this._appService.vendorRegistrationInitDetails.documentDetailsList &&
             this._appService.vendorRegistrationInitDetails.documentDetailsList.length > 0) {
             this._appService.vendorRegistrationInitDetails.documentDetailsList.forEach(item =>
-                this.filesMap[item.vendorMasterDocumentsId] = { filesList: [], isMandatory: item.isMandatory, isAttached: false, isError: false });
+                this.filesMap[item.vendorMasterDocumentsId] = { filesList: [], isMandatory: item.isMandatory, isAttached: false, isError: false, toAttach: [] });
         }
     }
     updateMandatory(selfId: string, documentTypeId: number) {
         if (!this.vendorDocumentForm.get(selfId).value) {
             this.vendorDocumentForm.get(selfId).setValidators([]);
             this.vendorDocumentForm.get(selfId).updateValueAndValidity();
-            this.filesMap[documentTypeId] = { filesList: [], isMandatory: false, isAttached: false, isError: false }
+            this.filesMap[documentTypeId] = { filesList: [], isMandatory: false, isAttached: false, isError: false, toAttach: [] }
             return;
         }
         this.vendorDocumentForm.get(selfId).enable();
