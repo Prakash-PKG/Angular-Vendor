@@ -153,9 +153,9 @@
             </mat-form-field>
             <mat-form-field style="width:9em;">
                 <mat-label>Pick LUT Date</mat-label>
-                <input matInput [matDatepicker]="picker" formControlName="lutDate">
+                <input matInput [matDatepicker]="picker" disabled formControlName="lutDate" autocomplete="off">
                 <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-                <mat-datepicker #picker></mat-datepicker>
+                <mat-datepicker #picker disabled="false"></mat-datepicker>
             </mat-form-field>
         </div>
         <div class="col-7 actions">

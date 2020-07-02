@@ -34,24 +34,31 @@ interface FileMap {
     styleUrls: ['./vendor-approval.component.scss']
 })
 export class VendorApprovalComponent implements OnInit {
+
     isDashboardCollapsed: boolean = true;
     _sidebarExpansionSubscription: any = null;
+
     vendorApprovalInitDetails: VendorApprovalInitResultModel = null;
     vendorDetails: VendorMasterDetailsModel = new VendorMasterDetailsModel();
+
     vendoraccGroupList: AccGroupMasterList[] = [];
     companyCodeList: CompanyCodeMasterList[] = [];
     currencyList: currencyMasterList[] = [];
     withholdTaxList: WithholdTaxList[] = [];
     withholdTypeList: WithholdTypeList[] = [];
+
     withholdTax: string = "";
     withholdType: string = "";
     remarks: string = "";
-    isFinance: boolean = false;
-    isProcurement: boolean = false;
     selectedVendorGroup: string = null;
     selectedCompanyCode: string = null;
     selectedCurrency: string = null;
+
+    isFinance: boolean = false;
+    isProcurement: boolean = false;
+   
     msg: string = "";
+    
     isEditable = true;
     isValid = true;
     isServerError = false;
