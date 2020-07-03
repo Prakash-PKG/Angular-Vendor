@@ -30,10 +30,6 @@ const routes: Routes = [
         component: LoginComponent
     },
     {
-        path: 'forgotpass',
-        component: ForgotPasswordComponent
-    },
-    {
         path: 'home',
         component: HomeComponent,
         children: [
@@ -102,18 +98,22 @@ const routes: Routes = [
             {
                 path: 'vendetails',
                 component: VendorDetailsComponent
+                // canActivate: [AuthGuardLogin]
             },
             {
                 path: 'venaddr',
                 component: VendorAddressComponent
+                // canActivate: [AuthGuardLogin]
             },
             {
                 path: 'venbank',
                 component: VendorBankDetailsComponent
+                // canActivate: [AuthGuardLogin]
             },
             {
                 path: 'vendocs',
                 component: VendorDocumentsComponent
+                // canActivate: [AuthGuardLogin]
             },
             {
                 path: '',

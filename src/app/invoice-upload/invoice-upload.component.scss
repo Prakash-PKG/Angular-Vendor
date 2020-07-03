@@ -6,13 +6,16 @@
   border-bottom: 1px solid blueviolet;
 }
 .inv-qty {
+  width: 100%;
   border: 1px solid gray;
   text-align: right;
 }
-.add-ons {
+.add-ons tbody tr td.header {
   font-weight: 700;
   text-align: right;
+  width:85%
 }
+
 
 .attachment-row {
   display: flex;
@@ -54,6 +57,7 @@
   flex-wrap: wrap;
   justify-content: space-between;
   align-items: center;
+  margin-bottom: 1em;
 }
 
 .search-row-element {
@@ -75,9 +79,6 @@
 }
 .search-row .date {
   width: 8em;
-}
-.search-row .currency {
-  width: 9em;
 }
 
 .errorinput{
