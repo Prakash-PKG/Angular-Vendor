@@ -79,7 +79,7 @@ export class InvoiceSearchComponent implements OnInit {
         let req: InvoiceSearchRequestModel = this.getPOSearchRequestData();
 
         let displayStartDt: string = this._datePipe.transform(new Date(), this._appService.displayDtFormat);;
-        let fileName: string = "po-dump-" + displayStartDt + ".xlsx";
+        let fileName: string = "invoice-dump-" + displayStartDt + ".xlsx";
         this.downloadInvoiceDump(req, fileName);
     }
 
