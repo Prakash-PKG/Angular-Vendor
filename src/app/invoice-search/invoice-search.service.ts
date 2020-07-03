@@ -31,4 +31,9 @@ export class InvoiceSearchService {
 
         return initModel;
     }
+
+    getFileData(req: InvoiceSearchRequestModel) {
+        let url = this._appService.baseUrl + 'invoiceDump';
+        return this._http.post(url, req, {responseType: 'arraybuffer', observe: 'response'});
+    }
 }
