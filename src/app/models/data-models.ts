@@ -251,14 +251,14 @@ export class POSearchReqModel extends PendingApprovalRequestModel {
     vendorId: string;
 }
 
-export class POInvoiceFinanceDumpReqModel {
+export class InvoiceFinanceDumpReqModel {
     startDate: string;
     endDate: string;
     employeeId: string;
     isIncremental: boolean;
 }
 
-export class POInvoiceDumpInitResultModel {
+export class InvoiceDumpInitResultModel {
     lastDumpDt: string;
 }
 

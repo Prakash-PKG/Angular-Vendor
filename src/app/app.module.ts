@@ -74,6 +74,7 @@ import { VendorApprovalComponent } from './vendor-approval/vendor-approval.compo
 import { InvoiceUploadComponent } from './invoice-upload/invoice-upload.component';
 import { VendorOthersComponent } from './vendor-others/vendor-others.component';
 import { PoInvoiceDumpComponent } from './po-invoice-dump/po-invoice-dump.component';
+import { NonPoInvoiceDumpComponent } from './non-po-invoice-dump/non-po-invoice-dump.component';
 
 
 @NgModule({
@@ -101,7 +102,8 @@ import { PoInvoiceDumpComponent } from './po-invoice-dump/po-invoice-dump.compon
         VendorApprovalComponent,
         InvoiceUploadComponent,
         VendorOthersComponent,
-        PoInvoiceDumpComponent
+        PoInvoiceDumpComponent,
+        NonPoInvoiceDumpComponent
     ],
     imports: [
         BrowserModule,

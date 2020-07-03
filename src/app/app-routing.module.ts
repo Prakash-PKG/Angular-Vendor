@@ -1,3 +1,4 @@
+import { NonPoInvoiceDumpComponent } from './non-po-invoice-dump/non-po-invoice-dump.component';
 import { PoInvoiceDumpComponent } from './po-invoice-dump/po-invoice-dump.component';
 import { VendorRegistrationComponent } from './vendor-registration/vendor-registration.component';
 import { VendorApprovalComponent } from './vendor-approval/vendor-approval.component';
@@ -76,6 +77,11 @@ const routes: Routes = [
             {
                 path: 'poinvoicedump',
                 component: PoInvoiceDumpComponent,
+                canActivate: [AuthGuardLogin]
+            },
+            {
+                path: 'nonpoinvoicedump',
+                component: NonPoInvoiceDumpComponent,
                 canActivate: [AuthGuardLogin]
             },
             {

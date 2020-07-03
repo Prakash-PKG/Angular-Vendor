@@ -41,18 +41,24 @@
             </div>
             <div class="navtxt">Invoice Search</div>
         </li>
-        <li>
+        <li *ngIf = "isPOInvoiceDumpVisible == true">
             <div class="side-icon">
                 <mat-icon>description</mat-icon>
             </div>
             <div class="navtxt">Reports</div>
         </li>
-        <ul class="childdash">
-            <li *ngIf = "isPOInvoiceDumpVisible == true" [ngStyle]="{'padding-left': isSidebarCollapsed === true ? '1em': '2em' }" (click) = "onPOInvoiceDumpClick()">
+        <ul class="childdash" *ngIf = "isPOInvoiceDumpVisible == true">
+            <li [ngStyle]="{'padding-left': isSidebarCollapsed === true ? '1em': '2em' }" (click) = "onPOInvoiceDumpClick()">
                 <div class="side-icon">
                     <mat-icon>description</mat-icon>
                 </div>
                 <div class="navtxt">PO Invoice Dump</div>
+            </li>
+            <li [ngStyle]="{'padding-left': isSidebarCollapsed === true ? '1em': '2em' }" (click) = "onNonPOInvoiceDumpClick()">
+                <div class="side-icon">
+                    <mat-icon>description</mat-icon>
+                </div>
+                <div class="navtxt">Non PO Invoice Dump</div>
             </li>
         </ul>
         <li class="removehover">

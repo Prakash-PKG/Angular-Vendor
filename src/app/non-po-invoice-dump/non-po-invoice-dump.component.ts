@@ -2,17 +2,17 @@ import { AppService } from './../app.service';
 import { HomeService } from './../home/home.service';
 import { globalConstant } from './../common/global-constant';
 import { InvoiceFinanceDumpReqModel, BusyDataModel, InvoiceDumpInitResultModel } from './../models/data-models';
-import { PoInvoiceDumpService } from './po-invoice-dump.service';
+import { NonPoInvoiceDumpService } from './non-po-invoice-dump.service';
 import { Component, OnInit } from '@angular/core';
 import {MatDatepickerInputEvent} from '@angular/material/datepicker';
 import { DatePipe } from '@angular/common';
 
 @Component({
-    selector: 'app-po-invoice-dump',
-    templateUrl: './po-invoice-dump.component.html',
-    styleUrls: ['./po-invoice-dump.component.scss']
+    selector: 'app-non-po-invoice-dump',
+    templateUrl: './non-po-invoice-dump.component.html',
+    styleUrls: ['./non-po-invoice-dump.component.scss']
 })
-export class PoInvoiceDumpComponent implements OnInit {
+export class NonPoInvoiceDumpComponent implements OnInit {
 
     selectedDump: string = "incremental";
     maxStartDate: Date = new Date();
@@ -31,21 +31,19 @@ export class PoInvoiceDumpComponent implements OnInit {
 
     incrementalStartDate: string = " - ";
 
-    constructor(private __poInvoiceDumpService: PoInvoiceDumpService,
-                private _appService: AppService,
-                private _datePipe: DatePipe,
-                private _homeService: HomeService) { }
-
-    
+    constructor(private _nonpoInvoiceDumpService: NonPoInvoiceDumpService,
+        private _appService: AppService,
+        private _datePipe: DatePipe,
+        private _homeService: HomeService) { }
 
     onDumpTypeChange(evtData) {
- 
-        if(evtData.value == "incremental") {
-            
+
+        if (evtData.value == "incremental") {
+
         }
         else {
-           this.startDate = null;
-           this.endDate = null;
+            this.startDate = null;
+            this.endDate = null;
         }
 
     }
@@ -59,21 +57,21 @@ export class PoInvoiceDumpComponent implements OnInit {
         };
 
         let displayStartDt: string = this._initDetails.lastDumpDt ? "-" + this._initDetails.lastDumpDt : "";
-        let fileName: string = "po-invoice-dump" + displayStartDt + ".csv";
+        let fileName: string = "non-po-invoice-dump" + displayStartDt + ".csv";
         this.downloadInvoiceFile(req, fileName);
     }
 
     onDateRangeDownloadClick() {
 
-        if(!this.startDate) {
+        if (!this.startDate) {
             this.startDateErrMsg = "Start Date is required";
         }
 
-        if(!this.endDate) {
+        if (!this.endDate) {
             this.endDateErrMsg = "End Date is required";
         }
 
-        if(this.startDate && this.endDate) {
+        if (this.startDate && this.endDate) {
             let req: InvoiceFinanceDumpReqModel = {
                 startDate: this._datePipe.transform(this.startDate, this._appService.dbDateTimeFormat),
                 endDate: this._datePipe.transform(this.endDate, this._appService.dbDateTimeFormat),
@@ -83,7 +81,7 @@ export class PoInvoiceDumpComponent implements OnInit {
 
             let displayStartDt: string = this._datePipe.transform(this.startDate, this._appService.displayDtFormat);
             let displayEndDt: string = this._datePipe.transform(this.endDate, this._appService.displayDtFormat);
-            let fileName: string = "po-invoice-dump-" + displayStartDt + " to " + displayEndDt + ".csv";
+            let fileName: string = "non-po-invoice-dump-" + displayStartDt + " to " + displayEndDt + ".csv";
 
             this.downloadInvoiceFile(req, fileName);
         }
@@ -101,7 +99,7 @@ export class PoInvoiceDumpComponent implements OnInit {
 
     downloadInvoiceFile(req: InvoiceFinanceDumpReqModel, fileName: string) {
         this._homeService.updateBusy(<BusyDataModel>{ isBusy: true, msg: "Loading..." });
-        this.__poInvoiceDumpService.getFileData(req).subscribe(
+        this._nonpoInvoiceDumpService.getFileData(req).subscribe(
             (data) => {
                 this._homeService.updateBusy(<BusyDataModel>{ isBusy: false, msg: null });
                 const blob = new Blob([data.body], { type: 'application/octet-stream' });
@@ -122,8 +120,8 @@ export class PoInvoiceDumpComponent implements OnInit {
     async loadInitData() {
         this.incrementalStartDate = " - ";
         this._homeService.updateBusy(<BusyDataModel>{ isBusy: true, msg: "Loading..." });
-        this._initDetails = await this.__poInvoiceDumpService.getPOInvoiceDumpInitDetails();
-        if(this._initDetails && this._initDetails.lastDumpDt) {
+        this._initDetails = await this._nonpoInvoiceDumpService.getNonPOInvoiceDumpInitDetails();
+        if (this._initDetails && this._initDetails.lastDumpDt) {
             this.incrementalStartDate = this._datePipe.transform(new Date(this._initDetails.lastDumpDt), this._appService.displayDateTimeFormat);
         }
         this._homeService.updateBusy(<BusyDataModel>{ isBusy: false, msg: null });
@@ -131,7 +129,8 @@ export class PoInvoiceDumpComponent implements OnInit {
 
     ngOnInit() {
         setTimeout(() => {
-           this.loadInitData();
+            this.loadInitData();
         }, 100);
     }
+
 }
