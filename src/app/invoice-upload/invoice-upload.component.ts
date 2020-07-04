@@ -36,7 +36,7 @@ export class InvoiceUploadComponent implements OnInit {
 
     invoiceUploadForm: FormGroup;
 
-    msg: string = "";
+    //msg: string = "";
 
     invoiceFilesList: FileDetailsModel[] = [];
     supportingFilesList: FileDetailsModel[] = [];

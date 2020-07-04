@@ -1,3 +1,5 @@
+import { MessageDialogModel } from './../models/popup-models';
+import { MessageDialogComponent } from './../message-dialog/message-dialog.component';
 import { globalConstant } from './../common/global-constant';
 import { AppService } from './../app.service';
 import { BusyDataModel, InvoiceApprovalInitResultModel, InvoiceApprovalInitReqModel, 
@@ -7,6 +9,7 @@ import { InvoiceApprovalsService } from './invoice-approvals.service';
 import { Component, OnInit } from '@angular/core';
 import { HomeService } from '../home/home.service';
 import { Router } from '@angular/router';
+import { MatSort, MatPaginator, MatTableDataSource, MatDialogRef, MAT_DIALOG_DATA, MatDialog } from '@angular/material';
 
 @Component({
     selector: 'app-invoice-approvals',
@@ -26,7 +29,7 @@ export class InvoiceApprovalsComponent implements OnInit {
     itemsList: ItemDisplayModel[] = [];
     totalAmount: number = 0;
 
-    msg: string = "";
+    //msg: string = "";
 
     remarks: string = "";
 
@@ -52,6 +55,7 @@ export class InvoiceApprovalsComponent implements OnInit {
     constructor(private _homeService: HomeService,
                 private _appService: AppService,
                 private _router: Router,
+                public _dialog: MatDialog,
                 private _invoiceApprovalsService: InvoiceApprovalsService) { }
 
     onBackBtnClick() {
@@ -202,19 +206,40 @@ export class InvoiceApprovalsComponent implements OnInit {
                     if (response.body) {
                         let result: StatusModel = response.body as StatusModel;
                         if (result.status == 200 && result.isSuccess) {
-                            this.msg = "Invoice approval is success";
+                            //this.msg = "Invoice approval is success";
+                            this.displayInvoiceApprovalStatus(result.message, true);
                         }
                         else {
-                            this.msg = this._appService.messages.vendorApprovalFailure;
+                            //this.msg = this._appService.messages.vendorApprovalFailure;
+                            this.displayInvoiceApprovalStatus(result.message, false);
                         }
                     }
                 },
                 (error) => {
                     this._homeService.updateBusy(<BusyDataModel>{ isBusy: false, msg: null });
-                    this.msg = this._appService.messages.vendorApprovalFailure;
+                    //this.msg = this._appService.messages.vendorApprovalFailure;
+                    this.displayInvoiceApprovalStatus(this._appService.messages.vendorApprovalFailure, false);
                     console.log(error);
                 });
         }
+    }
+
+    displayInvoiceApprovalStatus(msg: string, status: boolean) {
+        const dialogRef = this._dialog.open(MessageDialogComponent, {
+            disableClose: true,
+            panelClass: 'dialog-box',
+            width: '550px',
+            data: <MessageDialogModel>{
+                title: "Invoice Upload Action",
+                message: msg
+            }
+        });
+
+        dialogRef.afterClosed().subscribe(result => {
+            if (result && status) {
+                this._router.navigate([this._appService.routingConstants.invoiceSearch]);
+            }
+        });
     }
 
     downloadFile(fileDetails: FileDetailsModel) {
