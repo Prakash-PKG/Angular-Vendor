@@ -110,6 +110,8 @@ export class NonPoInvoiceDumpComponent implements OnInit {
                 a.download = fileName;
                 document.body.appendChild(a);
                 a.click();
+
+                this.loadInitData();
             },
             error => {
                 console.log(error);
