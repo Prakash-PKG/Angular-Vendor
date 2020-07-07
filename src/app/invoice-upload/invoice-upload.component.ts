@@ -929,6 +929,7 @@ export class InvoiceUploadComponent implements OnInit {
             (error) => {
                 this._homeService.updateBusy(<BusyDataModel>{ isBusy: false, msg: null });
                 console.log(error);
+                this.displayInvoiceUploadStatus("Invoice upload failed.", false);
             });
     }
 
