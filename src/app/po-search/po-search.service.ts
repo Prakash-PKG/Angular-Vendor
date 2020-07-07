@@ -31,4 +31,9 @@ export class PoSearchService {
 
         return initModel;
     }
+
+    getFileData(req: POSearchReqModel) {
+        let url = this._appService.baseUrl + 'poDump';
+        return this._http.post(url, req, {responseType: 'arraybuffer', observe: 'response'});
+    }
 }

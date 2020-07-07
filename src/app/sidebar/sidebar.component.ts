@@ -87,6 +87,10 @@ export class SidebarComponent implements OnInit {
         this._router.navigate([this._appService.routingConstants.poInvoiceDump]);
     }
 
+    onNonPOInvoiceDumpClick() {
+        this._router.navigate([this._appService.routingConstants.nonpoInvoiceDump]);
+    }
+
     onLogoutClick() {
         this._loginService.logout().subscribe(
             (response) => {

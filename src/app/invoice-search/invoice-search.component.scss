@@ -15,7 +15,7 @@ div.actions {
 .amount {
   text-align: right;
 }
-.search-row {
+.search-row, .search-row>form {
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
@@ -25,13 +25,13 @@ div.actions {
 .search-row-element {
   flex-grow: 1;
 }
-
 .search-row-element.search-btn {
   flex-grow: 0;
   flex-shrink: 0;
 }
 .search-row-element.actions {
-  flex: 0 0 3em;
+  flex-grow: 0;
+  flex-shrink: 0;
 }
 .search-row-element.actions .footer-actions {
   height: 2em;

@@ -9,6 +9,7 @@ import { Router } from '@angular/router';
 import { FormBuilder, FormGroup, FormArray, Validators, FormControl, AbstractControl } from '@angular/forms';
 import { MomentDateAdapter, MAT_MOMENT_DATE_ADAPTER_OPTIONS } from '@angular/material-moment-adapter';
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
+import { DatePipe } from '@angular/common';
 
 // Depending on whether rollup is used, moment needs to be imported differently.
 // Since Moment.js doesn't have a default export, we normally need to import using the `* as`
@@ -69,17 +70,43 @@ export class PoSearchComponent implements OnInit {
                 private _appService: AppService,
                 private _router: Router,
                 private _formBuilder: FormBuilder,
+                private _datePipe: DatePipe,
                 private _poSearchService: PoSearchService) { }
+
+    onPODownloadClick() {
+        let req: POSearchReqModel = this.getPOSearchRequestData();
+
+        let displayStartDt: string = this._datePipe.transform(new Date(), this._appService.displayDtFormat);;
+        let fileName: string = "po-dump-" + displayStartDt + ".xlsx";
+        this.downloadPODump(req, fileName);
+    }
+
+    downloadPODump(req: POSearchReqModel, fileName: string) {
+        this._homeService.updateBusy(<BusyDataModel>{ isBusy: true, msg: "Loading..." });
+        this._poSearchService.getFileData(req).subscribe(
+            (data) => {
+                this._homeService.updateBusy(<BusyDataModel>{ isBusy: false, msg: null });
+                const blob = new Blob([data.body], { type: 'application/octet-stream' });
+                const url = window.URL.createObjectURL(blob);
+
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = fileName;
+                document.body.appendChild(a);
+                a.click();
+            },
+            error => {
+                console.log(error);
+                this._homeService.updateBusy(<BusyDataModel>{ isBusy: false, msg: null });
+            });
+    }
 
     onPOClick(po: PODetailsModel) {
         this._appService.selectedPO = po;
         this._router.navigate([this._appService.routingConstants.poDetails]);
     }
 
-    async loadInitData() {
-        this.poList = [];
-        this.totalPoList = [];
-
+    getPOSearchRequestData() {
         let req: POSearchReqModel = {
             vendorId: null,
             employeeId: null,
@@ -101,6 +128,15 @@ export class PoSearchComponent implements OnInit {
                 req.approvalLevels.push(this._appService.approvalLevels.finance);
             }
         }
+
+        return req;
+    }
+
+    async loadInitData() {
+        this.poList = [];
+        this.totalPoList = [];
+
+        let req: POSearchReqModel = this.getPOSearchRequestData();
 
         this._homeService.updateBusy(<BusyDataModel>{ isBusy: true, msg: "Loading..." });
         this._initDetails = await this._poSearchService.getPOList(req);

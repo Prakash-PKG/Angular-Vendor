@@ -1,3 +1,4 @@
+import { NonPoInvoiceDumpComponent } from './non-po-invoice-dump/non-po-invoice-dump.component';
 import { PoInvoiceDumpComponent } from './po-invoice-dump/po-invoice-dump.component';
 import { VendorRegistrationComponent } from './vendor-registration/vendor-registration.component';
 import { VendorApprovalComponent } from './vendor-approval/vendor-approval.component';
@@ -28,10 +29,6 @@ const routes: Routes = [
     {
         path: 'login',
         component: LoginComponent
-    },
-    {
-        path: 'forgotpass',
-        component: ForgotPasswordComponent
     },
     {
         path: 'home',
@@ -83,6 +80,11 @@ const routes: Routes = [
                 canActivate: [AuthGuardLogin]
             },
             {
+                path: 'nonpoinvoicedump',
+                component: NonPoInvoiceDumpComponent,
+                canActivate: [AuthGuardLogin]
+            },
+            {
                 path: 'venapproval',
                 component: VendorApprovalComponent,
                 canActivate: [AuthGuardLogin]
@@ -102,18 +104,22 @@ const routes: Routes = [
             {
                 path: 'vendetails',
                 component: VendorDetailsComponent
+                // canActivate: [AuthGuardLogin]
             },
             {
                 path: 'venaddr',
                 component: VendorAddressComponent
+                // canActivate: [AuthGuardLogin]
             },
             {
                 path: 'venbank',
                 component: VendorBankDetailsComponent
+                // canActivate: [AuthGuardLogin]
             },
             {
                 path: 'vendocs',
                 component: VendorDocumentsComponent
+                // canActivate: [AuthGuardLogin]
             },
             {
                 path: '',
