@@ -115,7 +115,7 @@
                 <tbody formArrayName="itemsList">
                     <tr *ngFor="let item of invoiceUploadForm.get('itemsList')?.controls; let itemInd = index"
                         [formGroupName]="itemInd" style="  vertical-align: baseline;">
-                        <td style="width:6em;">
+                        <td style="width:5em;">
                             <span *ngIf="selectedInvoiceType == 'po'">{{ item.get("itemNumber").value }}</span>
                             <input *ngIf="selectedInvoiceType == 'non-po'" class="inv-qty"
                                 [ngClass]="{ 'errorinput': isSubmitted && fa.controls[itemInd].controls.itemNumber.errors }"

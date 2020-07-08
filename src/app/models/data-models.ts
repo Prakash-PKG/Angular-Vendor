@@ -257,8 +257,17 @@ export class InvoiceFinanceDumpReqModel {
     employeeId: string;
     isIncremental: boolean;
 }
+export class VendorDumpReqModel {
+    startDate: string;
+    endDate: string;
+    employeeId: string;
+    isIncremental: boolean;
+}
 
 export class InvoiceDumpInitResultModel {
+    lastDumpDt: string;
+}
+export class VendorDumpInitResultModel {
     lastDumpDt: string;
 }
 
