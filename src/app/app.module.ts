@@ -76,6 +76,7 @@ import { VendorOthersComponent } from './vendor-others/vendor-others.component';
 import { PoInvoiceDumpComponent } from './po-invoice-dump/po-invoice-dump.component';
 import { NonPoInvoiceDumpComponent } from './non-po-invoice-dump/non-po-invoice-dump.component';
 import { VendorDashboardComponent } from './vendor-dashboard/vendor-dashboard.component';
+import { LoginVendorComponent } from './login-vendor/login-vendor.component';
 
 
 @NgModule({
@@ -105,7 +106,8 @@ import { VendorDashboardComponent } from './vendor-dashboard/vendor-dashboard.co
         VendorOthersComponent,
         PoInvoiceDumpComponent,
         NonPoInvoiceDumpComponent,
-        VendorDashboardComponent
+        VendorDashboardComponent,
+        LoginVendorComponent
     ],
     imports: [
         BrowserModule,

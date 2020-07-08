@@ -1,0 +1,67 @@
+<div class="main">
+  <div class="container my-container">
+
+    <div class="row">
+      <div class="col-6">
+        <div class="backdrop"></div>
+      </div>
+      <div class="col-6">
+        <div class="logo"></div>
+        <form [formGroup]="loginForm" class="login-form" (ngSubmit)="OnLoginClick()">
+          <div class="form-group">
+            <mat-form-field class="example-full-width">
+              <mat-label>Enter Email </mat-label>
+              <input matInput type="email" placeholder="Enter Email" formControlName="userId">
+            </mat-form-field>
+
+            <small id="emailHelp" class="form-text text-muted text-description">(Enter vendor empanelment Email
+              ID)</small>
+            <div *ngIf="(isFormSubmitted || f.userId.touched ) && f.userId.errors?.required" class="errortxt">
+              Email ID is required
+            </div>
+
+          </div>
+          <div class="row actions margin-unset">
+            <button mat-raised-button type="button" class=" footer-actions mat-elevation-z8"
+              [disabled]="f.userId.invalid || isloading" (click)="onGenerateOTPClick()">
+              <i *ngIf="isloading" class="fa fa-spin fa-spinner pull-right" style="padding:5px"
+                aria-hidden="true"></i>Generate OTP</button>
+          </div>
+
+          <div class="otpMessage">{{ otpMessage }}</div>
+          <!-- otp Column -->
+
+          <div class="form-group" *ngIf="haveOTP">
+            <mat-form-field class="example-full-width">
+              <mat-label>Enter OTP here </mat-label>
+              <input matInput type="otp" placeholder="Enter OTP here" formControlName="otp">
+            </mat-form-field>
+
+            <small id="emailHelp" class="form-text text-muted text-description">(Enter OTP sent on empanelment Email
+              ID)</small>
+            <div *ngIf="(isFormSubmitted || f.otp.touched ) && f.otp.errors?.required" class="errortxt">
+              OTP is required
+            </div>
+            <div *ngIf="(isFormSubmitted || f.otp.touched )" class="errortxt">
+              OTP is invalid
+            </div>
+
+          </div>
+          <!-- errors -->
+          <div class="errortxt loginerror">{{ errorMessage }}</div>
+
+
+          <!--  login button -->
+          <div class="row actions margin-unset" *ngIf="haveOTP">
+            <button mat-raised-button type="submit" class=" footer-actions mat-elevation-z8"
+              [disabled]="f.userId.invalid || f.otp.invalid || isloading">
+              <i *ngIf="isloading" class="fa fa-spin fa-spinner pull-right" style="padding:5px"
+                aria-hidden="true"></i>Sign
+              In</button>
+          </div>
+
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

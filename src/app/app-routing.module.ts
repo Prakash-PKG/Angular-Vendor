@@ -24,6 +24,7 @@ import { AuthGuardLogin } from './login/authguard.login';
 import { HomeComponent } from './home/home.component';
 import { VendorOthersComponent } from './vendor-others/vendor-others.component';
 import { VendorDashboardComponent } from './vendor-dashboard/vendor-dashboard.component';
+import { LoginVendorComponent } from './login-vendor/login-vendor.component';
 
 
 const routes: Routes = [
@@ -97,6 +98,10 @@ const routes: Routes = [
             },
 
         ]
+    },
+    {
+        path: 'loginvendor',
+        component: LoginVendorComponent
     },
     {
         path: 'vendor',
