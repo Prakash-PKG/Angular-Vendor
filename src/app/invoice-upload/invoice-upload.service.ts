@@ -55,6 +55,7 @@ export class InvoiceUploadService {
         let initModel: POItemsResultModel = new POItemsResultModel();
         if(data) {
             initModel.itemsList = data["pOItemsList"];
+            initModel.notRejectedItemsList = data["notRejectedItemsList"];
             initModel.statusDetails = data["statusDetails"];        
         }
 

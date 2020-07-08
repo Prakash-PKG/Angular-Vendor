@@ -6,7 +6,8 @@ import { InvoiceUploadService } from './invoice-upload.service';
 import { BusyDataModel, InvoiceUploadResultModel, InvoiceUploadReqModel, InvoiceDocumentReqModel, currencyMasterList, 
         PODetailsModel, POItemsRequestModel, POItemsResultModel, ItemModel, FileDetailsModel, InvoiceFileTypwModel, 
         UpdateInvoiceRequestModel, UpdateInvoiceResultModel, InvoiceDocumentResultModel, StatusModel,
-        VendorAutoCompleteModel, ProjectAutoCompleteModel, CompanyCodeMasterList, InvoiceExistReqModel } from './../models/data-models';
+        VendorAutoCompleteModel, ProjectAutoCompleteModel, CompanyCodeMasterList, InvoiceExistReqModel,
+        NotRejectedItemsModel } from './../models/data-models';
 import { Component, OnInit } from '@angular/core';
 import { HomeService } from '../home/home.service';
 import { FormBuilder, FormGroup, FormArray, Validators, FormControl, AbstractControl } from '@angular/forms';
@@ -717,25 +718,60 @@ export class InvoiceUploadComponent implements OnInit {
             createdBy: item.createdBy,
             createdDate: item.createdDate
         },
-        { validator: [ this.invoiceGreaterThanBalance('invoiceUnits', 'balanceUnits', "Invoice units shouldn't greater than Balance units.") ] });
+        { validator: [ this.invoiceGreaterThanBalance('invoiceUnits', 'balanceUnits', "itemNumber", "orderedUnits", "Invoice units shouldn't greater than Balance units.") ] });
 
         return fg;
     }
 
-    invoiceGreaterThanBalance(invoiceUnits: string, balanceUnits: string, errorMsg: string) {
+    invoiceGreaterThanBalance(invoiceUnits: string, balanceUnits: string, itemNumber: string, orderedUnits: string, errorMsg: string) {
         return (group: FormGroup): { [key: string]: any } => {
             let invCtrl = group.controls[invoiceUnits];
             let balCtrl = group.controls[balanceUnits];
-           
-            if (invCtrl.value && balCtrl.value) {
-                let invUnits: number = +invCtrl.value;
-                let balUnits: number = +balCtrl.value
-                if (invUnits > balUnits) {
-                    return {
-                        invErrMsg: errorMsg
-                    };
+
+            if(this.selectedInvoiceType == 'po') {
+                let existingItem: NotRejectedItemsModel = null;
+                if(this._poItemsResultDetails && this._poItemsResultDetails.notRejectedItemsList && this._poItemsResultDetails.notRejectedItemsList.length > 0) {
+                    let itemNumberCtrl = group.controls[itemNumber];
+                    existingItem = this._poItemsResultDetails.notRejectedItemsList.find(x => x.itemNumber == itemNumberCtrl.value);
+                }
+
+                if(existingItem) {
+                    if (invCtrl.value && balCtrl.value) {
+                        let invUnits: number = +invCtrl.value;
+                        let balUnits: number = +balCtrl.value;
+                        if (invUnits > balUnits) {
+                            return {
+                                invErrMsg: "Invoice units shouldn't greater than Balance units."
+                            };
+                        }
+                    }
+                }
+                else {
+                    let orderedUnitsCtrl = group.controls[orderedUnits];
+
+                    if (invCtrl.value && orderedUnitsCtrl.value) {
+                        let invUnits: number = +invCtrl.value;
+                        let orderedUnits: number = +orderedUnitsCtrl.value;
+                        if (invUnits > orderedUnits) {
+                            return {
+                                invErrMsg: "Invoice units shouldn't greater than Order units."
+                            };
+                        }
+                    }
                 }
             }
+            else {
+                if (invCtrl.value && balCtrl.value) {
+                    let invUnits: number = +invCtrl.value;
+                    let balUnits: number = +balCtrl.value;
+                    if (invUnits > balUnits) {
+                        return {
+                            invErrMsg: "Invoice units shouldn't greater than Balance units."
+                        };
+                    }
+                }
+            }    
+
             return {};
         }
     }

@@ -349,6 +349,12 @@ export class POItemsRequestModel {
 export class POItemsResultModel {
     statusDetails: StatusModel;
     itemsList: ItemModel[];
+    notRejectedItemsList: NotRejectedItemsModel[];
+}
+
+export class NotRejectedItemsModel {
+    itemNumber: string;
+    invoicedUnits: string;
 }
 
 export class ItemModel {
