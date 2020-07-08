@@ -96,9 +96,6 @@ div.actions {
 .dataTable {
   margin-top: 0px;
 }
-.amount {
-  text-align: right;
-}
 
 .flex-container {
   display: flex;
@@ -112,22 +109,25 @@ div.actions {
   align-items: flex-start;
 }
 
- .flex-container .flex-item .value {
+.flex-container .flex-item .value,
+.value {
   width: 60%;
 }
- .flex-container .flex-item .header {
+.flex-container .flex-item .header,
+.header {
   width: 40%;
   color: black;
   font-weight: 500;
 }
-.flex-container>.flex-item>.flex-container{
+.flex-container > .flex-item > .flex-container {
   flex-direction: column;
   flex-grow: 1;
 }
-.flex-container.files>.flex-item>.header{
-  width:20%;
+.flex-container.files > .flex-item > .header {
+  width: 20%;
 }
-.flex-container.files>.flex-item, .flex-container.details>.flex-item{
+.flex-container.files > .flex-item,
+.flex-container.details > .flex-item {
   align-items: center;
 }
 td.mat-cell:first-of-type,
@@ -141,7 +141,4 @@ th.mat-header-cell:last-of-type,
 td.mat-cell:last-of-type,
 th.mat-header-cell:last-of-type {
   padding-right: 0px;
-}
-.material-icons {
-  font-size: 1.25em;
 }

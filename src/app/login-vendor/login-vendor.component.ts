@@ -92,8 +92,8 @@ export class LoginVendorComponent implements OnInit {
     this.isFormSubmitted = false;
     this.isloading = false;
     this.loginForm = this._formBuilder.group({
-      userId: [null, [Validators.required]],
-      otp: [null, [Validators.required,]]
+      userId: [null, [Validators.required,Validators.email]],
+      otp: [null, [Validators.required]]
     });
   }
 }

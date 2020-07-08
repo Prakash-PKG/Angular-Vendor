@@ -1,0 +1,54 @@
+<div class="main">
+  <div class="title">
+      <h3>PO Invoice Dump</h3>
+  </div>
+  <mat-radio-group class="tp-radio-group" [(ngModel)]="selectedDump"
+      style="margin-top: 1em;">
+      <mat-radio-button class="tp-radio-button" value="incremental" (change)="onDumpTypeChange($event)"
+          style="margin-right: 1em;">
+          Incremental Dump
+      </mat-radio-button>
+      <mat-radio-button class="tp-radio-button" value="daterange" (change)="onDumpTypeChange($event)">
+          Date Range Dump
+      </mat-radio-button>
+  </mat-radio-group>
+
+  <div class="search-row" *ngIf = "selectedDump == 'incremental'">
+      <mat-label>Start Date: {{ incrementalStartDate }}</mat-label>
+
+      <mat-label style="margin-left: 20px">End Date: Till now</mat-label>
+
+      <div class="actions search-row-element">
+          <button mat-raised-button class="footer-actions" (click) = "onIncrementalDownloadClick()" >Download</button>
+      </div>
+  </div>
+
+  <div class="search-row" *ngIf = "selectedDump == 'daterange'">
+      <mat-form-field class="field search-row-element">
+          <mat-label>Start Date</mat-label>
+          <input #input="ngModel" [(ngModel)]="startDate" matInput [matDatepicker]="picker" disabled 
+          [min]="minStartDate" [max]="maxStartDate" (dateChange)="onStartDateChange($event)">
+          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-datepicker #picker disabled="false"></mat-datepicker>
+      </mat-form-field>
+      <div class="error-txt"> 
+          {{ startDateErrMsg }}
+      </div>
+
+      <mat-form-field class="field search-row-element">
+          <mat-label>End Date</mat-label>
+          <input #input="ngModel" [(ngModel)]="endDate" matInput [matDatepicker]="picker1" disabled 
+          [min] = "minEndDate" [max]="maxEndDate" (dateChange)="onEndDateChange($event)">
+          <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+          <mat-datepicker #picker1 disabled="false"></mat-datepicker>
+      </mat-form-field>
+
+      <div class="error-txt"> 
+          {{ endDateErrMsg }}
+      </div>
+
+      <div class="actions search-row-element">
+          <button mat-raised-button class="footer-actions" (click) = "onDateRangeDownloadClick()" >Download</button>
+      </div>
+  </div>
+</div>

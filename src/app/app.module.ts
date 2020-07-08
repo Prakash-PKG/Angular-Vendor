@@ -77,6 +77,7 @@ import { PoInvoiceDumpComponent } from './po-invoice-dump/po-invoice-dump.compon
 import { NonPoInvoiceDumpComponent } from './non-po-invoice-dump/non-po-invoice-dump.component';
 import { VendorDashboardComponent } from './vendor-dashboard/vendor-dashboard.component';
 import { LoginVendorComponent } from './login-vendor/login-vendor.component';
+import { VendorDumpComponent } from './vendor-dump/vendor-dump.component';
 
 
 @NgModule({
@@ -107,7 +108,8 @@ import { LoginVendorComponent } from './login-vendor/login-vendor.component';
         PoInvoiceDumpComponent,
         NonPoInvoiceDumpComponent,
         VendorDashboardComponent,
-        LoginVendorComponent
+        LoginVendorComponent,
+        VendorDumpComponent
     ],
     imports: [
         BrowserModule,
@@ -160,7 +162,8 @@ import { LoginVendorComponent } from './login-vendor/login-vendor.component';
     ],
      entryComponents: [
         ConfirmDialogComponent,
-        MessageDialogComponent
+        MessageDialogComponent,
+        ForgotPasswordComponent
     ],
     providers: [
         { provide: LocationStrategy, useClass: HashLocationStrategy },

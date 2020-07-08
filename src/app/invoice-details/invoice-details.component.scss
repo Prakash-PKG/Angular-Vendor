@@ -101,9 +101,6 @@
 .dataTable {
   margin-top: 0px;
 }
-.amount {
-  text-align: right;
-}
 
 td.mat-cell:first-of-type,
 th.mat-header-cell:first-of-type,
@@ -117,10 +114,6 @@ td.mat-cell:last-of-type,
 th.mat-header-cell:last-of-type {
   padding-right: 0px;
 }
-.material-icons {
-  font-size: 1.25em;
-}
-
 .flex-container {
   display: flex;
   justify-content: space-between;
@@ -155,6 +148,7 @@ th.mat-header-cell:last-of-type {
 }
 .filename{
   cursor:pointer;
+  display: inline;
 }
 .footer{
   display: flex;
@@ -168,4 +162,12 @@ th.mat-header-cell:last-of-type {
 }
 .description .dataTable tr td{
   border:0px;
+}
+.remarks{
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: 12em;
+  display: inline-block;
+  line-height: 2.8em;
 }

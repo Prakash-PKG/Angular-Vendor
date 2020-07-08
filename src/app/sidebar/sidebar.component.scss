@@ -59,10 +59,10 @@
 .childdash li{
     align-items: center;
     white-space: normal;
-    padding-left:2em;
+    padding-left:2em !important;
 } 
 .childdash li.collapsed{
-    padding-left:1em;
+    padding-left:1em !important;
     align-items: center;
     white-space: nowrap;
 } 
@@ -103,4 +103,7 @@
     border-radius: 0px;
     text-align: left;
     padding-left: 1em;
+}
+.remove-li{
+    display: none!important;
 }

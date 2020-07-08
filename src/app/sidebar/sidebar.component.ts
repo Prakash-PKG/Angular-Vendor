@@ -56,7 +56,7 @@ export class SidebarComponent implements OnInit {
     onInvoiceSearchClick() {
         this._router.navigate([this._appService.routingConstants.invoiceSearch]);
     }
-    onVenDashClick(){
+    onVenDashClick() {
         this._router.navigate([this._appService.routingConstants.vendorDashboard]);
     }
     onVenApp1Click() {
@@ -83,12 +83,16 @@ export class SidebarComponent implements OnInit {
         this._router.navigate([this._appService.routingConstants.nonpoInvoiceDump]);
     }
 
+    onVendorDumpClick() {
+        this._router.navigate([this._appService.routingConstants.vendorDump]);
+    }
+
     onLogoutClick() {
         this._loginService.logout().subscribe(
             (response) => {
                 localStorage.clear();
                 this._router.navigate([this._appService.routingConstants.login]);
-                
+
             },
             (error) => {
                 console.log("logout Falied");
@@ -103,22 +107,22 @@ export class SidebarComponent implements OnInit {
         this._homeService.updateSidebarDetails(this.isSidebarCollapsed);
 
         this.isInvoiceCreateVisible = false;
-        if(globalConstant.userDetails.isVendor || globalConstant.userDetails.isInvoiceUploader) {
+        if (globalConstant.userDetails.isVendor || globalConstant.userDetails.isInvoiceUploader) {
             this.isInvoiceCreateVisible = true;
         }
 
         this.isApprovalsVisible = true;
-        if(globalConstant.userDetails.isVendor || globalConstant.userDetails.isEmpanelment || globalConstant.userDetails.isInvoiceUploader) {
+        if (globalConstant.userDetails.isVendor || globalConstant.userDetails.isEmpanelment || globalConstant.userDetails.isInvoiceUploader) {
             this.isApprovalsVisible = false;
         }
 
         this.isPOInvoiceDumpVisible = false;
-        if(globalConstant.userDetails.isFinance) {
+        if (globalConstant.userDetails.isFinance) {
             this.isPOInvoiceDumpVisible = true;
         }
 
         this.isEmpanelmentVisible = false;
-        if(globalConstant.userDetails.isEmpanelment) {
+        if (globalConstant.userDetails.isEmpanelment) {
             this.isEmpanelmentVisible = true;
         }
     }

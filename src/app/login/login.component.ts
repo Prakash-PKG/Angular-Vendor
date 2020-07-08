@@ -99,7 +99,7 @@ export class LoginComponent implements OnInit {
         this.isFormSubmitted = false;
         this.loading = false;
         this.loginForm = this._formBuilder.group({
-            userId: [null, [Validators.required]],
+            userId: [null, [Validators.required,Validators.email]],
             password: [null, [Validators.required, Validators.minLength(4)]]
         });
     }

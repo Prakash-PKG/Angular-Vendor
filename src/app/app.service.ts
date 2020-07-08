@@ -33,6 +33,7 @@ export class AppService {
         poDetails: "/home/podetails",
         poInvoiceDump: "/home/poinvoicedump",
         nonpoInvoiceDump: "/home/nonpoinvoicedump",
+        vendorDump: "/home/vendordump",
         vendorApproval: "/home/venapproval",
         empanelment: "/home/empanelment",
         vendorDetails: "/vendor/vendetails",
