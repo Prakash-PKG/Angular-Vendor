@@ -23,6 +23,7 @@ import { LoginComponent } from './login/login.component';
 import { AuthGuardLogin } from './login/authguard.login';
 import { HomeComponent } from './home/home.component';
 import { VendorOthersComponent } from './vendor-others/vendor-others.component';
+import { VendorDashboardComponent } from './vendor-dashboard/vendor-dashboard.component';
 
 
 const routes: Routes = [
@@ -37,11 +38,6 @@ const routes: Routes = [
             {
                 path: 'posearch',
                 component: PoSearchComponent,
-                canActivate: [AuthGuardLogin]
-            },
-            {
-                path: 'fp',
-                component: ForgotPasswordComponent,
                 canActivate: [AuthGuardLogin]
             },
             {
@@ -94,7 +90,12 @@ const routes: Routes = [
                 component: EmpanelmentComponent,
                 canActivate: [AuthGuardLogin]
             },
-            
+            {
+                path: 'vendashboard',
+                component: VendorDashboardComponent,
+                canActivate: [AuthGuardLogin]
+            },
+
         ]
     },
     {

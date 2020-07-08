@@ -59,6 +59,12 @@
 .childdash li{
     align-items: center;
     white-space: normal;
+    padding-left:2em;
+} 
+.childdash li.collapsed{
+    padding-left:1em;
+    align-items: center;
+    white-space: nowrap;
 } 
 
 .tabactive{

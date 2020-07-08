@@ -38,16 +38,6 @@ export class SidebarComponent implements OnInit {
 
     onCollapseClick() {
         this.isSidebarCollapsed = !this.isSidebarCollapsed;
-
-        if (this.isSidebarCollapsed == false) {
-            setTimeout(() => {
-                this.isMenuTextVisible = true;
-            }, 500);
-        }
-        else {
-            this.isMenuTextVisible = false;
-        }
-
         this._homeService.updateSidebarDetails(this.isSidebarCollapsed);
     }
 
@@ -66,7 +56,9 @@ export class SidebarComponent implements OnInit {
     onInvoiceSearchClick() {
         this._router.navigate([this._appService.routingConstants.invoiceSearch]);
     }
-
+    onVenDashClick(){
+        this._router.navigate([this._appService.routingConstants.vendorDashboard]);
+    }
     onVenApp1Click() {
         this._router.navigate([this._appService.routingConstants.vendorApproval]);
     }

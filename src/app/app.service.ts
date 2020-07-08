@@ -10,8 +10,8 @@ import { HttpClient } from '@angular/common/http';
 })
 export class AppService {
 
-    //readonly domain = "http://localhost:8080";
-    readonly domain = "https://mvendor-dev.marlabs.com";
+    readonly domain = "http://localhost:8080";
+    // readonly domain = "https://mvendor-dev.marlabs.com";
     //readonly domain = "https://mtime.marlabs.com";  
     readonly baseUrl = this.domain + "/mvendor/";
     readonly customerAuthUrl = this.domain + "/customerAuth/oauth/token";
@@ -38,7 +38,7 @@ export class AppService {
         vendorBankDetails: "/vendor/venbank",
         vendorDocuments: "/vendor/vendocs",
         vendorOther: "/vendor/venothers",
-        forgotPass:"/forgotpass"
+        vendorDashboard:"/home/vendashboard"
     };
 
     readonly pageConstants: any = {
