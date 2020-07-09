@@ -45,7 +45,7 @@
         </li>
     </ul>
     <div class="flex-container ">
-        <div class="flex-item">
+        <div class="flex-item" style="flex-grow:2">
             <div class="flex-container">
                 <div class="flex-item">
                     <div class="header">
@@ -88,10 +88,20 @@
                         {{ initDetails?.poDetails?.poNumber }}
                     </div>
                 </div>
+                <div class="flex-item">
+                    <div class="header">
+                        Invoice Documents
+                    </div>
+                    <div class="filename value" *ngFor="let ifile of invoiceFilesList; let ifileInd = index">
+                        <mat-icon matTooltip="{{ifile.actualFileName}}" (click)="downloadFile(ifile)">
+                            description
+                        </mat-icon>
+                    </div>
+                </div>
 
             </div>
         </div>
-        <div class="flex-item">
+        <div class="flex-item" style="flex-grow:2">
             <div class="flex-container">
                 <div class="flex-item">
                     <div class="header">
@@ -125,7 +135,16 @@
                         {{ initDetails?.invoiceDetails?.remarks }}
                     </div>
                 </div>
-
+                <div class="flex-item">
+                    <div class="header">
+                        Supporting Documents
+                    </div>
+                    <div class="filename value" *ngFor="let sf of supportFilesList; let sfInd = index">
+                        <mat-icon matTooltip=" {{ sf.actualFileName }}" (click)="downloadFile(sf)">
+                            description
+                        </mat-icon>
+                    </div>
+                </div>
             </div>
         </div>
         <div class="flex-item">
@@ -161,36 +180,6 @@
                     <div class="value">
                         {{ initDetails?.invoiceDetails?.totalAmt }}
                     </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="flex-container files">
-        <div class="flex-item">
-            <div class="header">
-                Invoice Documents
-            </div>
-            <div class="value">
-                <div *ngFor="let ifile of invoiceFilesList; let ifileInd = index">
-                    {{ ifile.actualFileName }}
-                    <button mat-button mat-icon-button aria-label="Download" (click)="downloadFile(ifile)">
-                        <mat-icon>save_alt</mat-icon>
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="flex-container files">
-        <div class="flex-item">
-            <div class="header">
-                Supporting Documents
-            </div>
-            <div class="value">
-                <div *ngFor="let sf of supportFilesList; let sfInd = index">
-                    {{ sf.actualFileName }}
-                    <button mat-button mat-icon-button aria-label="Download" (click)="downloadFile(sf)">
-                        <mat-icon>save_alt</mat-icon>
-                    </button>
                 </div>
             </div>
         </div>
@@ -243,37 +232,37 @@
             </thead>
             <tbody>
                 <tr *ngFor="let item of itemsList; let itemInd = index">
-                    <td>
+                    <td style="width:5em;">
                         {{ item.itemNumber }}
                     </td>
                     <td>
                         {{ item.itemDescription }}
                     </td>
-                    <td *ngIf="isPOInvoice == true">
+                    <td *ngIf="isPOInvoice == true" class="eightcharacters">
                         {{ item.uom }}
                     </td>
-                    <td>
+                    <td class="eightcharacters">
                         {{ item.hsn }}
                     </td>
-                    <td *ngIf="isPOInvoice == true">
+                    <td *ngIf="isPOInvoice == true" class="tencharacters">
                         {{ item.orderedUnits }}
                     </td>
-                    <td *ngIf="isPOInvoice == true">
+                    <td *ngIf="isPOInvoice == true" class="tencharacters">
                         {{ item.suppliedUnits }}
                     </td>
-                    <td *ngIf="isPOInvoice == true">
+                    <td *ngIf="isPOInvoice == true" class="tencharacters">
                         {{ item.consumedUnits }}
                     </td>
-                    <td>
+                    <td class="tencharacters">
                         {{ item.invoiceUnits }}
                     </td>
-                    <td *ngIf="isPOInvoice == true">
+                    <td *ngIf="isPOInvoice == true" class="eightcharacters">
                         {{ getCurrencyType() }}
                     </td>
-                    <td class="amount">
+                    <td class="amount tencharacters">
                         {{ item.unitPrice }}
                     </td>
-                    <td class="amount">
+                    <td class="amount tencharacters">
                         {{ item.unitsTotalAmount }}
                     </td>
                 </tr>
@@ -285,7 +274,8 @@
             </div>-->
             <button mat-raised-button class="footer-actions" (click)="onBackBtnClick()">Back</button>
             <button mat-raised-button class="footer-actions" (click)="onRejectClick()">Reject</button>
-            <button mat-raised-button class="footer-actions footer-actions-green" (click)="onApproveClick()">Approve</button>
+            <button mat-raised-button class="footer-actions footer-actions-green"
+                (click)="onApproveClick()">Approve</button>
         </div>
     </div>
 </div>

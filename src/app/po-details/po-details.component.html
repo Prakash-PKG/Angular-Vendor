@@ -51,34 +51,34 @@
             </thead>
             <tbody>
                 <tr *ngFor="let item of itemsList; let itemInd = index">
-                    <td>
+                    <td style="width:5em">
                         <span>{{ item.itemNumber }}</span>
                     </td>
                     <td>
                         <span>{{ item.itemDescription }}</span>
                     </td>
-                    <td>
+                    <td class="eightcharacters">
                         <span>{{ item.hsn }}</span>
                     </td>
-                    <td>
+                    <td class="tencharacters">
                         <span>{{ item.orderedUnits }}</span>
                     </td>
-                    <td>
+                    <td   class="tencharacters">
                         <span>{{ item.suppliedUnits }}</span>
-                    </td>
-                    <td>
+                    </td >
+                    <td  class="tencharacters">
                         <span>{{ item.consumedUnits }}</span>
                     </td>
-                    <td>
+                    <td  class="tencharacters">
                         <span>{{ item.invoiceUnits }}</span>
                     </td>
                     <td>
                         <span>{{ currency }}</span>
                     </td>
-                    <td class="amount">
+                    <td class="amount tencharacters">
                         <span>{{ item.unitPrice }}</span>
                     </td>
-                    <td class="amount">
+                    <td class="amount tencharacters">
                         <span>{{ item.unitsTotalAmount }}</span>
                     </td>
                 </tr>

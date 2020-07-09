@@ -1,5 +1,7 @@
-import { VendorMasterDetailsModel, VendorRegistrationInitDataModel, 
-        PendingApprovalsModel, FileDetailsModel, PODetailsModel, InvoiceModel } from './models/data-models';
+import {
+    VendorMasterDetailsModel, VendorRegistrationInitDataModel,
+    PendingApprovalsModel, FileDetailsModel, PODetailsModel, InvoiceModel
+} from './models/data-models';
 
 import { Injectable } from '@angular/core';
 import { DatePipe } from '@angular/common';
@@ -10,7 +12,7 @@ import { HttpClient } from '@angular/common/http';
 })
 export class AppService {
 
-    //readonly domain = "http://localhost:8080";
+    // readonly domain = "http://localhost:8080";
     readonly domain = "https://mvendor-dev.marlabs.com";
     //readonly domain = "https://mtime.marlabs.com";  
     readonly baseUrl = this.domain + "/mvendor/";
@@ -25,12 +27,13 @@ export class AppService {
         forgotPassword: "/home/fp",
         invoiceApproval: "/home/invapproval",
         invoiceDetails: "/home/invdetails",
-        invoiceSearch:"/home/invsearch",
+        invoiceSearch: "/home/invsearch",
         invoiceUpload: "/home/invupload",
         pendingApprovals: "/home/pendingapprovals",
         poDetails: "/home/podetails",
         poInvoiceDump: "/home/poinvoicedump",
         nonpoInvoiceDump: "/home/nonpoinvoicedump",
+        vendorDump: "/home/vendordump",
         vendorApproval: "/home/venapproval",
         empanelment: "/home/empanelment",
         vendorDetails: "/vendor/vendetails",
@@ -38,7 +41,8 @@ export class AppService {
         vendorBankDetails: "/vendor/venbank",
         vendorDocuments: "/vendor/vendocs",
         vendorOther: "/vendor/venothers",
-        forgotPass:"/forgotpass"
+        vendorDashboard: "/home/vendashboard",
+        loginVendor: "/loginvendor"
     };
 
     readonly pageConstants: any = {
@@ -88,18 +92,18 @@ export class AppService {
     selectedInvoice: InvoiceModel = null;
 
     getFormattedDate(dtStr: string) {
-        if(dtStr) {
+        if (dtStr) {
             return this._datePipe.transform(new Date(dtStr), this.displayDtFormat);
         }
-        
+
         return "";
     }
 
     getFormattedDateTime(dtStr: string) {
-        if(dtStr) {
+        if (dtStr) {
             return this._datePipe.transform(new Date(dtStr), this.dbDateTimeFormat);
         }
-        
+
         return "";
     }
 
@@ -142,8 +146,8 @@ export class AppService {
         createdBy: null,
         updatedBy: null,
         createdDate: null,
-        updatedDate: null,   
-         mobileNum: null,
+        updatedDate: null,
+        mobileNum: null,
         telephoneNum: null,
         bankName: null,
         bankBranch: null,
@@ -154,16 +158,16 @@ export class AppService {
         address2: null,
         bankRegionName: null,
         bankCountryName: null,
-        stateName:null,
-        groupCode:  null,
-        companyCode:  null,
-        currencyCode:  null,
-        procRemark:  null,
-        procApprByName:  null,
+        stateName: null,
+        groupCode: null,
+        companyCode: null,
+        currencyCode: null,
+        procRemark: null,
+        procApprByName: null,
         finApprByName: null,
-        finRemark:  null,
+        finRemark: null,
         // isGSTReg:null,
-        otherDocDesc:null
+        otherDocDesc: null
     };
 
     resetVendorRegistrationDetails() {
@@ -218,16 +222,16 @@ export class AppService {
             address2: null,
             bankRegionName: null,
             bankCountryName: null,
-            stateName:null,
-            groupCode:  null,
-            companyCode:  null,
-            currencyCode:  null,
-            procRemark:  null,
-            procApprByName:  null,
+            stateName: null,
+            groupCode: null,
+            companyCode: null,
+            currencyCode: null,
+            procRemark: null,
+            procApprByName: null,
             finApprByName: null,
-            finRemark:  null,
+            finRemark: null,
             // isGSTReg:null,
-            otherDocDesc:null
+            otherDocDesc: null
         };
 
         return regDetails;
@@ -241,14 +245,14 @@ export class AppService {
         vendorRegistrationSaveFailure: "Due to technical problems not able to proceed further. Please try later.",
         vendorRegistrationSubmitSuccessMsg: "Vendor details submitted successful",
         vendorApprovalFailure: "Vendor approval is failed",
-        vendorSendBackSuccess:"Vendor Details are send back for correction",
+        vendorSendBackSuccess: "Vendor Details are send back for correction",
         vendorSendBackFailure: "Vendor details sent back for correction failed",
         vendorRegistrationFormInvalid: "Your Form Contains Error. Please Check"
     };
 
     getFileData(fileDetails: FileDetailsModel) {
         let url = this.baseUrl + 'downloadInvDoc/' + fileDetails.uniqueFileName;
-        return this._http.get(url, {responseType: 'arraybuffer', observe: 'response'});
+        return this._http.get(url, { responseType: 'arraybuffer', observe: 'response' });
     }
 
     downloadInvoiceFile(fileDetails: FileDetailsModel) {

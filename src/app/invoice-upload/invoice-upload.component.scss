@@ -50,6 +50,7 @@
 .filename{
   flex-grow:1;
   flex-basis: auto;
+    display: inline;
 }
 
 .search-row {
@@ -57,7 +58,6 @@
   flex-wrap: wrap;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 1em;
 }
 
 .search-row-element {

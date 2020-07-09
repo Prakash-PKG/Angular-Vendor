@@ -27,7 +27,7 @@ export class InvoiceApprovalsComponent implements OnInit {
 
     initDetails: InvoiceApprovalInitResultModel = null;
     itemsList: ItemDisplayModel[] = [];
-    totalAmount: number = 0;
+    totalAmount: string = "0.000";
 
     //msg: string = "";
 
@@ -81,6 +81,7 @@ export class InvoiceApprovalsComponent implements OnInit {
 
     async loadInitData() {
         if(this._appService.selectedPendingApprovalRecord) {
+            this.totalAmount = "0.000";
 
             this.isPOInvoice = false;
             if(this._appService.selectedPendingApprovalRecord.purchaseOrderId && this._appService.selectedPendingApprovalRecord.poNumber) {
@@ -105,14 +106,15 @@ export class InvoiceApprovalsComponent implements OnInit {
             
             if(this.initDetails) {
                 this.itemsList = this.initDetails.itemsList.concat();
-                this.totalAmount = 0;
+                let totalAmt: number = 0;
                 for(let i = 0; i < this.itemsList.length; i++) {
                     //this.itemsList[i].unitsTotalAmount = (this.itemsList[i].unitPrice && this.itemsList[i].invoiceUnits) ? +this.itemsList[i].unitPrice * +this.itemsList[i].invoiceUnits : null;
                     this.itemsList[i].unitsTotalAmount = (this.itemsList[i].totalAmt) ? +this.itemsList[i].totalAmt : null;
                     if(this.itemsList[i].unitsTotalAmount && this.itemsList[i].unitsTotalAmount > 0) {
-                        this.totalAmount = this.totalAmount + this.itemsList[i].unitsTotalAmount;
+                        totalAmt = totalAmt + this.itemsList[i].unitsTotalAmount;
                     }
                 }
+                this.totalAmount = totalAmt.toFixed(3);
 
                 this.grnSesList = this.initDetails.grnSesList;
 

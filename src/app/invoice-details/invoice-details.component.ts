@@ -29,7 +29,7 @@ export class InvoiceDetailsComponent implements OnInit {
 
     _initDetails: InvoiceDetailsResultModel = null;
     itemsList: ItemDisplayModel[] = [];
-    totalAmount: number = 0;
+    totalAmount: string = "0.000";
 
     invoiceFilesList: FileDetailsModel[] = [];
     supportFilesList: FileDetailsModel[] = [];
@@ -111,6 +111,7 @@ export class InvoiceDetailsComponent implements OnInit {
     async loadInitData() {
         this.isPOBasedInvoice = true;
         this.headerArr = [];
+        this.totalAmount = "0.000";
 
         this.uploadLevel = null;
         this.poLevel = null;
@@ -141,14 +142,15 @@ export class InvoiceDetailsComponent implements OnInit {
             if(this._initDetails) {
                 this.invoicePaymentDetails = this._initDetails.paymentDetails;
                 this.itemsList = (this._initDetails.itemsList && this._initDetails.itemsList.length > 0) ? this._initDetails.itemsList.concat() : [];
-                this.totalAmount = 0;
+                let totalAmt: number = 0;
                 for(let i = 0; i < this.itemsList.length; i++) {
                     //this.itemsList[i].unitsTotalAmount = (this.itemsList[i].unitPrice && this.itemsList[i].invoiceUnits) ? +this.itemsList[i].unitPrice * +this.itemsList[i].invoiceUnits : null;
                     this.itemsList[i].unitsTotalAmount = (this.itemsList[i].totalAmt) ? +this.itemsList[i].totalAmt : null;
                     if(this.itemsList[i].unitsTotalAmount && this.itemsList[i].unitsTotalAmount > 0) {
-                        this.totalAmount = this.totalAmount + this.itemsList[i].unitsTotalAmount;
+                        totalAmt = totalAmt + this.itemsList[i].unitsTotalAmount;
                     }
                 }
+                this.totalAmount = totalAmt.toFixed(3);
 
                 this.invoiceFilesList = this._initDetails.invoiceFilesList;
                 this.supportFilesList = this._initDetails.supportFilesList;

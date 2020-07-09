@@ -65,35 +65,35 @@
                     <th class="headers" scope="col">
                         <span>Currency</span>
                     </th>
-                    <th class="headers " scope="col">
-                        <span>Total Amount(Incl tax)</span>
+                    <th class="headers " scope="col" style="width: 9em;">
+                        <span>Total Amt <small>(inc. tax)</small></span>
                     </th>
                 </tr>
             </thead>
             <tbody>
                 <tr *ngFor="let inv of invoiceList; let invInd = index">
-                    <td style="cursor: pointer" (click)="onInvoiceClick(inv)">
+                    <td style="cursor: pointer" (click)="onInvoiceClick(inv)" class="tencharacters">
                         {{ inv.invoiceNumber }}
                     </td>
-                    <td>
+                    <td class="tencharacters">
                         {{ inv.poNumber }}
                     </td>
-                    <td>
+                    <td  class="tencharacters">
                         {{ inv.vendorId }}
                     </td>
                     <td>
                         {{ inv.vendorName }}
                     </td>
-                    <td>
+                    <td class="tencharacters">
                         {{ getFormattedDate(inv.invoiceDate) }}
                     </td>
-                    <td>
+                    <td class="tencharacters">
                         {{ inv.grnSesNumber }}
                     </td>
-                    <td>
+                    <td  class="eightcharacters">
                         {{ inv.currencyType }}
                     </td>
-                    <td class="amount">
+                    <td class="amount tencharacters">
                         {{ inv.totalAmt }}
                     </td>
                 </tr>

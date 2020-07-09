@@ -68,10 +68,10 @@
             </thead>
             <tbody>
                 <tr *ngFor="let po of poList; let poInd = index">
-                    <td style="cursor: pointer" (click)="onPOClick(po)">
+                    <td style="cursor: pointer" (click)="onPOClick(po)" class="tencharacters">
                         {{ po.poNumber }}
                     </td>
-                    <td>
+                    <td class="tencharacters">
                         {{ po.vendorId }}
                     </td>
                     <td>
@@ -80,16 +80,16 @@
                     <td>
                         {{ po.companyName }}
                     </td>
-                    <td>
+                    <td class="tencharacters">
                         {{ getFormattedDate(po.poDate) }}
                     </td>
-                    <td>
+                    <td class="amount tencharacters"> 
                         {{ po.totalAmount }}
                     </td>
-                    <td>
+                    <td class="amount tencharacters">
                         {{ po.billedAmount }}
                     </td>
-                    <td class="amount">
+                    <td class="amount tencharacters">
                         {{ po.paidAmount }}
                     </td>
                 </tr>

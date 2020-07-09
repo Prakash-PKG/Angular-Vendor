@@ -160,7 +160,7 @@
             </table>
         </div>
 
-        <div class="flex-item">
+        <div class="flex-item" style="flex-grow:0;">
             <mat-card class="card mat-elevation-z3 full-width">
                 <table class="dataTable full-width">
                     <thead>
@@ -172,17 +172,17 @@
                     </thead>
                     <tbody>
                         <tr *ngFor="let apprlevel of approvalLevelList; let levelInd = index">
-                            <td>
+                            <td  class="eightcharacters">
                                 <span>{{ apprlevel.levelName }}</span>
                             </td>
-                            <td>
+                            <td  class="eightcharacters">
                                 <span>{{ apprlevel.status }}</span>
                             </td>
-                            <td>
+                            <td  class="tencharacters">
                                 <span>{{ apprlevel.date }}</span>
                             </td>
-                            <td>
-                                <span>{{ apprlevel.remarks }}</span>
+                            <td  class="tencharacters remarks">
+                                <span  matTooltip="{{apprlevel.remarks}}">{{ apprlevel.remarks }}</span>
                             </td>
                         </tr>
                     </tbody>
@@ -202,38 +202,38 @@
             </thead>
             <tbody>
                 <tr *ngFor="let item of itemsList; let itemInd = index">
-                    <td>
+                    <td style="width:5em;">
                         <span>{{ item.itemNumber }}</span>
                     </td>
                     <td>
                         <span>{{ item.itemDescription }}</span>
                     </td>
-                    <td *ngIf="isPOBasedInvoice == true">
+                    <td *ngIf="isPOBasedInvoice == true" class="eightcharacters">
                         <span>{{ item.uom }}</span>
                     </td>
-                    <td>
+                    <td class="eightcharacters">
                         <span>{{ item.hsn }}</span>
                     </td>
-                    <td *ngIf="isPOBasedInvoice == true">
+                    <td *ngIf="isPOBasedInvoice == true" class="tencharacters">
                         <span>{{ item.orderedUnits }}</span>
                     </td>
-                    <td *ngIf="isPOBasedInvoice == true">
+                    <td *ngIf="isPOBasedInvoice == true" class="tencharacters">
                         <span>{{ item.suppliedUnits }}</span>
                     </td>
-                    <td *ngIf="isPOBasedInvoice == true">
+                    <td *ngIf="isPOBasedInvoice == true" class="tencharacters">
                         <span>{{ item.consumedUnits }}</span>
                     </td>
-                    <td>
+                    <td class="tencharacters">
                         <span>{{ item.invoiceUnits }}</span>
                     </td>
-                    <td>
+                    <td class="eightcharacters">
                         <span>{{ currency }}</span>
                     </td>
-                    <td class="amount">
+                    <td class="amount tencharacters">
                         <span>{{ item.unitPrice }}</span>
                     </td>
-                    <td class="amount">
-                        <span>{{ item.unitsTotalAmount }}</span>
+                    <td class="amount tencharacters">
+                        <span>{{ item.totalAmt }}</span>
                     </td>
                 </tr>
             </tbody>
