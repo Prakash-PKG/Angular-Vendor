@@ -11,12 +11,12 @@ export class VendorDumpService {
   constructor(private _http: HttpClient, private _appService: AppService) { }
 
   getFileData(req: VendorDumpReqModel) {
-    let url = this._appService.baseUrl + 'invFinanceDump';
+    let url = this._appService.baseUrl + 'vendorFinanceDump';
     return this._http.post(url, req, { responseType: 'arraybuffer', observe: 'response' });
   }
 
   async getVendorDumpInitDetails() {
-    let url = this._appService.baseUrl + "vendorFinanceDump";
+    let url = this._appService.baseUrl + "vendorFinanceDumpInit";
     try {
       let response = await this._http.get(url).toPromise();
       return this.prepareVendorDumpInitDetails(response);

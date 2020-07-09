@@ -59,7 +59,7 @@ export class VendorDumpComponent implements OnInit {
 
       let displayStartDt: string = this._initDetails.lastDumpDt ? "-" + this._initDetails.lastDumpDt : "";
       let fileName: string = "vendor-dump" + displayStartDt + ".csv";
-      this.downloadInvoiceFile(req, fileName);
+      this.downloadVendorFile(req, fileName);
   }
 
   onDateRangeDownloadClick() {
@@ -84,7 +84,7 @@ export class VendorDumpComponent implements OnInit {
           let displayEndDt: string = this._datePipe.transform(this.endDate, this._appService.displayDtFormat);
           let fileName: string = "vendor-dump-" + displayStartDt + " to " + displayEndDt + ".csv";
 
-          this.downloadInvoiceFile(req, fileName);
+          this.downloadVendorFile(req, fileName);
       }
   }
 
@@ -98,7 +98,7 @@ export class VendorDumpComponent implements OnInit {
       this.endDateErrMsg = "";
   }
 
-  downloadInvoiceFile(req: VendorDumpReqModel, fileName: string) {
+  downloadVendorFile(req: VendorDumpReqModel, fileName: string) {
       this._homeService.updateBusy(<BusyDataModel>{ isBusy: true, msg: "Loading..." });
       this.__vendorDumpService.getFileData(req).subscribe(
           (data) => {
