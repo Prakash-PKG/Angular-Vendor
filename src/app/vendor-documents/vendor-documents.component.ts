@@ -68,7 +68,7 @@ export class VendorDocumentsComponent implements OnInit {
         private _formBuilder: FormBuilder,
         private _datePipe: DatePipe,
         private _snackBar: MatSnackBar,
-        private _dialog:MatDialog) { }
+        private _dialog: MatDialog) { }
 
     onFileChange(event: any, documentTypeId: number) {
         if (!documentTypeId) return;
@@ -243,6 +243,10 @@ export class VendorDocumentsComponent implements OnInit {
                 title: "Vendor Registration Status",
                 message: msg
             }
+        });
+
+        dialogRef.afterClosed().subscribe(result => {
+            this._router.navigate([this._appService.routingConstants.login]);
         });
     }
 
