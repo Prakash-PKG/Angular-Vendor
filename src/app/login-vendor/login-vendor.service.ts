@@ -30,13 +30,9 @@ export class LoginVendorService {
     } catch (error) {
       if(error instanceof Response){
         let status = new StatusModel();
-        status.isSuccess = false;
-        status.exceptionMsg = error.json()["error-message"];
         return status;
       }else{
         let status = new StatusModel();
-        status.isSuccess = false;
-        status.exceptionMsg = 'Something went wrong';
         return status;
       }
     }

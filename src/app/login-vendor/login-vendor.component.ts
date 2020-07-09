@@ -69,14 +69,15 @@ export class LoginVendorComponent implements OnInit {
       if (results) {
         if (results.isSuccess) {
           this.haveOTP = true;
+          this.otpMessage = results.message
         }
         else {
-          this.errorMessage = results.exceptionMsg;
+          this.otpMessage = results.message
           this.haveOTP = false;
         }
       }
       else {
-        this.errorMessage = results.exceptionMsg;
+        this.otpMessage = results.message
         this.haveOTP = false;
       }
     }
