@@ -13,9 +13,11 @@ import {
 import { DatePipe } from '@angular/common';
 import { HomeService } from '../home/home.service';
 import { globalConstant } from '../common/global-constant';
-import { MatSnackBar } from '@angular/material';
+import { MatSnackBar, MatDialog } from '@angular/material';
 import { Subscription, BehaviorSubject } from 'rxjs';
 import { scan, takeWhile, takeLast } from 'rxjs/operators';
+import { MessageDialogComponent } from '../message-dialog/message-dialog.component';
+import { MessageDialogModel } from '../models/popup-models';
 
 interface FileMap {
     [key: number]: {
@@ -65,7 +67,8 @@ export class VendorDocumentsComponent implements OnInit {
         private _router: Router,
         private _formBuilder: FormBuilder,
         private _datePipe: DatePipe,
-        private _snackBar: MatSnackBar) { }
+        private _snackBar: MatSnackBar,
+        private _dialog:MatDialog) { }
 
     onFileChange(event: any, documentTypeId: number) {
         if (!documentTypeId) return;
@@ -210,7 +213,8 @@ export class VendorDocumentsComponent implements OnInit {
                         if (result.status.status == 200 && result.status.isSuccess) {
                             this._appService.vendorRegistrationDetails = result.vendorMasterDetails;
                             this.disableSubmit = true;
-                            this._snackBar.open(this._appService.messages.vendorRegistrationSubmitSuccessMsg);
+                            this.displayRegistrationStatus(this._appService.messages.vendorRegistrationSubmitSuccessMsg);
+
                         }
                         else {
                             this.disableSubmit = false;
@@ -229,6 +233,17 @@ export class VendorDocumentsComponent implements OnInit {
         else {
             this.failureMsg = this._appService.messages.vendorRegistrationFormInvalid;
         }
+    }
+    displayRegistrationStatus(msg: string) {
+        const dialogRef = this._dialog.open(MessageDialogComponent, {
+            disableClose: true,
+            panelClass: 'dialog-box',
+            width: '550px',
+            data: <MessageDialogModel>{
+                title: "Vendor Registration Status",
+                message: msg
+            }
+        });
     }
 
     onDeleteFileClick(fileDetails: FileDetailsModel, fileIndex: number, documentTypeId: number) {

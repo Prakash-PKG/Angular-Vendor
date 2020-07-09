@@ -16,8 +16,10 @@ import { Component, OnInit } from '@angular/core';
 import { HomeService } from '../home/home.service';
 import { VendorRegistrationService } from '../vendor-registration/vendor-registration.service';
 import { Subscription, BehaviorSubject } from 'rxjs';
-import { MatSnackBar } from '@angular/material';
+import { MatSnackBar, MatDialog } from '@angular/material';
 import { scan, takeWhile, takeLast } from 'rxjs/operators';
+import { MessageDialogComponent } from '../message-dialog/message-dialog.component';
+import { MessageDialogModel } from '../models/popup-models';
 
 interface FileMap {
     [key: number]: {
@@ -56,9 +58,9 @@ export class VendorApprovalComponent implements OnInit {
 
     isFinance: boolean = false;
     isProcurement: boolean = false;
-   
+
     msg: string = "";
-    
+
     isEditable = true;
     isValid = true;
     isServerError = false;
@@ -89,7 +91,8 @@ export class VendorApprovalComponent implements OnInit {
     constructor(private _homeService: HomeService,
         private _appService: AppService,
         private _vendorApprovalService: VendorApprovalService,
-        private _snackBar: MatSnackBar) { }
+        private _snackBar: MatSnackBar,
+        private _dialog: MatDialog) { }
 
     onEditClick() {
         this.isEditable = false;
@@ -305,7 +308,7 @@ export class VendorApprovalComponent implements OnInit {
     //     }
     // }
 
-    isFormValid() {
+    isFilesValid() {
         this.isValid = true;
         for (let key in this.filesMap) {
             this.filesMap[key].isError = false;
@@ -316,8 +319,21 @@ export class VendorApprovalComponent implements OnInit {
             }
         }
     }
+    isFormValid() {
+        if (this.isFinance) {
+            if (!(this.selectedVendorGroup || this.selectedCompanyCode || this.selectedCurrency || this.withholdTax || this.withholdType || this.remarks)) {
+                this.isValid = false;
+                this.msg= "Fill all mandatory fields";
+                return;
+            }
+        }
+        else {
+            return;
+        }
+    }
 
     updateVendorApprovals(action: string) {
+        this.isFilesValid();
         this.isFormValid();
         if (!this.isValid) { return };
 
@@ -348,7 +364,7 @@ export class VendorApprovalComponent implements OnInit {
                     let result: StatusModel = response.body as StatusModel;
                     if (result.status == 200 && result.isSuccess) {
                         this.disableSubmit = true;
-                        this.msg = "Vendor approval is success";
+                        this.displayVendorApprovalStatus(this._appService.messages.vendorApprovalSubmitSuccessMsg);
                     }
                     else {
                         this.isEditable = true;
@@ -365,6 +381,17 @@ export class VendorApprovalComponent implements OnInit {
                     this.msg = this._appService.messages.vendorApprovalFailure;
                     console.log(error);
                 });
+    }
+    displayVendorApprovalStatus(msg: string) {
+        const dialogRef = this._dialog.open(MessageDialogComponent, {
+            disableClose: true,
+            panelClass: 'dialog-box',
+            width: '550px',
+            data: <MessageDialogModel>{
+                title: "Vendor Approval Status",
+                message: msg
+            }
+        });
     }
 
     async loadInitData() {

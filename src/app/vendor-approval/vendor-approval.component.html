@@ -293,8 +293,7 @@
               </div>
             </div>
           </div>
-          <div class="error-txt"
-            *ngIf="filesMap[vendorDocCtrl.gstCtrl.documentTypeId]?.isError">This attachment
+          <div class="error-txt" *ngIf="filesMap[vendorDocCtrl.gstCtrl.documentTypeId]?.isError">This attachment
             is mandatory if GST Registered</div>
         </div>
 
@@ -395,7 +394,8 @@
         <div class="Rtable-cell Rtable-cell--head">PF No.</div>
         <div class="Rtable-cell">
           <mat-form-field class="full-width">
-            <input type="text" matInput [(ngModel)]="vendorDetails.pfNum" [disabled]="isEditable" (blur)="updateMandatoryDocs(vendorDetails.pfNum,vendorDocCtrl.pfCtrl.documentTypeId)">
+            <input type="text" matInput [(ngModel)]="vendorDetails.pfNum" [disabled]="isEditable"
+              (blur)="updateMandatoryDocs(vendorDetails.pfNum,vendorDocCtrl.pfCtrl.documentTypeId)">
           </mat-form-field>
         </div>
 
@@ -427,15 +427,16 @@
               </div>
             </div>
           </div>
-          <div class="error-txt"
-            *ngIf="filesMap[vendorDocCtrl.pfCtrl.documentTypeId]?.isError">This attachment is
+          <div class="error-txt" *ngIf="filesMap[vendorDocCtrl.pfCtrl.documentTypeId]?.isError">This attachment is
             mandatory if PF exists.</div>
         </div>
 
         <div class="Rtable-cell Rtable-cell--head">ESI No.</div>
         <div class="Rtable-cell">
           <mat-form-field class="full-width">
-            <input type="text" matInput [(ngModel)]="vendorDetails.esiNum" (blur)="updateMandatoryDocs(vendorDetails.esiNum,vendorDocCtrl.esiCtrl.documentTypeId)" [disabled]="isEditable">
+            <input type="text" matInput [(ngModel)]="vendorDetails.esiNum"
+              (blur)="updateMandatoryDocs(vendorDetails.esiNum,vendorDocCtrl.esiCtrl.documentTypeId)"
+              [disabled]="isEditable">
           </mat-form-field>
         </div>
 
@@ -466,8 +467,7 @@
               </div>
             </div>
           </div>
-          <div class="error-txt"
-            *ngIf="filesMap[vendorDocCtrl.esiCtrl.documentTypeId]?.isError">This attachment
+          <div class="error-txt" *ngIf="filesMap[vendorDocCtrl.esiCtrl.documentTypeId]?.isError">This attachment
             is mandatory if ESI exists.</div>
         </div>
 
@@ -476,7 +476,8 @@
         <div class="Rtable-cell" *ngIf="isEditable"> {{ vendorDetails.isMsmedRegistered  == true ? 'YES' : 'NO'}}
         </div>
         <div class="Rtable-cell" *ngIf="!isEditable">
-          <mat-radio-group [(ngModel)]="vendorDetails.isMsmedRegistered"  (selectionChange)="updateMandatoryDocs(vendorDetails.isMsmedRegistered,vendorDocCtrl.msmeCtrl.documentTypeId)">
+          <mat-radio-group [(ngModel)]="vendorDetails.isMsmedRegistered"
+            (selectionChange)="updateMandatoryDocs(vendorDetails.isMsmedRegistered,vendorDocCtrl.msmeCtrl.documentTypeId)">
             <mat-radio-button [value]=true selected>YES</mat-radio-button>
             <mat-radio-button [value]=false [checked]=true>NO</mat-radio-button>
           </mat-radio-group>
@@ -509,15 +510,15 @@
               </div>
             </div>
           </div>
-          <div class="error-txt"
-            *ngIf="filesMap[vendorDocCtrl.msmeCtrl.documentTypeId]?.isError"> This
+          <div class="error-txt" *ngIf="filesMap[vendorDocCtrl.msmeCtrl.documentTypeId]?.isError"> This
             attachment is mandatory if MSME.</div>
         </div>
 
         <div class="Rtable-cell Rtable-cell--head">Have any TDS lower deduction certificate? </div>
         <div class="Rtable-cell" *ngIf="isEditable">{{ vendorDetails.hasTdsLower  == true ? 'YES' : 'NO'}}</div>
         <div class="Rtable-cell" *ngIf="!isEditable">
-          <mat-radio-group [(ngModel)]="vendorDetails.hasTdsLower" (selectionChange)="updateMandatoryDocs(vendorDetails.hasTdsLower,vendorDocCtrl.tdsCtrl.documentTypeId)">
+          <mat-radio-group [(ngModel)]="vendorDetails.hasTdsLower"
+            (selectionChange)="updateMandatoryDocs(vendorDetails.hasTdsLower,vendorDocCtrl.tdsCtrl.documentTypeId)">
             <mat-radio-button [value]=true selected>YES</mat-radio-button>
             <mat-radio-button [value]=false>No</mat-radio-button>
           </mat-radio-group>
@@ -550,8 +551,7 @@
               </div>
             </div>
           </div>
-          <div class="error-txt"
-            *ngIf="filesMap[vendorDocCtrl.tdsCtrl.documentTypeId]?.isError">This
+          <div class="error-txt" *ngIf="filesMap[vendorDocCtrl.tdsCtrl.documentTypeId]?.isError">This
             attachment is mandatory if TDS available</div>
 
         </div>
@@ -559,7 +559,8 @@
         <div class="Rtable-cell Rtable-cell--head">SEZ/Non SEZ </div>
         <div class="Rtable-cell" *ngIf="isEditable"> {{ vendorDetails.isSez == true ? 'SEZ' : 'NON SEZ' }}</div>
         <div class="Rtable-cell" *ngIf="!isEditable">
-          <mat-radio-group [(ngModel)]="vendorDetails.isSez" (selectionChange)="updateMandatoryDocs(vendorDetails.isSez,vendorDocCtrl.sezCtrl.documentTypeId)">
+          <mat-radio-group [(ngModel)]="vendorDetails.isSez"
+            (selectionChange)="updateMandatoryDocs(vendorDetails.isSez,vendorDocCtrl.sezCtrl.documentTypeId)">
             <mat-radio-button [value]=true selected>SEZ</mat-radio-button>
             <mat-radio-button [value]=false>Non-SEZ</mat-radio-button>
           </mat-radio-group>
@@ -592,8 +593,7 @@
               </div>
             </div>
           </div>
-          <div class="error-txt"
-            *ngIf="filesMap[vendorDocCtrl.sezCtrl.documentTypeId]?.isError">This
+          <div class="error-txt" *ngIf="filesMap[vendorDocCtrl.sezCtrl.documentTypeId]?.isError">This
             attachment is mandatory if SEZ is available</div>
         </div>
 
@@ -677,12 +677,12 @@
             </mat-option>
           </mat-select>
         </mat-form-field>
-        <div class="actions search-row-element attachments" >
+        <div class="actions search-row-element attachments">
           <div class="flex-items" *ngIf="isProcurement">
             <input style="display: none" [attr.id]="vendorDocCtrl.msaCtrl.browserId" type="file" multiple
               accept=".xls,.xlsx,.doc,.docx,.pdf,.png,.jpg,.zip"
               (change)="onFileChange($event, vendorDocCtrl.msaCtrl.documentTypeId)" />
-            <button mat-raised-button class="footer-actions" 
+            <button mat-raised-button class="footer-actions"
               (click)="onBrowseFileClick($event, vendorDocCtrl.msaCtrl.browserId)">{{vendorDocCtrl.msaCtrl.placeholder}}</button>
           </div>
           <div class="flex-items">
