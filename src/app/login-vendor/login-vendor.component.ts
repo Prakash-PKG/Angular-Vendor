@@ -6,6 +6,7 @@ import { HomeService } from '../home/home.service';
 import { CryptoService } from '../common/crypto.service';
 import { MatDialog } from '@angular/material';
 import { LoginVendorService } from './login-vendor.service';
+import { EmpanelmentOtpReqModel, StatusModel } from '../models/data-models';
 
 @Component({
   selector: 'app-login-vendor',
@@ -25,9 +26,7 @@ export class LoginVendorComponent implements OnInit {
   constructor(private _router: Router,
     private _formBuilder: FormBuilder,
     private _appService: AppService,
-    private _homeService: HomeService,
     private _loginVendorService: LoginVendorService,
-    private _cryptoService: CryptoService,
     public dialog: MatDialog
   ) {
   }
@@ -44,7 +43,7 @@ export class LoginVendorComponent implements OnInit {
         (response) => {
           this.isloading = false;
           this._loginVendorService.storeUserData(response);
-  
+
           this._router.navigate([this._appService.routingConstants.vendorDetails]);
         },
         (error) => {
@@ -54,22 +53,39 @@ export class LoginVendorComponent implements OnInit {
           } else {
             this.errorMessage = error.json()['error-message'];
           }
-  
         }
       );
-  
     }
   }
-  onGenerateOTPClick() {
+  async onGenerateOTPClick() {
     this.isloading = true;
-    this.haveOTP = true;
-    this.otpMessage = "OTP is sent on your registered Email ID"
+      let userId = this.loginForm.get("userId").value;
+    if (userId) {
+      let req: EmpanelmentOtpReqModel = {
+        username: userId
+      };
+      let results = await this._loginVendorService.generateOTP(req);
+      this.isloading = false;
+      if (results) {
+        if (results.isSuccess) {
+          this.haveOTP = true;
+        }
+        else {
+          this.otpMessage = results.message;
+          this.haveOTP = false;
+        }
+      }
+      else {
+        this.otpMessage = results.message;
+        this.haveOTP = false;
+      }
+    }
   }
   ngOnInit() {
     this.isFormSubmitted = false;
     this.isloading = false;
     this.loginForm = this._formBuilder.group({
-      userId: [null, [Validators.required,Validators.email]],
+      userId: [null, [Validators.required, Validators.email]],
       password: [null, [Validators.required]]
     });
   }
