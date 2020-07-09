@@ -62,7 +62,7 @@ export class LoginVendorComponent implements OnInit {
       let userId = this.loginForm.get("userId").value;
     if (userId) {
       let req: EmpanelmentOtpReqModel = {
-        username: userId
+        userName: userId
       };
       let results = await this._loginVendorService.generateOTP(req);
       this.isloading = false;

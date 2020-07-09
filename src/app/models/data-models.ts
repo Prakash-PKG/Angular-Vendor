@@ -548,5 +548,5 @@ export class ForgotPasswordData {
     email: string;
 }
 export class EmpanelmentOtpReqModel {
-    username: string;
+    userName: string;
 }
