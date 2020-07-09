@@ -18,7 +18,7 @@ export class LoginVendorService {
     let body = new FormData();
     body.append('username', userId);
     body.append('password', password);
-    body.append('usertype', "NEW_VENDOR");
+    body.append('usertype', "new_vendor");
     return this._http.post(this._appService.baseUrl + 'login', body);
   };
 
