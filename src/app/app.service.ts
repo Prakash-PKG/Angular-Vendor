@@ -243,7 +243,8 @@ export class AppService {
 
     readonly messages: any = {
         vendorRegistrationSaveFailure: "Due to technical problems not able to proceed further. Please try later.",
-        vendorRegistrationSubmitSuccessMsg: "Vendor details submitted successful",
+        vendorRegistrationSubmitSuccessMsg: "Vendor details submitted successfully",
+        vendorApprovalSubmitSuccessMsg: "Vendor details approved successfully",
         vendorApprovalFailure: "Vendor approval is failed",
         vendorSendBackSuccess: "Vendor Details are send back for correction",
         vendorSendBackFailure: "Vendor details sent back for correction failed",

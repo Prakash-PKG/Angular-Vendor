@@ -153,7 +153,7 @@ export class VendorMasterDetailsModel {
     finApprByName: string;
     finRemark: string;
     // isGSTReg: boolean;
-    otherDocDesc :string;
+    otherDocDesc: string;
 }
 
 export class VendorMasterDocumentModel {
@@ -205,8 +205,8 @@ export class InvoiceDetailsRequestModel {
     purchaseOrderId: number;
     invoiceId: number;
     poNumber: string;
-	invoiceNumber: string;
-	vendorId: string;
+    invoiceNumber: string;
+    vendorId: string;
 }
 
 export class InvoiceDetailsResultModel {
@@ -220,13 +220,13 @@ export class InvoiceDetailsResultModel {
 
 export class PaymentStatusDetailsModel {
     vendorId: string;
-	poNumber: string;
-	invoiceNumber: string;
-	currencyType: string;
-	invoiceAmountPaid: string;
-	paymentDate: string;
-	status: string;
-	remarks: string;
+    poNumber: string;
+    invoiceNumber: string;
+    currencyType: string;
+    invoiceAmountPaid: string;
+    paymentDate: string;
+    status: string;
+    remarks: string;
 }
 
 export class ApprovalLevelsModel {
@@ -308,7 +308,7 @@ export class VendorApprovalInitResultModel {
     vendorApprovalDetails: vendorApprovalDetails;
     withholdTypeVOList: WithholdTypeList[];
     withholdTaxVOList: WithholdTaxList[];
-    vendorMasterDocumentVOList:VendorMasterDocumentModel[];
+    vendorMasterDocumentVOList: VendorMasterDocumentModel[];
 }
 
 export class VendorApprovalInitReqModel {
@@ -333,7 +333,7 @@ export class vendorApprovalDetails {
 
 export class VendorApprovalReqModel extends vendorApprovalDetails {
     action: string;
-    vendorMasterDetails :VendorMasterDetailsModel
+    vendorMasterDetails: VendorMasterDetailsModel
 }
 
 export class CompanyCodeMasterList {
@@ -530,7 +530,7 @@ export class PODetailsResultsModel {
 
 export class VendorAutoCompleteModel {
     vendorMasterId: number;
-	vendorId: string;
+    vendorId: string;
     vendorName: string;
 }
 
@@ -540,10 +540,13 @@ export class InvoiceExistReqModel {
 }
 
 export class ProjectAutoCompleteModel {
-	projectId: string;
+    projectId: string;
     projectName: string;
 }
 
 export class ForgotPasswordData {
     email: string;
-  }
+}
+export class EmpanelmentOtpReqModel {
+    username: string;
+}

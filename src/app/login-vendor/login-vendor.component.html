@@ -30,15 +30,15 @@
           </div>
 
           <div class="otpMessage">{{ otpMessage }}</div>
-          <!-- otp Column -->
+          <!-- password Column -->
 
           <div class="form-group" *ngIf="haveOTP">
             <mat-form-field class="example-full-width">
               <mat-label>Enter OTP here </mat-label>
-              <input matInput type="otp" placeholder="Enter OTP here" formControlName="otp">
+              <input matInput type="password" placeholder="Enter OTP here" formControlName="password">
               <mat-hint>(Enter OTP sent on empanelment Email
                 ID)</mat-hint>
-              <mat-error *ngIf="(isFormSubmitted || f.otp.touched ) && f.otp.errors?.required" class="errortxt">
+              <mat-error *ngIf="(isFormSubmitted || f.password.touched ) && f.password.errors?.required" class="errortxt">
                 OTP is required</mat-error>
             </mat-form-field>
 
@@ -49,7 +49,7 @@
           <!--  login button -->
           <div class="row actions margin-unset" *ngIf="haveOTP">
             <button mat-raised-button type="submit" class=" footer-actions mat-elevation-z8"
-              [disabled]="f.userId.invalid || f.otp.invalid || isloading">
+              [disabled]="f.userId.invalid || f.password.invalid || isloading">
               <i *ngIf="isloading" class="fa fa-spin fa-spinner pull-right" style="padding:5px"
                 aria-hidden="true"></i>Sign
               In</button>
