@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Http } from '@angular/http';
+import { Http, Response } from '@angular/http';
 import { AppService } from '../app.service';
 import { CryptoService } from '../common/crypto.service';
 import { EmpanelmentOtpReqModel, StatusModel } from '../models/data-models';
@@ -25,18 +25,22 @@ export class LoginVendorService {
   async generateOTP(req: EmpanelmentOtpReqModel) {
     let url = this._appService.baseUrl + "generateEmpanelmentOtp";
     try {
-      let response = await this._http.post(url, req).toPromise();
-      return this.prepareOtpResult(response);
+      let response = await this._http.post(url, req).toPromise();   
+      return response.json() as StatusModel;
     } catch (error) {
-      await console.log(error);
-      return (new StatusModel());
+      if(error instanceof Response){
+        let status = new StatusModel();
+        status.isSuccess = false;
+        status.exceptionMsg = error.json()["error-message"];
+        return status;
+      }else{
+        let status = new StatusModel();
+        status.isSuccess = false;
+        status.exceptionMsg = 'Something went wrong';
+        return status;
+      }
     }
   }
-
-  prepareOtpResult(data) {
-    return data as StatusModel;
-  }
-
 
   storeUserData(response) {
     localStorage.setItem('x-auth-token', response.headers.get("x-auth-token"));

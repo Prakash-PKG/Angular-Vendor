@@ -65,18 +65,18 @@ export class LoginVendorComponent implements OnInit {
         userName: userId
       };
       let results = await this._loginVendorService.generateOTP(req);
-      this.isloading = false;
+            this.isloading = false;
       if (results) {
         if (results.isSuccess) {
           this.haveOTP = true;
         }
         else {
-          this.otpMessage = results.message;
+          this.errorMessage = results.exceptionMsg;
           this.haveOTP = false;
         }
       }
       else {
-        this.otpMessage = results.message;
+        this.errorMessage = results.exceptionMsg;
         this.haveOTP = false;
       }
     }
