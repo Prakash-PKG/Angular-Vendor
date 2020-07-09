@@ -120,7 +120,7 @@ export class SidebarComponent implements OnInit {
         if (globalConstant.userDetails.isFinance) {
             this.isPOInvoiceDumpVisible = true;
         }
-
+        
         this.isEmpanelmentVisible = false;
         if (globalConstant.userDetails.isEmpanelment) {
             this.isEmpanelmentVisible = true;
