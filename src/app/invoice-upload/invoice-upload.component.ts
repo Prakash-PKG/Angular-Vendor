@@ -634,6 +634,13 @@ export class InvoiceUploadComponent implements OnInit {
         this.registerProjectAutoComplete();
     }
 
+    onRemarksBlur() {
+        let val: string = this.invoiceUploadForm.get("remarks").value;
+        if(val) {
+            this.invoiceUploadForm.get("remarks").setValue(val.trim());
+        }
+    }
+
     async loadPOItems() {
         this.removeItems();
         let req: POItemsRequestModel = {
