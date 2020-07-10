@@ -190,7 +190,7 @@
                         <td class="amount" style="width:10em;">
                             {{ item.get("unitsAmt").value }}
                         </td>
-                        <td *ngIf="selectedInvoiceType == 'non-po'" style="width:3em;">
+                        <td style="width:3em;">
                             <button mat-button mat-icon-button aria-label="Delete" (click)="onDeleteItemClick(itemInd)">
                                 <mat-icon>delete_outline</mat-icon>
                             </button>
