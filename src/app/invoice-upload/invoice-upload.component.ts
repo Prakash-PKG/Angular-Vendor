@@ -254,7 +254,10 @@ export class InvoiceUploadComponent implements OnInit {
         const formsList = <FormArray>this.invoiceUploadForm.controls['itemsList'];
         formsList.removeAt(rowInd);
         this.updateAmountDetails();
-        this.updateNonPOItemNumbers();
+
+        if(this.selectedInvoiceType == "non-po") {
+            this.updateNonPOItemNumbers();
+        }
     }
 
     onInvoiceTypeChange(evtData) {
