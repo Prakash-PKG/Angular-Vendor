@@ -32,6 +32,13 @@
 .doc-field {
   justify-content: space-between;
   align-items: center;
+  border-bottom: 1px solid #9afdee;
+  border-right: 1px solid #9afdee;
+  border-left: 1px solid #9afdee;
+  height: 5em;
+}
+.doc-field:first-child{
+    border-top: 1px solid #9afdee;
 }
 .doc-field .actions .footer-actions {
   height: 2em;
