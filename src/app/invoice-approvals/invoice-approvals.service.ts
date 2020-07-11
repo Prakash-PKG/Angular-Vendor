@@ -40,16 +40,16 @@ export class InvoiceApprovalsService {
             filesList = data["fileDetails"];
         }
 
-        if (!initModel.grnSesList) {
+        if (!initModel.grnSesList || initModel.grnSesList.length == 0) {
             initModel.grnSesList = [];
-        }
 
-        for (let i = 0; i < 2; i++) {
-            let gsModel: GrnSesModel = {
-                grnSesNumber: "GRN00" + (i + 1)
+            for (let i = 0; i < 2; i++) {
+                let gsModel: GrnSesModel = {
+                    grnSesNumber: "GRN00" + (i + 1)
+                }
+
+                initModel.grnSesList.push(gsModel);
             }
-
-            initModel.grnSesList.push(gsModel);
         }
 
         if(filesList && filesList.length > 0) {

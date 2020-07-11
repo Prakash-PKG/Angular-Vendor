@@ -1,4 +1,4 @@
-import { VendorRegistrationInitDataModel, VendorRegistrationRequestModel } from './../models/data-models';
+import { VendorRegistrationInitDataModel, VendorRegistrationRequestModel, FileDetailsModel, RemoveDocumentReqModel, VendorDocumentReqModel } from './../models/data-models';
 import { Injectable } from '@angular/core';
 import { AppService } from './../app.service';
 import { HttpClient } from '@angular/common/http';
@@ -47,5 +47,40 @@ export class VendorRegistrationService {
     updateVendorRegistrationDetails(updateReqModel: VendorRegistrationRequestModel) {
         let url = this._appService.baseUrl + "updateVendor";
         return this._http.post(url, updateReqModel, {responseType: 'json', observe: 'response'});
+    }
+    
+    uploadVendorDocuments(filesReq: VendorDocumentReqModel) {
+        let url = this._appService.baseUrl + "updateVenDoc";
+        return this._http.post(url, filesReq, { responseType: 'json', observe: 'response' });
+    }
+
+    deleteVendorFile(fileDetails: FileDetailsModel) {
+        let req: RemoveDocumentReqModel = {
+            fileId: fileDetails.fileId
+        };
+        let url = this._appService.baseUrl + "removeVenDoc";
+        return this._http.post(url, req, { responseType: 'json', observe: 'response' });
+    }
+
+    getFileData(fileDetails: FileDetailsModel) {
+        let url = this._appService.baseUrl + 'downloadInvDoc/' + fileDetails.uniqueFileName;
+        return this._http.get(url, {responseType: 'arraybuffer', observe: 'response'});
+    }
+
+    downloadFile(fileDetails: FileDetailsModel) {
+        this.getFileData(fileDetails).subscribe(
+            (data) => {
+                const blob = new Blob([data.body], { type: 'application/octet-stream' });
+                const url = window.URL.createObjectURL(blob);
+
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = fileDetails.actualFileName;
+                document.body.appendChild(a);
+                a.click();
+            },
+            error => {
+                console.log(error);
+            });
     }
 }

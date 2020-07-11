@@ -107,10 +107,11 @@
         </div>
     </div>
 </form>
-<div class="errortxt">
-    {{ failureMsg }}
-</div>
+
 <div class="row actions margin-unset">
+    <div class="errortxt" *ngIf="vendorBankForm.invalid">
+        {{ failureMsg }}
+    </div>
     <button mat-raised-button class="footer-actions" (click)="onPrevClick()">Previous</button>
     <button mat-raised-button class="footer-actions" (click)="onNextClick()">Next</button>
 </div>

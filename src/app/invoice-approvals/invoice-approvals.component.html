@@ -8,7 +8,7 @@
             <span class="upper-text"></span>
             <span class="dot"></span>
             <span class="lower-text">
-                Invoice Upload
+                Upload
             </span>
         </li>
 
@@ -16,7 +16,7 @@
             <span class="upper-text"></span>
             <span class="dot"></span>
             <span class="lower-text">
-                PO Approval
+                Buyer
             </span>
         </li>
 
@@ -24,7 +24,7 @@
             <span class="upper-text"></span>
             <span class="dot"></span>
             <span class="lower-text">
-                Functional Head Approval
+                Business Head
             </span>
         </li>
 
@@ -32,7 +32,7 @@
             <span class="upper-text"></span>
             <span class="dot"></span>
             <span class="lower-text">
-                Finance Approval
+                Finance
             </span>
         </li>
 
@@ -60,7 +60,8 @@
                 <div class="Rtable-cell">{{ getFormattedDate(initDetails?.invoiceDetails?.invoiceDate) }}</div>
 
                 <div *ngIf="isPOInvoice == false" class="Rtable-cell Rtable-cell--head">Currency</div>
-                <div *ngIf="isPOInvoice == false" class="Rtable-cell">{{ initDetails?.invoiceDetails?.currencyType }}</div>
+                <div *ngIf="isPOInvoice == false" class="Rtable-cell">{{ initDetails?.invoiceDetails?.currencyType }}
+                </div>
 
                 <div class="Rtable-cell Rtable-cell--head">Remarks</div>
                 <div class="Rtable-cell">{{ initDetails?.invoiceDetails?.remarks }}</div>
@@ -70,6 +71,9 @@
 
                 <div class="Rtable-cell Rtable-cell--head">Total Tax Amt</div>
                 <div class="Rtable-cell">{{ initDetails?.invoiceDetails?.totalTax }}</div>
+
+                <div class="Rtable-cell Rtable-cell--head">Total Amt</div>
+                <div class="Rtable-cell">{{ totalAmount }}</div>
 
                 <div class="Rtable-cell Rtable-cell--head">Total Inv Amt<small>(inc. tax)</small></div>
                 <div class="Rtable-cell">{{ initDetails?.invoiceDetails?.totalAmt }}</div>
@@ -81,10 +85,16 @@
             <button mat-raised-button class="footer-actions footer-actions-green">Invoice Attachments</button>
             <div *ngFor="let ifile of invoiceFilesList; let ifileInd = index">
                 {{ ifile.actualFileName }}
+                <button mat-button mat-icon-button aria-label="Download" (click)="downloadFile(ifile)">
+                    <mat-icon>save_alt</mat-icon>
+                </button>
             </div>
             <button mat-raised-button class="footer-actions footer-actions-green">Supporting Attachments</button>
             <div *ngFor="let sf of supportFilesList; let sfInd = index">
                 {{ sf.actualFileName }}
+                <button mat-button mat-icon-button aria-label="Download" (click)="downloadFile(sf)">
+                    <mat-icon>save_alt</mat-icon>
+                </button>
             </div>
         </div>
     </div>
@@ -92,8 +102,11 @@
     <mat-form-field class="full-width">
         <textarea matInput placeholder="Remarks" [(ngModel)]="remarks" autocomplete="off"></textarea>
     </mat-form-field>
+    <div class="error-txt">
+        {{ remarksErrMsg }}
+    </div>
 
-    <div *ngIf="isPOInvoice == true" style="margin-bottom:2em;">
+    <div *ngIf="isGrnSesRequired == true" style="margin-bottom:2em;">
         <mat-label style="color:black;">GRN/SES No.</mat-label>
         <mat-form-field class="full-width" *ngIf="isGrnDdlVisible == true">
             <mat-select matNativeControl [(ngModel)]="selectedGrnSesNumber">
@@ -103,6 +116,9 @@
             </mat-select>
         </mat-form-field>
         <span *ngIf="isGrnDdlVisible == false">{{ initDetails?.invoiceDetails?.grnSesNumber }}</span>
+    </div>
+    <div class="error-txt">
+        {{ grnSesErrMsg }}
     </div>
 
     <!-- table details [dataSource]="POData"-->
@@ -116,12 +132,15 @@
                 </tr>
             </thead>
             <tbody>
-                <tr *ngFor="let item of initDetails?.itemsList; let itemInd = index">
+                <tr *ngFor="let item of itemsList; let itemInd = index">
                     <td>
                         {{ item.itemNumber }}
                     </td>
                     <td>
                         {{ item.itemDescription }}
+                    </td>
+                    <td *ngIf="isPOInvoice == true">
+                        {{ item.uom }}
                     </td>
                     <td>
                         {{ item.hsn }}
@@ -145,17 +164,18 @@
                         {{ item.unitPrice }}
                     </td>
                     <td class="amount">
-                        {{ getUnitsAmt(item) }}
+                        {{ item.unitsTotalAmount }}
                     </td>
                 </tr>
             </tbody>
         </table>
     </div>
 
-    <div style="color: blue">
-        {{ msg }}
-    </div>
+
     <div class="row actions margin-unset">
+        <div class="error-txt">
+            {{ msg }}
+        </div>
         <button mat-raised-button class="footer-actions">Cancel</button>
         <button mat-raised-button class="footer-actions" (click)="onRejectClick()">Reject</button>
         <button mat-raised-button class="footer-actions footer-actions-green"

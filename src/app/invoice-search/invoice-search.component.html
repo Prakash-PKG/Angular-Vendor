@@ -1,122 +1,103 @@
 <div class="main">
-  <div class="title">
-    <h3>Invoice Search</h3>
-  </div>
-  <div class="search-row">
-    <mat-form-field class="field search-row-element">
-      <mat-label>PO No.</mat-label>
-      <mat-select>
-        <mat-option>PO list</mat-option>
-      </mat-select>
-    </mat-form-field>
+    <div class="title">
+        <h3>Invoice Search</h3>
+    </div>
+    <div class="search-row">
+        <mat-form-field class="field search-row-element">
+            <mat-label>PO No.</mat-label>
+            <mat-select>
+                <mat-option>PO list</mat-option>
+            </mat-select>
+        </mat-form-field>
 
-    <mat-form-field class="field search-row-element">
-      <mat-label>Invoice No.</mat-label>
-      <mat-select>
-        <mat-option>Invoice list</mat-option>
-      </mat-select>
-    </mat-form-field>
+        <mat-form-field class="field search-row-element">
+            <mat-label>Invoice No.</mat-label>
+            <mat-select>
+                <mat-option>Invoice list</mat-option>
+            </mat-select>
+        </mat-form-field>
 
-    <mat-form-field class="field search-row-element">
-      <mat-label>Pick Start Date</mat-label>
-      <input matInput [matDatepicker]="picker" disabled>
-      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-      <mat-datepicker #picker disabled="false"></mat-datepicker>
-    </mat-form-field>
+        <mat-form-field class="field search-row-element">
+            <mat-label>Pick Start Date</mat-label>
+            <input matInput [matDatepicker]="picker" disabled>
+            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker disabled="false"></mat-datepicker>
+        </mat-form-field>
 
-    <mat-form-field class="field search-row-element">
-      <mat-label>Pick End Date</mat-label>
-      <input matInput [matDatepicker]="picker1" disabled>
-      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-      <mat-datepicker #picker1 disabled="false"></mat-datepicker>
-    </mat-form-field>
+        <mat-form-field class="field search-row-element">
+            <mat-label>Pick End Date</mat-label>
+            <input matInput [matDatepicker]="picker1" disabled>
+            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker1 disabled="false"></mat-datepicker>
+        </mat-form-field>
 
-    <mat-icon class="search-btn mat-elevation-z3 search-row-element">search</mat-icon>
+        <mat-icon class="search-btn mat-elevation-z3 search-row-element">search</mat-icon>
 
-    <div class="actions search-row-element">
-      <button mat-raised-button class="footer-actions">Export Excel</button>
+        <div class="actions search-row-element">
+            <button mat-raised-button class="footer-actions">Export Excel</button>
+        </div>
+
     </div>
 
-  </div>
-  <!-- table details -->
+    <div class="container my-container margin-unset full-width">
+        <table class="dataTable full-width">
+            <thead>
+                <tr>
+                    <th class="headers" scope="col">
+                        <span>Invoice No. </span>
+                    </th>
+                    <th class="headers" scope="col">
+                        <span>PO No. </span>
+                    </th>
+                    <th class="headers" scope="col">
+                        <span>Vendor Id</span>
+                    </th>
+                    <th class="headers" scope="col">
+                        <span>Vendor Name</span>
+                    </th>
+                    <th class="headers" scope="col">
+                        <span>Invoice Date</span>
+                    </th>
+                    <th class="headers" scope="col">
+                        <span>GRN/SES No.</span>
+                    </th>
+                    <th class="headers" scope="col">
+                        <span>Currency</span>
+                    </th>
+                    <th class="headers" scope="col">
+                        <span>Total Amount(Incl tax)</span>
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let inv of invoiceList; let invInd = index">
+                    <td style="cursor: pointer" (click)="onInvoiceClick(inv)">
+                        {{ inv.invoiceNumber }}
+                    </td>
+                    <td>
+                        {{ inv.poNumber }}
+                    </td>
+                    <td>
+                        {{ inv.vendorId }}
+                    </td>
+                    <td>
+                        {{ inv.vendorName }}
+                    </td>
+                    <td>
+                        {{ getFormattedDate(inv.invoiceDate) }}
+                    </td>
+                    <td>
+                        {{ inv.grnSesNumber }}
+                    </td>
+                    <td>
+                        {{ inv.currencyType }}
+                    </td>
+                    <td>
+                        {{ inv.totalAmt }}
+                    </td>
+                </tr>
+            </tbody>
+        </table>
 
-
-  <div class="container my-container margin-unset full-width">
-    <table mat-table [dataSource]="invData" matSort class="dataTable full-width">
-
-      <ng-container matColumnDef="po">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header>PO No.</th>
-        <td mat-cell *matCellDef="let element"></td>
-      </ng-container>
-
-      <ng-container matColumnDef="vendorid">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header> Vendor Id </th>
-        <td mat-cell *matCellDef="let element"></td>
-      </ng-container>
-
-      <ng-container matColumnDef="vendorname">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header> Vendor Name </th>
-        <td mat-cell *matCellDef="let element"> </td>
-      </ng-container>
-
-      <ng-container matColumnDef="invNo">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header> Invoice No. </th>
-        <td mat-cell *matCellDef="let element"> </td>
-      </ng-container>
-
-      <ng-container matColumnDef="invdate">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header> Invoice Date </th>
-        <td mat-cell *matCellDef="let element"> </td>
-      </ng-container>
-
-      <ng-container matColumnDef="currency">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header> Currency </th>
-        <td mat-cell *matCellDef="let element"> </td>
-      </ng-container>
-
-      <ng-container matColumnDef="totalamt">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header> Total Inv Amt (inc.tax) </th>
-        <td mat-cell class="amount" *matCellDef="let element"> </td>
-      </ng-container>
-
-      <ng-container matColumnDef="orderqty">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header> Ordered Qty </th>
-        <td mat-cell *matCellDef="let element"> </td>
-      </ng-container>
-
-      <ng-container matColumnDef="suppliedqty">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header> Supplied Qty </th>
-        <td mat-cell *matCellDef="let element"> </td>
-      </ng-container>
-
-      <ng-container matColumnDef="balanceqty">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header> Balance Qty </th>
-        <td mat-cell *matCellDef="let element"> </td>
-      </ng-container>
-
-      <ng-container matColumnDef="invqty">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header> Invoice Qty </th>
-        <td mat-cell *matCellDef="let element"> </td>
-      </ng-container>
-
-      <ng-container matColumnDef="rate">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header> Rate </th>
-        <td mat-cell class="amount" *matCellDef="let element"> </td>
-      </ng-container>
-
-      <ng-container matColumnDef="amt">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header> Amount </th>
-        <td mat-cell class="amount" *matCellDef="let element"> </td>
-      </ng-container>
-
-      <ng-container matColumnDef="status">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header> Status </th>
-        <td mat-cell *matCellDef="let element"> </td>
-      </ng-container>
-
-      <tr mat-header-row *matHeaderRowDef="headerArr"></tr>
-      <tr mat-row *matRowDef="let row; columns: headerArr;"></tr>
-    </table>
-
-  </div>
+    </div>
 </div>
