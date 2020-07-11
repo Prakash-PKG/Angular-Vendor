@@ -5,7 +5,7 @@ import { Component, OnInit } from '@angular/core';
 import { AppService } from '../app.service';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { ActivatedRoute, ActivatedRouteSnapshot, Router } from '@angular/router';
-import { flatMap } from 'rxjs/operators';
+import { flatMap, debounceTime } from 'rxjs/operators';
 import { Route } from '@angular/compiler/src/core';
 import { Subscription } from 'rxjs';
 
@@ -26,8 +26,7 @@ export class VendorRegistrationComponent implements OnInit {
     vendorRegistrationInitDataModel: VendorRegistrationInitDataModel = null;
     constructor(private _appService: AppService,
         private _spinner: NgxSpinnerService,
-        private _vendorRegistrationService: VendorRegistrationService,
-        private _homeService: HomeService) { }
+        private _vendorRegistrationService: VendorRegistrationService) { }
 
     async loadInitData() {
         this._vendorRegistrationService.updateBusy(<BusyDataModel>{ isBusy: true, msg: "Loading..." });
@@ -57,7 +56,8 @@ export class VendorRegistrationComponent implements OnInit {
                 this.spinnerCls = "";
             }
         });
-        this.subscription = this._homeService.currentPageDetails.subscribe(page => {
+
+        this.subscription = this._vendorRegistrationService.currentPageDetails.pipe(debounceTime(300)).subscribe(page => {
             this.currentPage = page.pageName;
         });
 

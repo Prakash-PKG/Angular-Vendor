@@ -1,4 +1,4 @@
-import { POInvoiceFinanceDumpReqModel, POInvoiceDumpInitResultModel } from './../models/data-models';
+import { InvoiceFinanceDumpReqModel, InvoiceDumpInitResultModel } from './../models/data-models';
 import { HttpClient } from '@angular/common/http';
 import { AppService } from './../app.service';
 import { Injectable } from '@angular/core';
@@ -10,7 +10,7 @@ export class PoInvoiceDumpService {
 
     constructor(private _http: HttpClient, private _appService: AppService) { }
 
-    getFileData(req: POInvoiceFinanceDumpReqModel) {
+    getFileData(req: InvoiceFinanceDumpReqModel) {
         let url = this._appService.baseUrl + 'invFinanceDump';
         return this._http.post(url, req, {responseType: 'arraybuffer', observe: 'response'});
     }
@@ -22,12 +22,12 @@ export class PoInvoiceDumpService {
             return this.preparePOInvoiceDumpInitDetails(response);
         } catch (error) {
             await console.log(error);
-            return (new POInvoiceDumpInitResultModel());
+            return (new InvoiceDumpInitResultModel());
         }
     }
 
     preparePOInvoiceDumpInitDetails(data) {
-        let initModel: POInvoiceDumpInitResultModel = new POInvoiceDumpInitResultModel();
+        let initModel: InvoiceDumpInitResultModel = new InvoiceDumpInitResultModel();
         if (data) {
             initModel.lastDumpDt = data["lastDumpDt"];
         }

@@ -3,16 +3,19 @@
 }
 .dataTable thead tr,
 .dataTable tbody tr {
-  border-bottom: 1px solid blueviolet;
+  border-bottom: 1px solid #59ffff;
 }
 .inv-qty {
+  width: 100%;
   border: 1px solid gray;
   text-align: right;
 }
-.add-ons {
+.add-ons tbody tr td.header {
   font-weight: 700;
   text-align: right;
+  width:85%
 }
+
 
 .attachment-row {
   display: flex;
@@ -47,6 +50,7 @@
 .filename{
   flex-grow:1;
   flex-basis: auto;
+    display: inline;
 }
 
 .search-row {
@@ -59,6 +63,14 @@
 .search-row-element {
   flex-grow: 0;
 }
+.search-row-element mat-label{
+  color:black;
+  font-weight:600;
+  }
+  .search-row-element.actions .footer-actions {
+    height: 2em;
+    line-height: 1em;
+  }
 .search-row .mat-form-field {
   margin-right: 2em;
 }
@@ -67,9 +79,6 @@
 }
 .search-row .date {
   width: 8em;
-}
-.search-row .currency {
-  width: 9em;
 }
 
 .errorinput{

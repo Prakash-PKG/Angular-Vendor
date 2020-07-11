@@ -1,6 +1,7 @@
 import { InvoiceUploadResultModel, InvoiceUploadReqModel, InvoiceDocumentReqModel, 
         POItemsRequestModel, POItemsResultModel, UpdateInvoiceRequestModel,
-    FileDetailsModel, RemoveDocumentReqModel, VendorAutoCompleteModel } from './../models/data-models';
+    FileDetailsModel, RemoveDocumentReqModel, VendorAutoCompleteModel, 
+    ProjectAutoCompleteModel, InvoiceExistReqModel, StatusModel } from './../models/data-models';
 import { Injectable } from '@angular/core';
 import { AppService } from './../app.service';
 import { HttpClient } from '@angular/common/http';
@@ -33,6 +34,7 @@ export class InvoiceUploadService {
             initModel.statusDetails = data["statusVO"];  
             initModel.invoiceFileTypes = data["invoiceFileTypes"];     
             initModel.currencyList =  data["currencyMasterList"];
+            initModel.companiesList = data["companiesList"];
         }
 
         return initModel;
@@ -53,10 +55,26 @@ export class InvoiceUploadService {
         let initModel: POItemsResultModel = new POItemsResultModel();
         if(data) {
             initModel.itemsList = data["pOItemsList"];
+            initModel.notRejectedItemsList = data["notRejectedItemsList"];
             initModel.statusDetails = data["statusDetails"];        
         }
 
         return initModel;
+    }
+
+    async isInvoiceExist(req: InvoiceExistReqModel) {
+        let url = this._appService.baseUrl + "isInvExist";
+        try {
+            let response = await this._http.post(url, req).toPromise();
+            return this.prepareInvoiceExistResult(response);
+        } catch (error) {
+            await console.log(error);
+            return (new StatusModel());
+        }
+    }
+
+    prepareInvoiceExistResult(data) {
+        return data as StatusModel;
     }
 
     updateInvoiceDetails(updateReqModel: UpdateInvoiceRequestModel) {
@@ -82,5 +100,11 @@ export class InvoiceUploadService {
         let url = this._appService.baseUrl + "vendorAutoSearch/" + filter.searchText;
         return this._http.get(url, { responseType: 'json'}).pipe(
                             tap((employeeList: any) => (employeeList as VendorAutoCompleteModel[]) ));
+    }
+
+    getProjectsData(filter: { searchText: any } = { searchText: '' }): Observable<ProjectAutoCompleteModel[]>  {
+        let url = this._appService.baseUrl + "projectAutoSearch/" + filter.searchText;
+        return this._http.get(url, { responseType: 'json'}).pipe(
+                            tap((projectsList: any) => (projectsList as ProjectAutoCompleteModel[]) ));
     }
 }

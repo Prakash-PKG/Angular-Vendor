@@ -20,6 +20,10 @@ div.actions {
 .search-row-element {
   flex-grow: 1;
 }
+.search-row-element mat-label{
+  color:black;
+  font-weight:600;
+  }
 .search-row-element.search-btn {
   flex-grow: 0;
   flex-shrink: 0;
@@ -74,3 +78,10 @@ div.actions {
     border-left: 10px solid #F60BF6;
 }
 
+// .clsVendorBorderColor {
+//     border-left: 10px solid #4397F6;
+// }
+
+// .clsInvoiceBorderColor {
+//     border-left: 10px solid #F60BF6;
+// }

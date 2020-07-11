@@ -1,3 +1,5 @@
+import { MessageDialogModel } from './../models/popup-models';
+import { MessageDialogComponent } from './../message-dialog/message-dialog.component';
 import { globalConstant } from './../common/global-constant';
 import { AppService } from './../app.service';
 import { BusyDataModel, InvoiceApprovalInitResultModel, InvoiceApprovalInitReqModel, 
@@ -6,6 +8,8 @@ import { BusyDataModel, InvoiceApprovalInitResultModel, InvoiceApprovalInitReqMo
 import { InvoiceApprovalsService } from './invoice-approvals.service';
 import { Component, OnInit } from '@angular/core';
 import { HomeService } from '../home/home.service';
+import { Router } from '@angular/router';
+import { MatSort, MatPaginator, MatTableDataSource, MatDialogRef, MAT_DIALOG_DATA, MatDialog } from '@angular/material';
 
 @Component({
     selector: 'app-invoice-approvals',
@@ -17,15 +21,15 @@ export class InvoiceApprovalsComponent implements OnInit {
     _sidebarExpansionSubscription: any = null;
 
     headerArr: string[] = [];
-    nonPOHeaderArr: string [] = ['Item No.', 'Item Desc', "HSN/SAC", 'Invoive Units', 'Rate', 'Amount'];
+    nonPOHeaderArr: string [] = ['Item No.', 'Item Desc', "HSN/SAC", 'Invoice Units', 'Rate', 'Amount'];
     poHeaderArr: string[] = ['Item No.', 'Item Desc', "UOM", "HSN/SAC", 'Order Units', 'Supplied Units', 'Balance Units', 
-                            'Invoive Units', 'Currency', 'Rate', 'Amount'];
+                            'Invoice Units', 'Currency', 'Rate', 'Amount'];
 
     initDetails: InvoiceApprovalInitResultModel = null;
     itemsList: ItemDisplayModel[] = [];
-    totalAmount: number = 0;
+    totalAmount: string = "0.000";
 
-    msg: string = "";
+    //msg: string = "";
 
     remarks: string = "";
 
@@ -50,7 +54,19 @@ export class InvoiceApprovalsComponent implements OnInit {
 
     constructor(private _homeService: HomeService,
                 private _appService: AppService,
+                private _router: Router,
+                public _dialog: MatDialog,
                 private _invoiceApprovalsService: InvoiceApprovalsService) { }
+
+    onRemarksBlur() {
+        if(this.remarks) {
+            this.remarks = this.remarks.trim();
+        }
+    }
+
+    onBackBtnClick() {
+        this._router.navigate([this._appService.routingConstants.pendingApprovals]);
+    }
 
     getUnitsAmt(item: ItemDisplayModel) {
         let unitsAmt = (item.unitPrice && item.invoiceUnits) ? +item.unitPrice * +item.invoiceUnits : null;
@@ -71,6 +87,7 @@ export class InvoiceApprovalsComponent implements OnInit {
 
     async loadInitData() {
         if(this._appService.selectedPendingApprovalRecord) {
+            this.totalAmount = "0.000";
 
             this.isPOInvoice = false;
             if(this._appService.selectedPendingApprovalRecord.purchaseOrderId && this._appService.selectedPendingApprovalRecord.poNumber) {
@@ -95,16 +112,21 @@ export class InvoiceApprovalsComponent implements OnInit {
             
             if(this.initDetails) {
                 this.itemsList = this.initDetails.itemsList.concat();
-                this.totalAmount = 0;
+                let totalAmt: number = 0;
                 for(let i = 0; i < this.itemsList.length; i++) {
                     //this.itemsList[i].unitsTotalAmount = (this.itemsList[i].unitPrice && this.itemsList[i].invoiceUnits) ? +this.itemsList[i].unitPrice * +this.itemsList[i].invoiceUnits : null;
                     this.itemsList[i].unitsTotalAmount = (this.itemsList[i].totalAmt) ? +this.itemsList[i].totalAmt : null;
                     if(this.itemsList[i].unitsTotalAmount && this.itemsList[i].unitsTotalAmount > 0) {
-                        this.totalAmount = this.totalAmount + this.itemsList[i].unitsTotalAmount;
+                        totalAmt = totalAmt + this.itemsList[i].unitsTotalAmount;
                     }
                 }
+                this.totalAmount = totalAmt.toFixed(3);
 
                 this.grnSesList = this.initDetails.grnSesList;
+
+                if(this.grnSesList && this.grnSesList.length > 0) {
+                    this.selectedGrnSesNumber = this.grnSesList[0].grnSesNumber;
+                }
 
                 this.updateStatusFlow();
 
@@ -192,19 +214,40 @@ export class InvoiceApprovalsComponent implements OnInit {
                     if (response.body) {
                         let result: StatusModel = response.body as StatusModel;
                         if (result.status == 200 && result.isSuccess) {
-                            this.msg = "Invoice approval is success";
+                            //this.msg = "Invoice approval is success";
+                            this.displayInvoiceApprovalStatus(result.message, true);
                         }
                         else {
-                            this.msg = this._appService.messages.vendorApprovalFailure;
+                            //this.msg = this._appService.messages.vendorApprovalFailure;
+                            this.displayInvoiceApprovalStatus(result.message, false);
                         }
                     }
                 },
                 (error) => {
                     this._homeService.updateBusy(<BusyDataModel>{ isBusy: false, msg: null });
-                    this.msg = this._appService.messages.vendorApprovalFailure;
+                    //this.msg = this._appService.messages.vendorApprovalFailure;
+                    this.displayInvoiceApprovalStatus(this._appService.messages.vendorApprovalFailure, false);
                     console.log(error);
                 });
         }
+    }
+
+    displayInvoiceApprovalStatus(msg: string, status: boolean) {
+        const dialogRef = this._dialog.open(MessageDialogComponent, {
+            disableClose: true,
+            panelClass: 'dialog-box',
+            width: '550px',
+            data: <MessageDialogModel>{
+                title: "Invoice Upload Action",
+                message: msg
+            }
+        });
+
+        dialogRef.afterClosed().subscribe(result => {
+            if (result && status) {
+                this._router.navigate([this._appService.routingConstants.invoiceSearch]);
+            }
+        });
     }
 
     downloadFile(fileDetails: FileDetailsModel) {

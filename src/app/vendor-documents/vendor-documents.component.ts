@@ -13,13 +13,19 @@ import {
 import { DatePipe } from '@angular/common';
 import { HomeService } from '../home/home.service';
 import { globalConstant } from '../common/global-constant';
+import { MatSnackBar, MatDialog } from '@angular/material';
+import { Subscription, BehaviorSubject } from 'rxjs';
+import { scan, takeWhile, takeLast } from 'rxjs/operators';
+import { MessageDialogComponent } from '../message-dialog/message-dialog.component';
+import { MessageDialogModel } from '../models/popup-models';
 
 interface FileMap {
     [key: number]: {
-        filesList?: FileDetailsModel[],
-        isMandatory?: boolean,
-        isAttached?: boolean,
-        isError?: boolean
+        filesList: FileDetailsModel[],
+        isMandatory: boolean,
+        isAttached: boolean,
+        isError: boolean,
+        toAttach: FileDetailsModel[],
     }
 }
 
@@ -30,11 +36,16 @@ interface FileMap {
 })
 export class VendorDocumentsComponent implements OnInit {
     isValid = true;
+    isServerError = false;
 
     vendorDocumentForm: FormGroup;
     failureMsg: string = "";
     documentsList: VendorMasterDocumentModel[] = [];
     filesMap: FileMap = {};
+    disableSubmit: boolean = false;
+    private counterSubject: BehaviorSubject<number>;
+    private counterSubscription: Subscription;
+
 
     vendorDocCtrl = {
         incCerCtrl: { documentTypeId: 1, browserId: 'incCerFileCtrl', placeholder: 'Incorporation Certificate' },
@@ -56,12 +67,33 @@ export class VendorDocumentsComponent implements OnInit {
         private _router: Router,
         private _formBuilder: FormBuilder,
         private _datePipe: DatePipe,
-        private _homeService: HomeService) { }
+        private _snackBar: MatSnackBar,
+        private _dialog: MatDialog) { }
 
     onFileChange(event: any, documentTypeId: number) {
         if (!documentTypeId) return;
-        this.filesMap[documentTypeId] = { filesList: [], isAttached: false };
+        this._vendorRegistrationService.updateBusy(<BusyDataModel>{ isBusy: true, msg: "Attaching..." });
+        if (!this.filesMap[documentTypeId]) {
+            this.filesMap[documentTypeId] = { filesList: [], toAttach: [], isMandatory: true, isAttached: false, isError: false };
+        }
+        else {
+            this.filesMap[documentTypeId].toAttach = [];
+            this.filesMap[documentTypeId].isMandatory = true;
+            this.filesMap[documentTypeId].isAttached = false;
+            this.filesMap[documentTypeId].isError = false;
+        }
         if (event.target.files && event.target.files.length > 0) {
+            this.counterSubject = new BehaviorSubject(0);
+            this.counterSubscription = this.counterSubject
+                .pipe(
+                    scan((sum, curr) => sum + curr, 0),
+                    takeWhile(val => val < event.target.files.length),
+                    takeLast(1)
+                )
+                .subscribe((val: number) => {
+                    this.onAttachFileClick(documentTypeId);
+                    this.counterSubscription.unsubscribe();
+                });
             for (let f = 0; f < event.target.files.length; f++) {
                 let file = event.target.files[f];
                 if (file) {
@@ -74,66 +106,76 @@ export class VendorDocumentsComponent implements OnInit {
                         createdDate: null,
                         createdBy: null
                     };
-                    this.filesMap[documentTypeId].filesList.push(fileDetails);
+                    this.filesMap[documentTypeId].toAttach.push(fileDetails);
 
                     let reader = new FileReader();
-                    reader.onload = this._handleFileReaderLoaded.bind(this, file.name, this.filesMap[documentTypeId].filesList);
+                    reader.onload = this._handleFileReaderLoaded.bind(this, file.name, this.filesMap[documentTypeId].toAttach, documentTypeId);
                     reader.readAsBinaryString(file);
                 }
             }
+
+        }
+        else {
+            this._vendorRegistrationService.updateBusy(<BusyDataModel>{ isBusy: false, msg: "Attaching..." });
         }
     }
-    private _handleFileReaderLoaded(actualFileName, filesList: FileDetailsModel[], readerEvt) {
+    private _handleFileReaderLoaded(actualFileName, toAttach: FileDetailsModel[], documentTypeId: number, readerEvt) {
         let binaryString = readerEvt.target.result;
         let base64textString = btoa(binaryString);
 
-        for (let fileItem of filesList) {
+        for (let fileItem of toAttach) {
             if (fileItem.actualFileName == actualFileName) {
                 fileItem.fileData = base64textString;
                 break;
             }
         }
+        this.counterSubject.next(1);
     }
 
     onBrowseFileClick(event: any, controlName: string) {
         event.preventDefault();
         let element: HTMLElement = document.getElementById(controlName);
         element.click();
-        console.log(this.filesMap);
+
     }
     onAttachFileClick(documentTypeId: number) {
         let filesReq: VendorDocumentReqModel = {
+            // userId: '106994',
+            fileDetails: this.filesMap[documentTypeId].toAttach,
+            // vendorMasterId: 166
             userId: globalConstant.userDetails.isVendor ? globalConstant.userDetails.userEmail : globalConstant.userDetails.userId,
-            fileDetails: this.filesMap[documentTypeId].filesList,
             vendorMasterId: this._appService.vendorRegistrationDetails.vendorMasterId
         }
-        this._homeService.updateBusy(<BusyDataModel>{ isBusy: true, msg: "Attaching..." });
         this._vendorRegistrationService.uploadVendorDocuments(filesReq)
             .subscribe(response => {
-                this._homeService.updateBusy(<BusyDataModel>{ isBusy: false, msg: null });
+                this._vendorRegistrationService.updateBusy(<BusyDataModel>{ isBusy: false, msg: null });
                 if (response.body) {
                     let results: VendorDocumentResultModel = response.body as VendorDocumentResultModel;
-
                     if (results.status.status == 200 && results.status.isSuccess) {
-                        this.filesMap[documentTypeId].filesList = [];
-                        this.filesMap[documentTypeId].filesList = results.fileDetails.concat();
+                        // this.filesMap[documentTypeId].filesList = [];
+                        this._snackBar.open("Files Attached Successfully");
+                        results.fileDetails.forEach(f => this.filesMap[documentTypeId].filesList.push(f));
                         this.filesMap[documentTypeId].isAttached = true;
+                        this.filesMap[documentTypeId].toAttach = [];
                     }
+
                 }
-               
             },
                 (error) => {
                     this.filesMap[documentTypeId].isAttached = false;
-                    this._homeService.updateBusy(<BusyDataModel>{ isBusy: false, msg: null });
+                    this.filesMap[documentTypeId].toAttach = [];
+                    this._vendorRegistrationService.updateBusy(<BusyDataModel>{ isBusy: false, msg: null });
+                    this._snackBar.open("Files Attachment Failed");
                     console.log(error);
                 });
-        console.log(this.filesMap);
     }
     onPrevClick() {
         this._router.navigate([this._appService.routingConstants.vendorBankDetails]);
     }
 
     onSubmitClick() {
+        this.failureMsg = "";
+
         this.isValid = true;
         for (let key in this.filesMap) {
             this.filesMap[key].isError = false;
@@ -143,10 +185,8 @@ export class VendorDocumentsComponent implements OnInit {
             }
         }
         if (!this.isValid) { return };
-        this.failureMsg = "";
 
         if (this.vendorDocumentForm.valid) {
-            this._appService.vendorRegistrationDetails.isGSTReg = this.vendorDocumentForm.get("isGSTReg").value;
             this._appService.vendorRegistrationDetails.panNum = this.vendorDocumentForm.get("panNum").value;
             this._appService.vendorRegistrationDetails.gstNum = this.vendorDocumentForm.get("gstNum").value;
             this._appService.vendorRegistrationDetails.pfNum = this.vendorDocumentForm.get("pfNum").value;
@@ -168,20 +208,25 @@ export class VendorDocumentsComponent implements OnInit {
             this._vendorRegistrationService.updateVendorRegistrationDetails(req)
                 .subscribe(response => {
                     this._vendorRegistrationService.updateBusy(<BusyDataModel>{ isBusy: false, msg: null });
-
                     if (response.body) {
                         let result: VendorRegistrationResultModel = response.body as VendorRegistrationResultModel;
                         if (result.status.status == 200 && result.status.isSuccess) {
                             this._appService.vendorRegistrationDetails = result.vendorMasterDetails;
-                            this.failureMsg = this._appService.messages.vendorRegistrationSubmitSuccessMsg;
+                            this.disableSubmit = true;
+                            this.displayRegistrationStatus(this._appService.messages.vendorRegistrationSubmitSuccessMsg);
+
                         }
                         else {
+                            this.disableSubmit = false;
+                            this.isServerError = true;
                             this.failureMsg = this._appService.messages.vendorRegistrationSaveFailure;
                         }
                     }
                 },
                     (error) => {
+                        this.disableSubmit = false;
                         this._vendorRegistrationService.updateBusy(<BusyDataModel>{ isBusy: false, msg: null });
+                        this.failureMsg = this._appService.messages.vendorRegistrationSaveFailure;
                         console.log(error);
                     });
         }
@@ -189,20 +234,36 @@ export class VendorDocumentsComponent implements OnInit {
             this.failureMsg = this._appService.messages.vendorRegistrationFormInvalid;
         }
     }
+    displayRegistrationStatus(msg: string) {
+        const dialogRef = this._dialog.open(MessageDialogComponent, {
+            disableClose: true,
+            panelClass: 'dialog-box',
+            width: '550px',
+            data: <MessageDialogModel>{
+                title: "Vendor Registration Status",
+                message: msg
+            }
+        });
+
+        dialogRef.afterClosed().subscribe(result => {
+            this._router.navigate([this._appService.routingConstants.login]);
+        });
+    }
 
     onDeleteFileClick(fileDetails: FileDetailsModel, fileIndex: number, documentTypeId: number) {
         if (fileDetails && fileDetails.fileId) {
-            this._homeService.updateBusy(<BusyDataModel>{ isBusy: true, msg: "Deleting..." });
+            this._vendorRegistrationService.updateBusy(<BusyDataModel>{ isBusy: true, msg: "Deleting..." });
             this._vendorRegistrationService.deleteVendorFile(fileDetails)
                 .subscribe(response => {
-                    this._homeService.updateBusy(<BusyDataModel>{ isBusy: false, msg: null });
+                    this._vendorRegistrationService.updateBusy(<BusyDataModel>{ isBusy: false, msg: null });
                     let result = response.body as StatusModel;
                     if (result.isSuccess) {
                         this.removefileFromList(fileIndex, documentTypeId);
+                        this._snackBar.open("File deleted Successfully");
                     }
                 },
                     (error) => {
-                        this._homeService.updateBusy(<BusyDataModel>{ isBusy: false, msg: null });
+                        this._vendorRegistrationService.updateBusy(<BusyDataModel>{ isBusy: false, msg: null });
                         console.log(error);
                     });
         }
@@ -227,7 +288,6 @@ export class VendorDocumentsComponent implements OnInit {
     }
 
     updateVendorDetails() {
-        this.vendorDocumentForm.get("isGSTReg").setValue(this._appService.vendorRegistrationDetails.isGSTReg);
         this.vendorDocumentForm.get("panNum").setValue(this._appService.vendorRegistrationDetails.panNum);
         this.vendorDocumentForm.get("gstNum").setValue(this._appService.vendorRegistrationDetails.gstNum);
         this.vendorDocumentForm.get("pfNum").setValue(this._appService.vendorRegistrationDetails.pfNum);
@@ -246,20 +306,21 @@ export class VendorDocumentsComponent implements OnInit {
         if (this._appService.vendorRegistrationInitDetails && this._appService.vendorRegistrationInitDetails.documentDetailsList &&
             this._appService.vendorRegistrationInitDetails.documentDetailsList.length > 0) {
             this._appService.vendorRegistrationInitDetails.documentDetailsList.forEach(item =>
-                this.filesMap[item.vendorMasterDocumentsId] = { filesList: [], isMandatory: item.isMandatory, isAttached: false, isError: false });
+                this.filesMap[item.vendorMasterDocumentsId] = { filesList: [], isMandatory: item.isMandatory, isAttached: false, isError: false, toAttach: [] });
         }
     }
     updateMandatory(selfId: string, documentTypeId: number) {
         if (!this.vendorDocumentForm.get(selfId).value) {
             this.vendorDocumentForm.get(selfId).setValidators([]);
             this.vendorDocumentForm.get(selfId).updateValueAndValidity();
-            this.filesMap[documentTypeId] = { filesList: [], isMandatory: false, isAttached: false, isError: false }
+            this.filesMap[documentTypeId] = { filesList: [], isMandatory: false, isAttached: false, isError: false, toAttach: [] }
             return;
         }
         this.vendorDocumentForm.get(selfId).enable();
         this.vendorDocumentForm.get(selfId).setValidators([Validators.required]);
         this.vendorDocumentForm.get(selfId).updateValueAndValidity();
         this.filesMap[documentTypeId].isMandatory = true;
+        this.filesMap[documentTypeId].isError = true;
     }
     ngOnInit() {
         this.initializeFilesList();
@@ -268,7 +329,6 @@ export class VendorDocumentsComponent implements OnInit {
 
             panNum: [null, [Validators.required]],
             gstNum: [null],
-            isGSTReg: [null, [Validators.required]],
             pfNum: [null],
             esiNum: [null],
             cinNum: [null],
@@ -281,7 +341,7 @@ export class VendorDocumentsComponent implements OnInit {
             otherDocDesc: [null]
 
         });
-        this._homeService.updateCurrentPageDetails({ pageName: 'venDoc' });
+        this._vendorRegistrationService.updateCurrentPageDetails({ pageName: 'venDoc' });
         this.updateVendorDetails();
     }
 

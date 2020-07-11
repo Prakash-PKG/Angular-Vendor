@@ -5,7 +5,7 @@
 
 <form [formGroup]="vendorBankForm">
     <div class="row field">
-        <div class="col-6 form-group">
+        <div class="col-3 form-group">
             <mat-form-field class="full-width">
                 <input type="number" matInput placeholder="Account Number" formControlName="accountNum"
                     autocomplete="off" required>
@@ -17,10 +17,17 @@
                     required>
             </mat-form-field>
         </div>
+        <div class="col-3 form-group">
+            <mat-form-field class="full-width">
+                <input type="text" matInput placeholder="IFSC code" formControlName="ifscCode" autocomplete="off"
+                    required>
+            </mat-form-field>
+        </div>
+   
     </div>
 
     <div class="row field">
-        <div class="col-6 form-group">
+        <div class="col-3 form-group">
             <mat-form-field class="full-width">
                 <input type="text" matInput placeholder="Account Type" formControlName="accountType" autocomplete="off"
                     required>
@@ -28,21 +35,11 @@
         </div>
         <div class="col-6 form-group">
             <mat-form-field class="full-width">
-                <input type="text" matInput placeholder="IFSC code" formControlName="ifscCode" autocomplete="off"
-                    required>
-            </mat-form-field>
-        </div>
-    </div>
-
-
-    <div class="row field">
-        <div class="col-6 form-group">
-            <mat-form-field class="full-width">
                 <input type="text" matInput placeholder="Bank Name" formControlName="bankName" autocomplete="off"
                     required>
             </mat-form-field>
         </div>
-        <div class="col-6 form-group">
+        <div class="col-3 form-group">
             <mat-form-field class="full-width">
                 <input type="text" matInput placeholder="Bank Branch Name" formControlName="bankBranch"
                     autocomplete="off" required>
@@ -51,23 +48,22 @@
     </div>
 
     <div class="row field">
-        <div class="col-6 form-group">
+        <div class="col-3 form-group">
             <mat-form-field class="full-width">
                 <input type="text" matInput placeholder="City" formControlName="bankCity" autocomplete="off" required>
             </mat-form-field>
         </div>
         <div class="col-6 form-group">
             <mat-form-field class="full-width">
-                <mat-select formControlName="bankCountry" placeholder="Country" required>
+                <mat-select formControlName="bankCountry" placeholder="Country" (selectionChange)="updateRegion()" required>
                     <mat-option *ngFor="let c of countryList" [value]="c.countryCode">
                         {{ c.countryName }}
                     </mat-option>
                 </mat-select>
             </mat-form-field>
         </div>
-    </div>
-    <div class="row field">
-        <div class="col-6 form-group">
+
+        <div class="col-3 form-group">
             <mat-form-field class="full-width">
                 <mat-select formControlName="bankRegion" placeholder="Region" required>
                     <mat-option *ngFor="let region of regionMasterVOList" [value]="region.regionCode">

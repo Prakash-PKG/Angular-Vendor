@@ -1,6 +1,6 @@
 .main {
   margin: 0px;
-  padding: 5%;
+  padding: 7%;
   background-image: url(../../assets/images/bg.png);
   background-repeat: repeat-y;
   background-size: contain;
@@ -9,34 +9,19 @@
 }
 
 .my-container {
-
-  box-shadow: 0px 0px 5px lightgrey;
-  border-radius: 10px;
-  z-index: 1000;
-  background: white;
-  padding: 20px;
-  border-bottom-right-radius: 0px;
-  border-bottom-left-radius: 0px;
-  height: 100%;
-  text-align: left;
   padding: 1em;
   overflow: unset;
+  min-height: -webkit-fill-available;
 }
+
 .logo {
-  height: 1em;
-  color: blueviolet;
-  font-size: 3em;
-  margin: 1em;
-  text-align: center;
-}
-/* .logo {
-	background-image: url(../../assets/mtime-logo.gif);
+	background-image: url(../../assets/images/logo-new2.jpg);
 	background-repeat: no-repeat;
 	background-size: contain;
 	background-position: center;
-	min-height: 6.2em;
-	width: 100%;
-} */
+  min-height: 7em;
+margin-top:2em;
+} 
 
 .loginerror {
   margin-bottom: 9px;
@@ -47,9 +32,7 @@
 }
 
 .login-form {
-  margin-top: 2em;
-  width: 50%;
-  margin: auto;
+  margin: 2em;
 }
 .mat-form-field {
   color: blueviolet;
@@ -62,9 +45,17 @@ mat-label {
 .text-description {
   color: gray;
 }
-// ::ng-deep .mat-form-field-wrapper {
-//   padding-bottom: 0em !important;
-// }
-.mat-raised-button[disabled][disabled] {
-  background-color: rgba(151,53,216,.5);
+.actions{
+  justify-content: space-between;
+}
+.actions a:hover{
+text-decoration: underline;
+}
+.backdrop{
+  background-image: url(../../assets/images/login-screen.jpg);
+	background-repeat: no-repeat;
+	background-size: contain;
+	background-position: center;
+     margin: 1em;
+     min-height: 100%;
 }

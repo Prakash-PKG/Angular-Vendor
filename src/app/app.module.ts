@@ -46,7 +46,8 @@ import {
     MatStepperModule,
     NativeDateModule,
     MAT_DATE_FORMATS,
-    MAT_NATIVE_DATE_FORMATS
+    MAT_NATIVE_DATE_FORMATS,
+    MAT_SNACK_BAR_DEFAULT_OPTIONS
 } from '@angular/material';
 
 import { AppComponent } from './app.component';
@@ -73,6 +74,10 @@ import { VendorApprovalComponent } from './vendor-approval/vendor-approval.compo
 import { InvoiceUploadComponent } from './invoice-upload/invoice-upload.component';
 import { VendorOthersComponent } from './vendor-others/vendor-others.component';
 import { PoInvoiceDumpComponent } from './po-invoice-dump/po-invoice-dump.component';
+import { NonPoInvoiceDumpComponent } from './non-po-invoice-dump/non-po-invoice-dump.component';
+import { VendorDashboardComponent } from './vendor-dashboard/vendor-dashboard.component';
+import { LoginVendorComponent } from './login-vendor/login-vendor.component';
+import { VendorDumpComponent } from './vendor-dump/vendor-dump.component';
 
 
 @NgModule({
@@ -100,7 +105,11 @@ import { PoInvoiceDumpComponent } from './po-invoice-dump/po-invoice-dump.compon
         VendorApprovalComponent,
         InvoiceUploadComponent,
         VendorOthersComponent,
-        PoInvoiceDumpComponent
+        PoInvoiceDumpComponent,
+        NonPoInvoiceDumpComponent,
+        VendorDashboardComponent,
+        LoginVendorComponent,
+        VendorDumpComponent
     ],
     imports: [
         BrowserModule,
@@ -153,12 +162,14 @@ import { PoInvoiceDumpComponent } from './po-invoice-dump/po-invoice-dump.compon
     ],
      entryComponents: [
         ConfirmDialogComponent,
-        MessageDialogComponent
+        MessageDialogComponent,
+        ForgotPasswordComponent
     ],
     providers: [
         { provide: LocationStrategy, useClass: HashLocationStrategy },
         { provide: HTTP_INTERCEPTORS, useClass: XsrfInterceptor, multi: true },
         { provide: MAT_DATE_FORMATS, useValue: MAT_NATIVE_DATE_FORMATS },
+        {provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: {duration: 2500}},
         DatePipe
     ],
     bootstrap: [AppComponent]

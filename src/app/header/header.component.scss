@@ -27,10 +27,14 @@
     margin:auto;
 }
 
-.logo{
+.logo {
+	background-image: url(../../assets/images/logo-new2.jpg);
+	background-repeat: no-repeat;
+	background-size: contain;
+	background-position: center;
+
+  width: 20%;
+} 
+.flex-item.logo{
     background-color: white;
-    color: blueviolet;
-    width:20%;
-    align-items: center;
-    justify-content: center;
 }

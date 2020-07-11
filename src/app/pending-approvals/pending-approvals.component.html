@@ -16,26 +16,28 @@
         <mat-tab-group mat-align-tabs="start" (selectedTabChange)="onTabChange($event)">
 
             <mat-tab label="All Pending approvals">
-                <div class="ven-tab-container">
-                    <mat-card class="card mat-elevation-z3" *ngFor="let appr of allPendingApprovals; let allInd = index">
-                        <div class="flex-container full-width" (click) = "onApprovalRecClick(appr)">
-                            <div class="description flex-item">
-                                <div class="flex-container">
-                                    <div class="flex-item">
-                                        {{ getVendorNameOrInvoiceNo(appr) }}
+                <div *ngFor="let appr of allPendingApprovals; let allInd = index">
+                    <div [ngClass]="(appr?.approveType == 'vendor') ? 'ven-tab-container' : 'inv-tab-container'">
+                        <mat-card class="card mat-elevation-z3" >
+                            <div class="flex-container full-width" (click) = "onApprovalRecClick(appr)">
+                                <div class="description flex-item">
+                                    <div class="flex-container">
+                                        <div class="flex-item">
+                                            {{ getVendorNameOrInvoiceNo(appr) }}
+                                        </div>
+                                        <div class="flex-item">
+                                            {{ getSubmittedDate(appr) }}
+                                        </div>
                                     </div>
                                     <div class="flex-item">
-                                        {{ getSubmittedDate(appr) }}
-                                    </div>
-                                </div>
-                                <div class="flex-item">
-                                    <div class="title">
-                                        <h3> {{ getApprovalType(appr) }}</h3>
+                                        <div class="title">
+                                            <h3> {{ getApprovalType(appr) }}</h3>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                    </mat-card>
+                        </mat-card>
+                    </div>
                 </div>
             </mat-tab>
 

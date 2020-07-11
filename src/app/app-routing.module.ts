@@ -1,3 +1,4 @@
+import { NonPoInvoiceDumpComponent } from './non-po-invoice-dump/non-po-invoice-dump.component';
 import { PoInvoiceDumpComponent } from './po-invoice-dump/po-invoice-dump.component';
 import { VendorRegistrationComponent } from './vendor-registration/vendor-registration.component';
 import { VendorApprovalComponent } from './vendor-approval/vendor-approval.component';
@@ -11,17 +12,17 @@ import { InvoiceUploadComponent } from './invoice-upload/invoice-upload.componen
 import { InvoiceSearchComponent } from './invoice-search/invoice-search.component';
 import { InvoiceDetailsComponent } from './invoice-details/invoice-details.component';
 import { InvoiceApprovalsComponent } from './invoice-approvals/invoice-approvals.component';
-import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
 import { EmpanelmentComponent } from './empanelment/empanelment.component';
 import { PoSearchComponent } from './po-search/po-search.component';
 import { CanExitGuard } from './common/can-exit-guard';
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-
 import { LoginComponent } from './login/login.component';
 import { AuthGuardLogin } from './login/authguard.login';
 import { HomeComponent } from './home/home.component';
-import { VendorOthersComponent } from './vendor-others/vendor-others.component';
+import { VendorDashboardComponent } from './vendor-dashboard/vendor-dashboard.component';
+import { LoginVendorComponent } from './login-vendor/login-vendor.component';
+import { VendorDumpComponent } from './vendor-dump/vendor-dump.component';
 
 
 const routes: Routes = [
@@ -36,11 +37,6 @@ const routes: Routes = [
             {
                 path: 'posearch',
                 component: PoSearchComponent,
-                canActivate: [AuthGuardLogin]
-            },
-            {
-                path: 'fp',
-                component: ForgotPasswordComponent,
                 canActivate: [AuthGuardLogin]
             },
             {
@@ -74,8 +70,23 @@ const routes: Routes = [
                 canActivate: [AuthGuardLogin]
             },
             {
+                path: 'vendashboard',
+                component: VendorDashboardComponent,
+                canActivate: [AuthGuardLogin]
+            },
+            {
                 path: 'poinvoicedump',
                 component: PoInvoiceDumpComponent,
+                canActivate: [AuthGuardLogin]
+            },
+            {
+                path: 'nonpoinvoicedump',
+                component: NonPoInvoiceDumpComponent,
+                canActivate: [AuthGuardLogin]
+            },
+            {
+                path: 'vendordump',
+                component: VendorDumpComponent,
                 canActivate: [AuthGuardLogin]
             },
             {
@@ -88,8 +99,11 @@ const routes: Routes = [
                 component: EmpanelmentComponent,
                 canActivate: [AuthGuardLogin]
             },
-            
         ]
+    },
+    {
+        path: 'loginvendor',
+        component: LoginVendorComponent
     },
     {
         path: 'vendor',
@@ -97,19 +111,23 @@ const routes: Routes = [
         children: [
             {
                 path: 'vendetails',
-                component: VendorDetailsComponent
+                component: VendorDetailsComponent,
+                canActivate: [AuthGuardLogin]
             },
             {
                 path: 'venaddr',
-                component: VendorAddressComponent
+                component: VendorAddressComponent,
+                canActivate: [AuthGuardLogin]
             },
             {
                 path: 'venbank',
-                component: VendorBankDetailsComponent
+                component: VendorBankDetailsComponent,
+                canActivate: [AuthGuardLogin]
             },
             {
                 path: 'vendocs',
-                component: VendorDocumentsComponent
+                component: VendorDocumentsComponent,
+                canActivate: [AuthGuardLogin]
             },
             {
                 path: '',

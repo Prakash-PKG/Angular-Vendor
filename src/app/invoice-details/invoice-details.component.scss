@@ -5,7 +5,7 @@
   display: flex;
   flex-direction: row;
   padding: 0;
-  margin: 2em 0px;
+  margin:1em 0px 2em;
 
   .step {
     position: relative;
@@ -25,6 +25,20 @@
 
       &:after {
         background-color: blueviolet;
+      }
+    }
+
+    &.notcompleted {
+      .dot {
+        background-color: red;
+      }
+
+      .lower-text {
+        color: red;
+      }
+
+      &:after {
+        background-color: red;
       }
     }
 
@@ -84,19 +98,8 @@
 }
 // ----------------------------css for stepper ends------------------------------
 
-.flex-container div.actions {
-  padding: 0px;
-  flex-direction: column;
-}
-.flex-container div.actions .footer-actions{
-  height: 2em;
-  padding: 0 1em;
-}
 .dataTable {
   margin-top: 0px;
-}
-.amount {
-  text-align: right;
 }
 
 td.mat-cell:first-of-type,
@@ -111,34 +114,60 @@ td.mat-cell:last-of-type,
 th.mat-header-cell:last-of-type {
   padding-right: 0px;
 }
-.material-icons {
-  font-size: 1.25em;
-}
-
 .flex-container {
   display: flex;
   justify-content: space-between;
   align-items: stretch;
-}
-
-.flex-item {
-  display: flex;
   flex-grow: 1;
 }
-.description {
-  justify-content: space-between;
-  align-items: center;
+
+.flex-item  {
+  display: flex;
+  flex-grow: 1;
+  align-items: stretch;
 }
+.description .flex-container .flex-item .value,
+
+.description .flex-container .flex-item .header{
+  width: 50%;
+}
+
 .description .flex-container {
   flex-direction: column;
-  align-items: flex-start;
-  margin-right: 1em;
-
 }
 .details {
-  margin-bottom: 2em;
+  margin-bottom: 1em;
 }
 .card {
   border-radius: 10px;
   padding-top: 0px;
+}
+.header{
+  color: black;
+  font-weight: 500;
+}
+.filename{
+  cursor:pointer;
+  display: inline;
+}
+.footer{
+  display: flex;
+  justify-content: flex-end;
+  align-items: stretch;
+  flex-direction: row;
+}
+.description .dataTable tr{
+  height:auto;
+  border: 0px;
+}
+.description .dataTable tr td{
+  border:0px;
+}
+.remarks{
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: 12em;
+  display: inline-block;
+  line-height: 2.8em;
 }

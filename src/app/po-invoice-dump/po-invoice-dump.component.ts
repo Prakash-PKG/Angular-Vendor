@@ -1,7 +1,7 @@
 import { AppService } from './../app.service';
 import { HomeService } from './../home/home.service';
 import { globalConstant } from './../common/global-constant';
-import { POInvoiceFinanceDumpReqModel, BusyDataModel, POInvoiceDumpInitResultModel } from './../models/data-models';
+import { InvoiceFinanceDumpReqModel, BusyDataModel, InvoiceDumpInitResultModel } from './../models/data-models';
 import { PoInvoiceDumpService } from './po-invoice-dump.service';
 import { Component, OnInit } from '@angular/core';
 import {MatDatepickerInputEvent} from '@angular/material/datepicker';
@@ -27,7 +27,7 @@ export class PoInvoiceDumpComponent implements OnInit {
     startDateErrMsg: string = "";
     endDateErrMsg: string = "";
 
-    _initDetails: POInvoiceDumpInitResultModel = null;
+    _initDetails: InvoiceDumpInitResultModel = null;
 
     incrementalStartDate: string = " - ";
 
@@ -51,7 +51,7 @@ export class PoInvoiceDumpComponent implements OnInit {
     }
 
     onIncrementalDownloadClick() {
-        let req: POInvoiceFinanceDumpReqModel = {
+        let req: InvoiceFinanceDumpReqModel = {
             startDate: this._initDetails.lastDumpDt,
             endDate: null,
             employeeId: globalConstant.userDetails.userId,
@@ -74,7 +74,7 @@ export class PoInvoiceDumpComponent implements OnInit {
         }
 
         if(this.startDate && this.endDate) {
-            let req: POInvoiceFinanceDumpReqModel = {
+            let req: InvoiceFinanceDumpReqModel = {
                 startDate: this._datePipe.transform(this.startDate, this._appService.dbDateTimeFormat),
                 endDate: this._datePipe.transform(this.endDate, this._appService.dbDateTimeFormat),
                 employeeId: globalConstant.userDetails.userId,
@@ -99,7 +99,7 @@ export class PoInvoiceDumpComponent implements OnInit {
         this.endDateErrMsg = "";
     }
 
-    downloadInvoiceFile(req: POInvoiceFinanceDumpReqModel, fileName: string) {
+    downloadInvoiceFile(req: InvoiceFinanceDumpReqModel, fileName: string) {
         this._homeService.updateBusy(<BusyDataModel>{ isBusy: true, msg: "Loading..." });
         this.__poInvoiceDumpService.getFileData(req).subscribe(
             (data) => {
@@ -112,6 +112,8 @@ export class PoInvoiceDumpComponent implements OnInit {
                 a.download = fileName;
                 document.body.appendChild(a);
                 a.click();
+
+                this.loadInitData();
             },
             error => {
                 console.log(error);
@@ -130,6 +132,10 @@ export class PoInvoiceDumpComponent implements OnInit {
     }
 
     ngOnInit() {
+        let dt: Date = new Date();
+        dt.setDate(dt.getDate() + 1);
+        this.maxEndDate = dt;
+
         setTimeout(() => {
            this.loadInitData();
         }, 100);

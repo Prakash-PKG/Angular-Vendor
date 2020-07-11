@@ -15,6 +15,11 @@
         </div>
 
         <div class="search-row-element">
+            <mat-label>Company Name</mat-label>
+            <div class="value">{{ poDetails?.companyName }}</div>
+        </div>
+
+        <div class="search-row-element">
             <mat-label>Total Amount</mat-label>
             <div class="value">{{ poDetails?.totalAmount }}</div>
         </div>
@@ -26,7 +31,7 @@
 
         <div class="search-row-element">
             <mat-label>Total Amount Paid</mat-label>
-            <div class="value"></div>
+            <div class="value">{{ poDetails?.paidAmount }}</div>
         </div>
 
         <div class="actions search-row-element">
@@ -46,41 +51,47 @@
             </thead>
             <tbody>
                 <tr *ngFor="let item of itemsList; let itemInd = index">
-                    <td>
+                    <td style="width:5em">
                         <span>{{ item.itemNumber }}</span>
                     </td>
                     <td>
                         <span>{{ item.itemDescription }}</span>
                     </td>
-                    <td>
+                    <td class="eightcharacters">
                         <span>{{ item.hsn }}</span>
                     </td>
-                    <td>
+                    <td class="tencharacters">
                         <span>{{ item.orderedUnits }}</span>
                     </td>
-                    <td>
+                    <td   class="tencharacters">
                         <span>{{ item.suppliedUnits }}</span>
-                    </td>
-                    <td>
+                    </td >
+                    <td  class="tencharacters">
                         <span>{{ item.consumedUnits }}</span>
                     </td>
-                    <td>
+                    <td  class="tencharacters">
                         <span>{{ item.invoiceUnits }}</span>
                     </td>
                     <td>
                         <span>{{ currency }}</span>
                     </td>
-                    <td>
+                    <td class="amount tencharacters">
                         <span>{{ item.unitPrice }}</span>
                     </td>
-                    <td>
+                    <td class="amount tencharacters">
                         <span>{{ item.unitsTotalAmount }}</span>
                     </td>
                 </tr>
             </tbody>
         </table>
-        <div style="text-align: right">
-            total Amount: {{ totalAmount + " " + currency }}
+        <div class="footer">
+            <div class="header ">
+                Total Amount:
+            </div>
+            <div class="value ">
+                {{ totalAmount + " " + currency }}
+            </div>
         </div>
+
     </div>
 </div>

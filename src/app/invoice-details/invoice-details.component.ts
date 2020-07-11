@@ -5,6 +5,7 @@ import { AppService } from './../app.service';
 import { InvoiceDetailsService } from './invoice-details.service';
 import { Component, OnInit } from '@angular/core';
 import { HomeService } from '../home/home.service';
+import { Router } from '@angular/router';
 
 @Component({
     selector: 'app-invoice-details',
@@ -15,20 +16,20 @@ export class InvoiceDetailsComponent implements OnInit {
     isDashboardCollapsed: boolean = true;
     _sidebarExpansionSubscription: any = null;
 
-    statusHeaderArr: string[] = ['Level', 'Status', 'Approved Date', 'Remarks'];
+    statusHeaderArr: string[] = ['Stages', 'Status', 'Action Date', 'Remarks'];
     headerArr: string[] = [];
 
     poInvHeaderArr: string[] = ['Item No.', 'Item Desc', "UOM", "HSN/SAC", 'Order Units', 'Supplied Units', 'Balance Units', 
-                            'Invoive Units', 'Currency', 'Rate', 'Amount'];
+                            'Invoice Units', 'Currency', 'Rate', 'Amount'];
 
-    nonPoInvHeaderArr: string[] = ['Item No.', 'Item Desc', "HSN/SAC", 'Invoive Units', 'Currency', 'Rate', 'Amount'];
+    nonPoInvHeaderArr: string[] = ['Item No.', 'Item Desc', "HSN/SAC", 'Invoice Units', 'Currency', 'Rate', 'Amount'];
 
     invoiceDetails: InvoiceModel = null;
     currency: string = "";
 
     _initDetails: InvoiceDetailsResultModel = null;
     itemsList: ItemDisplayModel[] = [];
-    totalAmount: number = 0;
+    totalAmount: string = "0.000";
 
     invoiceFilesList: FileDetailsModel[] = [];
     supportFilesList: FileDetailsModel[] = [];
@@ -45,8 +46,13 @@ export class InvoiceDetailsComponent implements OnInit {
     isPOBasedInvoice: boolean = true;
 
     constructor(private _homeService: HomeService,
+                private _router: Router,
                 private _invoiceDetailsService: InvoiceDetailsService,
                 private _appService: AppService) { }
+
+    onBackBtnClick() {
+        this._router.navigate([this._appService.routingConstants.invoiceSearch]);
+    }
 
     getPaymentStatusDetails() {
         if(this.invoicePaymentDetails && this.invoicePaymentDetails.invoiceAmountPaid) {
@@ -105,6 +111,7 @@ export class InvoiceDetailsComponent implements OnInit {
     async loadInitData() {
         this.isPOBasedInvoice = true;
         this.headerArr = [];
+        this.totalAmount = "0.000";
 
         this.uploadLevel = null;
         this.poLevel = null;
@@ -135,14 +142,15 @@ export class InvoiceDetailsComponent implements OnInit {
             if(this._initDetails) {
                 this.invoicePaymentDetails = this._initDetails.paymentDetails;
                 this.itemsList = (this._initDetails.itemsList && this._initDetails.itemsList.length > 0) ? this._initDetails.itemsList.concat() : [];
-                this.totalAmount = 0;
+                let totalAmt: number = 0;
                 for(let i = 0; i < this.itemsList.length; i++) {
                     //this.itemsList[i].unitsTotalAmount = (this.itemsList[i].unitPrice && this.itemsList[i].invoiceUnits) ? +this.itemsList[i].unitPrice * +this.itemsList[i].invoiceUnits : null;
                     this.itemsList[i].unitsTotalAmount = (this.itemsList[i].totalAmt) ? +this.itemsList[i].totalAmt : null;
                     if(this.itemsList[i].unitsTotalAmount && this.itemsList[i].unitsTotalAmount > 0) {
-                        this.totalAmount = this.totalAmount + this.itemsList[i].unitsTotalAmount;
+                        totalAmt = totalAmt + this.itemsList[i].unitsTotalAmount;
                     }
                 }
+                this.totalAmount = totalAmt.toFixed(3);
 
                 this.invoiceFilesList = this._initDetails.invoiceFilesList;
                 this.supportFilesList = this._initDetails.supportFilesList;
@@ -173,7 +181,7 @@ export class InvoiceDetailsComponent implements OnInit {
                         levelName: "Business Head",
                         status: this._appService.statusNames[functionalHeadApprovalModel.statusCode],
                         date: (functionalHeadApprovalModel.statusCode == this._appService.statusCodes.approved || functionalHeadApprovalModel.statusCode == this._appService.statusCodes.rejected) ? this._appService.getFormattedDate(functionalHeadApprovalModel.updatedDate) : "",
-                        remarks: poApprovalModel.remarks
+                        remarks: functionalHeadApprovalModel.remarks
                     };
                     this.approvalLevelList.push(this.fhLevel);
                 }

@@ -30,17 +30,21 @@
   flex-grow: 0;
   flex-shrink: 0;
 }
-.search-row-element.actions {
-  flex: 0 0 3em;
-}
-.search-row-element .footer-actions{
+.search-row-element.actions .footer-actions {
   height: 2em;
   line-height: 1em;
 }
-.mat-form-field.field {
+// .search-row-element.actions {
+//   flex: 0 0 3em;
+// }
+.approver-section .search-row .mat-form-field {
   margin-right: 2em;
   width: 7em;
 }
+.approver-section .search-row .mat-form-field:last-child {
+  margin-right: 0;
+}
+
 // ================css for table=================== */
 .Rtable {
   position: relative;
@@ -54,6 +58,16 @@
 .Rtable--2cols > .Rtable-cell {
   width: 25%;
 }
+.Rtable--2cols > .Rtable-cell .attachments {
+  display: flex;
+  justify-content: space-between;
+}
+.Rtable--2cols > .Rtable-cell .flex-item {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+}
+
 .Rtable--2cols > .Rtable-cell:nth-child(odd) {
   width: 18.5%;
   max-width: 18.5%;
@@ -74,7 +88,7 @@
   overflow: hidden;
   list-style: none;
 }
-.Rtable .Rtable-cell .error-txt{
+.Rtable .Rtable-cell .error-txt {
   color: red;
   font-size: x-small;
   font-weight: 100;
@@ -110,10 +124,29 @@
   border-top-width: 1px;
   border-top-style: solid;
 }
-.actions{
-  width: 100%;
-
+.actions {
+  // width: 100%;
+  display: flex;
+  flex-grow: 0;
+  flex-shrink: 0;
 }
-.approver-section{
-  margin:0px 3em;
+.approver-section {
+  margin: 0px 3em;
+}
+.mat-radio-button {
+  margin-right: 10px;
+}
+.Rtable--2cols > .Rtable-cell .attach-btn {
+  background: blueviolet;
+  color: white;
+  transform: rotate(145deg);
+}
+.Rtable--2cols > .Rtable-cell .attach-btn:hover {
+  box-shadow: 0px 0px 5px lightgray;
+}
+.filename {
+  background: aliceblue;
+  margin-right: 5px;
+  cursor: pointer;
+  align-items: center;
 }

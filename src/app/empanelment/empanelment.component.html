@@ -1,8 +1,13 @@
-<div class="main">
-  <div class="container my-container">
-    <div class="logo">mVendor</div>
+<!-- <div class="main">
+  <div class="container my-container"> -->
 
-    <form [formGroup]="empanelmentForm" class="login-form" >
+<div class="row">
+  <!-- <div class="col-6">
+        <div class="backdrop"></div>
+      </div> -->
+  <div class="col-12">
+    <div class="title">Vendor Empanelment</div>
+    <form [formGroup]="empanelmentForm" class="login-form">
 
       <!-- userId Column -->
 
@@ -12,9 +17,9 @@
           <input matInput type="email" class="form-control" placeholder="Enter Email" formControlName="emailId">
         </mat-form-field>
 
-          <small class="form-text text-muted text-description">(Enter vendor empanelment login email)</small>
+        <small class="form-text text-muted text-description">(Enter vendor empanelment login email)</small>
 
-        
+
       </div>
       <!-- errors -->
       <div class="errortxt loginerror">{{ message }}</div>
@@ -28,3 +33,5 @@
 
   </div>
 </div>
+<!-- </div>
+</div> -->

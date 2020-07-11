@@ -1,14 +1,19 @@
+import { MessageDialogModel } from './../models/popup-models';
+import { MessageDialogComponent } from './../message-dialog/message-dialog.component';
 import { globalConstant } from './../common/global-constant';
 import { AppService } from './../app.service';
 import { InvoiceUploadService } from './invoice-upload.service';
 import { BusyDataModel, InvoiceUploadResultModel, InvoiceUploadReqModel, InvoiceDocumentReqModel, currencyMasterList, 
         PODetailsModel, POItemsRequestModel, POItemsResultModel, ItemModel, FileDetailsModel, InvoiceFileTypwModel, 
         UpdateInvoiceRequestModel, UpdateInvoiceResultModel, InvoiceDocumentResultModel, StatusModel,
-        VendorAutoCompleteModel } from './../models/data-models';
+        VendorAutoCompleteModel, ProjectAutoCompleteModel, CompanyCodeMasterList, InvoiceExistReqModel,
+        NotRejectedItemsModel } from './../models/data-models';
 import { Component, OnInit } from '@angular/core';
 import { HomeService } from '../home/home.service';
 import { FormBuilder, FormGroup, FormArray, Validators, FormControl, AbstractControl } from '@angular/forms';
 import { debounceTime, tap, switchMap, finalize } from 'rxjs/operators';
+import { Router } from '@angular/router';
+import { MatSort, MatPaginator, MatTableDataSource, MatDialogRef, MAT_DIALOG_DATA, MatDialog } from '@angular/material';
 
 @Component({
     selector: 'app-invoice-upload',
@@ -21,9 +26,9 @@ export class InvoiceUploadComponent implements OnInit {
     _sidebarExpansionSubscription: any = null;
 
     headerArr: string[] = [];
-    nonPOHeaderArr: string [] = ['Item No.', 'Item Desc', "HSN/SAC", 'Invoive Units', 'Rate', 'Amount'];
+    nonPOHeaderArr: string [] = ['Item No.', 'Item Desc', "HSN/SAC", 'Invoice Units', 'Rate', 'Amount'];
     poHeaderArr: string[] = ['Item No.', 'Item Desc', "UOM", "HSN/SAC", 'Order Units', 'Supplied Units', 'Balance Units', 
-                            'Invoive Units', 'Currency', 'Rate', 'Amount'];
+                            'Invoice Units', 'Currency', 'Rate', 'Amount'];
 
     _initDetails: InvoiceUploadResultModel = null;
     _poItemsResultDetails: POItemsResultModel = null;
@@ -32,7 +37,7 @@ export class InvoiceUploadComponent implements OnInit {
 
     invoiceUploadForm: FormGroup;
 
-    msg: string = "";
+    //msg: string = "";
 
     invoiceFilesList: FileDetailsModel[] = [];
     supportingFilesList: FileDetailsModel[] = [];
@@ -60,15 +65,76 @@ export class InvoiceUploadComponent implements OnInit {
     filteredVendors: VendorAutoCompleteModel[] = [];
     isLoading: boolean = false;
 
+    filteredProjects: ProjectAutoCompleteModel[] = [];
+
+    companiesList: CompanyCodeMasterList[] = [];
+
+    isInvoiceValid: boolean = false;
+
+    invoiceNumberErrMsg: string = "";
+
+    //totalItemsAmtValid: boolean = false;
+
     constructor(private _homeService: HomeService, 
                 private _appService: AppService,
                 private _formBuilder: FormBuilder,
+                private _router: Router,
+                public _dialog: MatDialog,
                 private _invoiceUploadService: InvoiceUploadService) { }
 
     get f() { return this.invoiceUploadForm.controls; }
 
     get fa() { return <FormArray>this.invoiceUploadForm.controls['itemsList']; }
 
+    onCancelClick() {
+        this._router.navigate([this._appService.routingConstants.invoiceSearch]);
+    }
+
+    onInvoiceBlur() {
+        this.validateInvoiceNumber();
+    }
+
+    async validateInvoiceNumber() {
+        this.invoiceNumberErrMsg = "";
+
+        this.isInvoiceValid = false;
+
+        let venId: string = null;
+        if(this.selectedInvoiceType == 'po') {
+            venId = (this.selectedPOItem && this.selectedPOItem.vendorId) ? this.selectedPOItem.vendorId : "";
+        }
+        else {
+            let selVendor = this.invoiceUploadForm.get("vendorId").value;
+            if(selVendor && typeof(selVendor) == "object") {
+                venId = (selVendor as VendorAutoCompleteModel).vendorId;
+            }
+        }
+        
+        let innvoiceNumber = this.invoiceUploadForm.get("invoiceNumber").value;
+        if(innvoiceNumber && venId) {
+            let req: InvoiceExistReqModel = {
+                vendorId: venId,
+                innvoiceNumber: innvoiceNumber
+            };
+            this._homeService.updateBusy(<BusyDataModel>{ isBusy: true, msg: "Loading..." });
+            let results = await this._invoiceUploadService.isInvoiceExist(req);
+            if(results) {
+                if(results.isSuccess) {
+                    this.isInvoiceValid = true;
+                }
+                else {
+                    this.invoiceNumberErrMsg = results.message;
+                }
+            }
+            else {
+                this.invoiceNumberErrMsg = "Invoice number is not valid."
+            }
+            
+            this._homeService.updateBusy(<BusyDataModel>{ isBusy: false, msg: null });
+        }
+    }
+
+    // vendor auto complete start
     registerVendorAutoComplete() {
         this.invoiceUploadForm.get("vendorId").valueChanges
                     .pipe(debounceTime(300),
@@ -100,6 +166,7 @@ export class InvoiceUploadComponent implements OnInit {
 
     onVendorOptionSelected(evt: VendorAutoCompleteModel) {
         this.filteredVendors = [];
+        this.validateInvoiceNumber();
     }
 
     getDisplayVendorName(v: VendorAutoCompleteModel) {
@@ -123,20 +190,103 @@ export class InvoiceUploadComponent implements OnInit {
         }, 500);
     }
 
+    
+    // vendor auto complete end
+
+    // projects auto complete start
+    registerProjectAutoComplete() {
+        this.invoiceUploadForm.get("projectId").valueChanges
+                    .pipe(debounceTime(300),
+                        tap( () =>  { this.isLoading = true; } ),
+                        switchMap( term => {
+                                            if(term && typeof term === 'string' ) {
+                                                let sText: string = term as string;
+
+                                                if(sText && sText.length > 1) {
+                                                    return this._invoiceUploadService.getProjectsData({ searchText: term });
+                                                }
+                                            }
+                                            
+                                            this.isLoading = false;
+                                            this.filteredProjects = [];
+                                            return [];
+                                            
+                                        } ),
+                        tap( () => { this.isLoading = false; } )
+                    )
+                    .subscribe(results => {
+                        this.filteredProjects = results as ProjectAutoCompleteModel[];
+                    });
+    }
+
+    displayProject(p: ProjectAutoCompleteModel) {
+        if (p) { return p.projectName + " ( " + p.projectId + " )"; }
+    }
+
+    onProjectOptionSelected(evt: ProjectAutoCompleteModel) {
+        this.filteredProjects = [];
+    }
+
+    getDisplayProjectName(p: ProjectAutoCompleteModel) {
+        if(p) {
+            return "<b>" + p.projectName + "</b> (" + p.projectId + ")";
+        }
+
+        return "";
+    }
+
+    onProjectPanelClosed() {
+        this.filteredProjects = [];
+    }
+
+    onProjectBlur() {
+        setTimeout(() => {
+            let val = this.invoiceUploadForm.get("projectId").value;
+            if (!val || typeof val == "string") {
+                this.invoiceUploadForm.get("projectId").setValue(null);
+            }
+        }, 500);
+    }
+    
+    //projects auto complete end
+
+    onDeleteItemClick(rowInd: number) {
+        const formsList = <FormArray>this.invoiceUploadForm.controls['itemsList'];
+        formsList.removeAt(rowInd);
+        this.updateAmountDetails();
+
+        if(this.selectedInvoiceType == "non-po") {
+            this.updateNonPOItemNumbers();
+        }
+    }
+
     onInvoiceTypeChange(evtData) {
         this.resetAllFields();
         
         if(evtData.value == "po") {
             this.headerArr = this.poHeaderArr.concat();
             this.invoiceUploadForm.get("poList").setValidators([Validators.required]);
+
+            this.invoiceUploadForm.get("currency").setValidators([]);
+            this.invoiceUploadForm.get("vendorId").setValidators([]);
+            this.invoiceUploadForm.get("projectId").setValidators([]);
+            this.invoiceUploadForm.get("companyCode").setValidators([]);
         }
         else {
             this.headerArr = this.nonPOHeaderArr.concat();
             this.invoiceUploadForm.get("currency").setValidators([Validators.required]);
+            this.invoiceUploadForm.get("vendorId").setValidators([Validators.required]);
+            this.invoiceUploadForm.get("projectId").setValidators([Validators.required]);
+            this.invoiceUploadForm.get("companyCode").setValidators([Validators.required]);
+
+            this.invoiceUploadForm.get("poList").setValidators([]);
         }
 
         this.invoiceUploadForm.get("poList").updateValueAndValidity();
         this.invoiceUploadForm.get("currency").updateValueAndValidity();
+        this.invoiceUploadForm.get("vendorId").updateValueAndValidity();
+        this.invoiceUploadForm.get("projectId").updateValueAndValidity();
+        this.invoiceUploadForm.get("companyCode").updateValueAndValidity();
     }
 
     resetAllFields() {
@@ -152,15 +302,26 @@ export class InvoiceUploadComponent implements OnInit {
         this.invoiceUploadForm.get("totalInvAmt").setValue("");
     }
 
+    updateNonPOItemNumbers() {
+        const itemsFa: FormArray = <FormArray>this.invoiceUploadForm.controls['itemsList'];
+        let itemNoVal: number = 0;
+        for(let i = 0; i < itemsFa.length; i++) {
+            itemNoVal = itemNoVal + 10;
+            itemsFa.controls[i].get("itemNumber").setValue(itemNoVal);
+        }
+    }
+
     onNewClick() {
         const formsList = <FormArray>this.invoiceUploadForm.controls['itemsList'];
         formsList.insert(formsList.length, this.createNonPOItem());
+
+        this.updateNonPOItemNumbers();
     }
 
     createNonPOItem() {
         let fg: FormGroup = this._formBuilder.group({
             itemId: null,
-            itemNumber: [ null, Validators.required ],
+            itemNumber: [ { value: null, disabled: true }, [Validators.required, Validators.pattern("^[0-9]*$")] ],
             itemDescription: [ null, Validators.required ],
             uom: null,
             orderedUnits: null,
@@ -170,7 +331,7 @@ export class InvoiceUploadComponent implements OnInit {
             invoiceUnits: [ null, Validators.required ],
             unitPrice: [ null, Validators.required ],
             unitsAmt: null,
-            hsn: [ null, [Validators.required, Validators.maxLength(8)] ],
+            hsn: [ null, [Validators.required, Validators.maxLength(8), Validators.pattern("^[0-9]*$")] ],
             createdBy: null,
             createdDate: null
         });
@@ -328,11 +489,39 @@ export class InvoiceUploadComponent implements OnInit {
 
     onInvoiceUnitsBlur(itemInd: number) {
         const itemsFa: FormArray = <FormArray>this.invoiceUploadForm.controls['itemsList'];
+        let invoiceUnitsVal = itemsFa.controls[itemInd].get("invoiceUnits").value;
+        if(invoiceUnitsVal && !isNaN(invoiceUnitsVal) && Number(invoiceUnitsVal) > 0) {
+            let invoiceUnits = Number(invoiceUnitsVal).toFixed(3);
+            itemsFa.controls[itemInd].get("invoiceUnits").setValue(invoiceUnits);
+        }
+        else {
+            itemsFa.controls[itemInd].get("invoiceUnits").setValue(null);
+        }
+
+        this.updateItemTotalAmount(itemInd);
+    }
+
+    onUnitPriceBlur(itemInd: number) {
+        const itemsFa: FormArray = <FormArray>this.invoiceUploadForm.controls['itemsList'];
+        let UnitPriceVal = itemsFa.controls[itemInd].get("unitPrice").value;
+        if(UnitPriceVal && !isNaN(UnitPriceVal)) {
+            let unitPrice = Number(UnitPriceVal).toFixed(3);
+            itemsFa.controls[itemInd].get("unitPrice").setValue(unitPrice);
+        }
+        else {
+            itemsFa.controls[itemInd].get("unitPrice").setValue(null);
+        }
+
+        this.updateItemTotalAmount(itemInd);
+    }
+
+    updateItemTotalAmount(itemInd: number) {
+        const itemsFa: FormArray = <FormArray>this.invoiceUploadForm.controls['itemsList'];
         let unitPriceVal = itemsFa.controls[itemInd].get("unitPrice").value;
         let invoiceUnits = itemsFa.controls[itemInd].get("invoiceUnits").value;
 
-        let unitsAmt = (unitPriceVal && invoiceUnits) ? +unitPriceVal * +invoiceUnits : null;
-        itemsFa.controls[itemInd].get("unitsAmt").setValue(unitsAmt);
+        let unitsAmt: number = (unitPriceVal && invoiceUnits) ? +unitPriceVal * +invoiceUnits : 0;
+        itemsFa.controls[itemInd].get("unitsAmt").setValue(unitsAmt.toFixed(3));
 
         this.updateAmountDetails();
     }
@@ -343,10 +532,37 @@ export class InvoiceUploadComponent implements OnInit {
         let totalItemsAmt = 0;
         const itemsFa: FormArray = <FormArray>this.invoiceUploadForm.controls['itemsList'];
         for(let i = 0; i < itemsFa.length; i++) {
-            let unitsAmt = +itemsFa.controls[i].get("unitsAmt").value;
+            let unitsAmtVal = itemsFa.controls[i].get("unitsAmt").value;
+            let unitsAmt = (unitsAmtVal) ? +unitsAmtVal : 0;
             totalItemsAmt = totalItemsAmt + unitsAmt;
         }
-        this.invoiceUploadForm.get("totalItemsAmt").setValue(totalItemsAmt);
+        this.invoiceUploadForm.get("totalItemsAmt").setValue(totalItemsAmt.toFixed(3));
+
+        this.updateInvoiceTotalAmt();
+    }
+
+    onFreightChargesBlur() {
+        let freightChargesVal = this.invoiceUploadForm.get("freightCharges").value;
+        if(freightChargesVal && !isNaN(freightChargesVal)) {
+            let freightCharges = Number(freightChargesVal).toFixed(3);
+            this.invoiceUploadForm.get("freightCharges").setValue(freightCharges);
+        }
+        else {
+            this.invoiceUploadForm.get("freightCharges").setValue(null);
+        }
+
+        this.updateInvoiceTotalAmt();
+    }
+
+    onTotalTaxBlur() {
+        let totalTaxVal = this.invoiceUploadForm.get("totalTax").value;
+        if(totalTaxVal && !isNaN(totalTaxVal)) {
+            let totalTax = Number(totalTaxVal).toFixed(3);
+            this.invoiceUploadForm.get("totalTax").setValue(totalTax);
+        }
+        else {
+            this.invoiceUploadForm.get("totalTax").setValue(null);
+        }
 
         this.updateInvoiceTotalAmt();
     }
@@ -362,7 +578,7 @@ export class InvoiceUploadComponent implements OnInit {
         let totalTax = totalTaxVal ? +totalTaxVal : 0;
 
         let totalInvAmt: number = totalItemsAmt + fregihtCharges + totalTax;
-        this.invoiceUploadForm.get("totalInvAmt").setValue(totalInvAmt);
+        this.invoiceUploadForm.get("totalInvAmt").setValue(totalInvAmt.toFixed(3));
     }
 
     prepareInvoiceFileTypes() {
@@ -380,11 +596,12 @@ export class InvoiceUploadComponent implements OnInit {
     }
 
     async loadInitData() {
+        this.invoiceNumberErrMsg = "";
 
         let req: InvoiceUploadReqModel = {
             vendorId: (globalConstant.userDetails.isVendor) ? globalConstant.userDetails.userId : null,
             approvalLevels: [],
-            departments: (globalConstant.userDetails.isPurchaseOwner) ? globalConstant.userDetails.poDepts : []
+            departments: (globalConstant.userDetails.isInvoiceUploader) ? globalConstant.userDetails.poDepts : []
         }
         this._homeService.updateBusy(<BusyDataModel>{ isBusy: true, msg: "Loading..." });
         this._initDetails = await this._invoiceUploadService.getInvoiceUploadInitData(req);
@@ -392,6 +609,7 @@ export class InvoiceUploadComponent implements OnInit {
             this.prepareInvoiceFileTypes();
             this.poList = (this._initDetails.poList && this._initDetails.poList.length > 0) ? this._initDetails.poList.concat() : [];
             this.currencyList = (this._initDetails.currencyList && this._initDetails.currencyList.length > 0) ? this._initDetails.currencyList.concat() : [];
+            this.companiesList = (this._initDetails.companiesList && this._initDetails.companiesList.length > 0) ? this._initDetails.companiesList.concat() : [];
         }
         this._homeService.updateBusy(<BusyDataModel>{ isBusy: false, msg: null });
 
@@ -402,6 +620,8 @@ export class InvoiceUploadComponent implements OnInit {
                 this.currency = this.selectedPOItem.currencyType;
                 this.loadPOItems();
             }
+
+            this.validateInvoiceNumber();
         });
 
         this.invoiceUploadForm.get("currency").valueChanges.subscribe(val => {
@@ -411,6 +631,14 @@ export class InvoiceUploadComponent implements OnInit {
         });
 
         this.registerVendorAutoComplete();
+        this.registerProjectAutoComplete();
+    }
+
+    onRemarksBlur() {
+        let val: string = this.invoiceUploadForm.get("remarks").value;
+        if(val) {
+            this.invoiceUploadForm.get("remarks").setValue(val.trim());
+        }
     }
 
     async loadPOItems() {
@@ -472,7 +700,8 @@ export class InvoiceUploadComponent implements OnInit {
 
     removeItems() {
         const controlsList: FormArray = <FormArray>this.invoiceUploadForm.controls['itemsList'];
-        for(let i = 0; i < controlsList.length; i++) {
+        let cnt = 0;
+        while (cnt < controlsList.length) {
             controlsList.removeAt(0);
         }
     }
@@ -485,7 +714,7 @@ export class InvoiceUploadComponent implements OnInit {
 
         let fg: FormGroup = this._formBuilder.group({
             itemId: item.itemId,
-            itemNumber: item.itemNumber,
+            itemNumber: [item.itemNumber, [Validators.pattern("^[0-9]*$")]],
             itemDescription: item.itemDescription,
             uom: item.uom,
             orderedUnits: item.orderedUnits,
@@ -495,29 +724,64 @@ export class InvoiceUploadComponent implements OnInit {
             invoiceUnits: [ item.invoiceUnits, Validators.required ],
             unitPrice: item.unitPrice,
             unitsAmt: unitsAmt,
-            hsn: [ item.hsn, [Validators.required, Validators.maxLength(8)] ],
+            hsn: [ item.hsn, [Validators.required, Validators.maxLength(8), Validators.pattern("^[0-9]*$")] ],
             createdBy: item.createdBy,
             createdDate: item.createdDate
         },
-        { validator: [ this.invoiceGreaterThanBalance('invoiceUnits', 'balanceUnits', "Invoice units shouldn't greater than Balance units.") ] });
+        { validator: [ this.invoiceGreaterThanBalance('invoiceUnits', 'balanceUnits', "itemNumber", "orderedUnits", "Invoice units shouldn't greater than Balance units.") ] });
 
         return fg;
     }
 
-    invoiceGreaterThanBalance(invoiceUnits: string, balanceUnits: string, errorMsg: string) {
+    invoiceGreaterThanBalance(invoiceUnits: string, balanceUnits: string, itemNumber: string, orderedUnits: string, errorMsg: string) {
         return (group: FormGroup): { [key: string]: any } => {
             let invCtrl = group.controls[invoiceUnits];
             let balCtrl = group.controls[balanceUnits];
-           
-            if (invCtrl.value && balCtrl.value) {
-                let invUnits: number = +invCtrl.value;
-                let balUnits: number = +balCtrl.value
-                if (invUnits > balUnits) {
-                    return {
-                        invErrMsg: errorMsg
-                    };
+
+            if(this.selectedInvoiceType == 'po') {
+                let existingItem: NotRejectedItemsModel = null;
+                if(this._poItemsResultDetails && this._poItemsResultDetails.notRejectedItemsList && this._poItemsResultDetails.notRejectedItemsList.length > 0) {
+                    let itemNumberCtrl = group.controls[itemNumber];
+                    existingItem = this._poItemsResultDetails.notRejectedItemsList.find(x => x.itemNumber == itemNumberCtrl.value);
+                }
+
+                if(existingItem) {
+                    if (invCtrl.value && balCtrl.value) {
+                        let invUnits: number = +invCtrl.value;
+                        let balUnits: number = +balCtrl.value;
+                        if (invUnits > balUnits) {
+                            return {
+                                invErrMsg: "Invoice units shouldn't greater than Balance units."
+                            };
+                        }
+                    }
+                }
+                else {
+                    let orderedUnitsCtrl = group.controls[orderedUnits];
+
+                    if (invCtrl.value && orderedUnitsCtrl.value) {
+                        let invUnits: number = +invCtrl.value;
+                        let orderedUnits: number = +orderedUnitsCtrl.value;
+                        if (invUnits > orderedUnits) {
+                            return {
+                                invErrMsg: "Invoice units shouldn't greater than Order units."
+                            };
+                        }
+                    }
                 }
             }
+            else {
+                if (invCtrl.value && balCtrl.value) {
+                    let invUnits: number = +invCtrl.value;
+                    let balUnits: number = +balCtrl.value;
+                    if (invUnits > balUnits) {
+                        return {
+                            invErrMsg: "Invoice units shouldn't greater than Balance units."
+                        };
+                    }
+                }
+            }    
+
             return {};
         }
     }
@@ -560,6 +824,12 @@ export class InvoiceUploadComponent implements OnInit {
         if((this.invoiceUploadForm.controls['itemsList'] as FormArray).length > 0 && this.invoiceUploadForm.valid) {
             isCntrlsValid = true;
         }
+
+        // this.totalItemsAmtValid = false;
+        // let totalItemsAmtVal = this.invoiceUploadForm.get("totalItemsAmt").value;
+        // if(totalItemsAmtVal && !isNaN(totalItemsAmtVal) && Number(totalItemsAmtVal) > 0) {
+        //     this.totalItemsAmtValid = true;
+        // }
 
         if(isInvFilesValid && isSupportingFilesValid && isCntrlsValid) {
             return true;
@@ -627,15 +897,34 @@ export class InvoiceUploadComponent implements OnInit {
 
         let venId: string = null;
         let venName: string = null;
+        let projId: string = null;
+        let projName: string = null;
+        let companyCode: string = null;
+        let companyName: string = null;
         if(this.selectedInvoiceType == 'po') {
             venId = this.selectedPOItem.vendorId;
             venName = this.selectedPOItem.vendorName;
+            companyCode = this.selectedPOItem.companyCode;
+            companyName = this.selectedPOItem.companyName;
         }
         else {
             let selVendor = this.invoiceUploadForm.get("vendorId").value;
             if(typeof(selVendor) == "object") {
                 venId = (selVendor as VendorAutoCompleteModel).vendorId;
                 venName = (selVendor as VendorAutoCompleteModel).vendorName;
+            }
+
+            let selProject = this.invoiceUploadForm.get("projectId").value;
+            if(typeof(selProject) == "object") {
+                projId = (selProject as ProjectAutoCompleteModel).projectId;
+                projName = (selProject as ProjectAutoCompleteModel).projectName;
+            }
+
+            let selCompanyCode = this.invoiceUploadForm.get("companyCode").value;
+            let selCompanyCodeObj: CompanyCodeMasterList = this.companiesList.find(c => c.companyCode == selCompanyCode);
+            if(selCompanyCodeObj) {
+                companyCode = selCompanyCodeObj.companyCode;
+                companyName = selCompanyCodeObj.companyDesc;
             }
         }
 
@@ -657,6 +946,10 @@ export class InvoiceUploadComponent implements OnInit {
                 statusCode: null,
                 totalTax: this.invoiceUploadForm.get("totalTax").value,
                 currencyType: this.currency,
+                projectId: projId,
+                projectName: projName,
+                companyCode: companyCode,
+                companyName: companyName,
                 createdBy: null,
                 createdDate: null
             },
@@ -672,17 +965,52 @@ export class InvoiceUploadComponent implements OnInit {
                 if (response.body) {
                     this.invoiceUpdateResults = response.body as UpdateInvoiceResultModel;
                     if (this.invoiceUpdateResults.statusDetails.status == 200 && this.invoiceUpdateResults.statusDetails.isSuccess) {
-                        this.msg = this.invoiceUpdateResults.statusDetails.message;
+                        this.displayInvoiceUploadStatus(this.invoiceUpdateResults.statusDetails.message, true);
                     }
                     else {
-                        this.msg = "failed";
+                        this.displayInvoiceUploadStatus(this.invoiceUpdateResults.statusDetails.message, false);
                     }
                 }
             },
             (error) => {
                 this._homeService.updateBusy(<BusyDataModel>{ isBusy: false, msg: null });
                 console.log(error);
+                this.displayInvoiceUploadStatus("Invoice upload failed.", false);
             });
+    }
+
+    displayInvoiceUploadStatus(msg: string, status: boolean) {
+        const dialogRef = this._dialog.open(MessageDialogComponent, {
+            disableClose: true,
+            panelClass: 'dialog-box',
+            width: '550px',
+            data: <MessageDialogModel>{
+                title: "Invoice Upload Action",
+                message: msg
+            }
+        });
+
+        dialogRef.afterClosed().subscribe(result => {
+            if (result && status) {
+                this._router.navigate([this._appService.routingConstants.invoiceSearch]);
+            }
+        });
+    }
+
+    totalItemsAmtValidator(control: AbstractControl) {
+        if(this.invoiceUploadForm) {
+            let totalItemsAmtVal = this.invoiceUploadForm.get("totalItemsAmt").value;
+            if(totalItemsAmtVal && (Number(totalItemsAmtVal) > 0)) {
+                return {};
+            }
+            else {
+                return {
+                    totalItemsAmtErr: "Invoice Net Amount should be greater than zero"
+                }
+            }
+        }
+        
+        return {};
     }
 
     ngOnDestroy() {
@@ -709,10 +1037,12 @@ export class InvoiceUploadComponent implements OnInit {
             remarks: [ null, Validators.required ],
             freightCharges: null,
             totalTax: [ null, Validators.required ],
-            totalItemsAmt: [ "" ],
+            totalItemsAmt: [ "", [this.totalItemsAmtValidator.bind(this)] ],
             totalInvAmt: [ "" ],
             currency: null,
             vendorId: null,
+            projectId: null,
+            companyCode: null,
             createdBy: null,
             createdDate: null,
             itemsList: this._formBuilder.array([], Validators.required)

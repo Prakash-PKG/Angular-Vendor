@@ -46,6 +46,7 @@ export class InvoiceUploadResultModel {
     invoiceFileTypes: InvoiceFileTypwModel[];
     currencyList: currencyMasterList[];
     statusDetails: StatusModel;
+    companiesList: CompanyCodeMasterList[];
 }
 
 export class PODetailsModel {
@@ -60,6 +61,9 @@ export class PODetailsModel {
     poDate: string = null;
     totalAmount: string = null;
     billedAmount: string = null;
+    paidAmount: string = null;
+    companyCode: string = null;
+    companyName: string = null;
     createdBy: string = null;
     createdDate: string = null;
 }
@@ -148,8 +152,8 @@ export class VendorMasterDetailsModel {
     procApprByName: string;
     finApprByName: string;
     finRemark: string;
-    isGSTReg: boolean;
-    otherDocDesc :string;
+    // isGSTReg: boolean;
+    otherDocDesc: string;
 }
 
 export class VendorMasterDocumentModel {
@@ -184,6 +188,10 @@ export class InvoiceModel {
     freightCharges: string;
     grnSesNumber: string;
     statusCode: string;
+    companyCode: string;
+    companyName: string;
+    projectId: string;
+    projectName: string;
 }
 
 export class InvoiceSearchRequestModel {
@@ -197,8 +205,8 @@ export class InvoiceDetailsRequestModel {
     purchaseOrderId: number;
     invoiceId: number;
     poNumber: string;
-	invoiceNumber: string;
-	vendorId: string;
+    invoiceNumber: string;
+    vendorId: string;
 }
 
 export class InvoiceDetailsResultModel {
@@ -212,13 +220,13 @@ export class InvoiceDetailsResultModel {
 
 export class PaymentStatusDetailsModel {
     vendorId: string;
-	poNumber: string;
-	invoiceNumber: string;
-	currencyType: string;
-	invoiceAmountPaid: string;
-	paymentDate: string;
-	status: string;
-	remarks: string;
+    poNumber: string;
+    invoiceNumber: string;
+    currencyType: string;
+    invoiceAmountPaid: string;
+    paymentDate: string;
+    status: string;
+    remarks: string;
 }
 
 export class ApprovalLevelsModel {
@@ -243,14 +251,23 @@ export class POSearchReqModel extends PendingApprovalRequestModel {
     vendorId: string;
 }
 
-export class POInvoiceFinanceDumpReqModel {
+export class InvoiceFinanceDumpReqModel {
+    startDate: string;
+    endDate: string;
+    employeeId: string;
+    isIncremental: boolean;
+}
+export class VendorDumpReqModel {
     startDate: string;
     endDate: string;
     employeeId: string;
     isIncremental: boolean;
 }
 
-export class POInvoiceDumpInitResultModel {
+export class InvoiceDumpInitResultModel {
+    lastDumpDt: string;
+}
+export class VendorDumpInitResultModel {
     lastDumpDt: string;
 }
 
@@ -283,7 +300,7 @@ export class VendorMasterFilesModel {
 
 export class VendorApprovalInitResultModel {
     statusDetails: StatusModel;
-    filesList: VendorMasterFilesModel[];
+    fileDetails: FileDetailsModel[];
     vendorMasterDetails: VendorMasterDetailsModel;
     accGroupMasterList: AccGroupMasterList[];
     companyCodeMasterList: CompanyCodeMasterList[];
@@ -291,6 +308,7 @@ export class VendorApprovalInitResultModel {
     vendorApprovalDetails: vendorApprovalDetails;
     withholdTypeVOList: WithholdTypeList[];
     withholdTaxVOList: WithholdTaxList[];
+    vendorMasterDocumentVOList: VendorMasterDocumentModel[];
 }
 
 export class VendorApprovalInitReqModel {
@@ -315,7 +333,7 @@ export class vendorApprovalDetails {
 
 export class VendorApprovalReqModel extends vendorApprovalDetails {
     action: string;
-    vendorMasterDetails :VendorMasterDetailsModel
+    vendorMasterDetails: VendorMasterDetailsModel
 }
 
 export class CompanyCodeMasterList {
@@ -340,6 +358,12 @@ export class POItemsRequestModel {
 export class POItemsResultModel {
     statusDetails: StatusModel;
     itemsList: ItemModel[];
+    notRejectedItemsList: NotRejectedItemsModel[];
+}
+
+export class NotRejectedItemsModel {
+    itemNumber: string;
+    invoicedUnits: string;
 }
 
 export class ItemModel {
@@ -377,6 +401,10 @@ export class InvoiceDetailsModel {
     statusCode: string;
     totalTax: string;
     currencyType: string;
+    projectId: string;
+    projectName: string;
+    companyCode: string;
+    companyName: string;
     createdBy: string;
     createdDate: string;
 }
@@ -502,6 +530,23 @@ export class PODetailsResultsModel {
 
 export class VendorAutoCompleteModel {
     vendorMasterId: number;
-	vendorId: string;
+    vendorId: string;
     vendorName: string;
+}
+
+export class InvoiceExistReqModel {
+    vendorId: string;
+    innvoiceNumber: string;
+}
+
+export class ProjectAutoCompleteModel {
+    projectId: string;
+    projectName: string;
+}
+
+export class ForgotPasswordData {
+    email: string;
+}
+export class EmpanelmentOtpReqModel {
+    userName: string;
 }

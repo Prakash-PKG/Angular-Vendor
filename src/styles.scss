@@ -1,4 +1,3 @@
-
 @import "~@angular/material/theming";
 
 @include mat-core();
@@ -16,7 +15,7 @@ body {
   height: 100%;
   margin: 0;
   font-family: Roboto, "Helvetica Neue", sans-serif;
-  padding:0;
+  padding: 0;
   font-size: 12px;
   color: rgba(0, 0, 0, 0.54);
 }
@@ -40,31 +39,37 @@ body {
 .padding-unset {
   padding: 0px;
 }
-textarea{
- height: 15px;
+textarea {
+  height: 15px;
 }
-.mat-radio-button.mat-accent.mat-radio-checked .mat-radio-outer-circle{
-  border-color:#24f4d5 ;
+.mat-radio-button.mat-accent.mat-radio-checked .mat-radio-outer-circle {
+  border-color: #24f4d5;
 }
 
-.mat-radio-button.mat-accent .mat-radio-inner-circle{
-  color:#24f4d5;
-  background-color:#24f4d5;
+.mat-radio-button.mat-accent .mat-radio-inner-circle {
+  color: #24f4d5;
+  background-color: #24f4d5;
 }
 
 .mat-radio-button.mat-accent .mat-radio-ripple .mat-ripple-element {
-    background-color:rgba(36, 244, 213,.26)!important;
+  background-color: rgba(36, 244, 213, 0.26) !important;
 }
-.error-txt{
+.error-txt {
   color: blueviolet;
   font-style: italic;
   font-weight: 700;
   margin-right: 10px;
 }
 // --------------------------------------------------------------css for data table starts here-----------------------------------------------------
-.dataTable tbody tr td.amount{
+.dataTable tbody tr td.amount {
   text-align: right;
-  }
+}
+.tencharacters {
+  width: 7.5em;
+}
+.eightcharacters{
+  width: 6em;
+}
 .dataTable {
   overflow: auto;
   margin-top: 10px;
@@ -74,9 +79,14 @@ textarea{
 .dataTable tbody tr td {
   text-align: left;
   font-size: inherit;
+  border-right: solid 1px #59ffff;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+.dataTable tbody tr td:first-child {
+  border-left: solid 1px #59ffff;
 }
 .dataTable tbody tr td input {
-  width: 3.2em;
   border: none;
   text-align: center;
   height: 1.7em;
@@ -86,15 +96,14 @@ textarea{
   margin-right: 10px;
   font-size: inherit;
   font-weight: 500;
-  color:black;
+  color: black;
+  padding-left: 5px;
+  padding-right: 5px;
 }
-.dataTable thead tr th:last-child {
-  text-align: right;
-}
-
 
 .dataTable tr {
   height: 3em;
+  border-bottom: solid 1px #59ffff;
 }
 button {
   cursor: pointer;
@@ -123,52 +132,47 @@ button {
 
 // --------------------------------------------------------------media queries starts here-----------------------------------------------------
 
-
 /* Smartphones (portrait and landscape) ----------- */
 @media only screen and (max-device-width: 320px) {
   body {
-    font-size: 10px;
+    font-size: 7px;
   }
 }
 
 /* Extra small devices (phones, 600px and 320px) */
 @media only screen and (min-device-width: 320px) and (max-width: 599px) {
   body {
-    font-size: 10px;
+    font-size: 8px;
   }
 }
 
 /* Small devices (portrait tablets and large phones, 600px and up) */
 @media only screen and (min-width: 600px) and (max-width: 767px) {
   body {
-    font-size: 12px;
+    font-size: 8px;
   }
-
 }
 
 /* Medium devices (landscape tablets, 768px and up) */
 @media only screen and (min-width: 768px) and (max-width: 991px) {
   body {
-    font-size: 12px;
+    font-size: 10px;
   }
 }
 
 /* Large devices (laptops/desktops, 992px and up) */
 @media only screen and (min-width: 992px) and (max-width: 1199px) {
   body {
-    font-size: 12px;
+    font-size: 10px;
   }
 }
 
 /* Extra large devices (large laptops and desktops, 1200px and up) */
 @media only screen and (min-width: 1200px) {
   body {
-    font-size: 14px;
+    font-size: 12px;
   }
 }
-
-
-
 
 // designs for mvendor
 .my-container {
@@ -183,41 +187,49 @@ button {
   padding: 0em 1em 1em;
   max-width: unset;
   overflow: auto;
-  min-height: -webkit-fill-available;
+  min-height: 100%;
+  height: auto;
 }
 .actions .footer-actions {
   background-color: blueviolet;
   color: white;
-  margin: .5em;
+  margin: 0.5em;
   min-width: 6em;
   font-size: inherit;
   line-height: inherit;
-  padding: .5em 1.5em;
+  padding: 0.5em 1.5em;
   max-height: 3em;
   height: 3em;
+  align-items: center;
+  justify-content: center;
 }
-.actions  .footer-actions-green{
-  background-color: #24F4D5;
+.actions .footer-actions-green {
+  background-color: #24f4d5;
   color: #3c3c3c;
 }
-.actions{
+.actions {
   justify-content: flex-end;
   align-items: center;
 }
 
-.main{
-padding: 20px;
-padding-bottom: 0px;
-display: flex;
-flex-direction: column;
-min-height: -webkit-fill-available;
+.main {
+  padding: 20px;
+  padding-bottom: 0px;
+  display: flex;
+  flex-direction: column;
+  height: auto;
+  min-height: 100%;
 }
 .errortxt {
-  color: #ce2a0e;
+  color: #f44336;
   font-size: smaller;
   font-style: italic;
+  font-weight: 400;
 }
-.title{
+.title {
   color: blueviolet;
   font-size: x-large;
+}
+::ng-deep input:-internal-autofill-selected {
+  background-color: white !important;
 }

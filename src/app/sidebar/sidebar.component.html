@@ -1,80 +1,92 @@
 <div class="commonleftnav mat-elevation-z8" [@collapseChanged]="isSidebarCollapsed" >
     <div class="navexpandcollapse" (click)="onCollapseClick()">
-        <span *ngIf="isSidebarCollapsed === false">
-            <mat-icon>close</mat-icon>
+        <span *ngIf="isSidebarCollapsed == false">
+            <mat-icon  matTooltip="Collapse sidebar">close</mat-icon>
         </span>
-        <span *ngIf="isSidebarCollapsed === true">
+        <span *ngIf="isSidebarCollapsed == true"  matTooltip="Expand sidebar">
             <mat-icon>compare_arrows</mat-icon>
         </span>
     </div>
 
     <ul class="menu">
-        <li class="removehover" style="padding:0px;">
+        <li class="removehover" style="padding:0px;" *ngIf = "isInvoiceCreateVisible == true">
             <div class="creation-btn actions">
                 <button mat-raised-button class="footer-actions" (click) = "onInvoiceUploadClick()" [ngClass]="{' btn-collapsed': isSidebarCollapsed ==  true }">
-                    <span *ngIf="isSidebarCollapsed === false" >Invoice Creation</span>
-                    <span *ngIf="isSidebarCollapsed === true" ><mat-icon>create</mat-icon></span>
+                    <span *ngIf="isSidebarCollapsed == false" >Invoice Creation</span>
+                    <span *ngIf="isSidebarCollapsed == true" ><mat-icon matTooltip="Create Invoice">create</mat-icon></span>
                 </button>
             </div>
         </li>
-        <li>
+
+        <li *ngIf = "isApprovalsVisible == true" (click) = "onPendingApprovalClick()">
             <div class="side-icon">
-                <mat-icon>dashboard</mat-icon>
-            </div>
-            <div class="navtxt">Dashboard</div>
-        </li>
-        <li (click) = "onPendingApprovalClick()">
-            <div class="side-icon">
-                <mat-icon>done_outline</mat-icon>
+                <mat-icon matTooltip="Approvals">done_outline</mat-icon>
             </div>
             <div class="navtxt">Approvals</div>
         </li>
         <li (click) = "onPoSearchClick()">
             <div class="side-icon">
-                <mat-icon>pageview</mat-icon>
+                <mat-icon  matTooltip="PO Search">pageview</mat-icon>
             </div>
             <div class="navtxt">PO Search</div>
         </li>
         <li (click) = "onInvoiceSearchClick()">
             <div class="side-icon">
-                <mat-icon>local_offer</mat-icon>
+                <mat-icon  matTooltip="Invoice Search">local_offer</mat-icon>
             </div>
             <div class="navtxt">Invoice Search</div>
         </li>
-        <li>
+        <li (click) = "onVenDashClick()">
+            <div class="side-icon">
+                <mat-icon  matTooltip="Vendor Dashboard">dashboard</mat-icon>
+            </div>
+            <div class="navtxt">Vendor Dashboard</div>
+        </li>
+        <li *ngIf = "isPOInvoiceDumpVisible == true" [ngClass]="{'remove-li': isSidebarCollapsed == true}">
             <div class="side-icon">
                 <mat-icon>description</mat-icon>
             </div>
             <div class="navtxt">Reports</div>
         </li>
-        <ul class="childdash">
-            <li [ngStyle]="{'padding-left': isSidebarCollapsed === true ? '1em': '2em' }" (click) = "onPOInvoiceDumpClick()">
+        <ul class="childdash" *ngIf = "isPOInvoiceDumpVisible == true">
+            <li [ngClass]="{'collapsed': isSidebarCollapsed == true}" (click) = "onPOInvoiceDumpClick()">
                 <div class="side-icon">
-                    <mat-icon>description</mat-icon>
+                    <mat-icon  matTooltip="PO Invoice Dump">description</mat-icon>
                 </div>
                 <div class="navtxt">PO Invoice Dump</div>
             </li>
+            <li [ngClass]="{'collapsed': isSidebarCollapsed == true}" (click) = "onNonPOInvoiceDumpClick()">
+                <div class="side-icon">
+                    <mat-icon  matTooltip="Non-PO Invoice Dump">description</mat-icon>
+                </div>
+                <div class="navtxt">Non PO Invoice Dump</div>
+            </li>
+            <li [ngClass]="{'collapsed': isSidebarCollapsed == true}" (click) = "onVendorDumpClick()">
+                <div class="side-icon">
+                    <mat-icon  matTooltip="Vendor Dump">description</mat-icon>
+                </div>
+                <div class="navtxt">Vendor Dump</div>
+            </li>
         </ul>
-        <li class="removehover">
+        <li class="removehover" [ngClass]="{'remove-li': isSidebarCollapsed == true}">
             <div class="side-icon">
                 <mat-icon>person</mat-icon>
             </div>
             <div class="navtxt">Vendor</div>
         </li>
         <ul class="childdash">
-            <li [ngStyle]="{'padding-left': isSidebarCollapsed === true ? '1em': '2em' }" (click) = "onVendorRegistrationClickClick()">
+            <li [ngClass]="{'collapsed': isSidebarCollapsed == true}" (click) = "onVendorRegistrationClickClick()">
                 <div class="side-icon">
-                    <mat-icon>how_to_reg</mat-icon>
+                    <mat-icon  matTooltip="Vendor Registration">how_to_reg</mat-icon>
                 </div>
                 <div class="navtxt">Vendor Registration</div>
             </li>
-            <li [ngStyle]="{'padding-left': isSidebarCollapsed === true ? '1em': '2em' }" (click) = "onEmpanelmentClick()">
+            <li *ngIf = "isEmpanelmentVisible == true" [ngClass]="{'collapsed': isSidebarCollapsed == true}" (click) = "onEmpanelmentClick()">
                 <div class="side-icon">
                     <mat-icon>person</mat-icon>
                 </div>
                 <div class="navtxt">Vendor Empanelment</div>
             </li>
-
         </ul>
         <li (click) = "onLogoutClick()">
             <div class="side-icon">

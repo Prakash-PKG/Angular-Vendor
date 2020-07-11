@@ -12,10 +12,8 @@ div.actions {
 .dataTable {
   margin-top: 0px;
 }
-.amount {
-  text-align: right;
-}
-.search-row {
+
+.search-row, .search-row>form {
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
@@ -30,7 +28,12 @@ div.actions {
   flex-shrink: 0;
 }
 .search-row-element.actions {
-  flex: 0 0 3em;
+  flex-grow: 0;
+  flex-shrink: 0;
+}
+.search-row-element.actions .footer-actions {
+  height: 2em;
+  line-height: 1em;
 }
 .mat-form-field.field {
   margin-right: 2em;

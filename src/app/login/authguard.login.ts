@@ -1,3 +1,4 @@
+import { AppService } from './../app.service';
 import { LoginComponent } from './login.component';
 import { globalConstant } from './../common/global-constant';
 import { CryptoService } from './../common/crypto.service';
@@ -15,7 +16,10 @@ export class AuthGuardLogin implements CanActivate {
     userRole: string[];
     departmentHead: string;
 
-    constructor(private authService: LoginService, private router: Router, private cryptoService: CryptoService) { }
+    constructor(private authService: LoginService, 
+                private router: Router, 
+                private cryptoService: CryptoService, 
+                private _appService: AppService) { }
 
     canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
 
@@ -23,7 +27,6 @@ export class AuthGuardLogin implements CanActivate {
         let isAuthorizesUser: boolean = false;
         if (!localStorage.getItem("x-auth-token")) {
             this.router.navigate(['login']);
-
             return true;
         } else {
             let user = localStorage.getItem('user');
@@ -42,13 +45,15 @@ export class AuthGuardLogin implements CanActivate {
             globalConstant.userDetails.userRoles = this.userRole;
 
             globalConstant.userDetails.isVendor = false;
+            globalConstant.userDetails.isInvoiceUploader = false;
             globalConstant.userDetails.isPurchaseOwner = false;
             globalConstant.userDetails.isFunctionalHead = false;
             globalConstant.userDetails.isProcurement = false;
             globalConstant.userDetails.isFinance = false;
             globalConstant.userDetails.isEmpanelment = false;
+            globalConstant.userDetails.isTempVendor = false;
             globalConstant.userDetails.poDepts = [];
-             
+
             if(globalConstant.userDetails.userRoles && globalConstant.userDetails.userRoles.length > 0) {
                 let vendorRoles = globalConstant.userDetails.userRoles.filter(r => globalConstant.vendorRoles.indexOf(r.roleCode) > -1);
                 if(vendorRoles && vendorRoles.length > 0) {
@@ -58,11 +63,25 @@ export class AuthGuardLogin implements CanActivate {
                     globalConstant.userDetails.isVendor = false;
                 }
 
+                let invUploadRoles = globalConstant.userDetails.userRoles.filter(r => globalConstant.invUploadRoles.indexOf(r.roleCode) > -1);
+                if(invUploadRoles && invUploadRoles.length > 0) {
+                    globalConstant.userDetails.isInvoiceUploader = true;
+                    for(let pr = 0; pr < invUploadRoles.length; pr++) {
+                        globalConstant.userDetails.poDepts.push(invUploadRoles[pr]["roleName"]);
+                    }
+                 }
+                else {  
+                    globalConstant.userDetails.isInvoiceUploader = false;
+                }
+
                 let poRoles = globalConstant.userDetails.userRoles.filter(r => globalConstant.poRoles.indexOf(r.roleCode) > -1);
                 if(poRoles && poRoles.length > 0) {
                     globalConstant.userDetails.isPurchaseOwner = true;
                     for(let pr = 0; pr < poRoles.length; pr++) {
-                        globalConstant.userDetails.poDepts.push(poRoles[pr]["roleCode"].toUpperCase());
+                        let curRole: string = poRoles[pr]["roleName"];
+                        if(globalConstant.userDetails.poDepts.indexOf(curRole) < 0) {
+                            globalConstant.userDetails.poDepts.push(curRole);
+                        }
                     }
                  }
                 else {  
@@ -99,6 +118,27 @@ export class AuthGuardLogin implements CanActivate {
                 }
                 else {
                     globalConstant.userDetails.isEmpanelment = false;
+                }
+
+                let tempVendorRoles = globalConstant.userDetails.userRoles.filter(r => globalConstant.tempVendorRoles.indexOf(r.roleCode) > -1);
+                if(tempVendorRoles && tempVendorRoles.length > 0) {
+                    globalConstant.userDetails.isTempVendor = true;
+                }
+                else {
+                    globalConstant.userDetails.isTempVendor = false;
+                }
+            }
+
+            if(globalConstant.userDetails.isTempVendor) {
+                let vendorRegUrls = [
+                                        this._appService.routingConstants.vendorDetails,
+                                        this._appService.routingConstants.vendorAddressDetails,
+                                        this._appService.routingConstants.vendorBankDetails,
+                                        this._appService.routingConstants.vendorDocuments,
+                                        this._appService.routingConstants.vendorOther
+                                    ];
+                if(vendorRegUrls.indexOf(state.url) < 0) {
+                    this.router.navigate(['login']);
                 }
             }
            

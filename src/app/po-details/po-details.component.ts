@@ -20,7 +20,7 @@ export class PoDetailsComponent implements OnInit {
     itemsList: ItemDisplayModel[] = [];
 
     headerArr: string[] = ['Item No.', 'Item Desc', "HSN/SAC", 'Order Qty', 'Supplied Qty', 'Balance Qty', 
-                            'Invoive Qty', 'Currency', 'Rate', 'Amount'];
+                            'Invoice Qty', 'Currency', 'Rate', 'Amount'];
 
     currency: string = "";
 
