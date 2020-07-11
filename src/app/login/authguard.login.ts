@@ -1,3 +1,4 @@
+import { AppService } from './../app.service';
 import { LoginComponent } from './login.component';
 import { globalConstant } from './../common/global-constant';
 import { CryptoService } from './../common/crypto.service';
@@ -15,7 +16,10 @@ export class AuthGuardLogin implements CanActivate {
     userRole: string[];
     departmentHead: string;
 
-    constructor(private authService: LoginService, private router: Router, private cryptoService: CryptoService) { }
+    constructor(private authService: LoginService, 
+                private router: Router, 
+                private cryptoService: CryptoService, 
+                private _appService: AppService) { }
 
     canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
 
@@ -23,7 +27,6 @@ export class AuthGuardLogin implements CanActivate {
         let isAuthorizesUser: boolean = false;
         if (!localStorage.getItem("x-auth-token")) {
             this.router.navigate(['login']);
-
             return true;
         } else {
             let user = localStorage.getItem('user');
@@ -48,6 +51,7 @@ export class AuthGuardLogin implements CanActivate {
             globalConstant.userDetails.isProcurement = false;
             globalConstant.userDetails.isFinance = false;
             globalConstant.userDetails.isEmpanelment = false;
+            globalConstant.userDetails.isTempVendor = false;
             globalConstant.userDetails.poDepts = [];
 
             if(globalConstant.userDetails.userRoles && globalConstant.userDetails.userRoles.length > 0) {
@@ -114,6 +118,27 @@ export class AuthGuardLogin implements CanActivate {
                 }
                 else {
                     globalConstant.userDetails.isEmpanelment = false;
+                }
+
+                let tempVendorRoles = globalConstant.userDetails.userRoles.filter(r => globalConstant.tempVendorRoles.indexOf(r.roleCode) > -1);
+                if(tempVendorRoles && tempVendorRoles.length > 0) {
+                    globalConstant.userDetails.isTempVendor = true;
+                }
+                else {
+                    globalConstant.userDetails.isTempVendor = false;
+                }
+            }
+
+            if(globalConstant.userDetails.isTempVendor) {
+                let vendorRegUrls = [
+                                        this._appService.routingConstants.vendorDetails,
+                                        this._appService.routingConstants.vendorAddressDetails,
+                                        this._appService.routingConstants.vendorBankDetails,
+                                        this._appService.routingConstants.vendorDocuments,
+                                        this._appService.routingConstants.vendorOther
+                                    ];
+                if(vendorRegUrls.indexOf(state.url) < 0) {
+                    this.router.navigate(['login']);
                 }
             }
            

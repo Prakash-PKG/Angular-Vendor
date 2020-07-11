@@ -111,23 +111,23 @@ const routes: Routes = [
         children: [
             {
                 path: 'vendetails',
-                component: VendorDetailsComponent
-                // canActivate: [AuthGuardLogin]
+                component: VendorDetailsComponent,
+                canActivate: [AuthGuardLogin]
             },
             {
                 path: 'venaddr',
-                component: VendorAddressComponent
-                // canActivate: [AuthGuardLogin]
+                component: VendorAddressComponent,
+                canActivate: [AuthGuardLogin]
             },
             {
                 path: 'venbank',
-                component: VendorBankDetailsComponent
-                // canActivate: [AuthGuardLogin]
+                component: VendorBankDetailsComponent,
+                canActivate: [AuthGuardLogin]
             },
             {
                 path: 'vendocs',
-                component: VendorDocumentsComponent
-                // canActivate: [AuthGuardLogin]
+                component: VendorDocumentsComponent,
+                canActivate: [AuthGuardLogin]
             },
             {
                 path: '',
