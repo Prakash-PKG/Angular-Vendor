@@ -58,6 +58,12 @@ export class InvoiceApprovalsComponent implements OnInit {
                 public _dialog: MatDialog,
                 private _invoiceApprovalsService: InvoiceApprovalsService) { }
 
+    onRemarksBlur() {
+        if(this.remarks) {
+            this.remarks = this.remarks.trim();
+        }
+    }
+
     onBackBtnClick() {
         this._router.navigate([this._appService.routingConstants.pendingApprovals]);
     }

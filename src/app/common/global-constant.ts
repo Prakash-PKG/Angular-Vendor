@@ -7,6 +7,7 @@ export const globalConstant : any = {
     empanelmentRoles: ["empanelment"],
     procurementRoles: ["procurement"],
     vendorRoles: ["vendor"],
+    tempVendorRoles: ["vendor-temp"],
     userDetails: {
         userId: "",
         userEmail: "",
@@ -20,6 +21,7 @@ export const globalConstant : any = {
         isProcurement: false,
         isFinance: false,
         isEmpanelment: false,
+        isTempVendor: false,
         poDepts: [],
         invDepts: []
     }

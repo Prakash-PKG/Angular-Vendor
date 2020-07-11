@@ -213,7 +213,7 @@
         </div>
         <div class="flex-item">
             <mat-form-field class="full-width" style="margin-left: 20px">
-                <input matInput placeholder="Remarks" [(ngModel)]="remarks" autocomplete="off">
+                <input matInput placeholder="Remarks" [(ngModel)]="remarks" maxlength="50" (blur) = "onRemarksBlur()" autocomplete="off">
             </mat-form-field>
             <div class="error-txt">
                 {{ remarksErrMsg }}
@@ -263,7 +263,7 @@
                         {{ item.unitPrice }}
                     </td>
                     <td class="amount tencharacters">
-                        {{ item.unitsTotalAmount }}
+                        {{ item.totalAmt }}
                     </td>
                 </tr>
             </tbody>

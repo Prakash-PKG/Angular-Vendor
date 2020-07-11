@@ -43,7 +43,7 @@
             </mat-form-field>
 
             <mat-form-field class="search-row-element remarks">
-                <input type="text" matInput placeholder="Remarks" formControlName="remarks" autocomplete="off">
+                <input type="text" matInput placeholder="Remarks" maxlength="50" (blur) = "onRemarksBlur()" formControlName="remarks" autocomplete="off">
                 <mat-error *ngIf="( isSubmitted ) && f?.remarks?.errors?.required">Remarks is required</mat-error>
             </mat-form-field>
         </div>

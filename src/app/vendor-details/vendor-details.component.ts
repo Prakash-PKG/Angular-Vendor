@@ -49,10 +49,14 @@ export class VendorDetailsComponent implements OnInit {
 
                     if (response.body) {
                         let result: VendorRegistrationResultModel = response.body as VendorRegistrationResultModel;
-                        if (result.status.status == 200 && result.status.isSuccess) {
-                            this._appService.vendorRegistrationDetails = result.vendorMasterDetails;
-                            this._router.navigate([this._appService.routingConstants.vendorAddressDetails]);
-
+                        if (result.status.status == 200) {
+                            if(result.status.isSuccess) {
+                                this._appService.vendorRegistrationDetails = result.vendorMasterDetails;
+                                this._router.navigate([this._appService.routingConstants.vendorAddressDetails]);
+                            }
+                            else {
+                                this.failureMsg = result.status.message;
+                            }
                         }
                         else {
                             this.failureMsg = this._appService.messages.vendorRegistrationSaveFailure;

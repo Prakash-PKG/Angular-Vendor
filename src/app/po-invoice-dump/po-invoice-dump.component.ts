@@ -132,6 +132,10 @@ export class PoInvoiceDumpComponent implements OnInit {
     }
 
     ngOnInit() {
+        let dt: Date = new Date();
+        dt.setDate(dt.getDate() + 1);
+        this.maxEndDate = dt;
+
         setTimeout(() => {
            this.loadInitData();
         }, 100);
