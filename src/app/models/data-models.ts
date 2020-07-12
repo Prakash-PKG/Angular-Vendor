@@ -199,6 +199,7 @@ export class InvoiceSearchRequestModel {
     employeeId: string;
     approvalLevels: string[];
     departments: string[];
+    isForPayments: boolean;
 }
 
 export class InvoiceDetailsRequestModel {
@@ -207,6 +208,7 @@ export class InvoiceDetailsRequestModel {
     poNumber: string;
     invoiceNumber: string;
     vendorId: string;
+    isForPayment: boolean;
 }
 
 export class InvoiceDetailsResultModel {
@@ -215,7 +217,34 @@ export class InvoiceDetailsResultModel {
     invoiceFilesList: FileDetailsModel[];
     supportFilesList: FileDetailsModel[];
     approvalsList: InvoiceApprovalModel[];
-    paymentDetails: PaymentStatusDetailsModel;
+    paymentStatusDetails: PaymentStatusDetailsModel;
+    paymentStatusList: paymentStatusModel[];
+    paymentDetails: PaymentDetailsModel;
+}
+
+export class paymentStatusModel {
+    paymentStatusId: number;
+    statusCode: string;
+    statusDesc: string;
+}
+
+export class PaymentDetailsModel {
+    paymentDetailsId: number;
+	purchaseOrderId: number;
+	poNumber: string;
+	invoiceId: number;
+	invoiceNumber: string;
+	amountPaid: string;
+	statusCode: string;
+	statusDesc: string;
+	remarks: string;
+	createdDate: string;
+	createdBy: string;
+    updatedDate: string;
+}
+
+export class PaymentReqModel extends PaymentDetailsModel{
+	updatedBy: string;
 }
 
 export class PaymentStatusDetailsModel {

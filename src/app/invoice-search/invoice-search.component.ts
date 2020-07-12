@@ -68,12 +68,20 @@ export class InvoiceSearchComponent implements OnInit {
 
     invoiceSearchForm: FormGroup;
 
+    isForPayments: boolean = false;
+
     constructor(private _homeService: HomeService,
         private _appService: AppService,
         private _router: Router,
         private _formBuilder: FormBuilder,
         private _datePipe: DatePipe,
         private _invoiceSearchService: InvoiceSearchService) { }
+
+    onUpdatePaymentStatusClick(inv: InvoiceModel) {
+        this._appService.selectedInvoice = inv;
+        this._appService.isInvoiceDetailsForPayments = this.isForPayments;
+        this._router.navigate([this._appService.routingConstants.invoiceDetails]);
+    }
 
     onInvoiceDownloadClick() {
         let req: InvoiceSearchRequestModel = this.getPOSearchRequestData();
@@ -105,6 +113,7 @@ export class InvoiceSearchComponent implements OnInit {
 
     onInvoiceClick(inv: InvoiceModel) {
         this._appService.selectedInvoice = inv;
+        this._appService.isInvoiceDetailsForPayments = false;
         this._router.navigate([this._appService.routingConstants.invoiceDetails]);
     }
 
@@ -121,7 +130,8 @@ export class InvoiceSearchComponent implements OnInit {
             vendorId: null,
             employeeId: null,
             approvalLevels: [],
-            departments: []
+            departments: [],
+            isForPayments: this.isForPayments
         };
 
         if (globalConstant.userDetails.isVendor) {
@@ -192,6 +202,10 @@ export class InvoiceSearchComponent implements OnInit {
     }
 
     ngOnInit() {
+        this.isForPayments = this._appService.isInvoiceSearchForPayments;
+
+        this._appService.isInvoiceSearchForPayments = false;
+
         this.isDashboardCollapsed = true;
 
         this._sidebarExpansionSubscription = this._homeService.isSidebarCollapsed.subscribe(data => {

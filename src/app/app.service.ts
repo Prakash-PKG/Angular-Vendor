@@ -12,7 +12,7 @@ import { HttpClient } from '@angular/common/http';
 })
 export class AppService {
 
-    // readonly domain = "http://localhost:8080";
+    //readonly domain = "http://localhost:8080";
     readonly domain = "https://mvendor-dev.marlabs.com";
     //readonly domain = "https://mtime.marlabs.com";  
     readonly baseUrl = this.domain + "/mvendor/";
@@ -90,6 +90,9 @@ export class AppService {
     selectedPO: PODetailsModel = null;
 
     selectedInvoice: InvoiceModel = null;
+
+    isInvoiceSearchForPayments: boolean = false;
+    isInvoiceDetailsForPayments: boolean = false;
 
     getFormattedDate(dtStr: string) {
         if (dtStr) {
@@ -248,7 +251,8 @@ export class AppService {
         vendorApprovalFailure: "Vendor approval is failed",
         vendorSendBackSuccess: "Vendor Details are send back for correction",
         vendorSendBackFailure: "Vendor details sent back for correction failed",
-        vendorRegistrationFormInvalid: "Your Form Contains Error. Please Check"
+        vendorRegistrationFormInvalid: "Your Form Contains Error. Please Check",
+        paymentStatusUpdateFailureMsg: "Payment Status update is failed."
     };
 
     getFileData(fileDetails: FileDetailsModel) {
