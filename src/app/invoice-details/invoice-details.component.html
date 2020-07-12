@@ -101,7 +101,7 @@
                         </td>
                         <td *ngIf = "isForPayments == true">
                             <mat-form-field class="search-row-element remarks">
-                                <input type="text" matInput (blur) = "onRemarksBlur()" [(ngModel)]="amountPaid" autocomplete="off">
+                                <input type="text" matInput (blur) = "onAmountPaidBlur()" [(ngModel)]="amountPaid" autocomplete="off">
                             </mat-form-field>
                         </td>
                         <th>
@@ -125,7 +125,7 @@
                             {{ getFormattedDate(invoiceDetails?.invoiceDate) }}
                         </td>
                     </tr>
-                    <tr>
+                    <tr *ngIf = "isForPayments == false">
                         <th>
                             Paid Status:
                         </th>
@@ -160,20 +160,21 @@
                             </div>
                         </td>
                     </tr>
-                    <tr >
-                        <td>
+                    <tr>
+                        <td *ngIf = "isForPayments == true">
                             <mat-form-field  class="search-row-element">
-                                <mat-select matNativeControl placeholder="Choose Payment Status">
-                                    <mat-option *ngFor="let p of paymentStatusList" [(ngModel)]="selectedPaymentStatus" value="p.statusCode">
+                                <mat-select matNativeControl placeholder="Choose Payment Status" [(ngModel)]="selectedPaymentStatus">
+                                    <mat-option *ngFor="let p of paymentStatusList" [value]="p.statusCode">
                                         {{ p.statusDesc }}
                                     </mat-option>
                                 </mat-select>
                             </mat-form-field>
                         </td>
                         <td>
-                            <mat-form-field class="search-row-element remarks">
+                            <mat-form-field class="search-row-element remarks" *ngIf = "isForPayments == true" >
                                 <input type="text" matInput placeholder="Remarks" maxlength="50" (blur) = "onRemarksBlur()" [(ngModel)]="remarks" autocomplete="off">
                             </mat-form-field>
+                            <span *ngIf = "isForPayments == false">Remarks: {{ getRemarks() }}</span>
                         </td>
                     </tr>
                 </tbody>

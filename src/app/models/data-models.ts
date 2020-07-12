@@ -240,6 +240,7 @@ export class PaymentDetailsModel {
 	remarks: string;
 	createdDate: string;
 	createdBy: string;
+    updatedDate: string;
 }
 
 export class PaymentReqModel extends PaymentDetailsModel{

@@ -3,7 +3,7 @@ import { MessageDialogComponent } from './../message-dialog/message-dialog.compo
 import { globalConstant } from './../common/global-constant';
 import { InvoiceModel, BusyDataModel, InvoiceDetailsRequestModel, InvoiceDetailsResultModel, 
     ItemDisplayModel, FileDetailsModel, InvoiceApprovalModel, ApprovalLevelsModel, paymentStatusModel, 
-    PaymentStatusDetailsModel, PaymentReqModel, StatusModel } from './../models/data-models';
+    PaymentStatusDetailsModel, PaymentReqModel, StatusModel, PaymentDetailsModel } from './../models/data-models';
 import { AppService } from './../app.service';
 import { InvoiceDetailsService } from './invoice-details.service';
 import { Component, OnInit } from '@angular/core';
@@ -45,7 +45,8 @@ export class InvoiceDetailsComponent implements OnInit {
     fhLevel: ApprovalLevelsModel = null;
     financeLevel: ApprovalLevelsModel = null;
 
-    invoicePaymentDetails: PaymentStatusDetailsModel = null;
+    invoicePaymentStatusDetails: PaymentStatusDetailsModel = null;
+    invoicePaymentDetails: PaymentDetailsModel = null;
 
     isPOBasedInvoice: boolean = true;
 
@@ -63,42 +64,56 @@ export class InvoiceDetailsComponent implements OnInit {
                 private _invoiceDetailsService: InvoiceDetailsService,
                 private _appService: AppService) { }
 
+    onAmountPaidBlur() {
+        let amountPaidVal: any = this.amountPaid;
+        if(amountPaidVal && !isNaN(amountPaidVal)) {
+            let amtPaid = Number(amountPaidVal).toFixed(3);
+            this.amountPaid = amtPaid;
+        }
+        else {
+            this.amountPaid = null;
+        }
+    }
+
     onUpdatePaymentStatusClick() {
-        let req: PaymentReqModel = {
-            paymentDetailsId: this._initDetails.paymentDetails.paymentDetailsId,
-            purchaseOrderId: this._initDetails.paymentDetails.purchaseOrderId,
-            invoiceId: this._initDetails.paymentDetails.invoiceId,
-            poNumber: this._initDetails.paymentDetails.poNumber,
-            invoiceNumber: this._initDetails.paymentDetails.invoiceNumber,
-            amountPaid: "",
-            remarks: this.remarks,
-            statusCode: this.selectedPaymentStatus,
-            statusDesc: null,
-            createdBy: this._initDetails.paymentDetails.createdBy,
-            createdDate: this._initDetails.paymentDetails.createdDate,
-            updatedBy: globalConstant.userDetails.userId
-        };
+        if(this.invoiceDetails) {
+            let req: PaymentReqModel = {
+                paymentDetailsId: (this._initDetails.paymentDetails && this._initDetails.paymentDetails.paymentDetailsId) ? this._initDetails.paymentDetails.paymentDetailsId : null,
+                purchaseOrderId: this.invoiceDetails.purchaseOrderId,
+                invoiceId: this.invoiceDetails.invoiceId,
+                poNumber: this.invoiceDetails.poNumber,
+                invoiceNumber: this.invoiceDetails.invoiceNumber,
+                amountPaid: this.amountPaid,
+                remarks: this.remarks,
+                statusCode: this.selectedPaymentStatus,
+                statusDesc: null,
+                createdBy: (this._initDetails.paymentDetails && this._initDetails.paymentDetails.createdBy) ? this._initDetails.paymentDetails.createdBy : null,
+                createdDate: (this._initDetails.paymentDetails && this._initDetails.paymentDetails.createdDate) ? this._initDetails.paymentDetails.createdDate : null,
+                updatedBy: globalConstant.userDetails.userId,
+                updatedDate: null
+            };
 
-        this._homeService.updateBusy(<BusyDataModel>{ isBusy: true, msg: null });
-        this._invoiceDetailsService.updatePaymentStatusDetails(req)
-            .subscribe(response => {
-                this._homeService.updateBusy(<BusyDataModel>{ isBusy: false, msg: null });
+            this._homeService.updateBusy(<BusyDataModel>{ isBusy: true, msg: null });
+            this._invoiceDetailsService.updatePaymentStatusDetails(req)
+                .subscribe(response => {
+                    this._homeService.updateBusy(<BusyDataModel>{ isBusy: false, msg: null });
 
-                if (response.body) {
-                    let result: StatusModel = response.body as StatusModel;
-                    if (result.status == 200 && result.isSuccess) {
-                        this.displayPaymentUpdateStatus(result.message, true);
+                    if (response.body) {
+                        let result: StatusModel = response.body as StatusModel;
+                        if (result.status == 200 && result.isSuccess) {
+                            this.displayPaymentUpdateStatus(result.message, true);
+                        }
+                        else {
+                            this.displayPaymentUpdateStatus(result.message, false);
+                        }
                     }
-                    else {
-                        this.displayPaymentUpdateStatus(result.message, false);
-                    }
-                }
-            },
-            (error) => {
-                this._homeService.updateBusy(<BusyDataModel>{ isBusy: false, msg: null });
-                this.displayPaymentUpdateStatus(this._appService.messages.paymentStatusUpdateFailureMsg, false);
-                console.log(error);
-            });
+                },
+                (error) => {
+                    this._homeService.updateBusy(<BusyDataModel>{ isBusy: false, msg: null });
+                    this.displayPaymentUpdateStatus(this._appService.messages.paymentStatusUpdateFailureMsg, false);
+                    console.log(error);
+                });
+        }
     }
 
     displayPaymentUpdateStatus(msg: string, status: boolean) {
@@ -132,34 +147,44 @@ export class InvoiceDetailsComponent implements OnInit {
     }
 
     getPaymentStatusDetails() {
-        if(this.invoicePaymentDetails && this.invoicePaymentDetails.invoiceAmountPaid) {
-            if(+this.invoicePaymentDetails.invoiceAmountPaid > 0 && this.invoicePaymentDetails.paymentDate) {
-                return "Paid on " + this._appService.getFormattedDate(this.invoicePaymentDetails.paymentDate);
-            }
+        if(this.invoicePaymentDetails && this.invoicePaymentDetails.amountPaid) {
+            // if(+this.invoicePaymentDetails.amountPaid > 0 && this.invoicePaymentDetails.paymentDate) {
+            //     return this.invoicePaymentDetails.statusDesc + " on " + this._appService.getFormattedDate(this.invoicePaymentDetails.paymentDate);
+            // }
+
+            return this.invoicePaymentDetails.statusDesc;
         }
 
         return "";
     }
 
     getPaidAmount() {
-        if(this.invoicePaymentDetails && this.invoicePaymentDetails.invoiceAmountPaid) {
-            return this.invoicePaymentDetails.invoiceAmountPaid + " " + this.invoicePaymentDetails.currencyType;
+        if(this.invoicePaymentDetails && this.invoicePaymentDetails.amountPaid) {
+            return this.invoicePaymentDetails.amountPaid + " " + this.currency;
         }
 
         return "";
     }
 
     getPaidDate() {
-        if(this.invoicePaymentDetails && this.invoicePaymentDetails.paymentDate) {
-            return this._appService.getFormattedDate(this.invoicePaymentDetails.paymentDate);
+        // if(this.invoicePaymentDetails && this.invoicePaymentDetails.paymentDate) {
+        //     return this._appService.getFormattedDate(this.invoicePaymentDetails.paymentDate);
+        // }
+
+        return "";
+    }
+
+    getRemarks() {
+        if(this.invoicePaymentDetails && this.invoicePaymentDetails.remarks) {
+            return this.invoicePaymentDetails.remarks;
         }
 
         return "";
     }
 
     getPaidStatus() {
-        if(this.invoicePaymentDetails && this.invoicePaymentDetails.status) {
-            return this.invoicePaymentDetails.status;
+        if(this.invoicePaymentDetails && this.invoicePaymentDetails.statusDesc) {
+            return this.invoicePaymentDetails.statusDesc;
         }
 
         return "";
@@ -220,12 +245,13 @@ export class InvoiceDetailsComponent implements OnInit {
             this._homeService.updateBusy(<BusyDataModel>{ isBusy: true, msg: "Loading..." });
             this._initDetails = await this._invoiceDetailsService.getInvoiceDetails(req);
             if(this._initDetails) {
-
+                this.invoicePaymentDetails = this._initDetails.paymentDetails;
+                
                 if(this._initDetails.paymentStatusList && this._initDetails.paymentStatusList.length > 0) {
                     this.paymentStatusList = this._initDetails.paymentStatusList.concat();
                 }
 
-                this.invoicePaymentDetails = this._initDetails.paymentStatusDetails;
+                this.invoicePaymentStatusDetails = this._initDetails.paymentStatusDetails;
                 this.itemsList = (this._initDetails.itemsList && this._initDetails.itemsList.length > 0) ? this._initDetails.itemsList.concat() : [];
                 let totalAmt: number = 0;
                 for(let i = 0; i < this.itemsList.length; i++) {
@@ -285,13 +311,18 @@ export class InvoiceDetailsComponent implements OnInit {
                 }
 
                 if(this.invoicePaymentDetails) {
+                    this.amountPaid = this.invoicePaymentDetails.amountPaid;
+                    this.remarks = this.invoicePaymentDetails.remarks;
+                    this.selectedPaymentStatus = this.invoicePaymentDetails.statusCode;
+
                     let paymentLevel: ApprovalLevelsModel = {
                         levelName: "Payment",
                         status: this.getPaidStatus(),
                         date: this.getPaidDate(),
-                        remarks: ""
+                        remarks: this.getRemarks()
                     };
-                     this.approvalLevelList.push(paymentLevel);
+                    
+                    this.approvalLevelList.push(paymentLevel);
                 }
             }
             this._homeService.updateBusy(<BusyDataModel>{ isBusy: false, msg: null });
