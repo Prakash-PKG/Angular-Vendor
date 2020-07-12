@@ -46,6 +46,20 @@
             <div class="side-icon">
                 <mat-icon>description</mat-icon>
             </div>
+            <div class="navtxt">Payments</div>
+        </li>
+        <ul class="childdash" *ngIf = "isPOInvoiceDumpVisible == true">
+            <li [ngClass]="{'collapsed': isSidebarCollapsed == true}" (click) = "onPaymentsInvoiceSearchClick()">
+                <div class="side-icon">
+                    <mat-icon  matTooltip="PO Invoice Dump">local_offer</mat-icon>
+                </div>
+                <div class="navtxt">Approved Invoices</div>
+            </li>
+        </ul>
+        <li *ngIf = "isPOInvoiceDumpVisible == true" [ngClass]="{'remove-li': isSidebarCollapsed == true}">
+            <div class="side-icon">
+                <mat-icon>description</mat-icon>
+            </div>
             <div class="navtxt">Reports</div>
         </li>
         <ul class="childdash" *ngIf = "isPOInvoiceDumpVisible == true">

@@ -152,8 +152,24 @@
                                 </mat-icon>
                                 <!-- <button mat-button mat-icon-button aria-label="Download" (click)="downloadFile(sf)">
                             <mat-icon>save_alt</mat-icon>
-                        </button> -->
+                        </button> *ngIf="isForPayments = true"-->
                             </div>
+                        </td>
+                    </tr>
+                    <tr >
+                        <td>
+                            <mat-form-field  class="search-row-element">
+                                <mat-select matNativeControl placeholder="Choose Payment Status">
+                                    <mat-option *ngFor="let p of paymentStatusList" [(ngModel)]="selectedPaymentStatus" [value]="p.statusCode">
+                                        {{ p.statusDesc }}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </td>
+                        <td>
+                            <mat-form-field class="search-row-element remarks">
+                                <input type="text" matInput placeholder="Remarks" maxlength="50" (blur) = "onRemarksBlur()" [(ngModel)]="remarks" autocomplete="off">
+                            </mat-form-field>
                         </td>
                     </tr>
                 </tbody>

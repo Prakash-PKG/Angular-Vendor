@@ -1,5 +1,5 @@
 import { InvoiceModel, BusyDataModel, InvoiceDetailsRequestModel, InvoiceDetailsResultModel, 
-    ItemDisplayModel, FileDetailsModel, InvoiceApprovalModel, ApprovalLevelsModel,
+    ItemDisplayModel, FileDetailsModel, InvoiceApprovalModel, ApprovalLevelsModel, paymentStatusModel, 
     PaymentStatusDetailsModel } from './../models/data-models';
 import { AppService } from './../app.service';
 import { InvoiceDetailsService } from './invoice-details.service';
@@ -45,12 +45,25 @@ export class InvoiceDetailsComponent implements OnInit {
 
     isPOBasedInvoice: boolean = true;
 
+    isForPayments: boolean = false;
+
+    remarks: string = "";
+    selectedPaymentStatus: string = "";
+    paymentStatusList: paymentStatusModel[] = [];
+
     constructor(private _homeService: HomeService,
                 private _router: Router,
                 private _invoiceDetailsService: InvoiceDetailsService,
                 private _appService: AppService) { }
 
+    onRemarksBlur() {
+        if(this.remarks) {
+            this.remarks = this.remarks.trim();
+        }
+    }
+
     onBackBtnClick() {
+        this._appService.isInvoiceSearchForPayments = this.isForPayments;
         this._router.navigate([this._appService.routingConstants.invoiceSearch]);
     }
 
@@ -126,7 +139,8 @@ export class InvoiceDetailsComponent implements OnInit {
                 invoiceId: this.invoiceDetails.invoiceId,
                 poNumber: this.invoiceDetails.poNumber,
                 invoiceNumber: this.invoiceDetails.invoiceNumber,
-                vendorId: this.invoiceDetails.vendorId
+                vendorId: this.invoiceDetails.vendorId,
+                isForPayment: this.isForPayments
             };
 
             if(!this.invoiceDetails.purchaseOrderId) {
@@ -140,7 +154,9 @@ export class InvoiceDetailsComponent implements OnInit {
             this._homeService.updateBusy(<BusyDataModel>{ isBusy: true, msg: "Loading..." });
             this._initDetails = await this._invoiceDetailsService.getInvoiceDetails(req);
             if(this._initDetails) {
-                this.invoicePaymentDetails = this._initDetails.paymentDetails;
+                this.paymentStatusList = this._initDetails.paymentStatusList.concat();
+
+                this.invoicePaymentDetails = this._initDetails.paymentStatusDetails;
                 this.itemsList = (this._initDetails.itemsList && this._initDetails.itemsList.length > 0) ? this._initDetails.itemsList.concat() : [];
                 let totalAmt: number = 0;
                 for(let i = 0; i < this.itemsList.length; i++) {
@@ -218,7 +234,11 @@ export class InvoiceDetailsComponent implements OnInit {
     }
 
     ngOnInit() {
-        this.isDashboardCollapsed = true;
+        this.isForPayments = this._appService.isInvoiceDetailsForPayments;
+
+        this._appService.isInvoiceDetailsForPayments = false;
+
+        this._homeService.updateSidebarDetails(true);
 
         this._sidebarExpansionSubscription = this._homeService.isSidebarCollapsed.subscribe(data => {
             this.isDashboardCollapsed = !data;

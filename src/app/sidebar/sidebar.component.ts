@@ -31,6 +31,8 @@ export class SidebarComponent implements OnInit {
     isPOInvoiceDumpVisible: boolean = false;
     isEmpanelmentVisible: boolean = false;
 
+    _sidebarExpansionSubscription: any = null;
+
     constructor(private _appService: AppService,
         private _router: Router,
         private _loginService: LoginService,
@@ -54,11 +56,19 @@ export class SidebarComponent implements OnInit {
     }
 
     onInvoiceSearchClick() {
+        this._appService.isInvoiceSearchForPayments = false;
         this._router.navigate([this._appService.routingConstants.invoiceSearch]);
     }
+
+    onPaymentsInvoiceSearchClick() {
+        this._appService.isInvoiceSearchForPayments = true;
+        this._router.navigate([this._appService.routingConstants.invoiceSearch]);
+    }
+
     onVenDashClick() {
         this._router.navigate([this._appService.routingConstants.vendorDashboard]);
     }
+
     onVenApp1Click() {
         this._router.navigate([this._appService.routingConstants.vendorApproval]);
     }
@@ -105,6 +115,10 @@ export class SidebarComponent implements OnInit {
     ngOnInit() {
         this.isSidebarCollapsed = false;
         this._homeService.updateSidebarDetails(this.isSidebarCollapsed);
+
+        this._sidebarExpansionSubscription = this._homeService.isSidebarCollapsed.subscribe(data => {
+            this.isSidebarCollapsed = data;
+        });
 
         this.isInvoiceCreateVisible = false;
         if (globalConstant.userDetails.isVendor || globalConstant.userDetails.isInvoiceUploader) {

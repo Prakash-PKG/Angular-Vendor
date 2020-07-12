@@ -1,4 +1,4 @@
-import { InvoiceDetailsRequestModel, InvoiceDetailsResultModel, FileDetailsModel } from './../models/data-models';
+import { InvoiceDetailsRequestModel, InvoiceDetailsResultModel, FileDetailsModel, paymentStatusModel } from './../models/data-models';
 import { Injectable } from '@angular/core';
 import { AppService } from './../app.service';
 import { HttpClient } from '@angular/common/http';
@@ -25,15 +25,21 @@ export class InvoiceDetailsService {
     preparePODetails(data) {
         let initModel: InvoiceDetailsResultModel = new InvoiceDetailsResultModel();
         let filesList: FileDetailsModel[] = [];
+        let paymentStatusList: paymentStatusModel[] = [{ paymentStatusId: -1, statusCode: "", statusDesc: "Please select status"}];
         if (data) {
             initModel.itemsList = data["itemsList"];
             initModel.statusDetails = data["statusDetails"];
             initModel.approvalsList = data["approvalsList"];
+            initModel.paymentStatusDetails = data["paymentStatusDetails"];
             initModel.paymentDetails = data["paymentDetails"];
             initModel.invoiceFilesList = [];
             initModel.supportFilesList = [];
 
             filesList = data["filesList"];
+
+            if((data["paymentStatusList"] && data["paymentStatusList"].length > 0) ) {
+                paymentStatusList =  paymentStatusList.concat(data["paymentStatusList"]);
+            }
         }
 
         if(filesList && filesList.length > 0) {
@@ -47,6 +53,8 @@ export class InvoiceDetailsService {
                 initModel.supportFilesList = supportFiles.concat();
             }
         }
+
+        initModel.paymentStatusList = paymentStatusList.concat();
 
         return initModel;
     }
