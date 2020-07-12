@@ -96,8 +96,13 @@
                         <th>
                             Amount Paid:
                         </th>
-                        <td>
+                        <td *ngIf = "isForPayments == false">
                             {{ getPaidAmount() }}
+                        </td>
+                        <td *ngIf = "isForPayments == true">
+                            <mat-form-field class="search-row-element remarks">
+                                <input type="text" matInput (blur) = "onRemarksBlur()" [(ngModel)]="amountPaid" autocomplete="off">
+                            </mat-form-field>
                         </td>
                         <th>
                             Invoice No:
@@ -105,15 +110,14 @@
                         <td>
                             {{ invoiceDetails?.invoiceNumber }}
                         </td>
-                        
                     </tr>
                     <tr>
-                        <th>
+                        <!--<th>
                             Paid Date:
                         </th>
                         <td>
                             {{ getPaidDate() }}
-                        </td>
+                        </td>-->
                         <th>
                             Invoice Date:
                         </th>
@@ -160,7 +164,7 @@
                         <td>
                             <mat-form-field  class="search-row-element">
                                 <mat-select matNativeControl placeholder="Choose Payment Status">
-                                    <mat-option *ngFor="let p of paymentStatusList" [(ngModel)]="selectedPaymentStatus" [value]="p.statusCode">
+                                    <mat-option *ngFor="let p of paymentStatusList" [(ngModel)]="selectedPaymentStatus" value="p.statusCode">
                                         {{ p.statusDesc }}
                                     </mat-option>
                                 </mat-select>
@@ -265,6 +269,7 @@
 
         <div class="row actions margin-unset">
             <button mat-raised-button class="footer-actions" (click) = "onBackBtnClick()">Back</button>
+            <button *ngIf = "isForPayments == true" mat-raised-button class="footer-actions" (click) = "onUpdatePaymentStatusClick()">Update</button>
         </div>
     </div>
 </div>

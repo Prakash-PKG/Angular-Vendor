@@ -1,11 +1,15 @@
+import { MessageDialogModel } from './../models/popup-models';
+import { MessageDialogComponent } from './../message-dialog/message-dialog.component';
+import { globalConstant } from './../common/global-constant';
 import { InvoiceModel, BusyDataModel, InvoiceDetailsRequestModel, InvoiceDetailsResultModel, 
     ItemDisplayModel, FileDetailsModel, InvoiceApprovalModel, ApprovalLevelsModel, paymentStatusModel, 
-    PaymentStatusDetailsModel } from './../models/data-models';
+    PaymentStatusDetailsModel, PaymentReqModel, StatusModel } from './../models/data-models';
 import { AppService } from './../app.service';
 import { InvoiceDetailsService } from './invoice-details.service';
 import { Component, OnInit } from '@angular/core';
 import { HomeService } from '../home/home.service';
 import { Router } from '@angular/router';
+import { MatSort, MatPaginator, MatTableDataSource, MatDialogRef, MAT_DIALOG_DATA, MatDialog } from '@angular/material';
 
 @Component({
     selector: 'app-invoice-details',
@@ -51,10 +55,70 @@ export class InvoiceDetailsComponent implements OnInit {
     selectedPaymentStatus: string = "";
     paymentStatusList: paymentStatusModel[] = [];
 
+    amountPaid: string = "";
+
     constructor(private _homeService: HomeService,
                 private _router: Router,
+                public _dialog: MatDialog,
                 private _invoiceDetailsService: InvoiceDetailsService,
                 private _appService: AppService) { }
+
+    onUpdatePaymentStatusClick() {
+        let req: PaymentReqModel = {
+            paymentDetailsId: this._initDetails.paymentDetails.paymentDetailsId,
+            purchaseOrderId: this._initDetails.paymentDetails.purchaseOrderId,
+            invoiceId: this._initDetails.paymentDetails.invoiceId,
+            poNumber: this._initDetails.paymentDetails.poNumber,
+            invoiceNumber: this._initDetails.paymentDetails.invoiceNumber,
+            amountPaid: "",
+            remarks: this.remarks,
+            statusCode: this.selectedPaymentStatus,
+            statusDesc: null,
+            createdBy: this._initDetails.paymentDetails.createdBy,
+            createdDate: this._initDetails.paymentDetails.createdDate,
+            updatedBy: globalConstant.userDetails.userId
+        };
+
+        this._homeService.updateBusy(<BusyDataModel>{ isBusy: true, msg: null });
+        this._invoiceDetailsService.updatePaymentStatusDetails(req)
+            .subscribe(response => {
+                this._homeService.updateBusy(<BusyDataModel>{ isBusy: false, msg: null });
+
+                if (response.body) {
+                    let result: StatusModel = response.body as StatusModel;
+                    if (result.status == 200 && result.isSuccess) {
+                        this.displayPaymentUpdateStatus(result.message, true);
+                    }
+                    else {
+                        this.displayPaymentUpdateStatus(result.message, false);
+                    }
+                }
+            },
+            (error) => {
+                this._homeService.updateBusy(<BusyDataModel>{ isBusy: false, msg: null });
+                this.displayPaymentUpdateStatus(this._appService.messages.paymentStatusUpdateFailureMsg, false);
+                console.log(error);
+            });
+    }
+
+    displayPaymentUpdateStatus(msg: string, status: boolean) {
+        const dialogRef = this._dialog.open(MessageDialogComponent, {
+            disableClose: true,
+            panelClass: 'dialog-box',
+            width: '550px',
+            data: <MessageDialogModel>{
+                title: "Payment Status Update Action",
+                message: msg
+            }
+        });
+
+        dialogRef.afterClosed().subscribe(result => {
+            if (result && status) {
+                this._appService.isInvoiceSearchForPayments = true;
+                this._router.navigate([this._appService.routingConstants.invoiceSearch]);
+            }
+        });
+    }
 
     onRemarksBlur() {
         if(this.remarks) {
@@ -122,6 +186,8 @@ export class InvoiceDetailsComponent implements OnInit {
     }
 
     async loadInitData() {
+        this.paymentStatusList = [];
+
         this.isPOBasedInvoice = true;
         this.headerArr = [];
         this.totalAmount = "0.000";
@@ -154,7 +220,10 @@ export class InvoiceDetailsComponent implements OnInit {
             this._homeService.updateBusy(<BusyDataModel>{ isBusy: true, msg: "Loading..." });
             this._initDetails = await this._invoiceDetailsService.getInvoiceDetails(req);
             if(this._initDetails) {
-                this.paymentStatusList = this._initDetails.paymentStatusList.concat();
+
+                if(this._initDetails.paymentStatusList && this._initDetails.paymentStatusList.length > 0) {
+                    this.paymentStatusList = this._initDetails.paymentStatusList.concat();
+                }
 
                 this.invoicePaymentDetails = this._initDetails.paymentStatusDetails;
                 this.itemsList = (this._initDetails.itemsList && this._initDetails.itemsList.length > 0) ? this._initDetails.itemsList.concat() : [];
@@ -171,46 +240,48 @@ export class InvoiceDetailsComponent implements OnInit {
                 this.invoiceFilesList = this._initDetails.invoiceFilesList;
                 this.supportFilesList = this._initDetails.supportFilesList;
 
-                this.approvalLevelList = [];
-                let poApprovalModel: InvoiceApprovalModel = this._initDetails.approvalsList.find(a => a.approvalLevel == this._appService.approvalLevels.po);
-                if(poApprovalModel != null) {
-                    this.uploadLevel = {
-                        levelName: "Upload",
-                        status: "Submitted",
-                        date: this._appService.getFormattedDate(poApprovalModel.createdDate),
-                        remarks: this.invoiceDetails.remarks
-                    };
-                    this.approvalLevelList.push(this.uploadLevel);
+                if(this._initDetails.approvalsList && this._initDetails.approvalsList.length > 0) {
+                    this.approvalLevelList = [];
+                    let poApprovalModel: InvoiceApprovalModel = this._initDetails.approvalsList.find(a => a.approvalLevel == this._appService.approvalLevels.po);
+                    if(poApprovalModel != null) {
+                        this.uploadLevel = {
+                            levelName: "Upload",
+                            status: "Submitted",
+                            date: this._appService.getFormattedDate(poApprovalModel.createdDate),
+                            remarks: this.invoiceDetails.remarks
+                        };
+                        this.approvalLevelList.push(this.uploadLevel);
 
-                    this.poLevel = {
-                        levelName: "Buyer",
-                        status: this._appService.statusNames[poApprovalModel.statusCode],
-                        date: (poApprovalModel.statusCode == this._appService.statusCodes.approved || poApprovalModel.statusCode == this._appService.statusCodes.rejected) ? this._appService.getFormattedDate(poApprovalModel.updatedDate) : "",
-                        remarks: poApprovalModel.remarks
-                    };
-                    this.approvalLevelList.push(this.poLevel);
-                }
+                        this.poLevel = {
+                            levelName: "Buyer",
+                            status: this._appService.statusNames[poApprovalModel.statusCode],
+                            date: (poApprovalModel.statusCode == this._appService.statusCodes.approved || poApprovalModel.statusCode == this._appService.statusCodes.rejected) ? this._appService.getFormattedDate(poApprovalModel.updatedDate) : "",
+                            remarks: poApprovalModel.remarks
+                        };
+                        this.approvalLevelList.push(this.poLevel);
+                    }
 
-                let functionalHeadApprovalModel: InvoiceApprovalModel = this._initDetails.approvalsList.find(a => a.approvalLevel == this._appService.approvalLevels.functionalHead);
-                if(functionalHeadApprovalModel != null) {
-                    this.fhLevel = {
-                        levelName: "Business Head",
-                        status: this._appService.statusNames[functionalHeadApprovalModel.statusCode],
-                        date: (functionalHeadApprovalModel.statusCode == this._appService.statusCodes.approved || functionalHeadApprovalModel.statusCode == this._appService.statusCodes.rejected) ? this._appService.getFormattedDate(functionalHeadApprovalModel.updatedDate) : "",
-                        remarks: functionalHeadApprovalModel.remarks
-                    };
-                    this.approvalLevelList.push(this.fhLevel);
-                }
-                
-                let financeApprovalModel: InvoiceApprovalModel = this._initDetails.approvalsList.find(a => a.approvalLevel == this._appService.approvalLevels.finance);
-                if(financeApprovalModel != null) {
-                    this.financeLevel = {
-                        levelName: "Finance",
-                        status: this._appService.statusNames[financeApprovalModel.statusCode],
-                        date: (financeApprovalModel.statusCode == this._appService.statusCodes.approved || financeApprovalModel.statusCode == this._appService.statusCodes.rejected) ? this._appService.getFormattedDate(functionalHeadApprovalModel.updatedDate) : "",
-                        remarks: financeApprovalModel.remarks
-                    };
-                    this.approvalLevelList.push(this.financeLevel);
+                    let functionalHeadApprovalModel: InvoiceApprovalModel = this._initDetails.approvalsList.find(a => a.approvalLevel == this._appService.approvalLevels.functionalHead);
+                    if(functionalHeadApprovalModel != null) {
+                        this.fhLevel = {
+                            levelName: "Business Head",
+                            status: this._appService.statusNames[functionalHeadApprovalModel.statusCode],
+                            date: (functionalHeadApprovalModel.statusCode == this._appService.statusCodes.approved || functionalHeadApprovalModel.statusCode == this._appService.statusCodes.rejected) ? this._appService.getFormattedDate(functionalHeadApprovalModel.updatedDate) : "",
+                            remarks: functionalHeadApprovalModel.remarks
+                        };
+                        this.approvalLevelList.push(this.fhLevel);
+                    }
+                    
+                    let financeApprovalModel: InvoiceApprovalModel = this._initDetails.approvalsList.find(a => a.approvalLevel == this._appService.approvalLevels.finance);
+                    if(financeApprovalModel != null) {
+                        this.financeLevel = {
+                            levelName: "Finance",
+                            status: this._appService.statusNames[financeApprovalModel.statusCode],
+                            date: (financeApprovalModel.statusCode == this._appService.statusCodes.approved || financeApprovalModel.statusCode == this._appService.statusCodes.rejected) ? this._appService.getFormattedDate(functionalHeadApprovalModel.updatedDate) : "",
+                            remarks: financeApprovalModel.remarks
+                        };
+                        this.approvalLevelList.push(this.financeLevel);
+                    }
                 }
 
                 if(this.invoicePaymentDetails) {

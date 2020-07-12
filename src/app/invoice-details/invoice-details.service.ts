@@ -1,4 +1,5 @@
-import { InvoiceDetailsRequestModel, InvoiceDetailsResultModel, FileDetailsModel, paymentStatusModel } from './../models/data-models';
+import { InvoiceDetailsRequestModel, InvoiceDetailsResultModel, 
+        FileDetailsModel, paymentStatusModel, PaymentReqModel } from './../models/data-models';
 import { Injectable } from '@angular/core';
 import { AppService } from './../app.service';
 import { HttpClient } from '@angular/common/http';
@@ -57,5 +58,10 @@ export class InvoiceDetailsService {
         initModel.paymentStatusList = paymentStatusList.concat();
 
         return initModel;
+    }
+
+    updatePaymentStatusDetails(req: PaymentReqModel) {
+        let url = this._appService.baseUrl + "updatePayment";
+        return this._http.post(url, req, { responseType: 'json', observe: 'response' });
     }
 }
