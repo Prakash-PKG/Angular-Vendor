@@ -639,69 +639,81 @@
 
     <div class="approver-section">
       <div class="search-row">
-        <mat-form-field class="field search-row-element">
-          <mat-label>Account Group</mat-label>
-          <mat-select [(ngModel)]="selectedVendorGroup">
-            <mat-option *ngFor="let accGrp of vendoraccGroupList" [value]="accGrp.groupCode">{{accGrp.groupDesc}}
-            </mat-option>
-          </mat-select>
-        </mat-form-field>
-        <div class="error-txt" *ngIf="isFinance && !selectedVendorGroup">This field is mandatory</div>
-        <mat-form-field class="field search-row-element">
-          <mat-label>Company Code</mat-label>
-          <mat-select [(ngModel)]="selectedCompanyCode">
-            <mat-option *ngFor="let cocode of companyCodeList" [value]="cocode.companyCode">{{cocode.companyDesc}}
-            </mat-option>
-          </mat-select>
-        </mat-form-field>
-        <div class="error-txt" *ngIf="isFinance && !selectedCompanyCode">This field is mandatory</div>
-        <mat-form-field class="field search-row-element">
-          <mat-label>Currency</mat-label>
-          <mat-select [(ngModel)]="selectedCurrency">
-            <mat-option *ngFor="let currency of currencyList" [value]="currency.currencyCode">
-              {{currency.currencyDesc}}
-            </mat-option>
-          </mat-select>
-        </mat-form-field>
-        <div class="error-txt" *ngIf="isFinance && !selectedCurrency">This field is mandatory</div>
-        <mat-form-field class="field search-row-element" *ngIf="isFinance">
-          <mat-label>with Hold Type</mat-label>
-          <mat-select [(ngModel)]="withholdType" (selectionChange)="onHoldTypeSelected($event)">
-            <mat-option *ngFor="let withholdType of withholdTypeList" [value]="withholdType.withholdTypeCode">
-              {{withholdType.withholdTypeDesc}}
-            </mat-option>
-          </mat-select>
-        </mat-form-field>
-        <mat-form-field class="field search-row-element" *ngIf="isFinance">
-          <mat-label>with Hold Tax</mat-label>
-          <mat-select [(ngModel)]="withholdTax">
-            <mat-option *ngFor="let withholdTax of withholdTaxList" [value]="withholdTax.withholdTaxCode">
-              {{withholdTax.withholdTaxDesc}}
-            </mat-option>
-          </mat-select>
-        </mat-form-field>
-        <div class="actions search-row-element attachments">
-          <div class="flex-items" *ngIf="isProcurement">
-            <input style="display: none" [attr.id]="vendorDocCtrl.msaCtrl.browserId" type="file" multiple
-              accept=".xls,.xlsx,.doc,.docx,.pdf,.png,.jpg,.zip"
-              (change)="onFileChange($event, vendorDocCtrl.msaCtrl.documentTypeId)" />
-            <button mat-raised-button class="footer-actions"
-              (click)="onBrowseFileClick($event, vendorDocCtrl.msaCtrl.browserId)">{{vendorDocCtrl.msaCtrl.placeholder}}</button>
-          </div>
-          <div class="flex-items">
-            <div *ngIf="filesMap[vendorDocCtrl.msaCtrl.documentTypeId]?.isAttached">
-              <span class="filename"
-                *ngFor="let f of filesMap[vendorDocCtrl.msaCtrl.documentTypeId]?.filesList; let fInd = index">
-                <span>
-                  <button mat-button mat-icon-button aria-label="download" (click)="downloadFile(f)">
-                    <mat-icon matTooltip="{{ f.actualFileName }}">description</mat-icon>
-                  </button>
-                  <button mat-button mat-icon-button aria-label="Delete" *ngIf="isProcurement"
-                    (click)="onDeleteFileClick(f, fInd, vendorDocCtrl.msaCtrl.documentTypeId)">
-                    <mat-icon>delete_outline</mat-icon>
-                  </button>
+        <div class=" search-row-element">
+          <mat-form-field class="field">
+            <mat-label>Account Group</mat-label>
+            <mat-select [(ngModel)]="selectedVendorGroup">
+              <mat-option *ngFor="let accGrp of vendoraccGroupList" [value]="accGrp.groupCode">{{accGrp.groupDesc}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+          <div class="errortxt" *ngIf="isFinance && !selectedVendorGroup">This field is mandatory</div>
+        </div>
+        <div class=" search-row-element">
+          <mat-form-field class="field ">
+            <mat-label>Company Code</mat-label>
+            <mat-select [(ngModel)]="selectedCompanyCode">
+              <mat-option *ngFor="let cocode of companyCodeList" [value]="cocode.companyCode">{{cocode.companyDesc}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+          <div class="errortxt" *ngIf="isFinance && !selectedCompanyCode">This field is mandatory</div>
+        </div>
+        <div class=" search-row-element">
+          <mat-form-field class="field">
+            <mat-label>Currency</mat-label>
+            <mat-select [(ngModel)]="selectedCurrency">
+              <mat-option *ngFor="let currency of currencyList" [value]="currency.currencyCode">
+                {{currency.currencyDesc}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+          <div class="errortxt" *ngIf="isFinance && !selectedCurrency">This field is mandatory</div>
+        </div>
+        <div class=" search-row-element">
+          <mat-form-field class="field" *ngIf="isFinance">
+            <mat-label>with Hold Type</mat-label>
+            <mat-select [(ngModel)]="withholdType" (selectionChange)="onHoldTypeSelected($event)">
+              <mat-option *ngFor="let withholdType of withholdTypeList" [value]="withholdType.withholdTypeCode">
+                {{withholdType.withholdTypeDesc}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div class=" search-row-element">
+          <mat-form-field class="field" *ngIf="isFinance">
+            <mat-label>with Hold Tax</mat-label>
+            <mat-select [(ngModel)]="withholdTax">
+              <mat-option *ngFor="let withholdTax of withholdTaxList" [value]="withholdTax.withholdTaxCode">
+                {{withholdTax.withholdTaxDesc}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div class=" search-row-element">
+          <div class="actions attachments">
+            <div class="flex-items" *ngIf="isProcurement">
+              <input style="display: none" [attr.id]="vendorDocCtrl.msaCtrl.browserId" type="file" multiple
+                accept=".xls,.xlsx,.doc,.docx,.pdf,.png,.jpg,.zip"
+                (change)="onFileChange($event, vendorDocCtrl.msaCtrl.documentTypeId)" />
+              <button mat-raised-button class="footer-actions"
+                (click)="onBrowseFileClick($event, vendorDocCtrl.msaCtrl.browserId)">{{vendorDocCtrl.msaCtrl.placeholder}}</button>
+            </div>
+            <div class="flex-items">
+              <div *ngIf="filesMap[vendorDocCtrl.msaCtrl.documentTypeId]?.isAttached">
+                <span class="filename"
+                  *ngFor="let f of filesMap[vendorDocCtrl.msaCtrl.documentTypeId]?.filesList; let fInd = index">
+                  <span>
+                    <button mat-button mat-icon-button aria-label="download" (click)="downloadFile(f)">
+                      <mat-icon matTooltip="{{ f.actualFileName }}">description</mat-icon>
+                    </button>
+                    <button mat-button mat-icon-button aria-label="Delete" *ngIf="isProcurement"
+                      (click)="onDeleteFileClick(f, fInd, vendorDocCtrl.msaCtrl.documentTypeId)">
+                      <mat-icon>delete_outline</mat-icon>
+                    </button>
+                  </span>
                 </span>
-              </span>
+              </div>
             </div>
           </div>
         </div>
@@ -723,7 +735,7 @@
     </div>
 
     <div class="row actions margin-unset">
-      <div class="error-txt">
+      <div class="errortxt">
         {{ msg }}
       </div>
 
