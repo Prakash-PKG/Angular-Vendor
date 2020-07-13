@@ -20,6 +20,7 @@ import { MatSnackBar, MatDialog } from '@angular/material';
 import { scan, takeWhile, takeLast } from 'rxjs/operators';
 import { MessageDialogComponent } from '../message-dialog/message-dialog.component';
 import { MessageDialogModel } from '../models/popup-models';
+import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
 
 interface FileMap {
     [key: number]: {
@@ -319,22 +320,36 @@ export class VendorApprovalComponent implements OnInit {
             }
         }
     }
-    isFormValid() {
+    async isFormValid() {
         if (this.isFinance) {
-            if (!(this.selectedVendorGroup || this.selectedCompanyCode || this.selectedCurrency || this.withholdTax || this.withholdType || this.remarks)) {
-                this.isValid = false;
-                this.msg= "Fill all mandatory fields";
-                return;
+            
+            if (!this.selectedVendorGroup || !this.selectedCompanyCode || !this.selectedCurrency) {
+                this.msg = "Your form contains error.Please check.";
+                return  this.isValid = false;                
+            }
+            if (!this.withholdTax || !this.withholdType || !this.remarks) {
+                const dialogRef = this._dialog.open(ConfirmDialogComponent, {
+                    disableClose: true,
+                    panelClass: 'dialog-box',
+                    width: '550px',
+                    data: <MessageDialogModel>{
+                        title: "Warning",
+                        message: "You are trying to submit without with Hold Tax and Type. Do you wish to Continue?"
+                    }
+                });
+                return await dialogRef.afterClosed().toPromise();
             }
         }
         else {
-            return;
+            return true;
         }
     }
 
-    updateVendorApprovals(action: string) {
+    async updateVendorApprovals(action: string) {
         this.isFilesValid();
-        this.isFormValid();
+        if (!this.isValid) return;
+
+        this.isValid = await this.isFormValid();
         if (!this.isValid) { return };
 
         let req: VendorApprovalReqModel = {
@@ -393,6 +408,7 @@ export class VendorApprovalComponent implements OnInit {
             }
         });
     }
+
 
     async loadInitData() {
 

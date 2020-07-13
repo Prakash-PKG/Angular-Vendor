@@ -79,7 +79,7 @@
                     </tr>
                     <tr>
                         <th>
-                            Total Inv Amt: <small> (inc tax) </small>
+                            Total Inv Amt <small> (Incl Tax) </small>:
                         </th>
                         <td>
                             {{ invoiceDetails?.totalAmt + " " + currency }}
@@ -90,19 +90,22 @@
                         <td>
                             {{ invoiceDetails?.poNumber }}
                         </td>
-                        
                     </tr>
                     <tr>
                         <th>
-                            Amount Paid:
+                            Amount Paid(Incl. Tax):
                         </th>
                         <td *ngIf = "isForPayments == false">
-                            {{ getPaidAmount() }}
+                            {{ getPaidAmount() }} {{ currency }}
                         </td>
                         <td *ngIf = "isForPayments == true">
-                            <mat-form-field class="search-row-element remarks">
-                                <input type="text" matInput (blur) = "onAmountPaidBlur()" [(ngModel)]="amountPaid" autocomplete="off">
-                            </mat-form-field>
+                            <div>
+                                <mat-form-field class="search-row-element remarks">
+                                    <input type="text" matInput (blur) = "onAmountPaidBlur()" [(ngModel)]="amountPaid" autocomplete="off"> 
+                                </mat-form-field>
+                                <span>{{ currency }}</span>
+                            </div>
+                            <div class="errortxt">{{ amountPaidErrMsg }}</div>
                         </td>
                         <th>
                             Invoice No:
@@ -162,19 +165,25 @@
                     </tr>
                     <tr>
                         <td *ngIf = "isForPayments == true">
-                            <mat-form-field  class="search-row-element">
-                                <mat-select matNativeControl placeholder="Choose Payment Status" [(ngModel)]="selectedPaymentStatus">
-                                    <mat-option *ngFor="let p of paymentStatusList" [value]="p.statusCode">
-                                        {{ p.statusDesc }}
-                                    </mat-option>
-                                </mat-select>
-                            </mat-form-field>
+                            <div>
+                                <mat-form-field  class="search-row-element">
+                                    <mat-select matNativeControl placeholder="Choose Payment Status" [(ngModel)]="selectedPaymentStatus" (selectionChange) = "onPaymentStatusChange()">
+                                        <mat-option *ngFor="let p of paymentStatusList" [value]="p.statusCode">
+                                            {{ p.statusDesc }}
+                                        </mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </div>
+                            <div class="errortxt">{{ paymentStatusErrMsg }}</div>
                         </td>
                         <td>
-                            <mat-form-field class="search-row-element remarks" *ngIf = "isForPayments == true" >
-                                <input type="text" matInput placeholder="Remarks" maxlength="50" (blur) = "onRemarksBlur()" [(ngModel)]="remarks" autocomplete="off">
-                            </mat-form-field>
-                            <span *ngIf = "isForPayments == false">Remarks: {{ getRemarks() }}</span>
+                            <div>
+                                <mat-form-field class="search-row-element remarks" *ngIf = "isForPayments == true" >
+                                    <input type="text" matInput placeholder="Remarks" maxlength="50" (blur) = "onRemarksBlur()" [(ngModel)]="remarks" autocomplete="off">
+                                </mat-form-field>
+                                <span *ngIf = "isForPayments == false">Remarks: {{ getRemarks() }}</span>
+                            </div>
+                            <div class="errortxt">{{ remarksErrMsg }}</div>
                         </td>
                     </tr>
                 </tbody>
@@ -229,7 +238,7 @@
                     <td>
                         <span>{{ item.itemDescription }}</span>
                     </td>
-                    <td *ngIf="isPOBasedInvoice == true" class="eightcharacters">
+                    <td *ngIf="isPOBasedInvoice == true" style="width:4em;">
                         <span>{{ item.uom }}</span>
                     </td>
                     <td class="eightcharacters">
@@ -244,10 +253,10 @@
                     <td *ngIf="isPOBasedInvoice == true" class="tencharacters">
                         <span>{{ item.consumedUnits }}</span>
                     </td>
-                    <td class="tencharacters">
+                    <td style="width:4em;">
                         <span>{{ item.invoiceUnits }}</span>
                     </td>
-                    <td class="eightcharacters">
+                    <td style="width:4em;">
                         <span>{{ currency }}</span>
                     </td>
                     <td class="amount tencharacters">

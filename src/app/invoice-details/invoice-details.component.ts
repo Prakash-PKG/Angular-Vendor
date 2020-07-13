@@ -24,9 +24,9 @@ export class InvoiceDetailsComponent implements OnInit {
     headerArr: string[] = [];
 
     poInvHeaderArr: string[] = ['Item No.', 'Item Desc', "UOM", "HSN/SAC", 'Order Units', 'Supplied Units', 'Balance Units', 
-                            'Invoice Units', 'Currency', 'Rate', 'Amount'];
+                            'Inv Units', 'Curr', 'Rate', 'Amount'];
 
-    nonPoInvHeaderArr: string[] = ['Item No.', 'Item Desc', "HSN/SAC", 'Invoice Units', 'Currency', 'Rate', 'Amount'];
+    nonPoInvHeaderArr: string[] = ['Item No.', 'Item Desc', "HSN/SAC", 'Inv Units', 'Curr', 'Rate', 'Amount'];
 
     invoiceDetails: InvoiceModel = null;
     currency: string = "";
@@ -58,6 +58,10 @@ export class InvoiceDetailsComponent implements OnInit {
 
     amountPaid: string = "";
 
+    amountPaidErrMsg: string = "";
+    paymentStatusErrMsg: string = "";
+    remarksErrMsg: string = "";
+
     constructor(private _homeService: HomeService,
                 private _router: Router,
                 public _dialog: MatDialog,
@@ -65,6 +69,7 @@ export class InvoiceDetailsComponent implements OnInit {
                 private _appService: AppService) { }
 
     onAmountPaidBlur() {
+        this.amountPaidErrMsg = "";
         let amountPaidVal: any = this.amountPaid;
         if(amountPaidVal && !isNaN(amountPaidVal)) {
             let amtPaid = Number(amountPaidVal).toFixed(3);
@@ -75,8 +80,45 @@ export class InvoiceDetailsComponent implements OnInit {
         }
     }
 
+    onPaymentStatusChange() {
+        this.paymentStatusErrMsg = "";
+    }
+
+    isPaymentDetailsValid() {
+        let isValid: boolean = true;
+
+        this.amountPaidErrMsg = "";
+        this.paymentStatusErrMsg = "";
+        this.remarksErrMsg = "";
+
+        if(!this.amountPaid) {
+            this.amountPaidErrMsg = "Amount Paid is required.";
+        }
+
+        if(!this.selectedPaymentStatus) {
+            this.paymentStatusErrMsg = "Payment Status is required.";
+        }
+
+        if(!this.remarks) {
+            this.remarksErrMsg = "Remarks is required.";
+        }
+
+        if(!this.amountPaid || !this.selectedPaymentStatus || !this.remarks) {
+            isValid = false;
+        }
+
+        if(isValid && this.selectedPaymentStatus == "paid") {
+            if(+this.invoiceDetails.totalAmt != +this.amountPaid) {
+                isValid = false;
+                this.amountPaidErrMsg = "If Payment status is Paid, Amount Paid(Incl Tax) must equal to Invoice Total Amount(Incl Tax).";
+            }
+        }
+
+        return isValid;
+    }
+
     onUpdatePaymentStatusClick() {
-        if(this.invoiceDetails) {
+        if(this.invoiceDetails && this.isPaymentDetailsValid()) {
             let req: PaymentReqModel = {
                 paymentDetailsId: (this._initDetails.paymentDetails && this._initDetails.paymentDetails.paymentDetailsId) ? this._initDetails.paymentDetails.paymentDetailsId : null,
                 purchaseOrderId: this.invoiceDetails.purchaseOrderId,
@@ -136,6 +178,7 @@ export class InvoiceDetailsComponent implements OnInit {
     }
 
     onRemarksBlur() {
+        this.remarksErrMsg = "";
         if(this.remarks) {
             this.remarks = this.remarks.trim();
         }
@@ -147,12 +190,8 @@ export class InvoiceDetailsComponent implements OnInit {
     }
 
     getPaymentStatusDetails() {
-        if(this.invoicePaymentDetails && this.invoicePaymentDetails.amountPaid) {
-            // if(+this.invoicePaymentDetails.amountPaid > 0 && this.invoicePaymentDetails.paymentDate) {
-            //     return this.invoicePaymentDetails.statusDesc + " on " + this._appService.getFormattedDate(this.invoicePaymentDetails.paymentDate);
-            // }
-
-            return this.invoicePaymentDetails.statusDesc;
+        if(this.invoicePaymentDetails && this.invoicePaymentDetails.statusDesc && this.invoicePaymentDetails.updatedDate) {
+            return this.invoicePaymentDetails.statusDesc + " on " + this._appService.getFormattedDate(this.invoicePaymentDetails.updatedDate);
         }
 
         return "";
@@ -167,9 +206,9 @@ export class InvoiceDetailsComponent implements OnInit {
     }
 
     getPaidDate() {
-        // if(this.invoicePaymentDetails && this.invoicePaymentDetails.paymentDate) {
-        //     return this._appService.getFormattedDate(this.invoicePaymentDetails.paymentDate);
-        // }
+        if(this.invoicePaymentDetails && this.invoicePaymentDetails.updatedDate) {
+            return this._appService.getFormattedDate(this.invoicePaymentDetails.updatedDate);
+        }
 
         return "";
     }
