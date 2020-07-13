@@ -229,7 +229,7 @@
                     <td>
                         <span>{{ item.itemDescription }}</span>
                     </td>
-                    <td *ngIf="isPOBasedInvoice == true" class="eightcharacters">
+                    <td *ngIf="isPOBasedInvoice == true" style="width:4em;">
                         <span>{{ item.uom }}</span>
                     </td>
                     <td class="eightcharacters">
@@ -244,10 +244,10 @@
                     <td *ngIf="isPOBasedInvoice == true" class="tencharacters">
                         <span>{{ item.consumedUnits }}</span>
                     </td>
-                    <td class="tencharacters">
+                    <td style="width:4em;">
                         <span>{{ item.invoiceUnits }}</span>
                     </td>
-                    <td class="eightcharacters">
+                    <td style="width:4em;">
                         <span>{{ currency }}</span>
                     </td>
                     <td class="amount tencharacters">

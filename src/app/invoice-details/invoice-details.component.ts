@@ -24,9 +24,9 @@ export class InvoiceDetailsComponent implements OnInit {
     headerArr: string[] = [];
 
     poInvHeaderArr: string[] = ['Item No.', 'Item Desc', "UOM", "HSN/SAC", 'Order Units', 'Supplied Units', 'Balance Units', 
-                            'Invoice Units', 'Currency', 'Rate', 'Amount'];
+                            'Inv Units', 'Curr', 'Rate', 'Amount'];
 
-    nonPoInvHeaderArr: string[] = ['Item No.', 'Item Desc', "HSN/SAC", 'Invoice Units', 'Currency', 'Rate', 'Amount'];
+    nonPoInvHeaderArr: string[] = ['Item No.', 'Item Desc', "HSN/SAC", 'Inv Units', 'Curr', 'Rate', 'Amount'];
 
     invoiceDetails: InvoiceModel = null;
     currency: string = "";

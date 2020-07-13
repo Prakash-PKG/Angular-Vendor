@@ -646,6 +646,7 @@
             </mat-option>
           </mat-select>
         </mat-form-field>
+        <div class="error-txt" *ngIf="isFinance && !selectedVendorGroup">This field is mandatory</div>
         <mat-form-field class="field search-row-element">
           <mat-label>Company Code</mat-label>
           <mat-select [(ngModel)]="selectedCompanyCode">
@@ -653,6 +654,7 @@
             </mat-option>
           </mat-select>
         </mat-form-field>
+        <div class="error-txt" *ngIf="isFinance && !selectedCompanyCode">This field is mandatory</div>
         <mat-form-field class="field search-row-element">
           <mat-label>Currency</mat-label>
           <mat-select [(ngModel)]="selectedCurrency">
@@ -661,6 +663,7 @@
             </mat-option>
           </mat-select>
         </mat-form-field>
+        <div class="error-txt" *ngIf="isFinance && !selectedCurrency">This field is mandatory</div>
         <mat-form-field class="field search-row-element" *ngIf="isFinance">
           <mat-label>with Hold Type</mat-label>
           <mat-select [(ngModel)]="withholdType" (selectionChange)="onHoldTypeSelected($event)">

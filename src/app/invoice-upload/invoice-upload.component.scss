@@ -3,7 +3,7 @@
 }
 .dataTable thead tr,
 .dataTable tbody tr {
-  border-bottom: 1px solid #59ffff;
+  border-bottom: 1px solid #e9d2ff;
 }
 .inv-qty {
   width: 100%;
@@ -83,4 +83,7 @@
 
 .errorinput{
     border: 1px solid red!important;
+}
+.dataTable.add-ons tbody tr:first-child{
+  border-top: 1px solid #e9d2ff;
 }
