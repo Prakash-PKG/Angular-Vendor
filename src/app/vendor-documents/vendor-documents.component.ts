@@ -140,12 +140,11 @@ export class VendorDocumentsComponent implements OnInit {
     }
     onAttachFileClick(documentTypeId: number) {
         let filesReq: VendorDocumentReqModel = {
-            // userId: '106994',
             fileDetails: this.filesMap[documentTypeId].toAttach,
-            // vendorMasterId: 166
-            userId: globalConstant.userDetails.isVendor ? globalConstant.userDetails.userEmail : globalConstant.userDetails.userId,
+            userId: globalConstant.userDetails.isTempVendor ? globalConstant.userDetails.userEmail : globalConstant.userDetails.userId,
             vendorMasterId: this._appService.vendorRegistrationDetails.vendorMasterId
         }
+
         this._vendorRegistrationService.uploadVendorDocuments(filesReq)
             .subscribe(response => {
                 this._vendorRegistrationService.updateBusy(<BusyDataModel>{ isBusy: false, msg: null });
