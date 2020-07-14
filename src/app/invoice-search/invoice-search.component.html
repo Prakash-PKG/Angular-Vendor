@@ -1,6 +1,6 @@
 <div class="main">
     <div class="title">
-        <h3>Invoice Search</h3>
+        <h3>{{ isForPayments ? "Pending Payments Invoices" : "Invoices" }}</h3>
     </div>
     <div class="search-row">
         <form [formGroup]="invoiceSearchForm" class="search-row-element">
@@ -68,6 +68,8 @@
                     <th class="headers " scope="col" style="width: 9em;">
                         <span>Total Amt <small>(inc. tax)</small></span>
                     </th>
+                    <th *ngIf = "isForPayments == true">
+                    </th>
                 </tr>
             </thead>
             <tbody>
@@ -95,6 +97,11 @@
                     </td>
                     <td class="amount tencharacters">
                         {{ inv.totalAmt }}
+                    </td>
+                    <td *ngIf = "isForPayments == true">
+                        <div class="actions search-row-element">
+                            <button mat-raised-button class="footer-actions" (click) = "onUpdatePaymentStatusClick(inv)">Update Status</button>
+                        </div>
                     </td>
                 </tr>
             </tbody>

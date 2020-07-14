@@ -54,12 +54,7 @@ textarea {
 .mat-radio-button.mat-accent .mat-radio-ripple .mat-ripple-element {
   background-color: rgba(36, 244, 213, 0.26) !important;
 }
-.error-txt {
-  color: blueviolet;
-  font-style: italic;
-  font-weight: 700;
-  margin-right: 10px;
-}
+
 // --------------------------------------------------------------css for data table starts here-----------------------------------------------------
 .dataTable tbody tr td.amount {
   text-align: right;
@@ -79,12 +74,13 @@ textarea {
 .dataTable tbody tr td {
   text-align: left;
   font-size: inherit;
-  border-right: solid 1px #59ffff;
+  border-right: solid 1px #e9d2ff;
   padding-left: 5px;
   padding-right: 5px;
+  border-top: 1px solid #e9d2ff;
 }
 .dataTable tbody tr td:first-child {
-  border-left: solid 1px #59ffff;
+  border-left: solid 1px #e9d2ff;
 }
 .dataTable tbody tr td input {
   border: none;
@@ -103,7 +99,7 @@ textarea {
 
 .dataTable tr {
   height: 3em;
-  border-bottom: solid 1px #59ffff;
+  border-bottom: solid 1px #e9d2ff;
 }
 button {
   cursor: pointer;

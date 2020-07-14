@@ -36,12 +36,26 @@
             </div>
             <div class="navtxt">Invoice Search</div>
         </li>
-        <li (click) = "onVenDashClick()">
+        <!-- <li (click) = "onVenDashClick()">
             <div class="side-icon">
                 <mat-icon  matTooltip="Vendor Dashboard">dashboard</mat-icon>
             </div>
             <div class="navtxt">Vendor Dashboard</div>
+        </li> -->
+        <li *ngIf = "isPOInvoiceDumpVisible == true" [ngClass]="{'remove-li': isSidebarCollapsed == true}">
+            <div class="side-icon">
+                <mat-icon>description</mat-icon>
+            </div>
+            <div class="navtxt">Payments</div>
         </li>
+        <ul class="childdash" *ngIf = "isPOInvoiceDumpVisible == true">
+            <li [ngClass]="{'collapsed': isSidebarCollapsed == true}" (click) = "onPaymentsInvoiceSearchClick()">
+                <div class="side-icon">
+                    <mat-icon  matTooltip="PO Invoice Dump">local_offer</mat-icon>
+                </div>
+                <div class="navtxt">Pending Payments Invoices</div>
+            </li>
+        </ul>
         <li *ngIf = "isPOInvoiceDumpVisible == true" [ngClass]="{'remove-li': isSidebarCollapsed == true}">
             <div class="side-icon">
                 <mat-icon>description</mat-icon>
