@@ -50,16 +50,18 @@ export class VendorDashboardComponent implements OnInit {
         this.totalVendorList = [];
 
         this._homeService.updateBusy(<BusyDataModel>{ isBusy: true, msg: "Loading..." });
-        this._vendorDashService.getVendorList().subscribe(result => {
-            console.log(result);
-            // this.vendorList = result.body;
-            // if (this.vendorList && this.vendorList.length > 0) {
-            //     this.totalVendorList = this.vendorList.concat();
-            // }
-
+        this._vendorDashService.getVendorList().subscribe(response => {
+            this._homeService.updateBusy(<BusyDataModel>{ isBusy: false, msg: null });
+            if (response.body) {
+                let results: VendorMasterDetailsModel[] = response.body as VendorMasterDetailsModel[];
+                this.vendorList = results;
+                this.totalVendorList = this.vendorList.concat();
+            }
         });
-
-        this._homeService.updateBusy(<BusyDataModel>{ isBusy: false, msg: null });
+        (error) => {
+            this._homeService.updateBusy(<BusyDataModel>{ isBusy: false, msg: null });
+            console.log(error);
+        };
     }
 
     onClearClick() {
