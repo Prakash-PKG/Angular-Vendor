@@ -1,3 +1,76 @@
-<div>vendor dashboard works
-    
+<div class="main">
+    <div class="title">
+        <h3>Vendor Dashboard</h3>
+    </div>
+    <div class="search-row">
+        <form [formGroup]="vendorSearchForm" class="search-row-element">
+            <mat-form-field class="field search-row-element">
+                <mat-label>Vendor Name</mat-label>
+                <input type="text" matInput formControlName="vendorName" autocomplete="off">
+            </mat-form-field>
+
+            <mat-form-field class="field search-row-element">
+                <mat-label>Contact Person</mat-label>
+                <input type="text" matInput formControlName="contactPerson" autocomplete="off">
+            </mat-form-field>
+
+            <mat-form-field class="field search-row-element">
+                <mat-label>Mobile No.</mat-label>
+                <input type="text" matInput formControlName="mobileNum" autocomplete="off">
+            </mat-form-field>
+
+        </form>
+
+        <div class="actions search-row-element">
+            <button mat-raised-button class="footer-actions" (click)="onClearClick()">Clear</button>
+        </div>
+
+    </div>
+
+
+    <div class="container my-container margin-unset full-width">
+        <table class="dataTable full-width">
+            <thead>
+                <tr>
+                    <th class="headers" scope="col">
+                        <span>Vendor Id</span>
+                    </th>
+                    <th class="headers" scope="col">
+                        <span>Vendor Name</span>
+                    </th>
+                    <th class="headers" scope="col">
+                        <span>Contact Person</span>
+                    </th>
+                    <th class="headers" scope="col">
+                        <span>Vendor EmailId</span>
+                    </th>
+                    <th class="headers" scope="col">
+                        <span>Mobile No.</span>
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let vendor of vendorList; let poInd = index">
+               
+                    <td class="eightcharacters" (click)="onVendorClick(vendor)" >
+                        {{ vendor.vendorId }}
+                    </td>
+                    <td>
+                        {{ vendor.vendorName }}
+                    </td>
+                    <td  class="tencharacters">
+                        {{ vendor.contactPerson }}
+                    </td>
+                  
+                    <td >
+                        {{ vendor.emailId }}
+                    </td>
+                    <td >
+                        {{ vendor.mobileNum }}
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+    </div>
 </div>

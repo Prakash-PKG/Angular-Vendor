@@ -49,8 +49,8 @@
           <!--  login button -->
           <div class="row actions margin-unset" *ngIf="haveOTP">
             <button mat-raised-button type="submit" class=" footer-actions mat-elevation-z8"
-              [disabled]="f.userId.invalid || f.password.invalid || isloading">
-              <i *ngIf="isloading" class="fa fa-spin fa-spinner pull-right" style="padding:5px"
+              [disabled]="f.userId.invalid || f.password.invalid || isSignIn">
+              <i *ngIf="isSignIn" class="fa fa-spin fa-spinner pull-right" style="padding:5px"
                 aria-hidden="true"></i>Sign
               In</button>
           </div>
