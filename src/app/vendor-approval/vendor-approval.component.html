@@ -670,8 +670,8 @@
           </mat-form-field>
           <div class="errortxt" *ngIf="isFinance && !selectedCurrency">This field is mandatory</div>
         </div>
-        <div class=" search-row-element">
-          <mat-form-field class="field" *ngIf="isFinance">
+        <div class=" search-row-element" *ngIf="isFinance">
+          <mat-form-field class="field">
             <mat-label>with Hold Type</mat-label>
             <mat-select [(ngModel)]="withholdType" (selectionChange)="onHoldTypeSelected($event)">
               <mat-option *ngFor="let withholdType of withholdTypeList" [value]="withholdType.withholdTypeCode">
@@ -680,8 +680,8 @@
             </mat-select>
           </mat-form-field>
         </div>
-        <div class=" search-row-element">
-          <mat-form-field class="field" *ngIf="isFinance">
+        <div class=" search-row-element" *ngIf="isFinance">
+          <mat-form-field class="field">
             <mat-label>with Hold Tax</mat-label>
             <mat-select [(ngModel)]="withholdTax">
               <mat-option *ngFor="let withholdTax of withholdTaxList" [value]="withholdTax.withholdTaxCode">
@@ -690,9 +690,9 @@
             </mat-select>
           </mat-form-field>
         </div>
-        <div class=" search-row-element">
+        <div class=" search-row-element" *ngIf="isProcurement">
           <div class="actions attachments">
-            <div class="flex-items" *ngIf="isProcurement">
+            <div class="flex-items">
               <input style="display: none" [attr.id]="vendorDocCtrl.msaCtrl.browserId" type="file" multiple
                 accept=".xls,.xlsx,.doc,.docx,.pdf,.png,.jpg,.zip"
                 (change)="onFileChange($event, vendorDocCtrl.msaCtrl.documentTypeId)" />
