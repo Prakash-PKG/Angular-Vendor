@@ -20,6 +20,7 @@ export class LoginVendorComponent implements OnInit {
   errorMessage: string = "";
   otpMessage: string = "";
   isloading: boolean = false;
+  isSignIn: boolean = false;
   haveOTP: boolean = false;
   validOTP: boolean = false;
 
@@ -35,19 +36,19 @@ export class LoginVendorComponent implements OnInit {
 
   OnLoginClick() {
     this.isFormSubmitted = true;
-    this.isloading = true;
+    this.isSignIn = true;
     if (this.loginForm.valid) {
       let userId: string = this.loginForm.get("userId").value;
       let password: string = this.loginForm.get("password").value;
       this._loginVendorService.login(userId, password).subscribe(
         (response) => {
-          this.isloading = false;
+          this.isSignIn = false;
           this._loginVendorService.storeUserData(response);
 
           this._router.navigate([this._appService.routingConstants.vendorDetails]);
         },
         (error) => {
-          this.isloading = false;
+          this.isSignIn = false;
           if (error.status == 500) {
             this.errorMessage = "Internal server error occurred. Please try again later."
           } else {
@@ -58,6 +59,7 @@ export class LoginVendorComponent implements OnInit {
     }
   }
   async onGenerateOTPClick() {
+    this.otpMessage = '';
     this.isloading = true;
       let userId = this.loginForm.get("userId").value;
     if (userId) {
