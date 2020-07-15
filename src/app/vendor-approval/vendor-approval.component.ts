@@ -277,7 +277,7 @@ export class VendorApprovalComponent implements OnInit {
     }
 
     downloadFile(fileDetails: FileDetailsModel) {
-        this._appService.downloadInvoiceFile(fileDetails);
+        this._vendorApprovalService.downloadFile(fileDetails);
     }
 
     onApproveClick() {
