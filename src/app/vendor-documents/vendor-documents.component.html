@@ -42,7 +42,8 @@
         <div class="col-5 doc-form-field">
             <mat-form-field class="full-width">
                 <input type="text" matInput placeholder="{{vendorDocCtrl.gstCtrl.placeholder}}" formControlName="gstNum"
-                    autocomplete="off" (blur)="updateMandatory('gstNum',vendorDocCtrl.gstCtrl.documentTypeId)">
+                    maxlength="15" autocomplete="off"
+                    (blur)="updateMandatory('gstNum',vendorDocCtrl.gstCtrl.documentTypeId)">
             </mat-form-field>
         </div>
 
@@ -81,7 +82,7 @@
         <div class="col-5 doc-form-field">
             <mat-form-field class="full-width">
                 <input type="text" matInput placeholder="{{vendorDocCtrl.panCtrl.placeholder}}" formControlName="panNum"
-                    autocomplete="off" required>
+                    maxlength="10" autocomplete="off" required>
             </mat-form-field>
             <mat-label></mat-label>
         </div>
@@ -385,10 +386,10 @@
                 <mat-radio-button [value]=false [checked]=true>NO</mat-radio-button>
             </mat-radio-group>
         </div>
-   <div class="col-7 doc-form-field"></div>
+        <div class="col-7 doc-form-field"></div>
     </div>
 
-<!------------------------------------- CIN No---------------------- -->
+    <!------------------------------------- CIN No---------------------- -->
     <div class="row doc-field">
         <div class="col-5 doc-form-field">
             <mat-form-field class="full-width">
@@ -435,7 +436,7 @@
 
 </form>
 
-<div class="row actions margin-unset"  style="margin-top: 2em;">
+<div class="row actions margin-unset" style="margin-top: 2em;">
     <div class="errortxt" *ngIf="vendorDocumentForm.invalid || isServerError">
         {{ failureMsg }}
     </div>
