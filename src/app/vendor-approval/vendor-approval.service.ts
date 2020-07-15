@@ -72,7 +72,7 @@ export class VendorApprovalService {
     }
 
     getFileData(fileDetails: FileDetailsModel) {
-        let url = this._appService.baseUrl + 'downloadInvDoc/' + fileDetails.uniqueFileName;
+        let url = this._appService.baseUrl + 'downloadVenDoc/' + fileDetails.uniqueFileName;
         return this._http.get(url, { responseType: 'arraybuffer', observe: 'response' });
     }
 
