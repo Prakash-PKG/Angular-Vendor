@@ -32,7 +32,7 @@
         <table class="dataTable full-width">
             <thead>
                 <tr>
-                    <th class="headers" scope="col">
+                    <th class="headers" scope="col" style="cursor:pointer;" >
                         <span>Vendor Id</span>
                     </th>
                     <th class="headers" scope="col">
@@ -52,7 +52,7 @@
             <tbody>
                 <tr *ngFor="let vendor of vendorList; let poInd = index">
                
-                    <td class="eightcharacters" (click)="onVendorClick(vendor)" >
+                    <td class="eightcharacters" (click)="onVendorClick(vendor)" style="cursor:pointer;" >
                         {{ vendor.vendorMasterId }}
                     </td>
                     <td>

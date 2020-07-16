@@ -21,6 +21,7 @@ import { scan, takeWhile, takeLast } from 'rxjs/operators';
 import { MessageDialogComponent } from '../message-dialog/message-dialog.component';
 import { MessageDialogModel } from '../models/popup-models';
 import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
+import { Router } from '@angular/router';
 
 interface FileMap {
     [key: number]: {
@@ -43,6 +44,7 @@ export class VendorApprovalComponent implements OnInit {
 
     vendorApprovalInitDetails: VendorApprovalInitResultModel = null;
     vendorDetails: VendorMasterDetailsModel = new VendorMasterDetailsModel();
+    originalVendorDetails: VendorMasterDetailsModel = new VendorMasterDetailsModel();
 
     vendoraccGroupList: AccGroupMasterList[] = [];
     companyCodeList: CompanyCodeMasterList[] = [];
@@ -66,6 +68,7 @@ export class VendorApprovalComponent implements OnInit {
     isValid = true;
     isServerError = false;
     disableSubmit: boolean = false;
+    canApprove: boolean = false;
 
     documentsList: VendorMasterDocumentModel[] = [];
     vendorDocList: FileDetailsModel[] = [];
@@ -93,7 +96,8 @@ export class VendorApprovalComponent implements OnInit {
         private _appService: AppService,
         private _vendorApprovalService: VendorApprovalService,
         private _snackBar: MatSnackBar,
-        private _dialog: MatDialog) { }
+        private _dialog: MatDialog,
+        private _router: Router) { }
 
     onEditClick() {
         this.isEditable = false;
@@ -287,6 +291,10 @@ export class VendorApprovalComponent implements OnInit {
     onRejectClick() {
         this.updateVendorApprovals(this._appService.updateOperations.reject);
     }
+    onBackClick() {
+        this.vendorDetails = this.originalVendorDetails;
+        this._router.navigate([this._appService.routingConstants.vendorDashboard]);
+    }
 
     updateMandatoryDocs(selfValue: any, documentTypeId: number) {
         if (!selfValue) {
@@ -302,13 +310,6 @@ export class VendorApprovalComponent implements OnInit {
     }
     // functions for document attachment ends here
 
-    // updateMandatoryFields(selfValue: any) {
-    //     if (!selfValue) {
-    //         this.isValid = false;
-    //         return;
-    //     }
-    // }
-
     isFilesValid() {
         this.isValid = true;
         for (let key in this.filesMap) {
@@ -322,10 +323,10 @@ export class VendorApprovalComponent implements OnInit {
     }
     async isFormValid() {
         if (this.isFinance) {
-            
+
             if (!this.selectedVendorGroup || !this.selectedCompanyCode || !this.selectedCurrency) {
                 this.msg = "Your form contains error.Please check.";
-                return  this.isValid = false;                
+                return this.isValid = false;
             }
             if (!this.withholdTax || !this.withholdType || !this.remarks) {
                 const dialogRef = this._dialog.open(ConfirmDialogComponent, {
@@ -344,13 +345,25 @@ export class VendorApprovalComponent implements OnInit {
             return true;
         }
     }
+    isMandatoryFieldsEmpty() {
+        if (this.isProcurement) {
+            if (!this.vendorDetails.vendorName || !this.vendorDetails.mobileNum || !this.vendorDetails.emailId || !this.vendorDetails.address1 || !this.vendorDetails.street || !this.vendorDetails.city || !this.vendorDetails.pincode || !this.vendorDetails.stateName || !this.vendorDetails.countryName || !this.vendorDetails.panNum)
+                this.msg = "Your form contains error.Please check.";
+            return this.isValid = false;
+        }
+    }
 
     async updateVendorApprovals(action: string) {
         this.isFilesValid();
         if (!this.isValid) return;
 
+        this.isMandatoryFieldsEmpty();
+        if (!this.isValid) return;
+
         this.isValid = await this.isFormValid();
         if (!this.isValid) { return };
+
+
 
         let req: VendorApprovalReqModel = {
             action: action,
@@ -411,24 +424,32 @@ export class VendorApprovalComponent implements OnInit {
 
 
     async loadInitData() {
+        let req: VendorApprovalInitReqModel = null;
+        if (this._appService.isexistingVendor) {
+            req = {
+                vendorMasterId: this._appService.selectedVendor.vendorMasterId,
+                departmentCode: null
+            };
+        }
 
         if (this._appService.selectedPendingApprovalRecord) {
-
-            let req: VendorApprovalInitReqModel = {
+            req = {
                 vendorMasterId: this._appService.selectedPendingApprovalRecord.vendorMasterId,
                 departmentCode: this._appService.selectedPendingApprovalRecord.approvalLevel
-                // vendorMasterId: 181,
-                // departmentCode: 'procurement'
             };
-            this._homeService.updateBusy(<BusyDataModel>{ isBusy: true, msg: "Loading..." });
-            this.vendorApprovalInitDetails = await this._vendorApprovalService.getVendorApprovalInitData(req);
-            this.vendorDetails = this.vendorApprovalInitDetails.vendorMasterDetails;
-            this.initializeFilesList();
-            this.loadDropDown();
-            this.getAttachments();
-            this._homeService.updateBusy(<BusyDataModel>{ isBusy: false, msg: null });
         }
+
+        this._homeService.updateBusy(<BusyDataModel>{ isBusy: true, msg: "Loading..." });
+        this.vendorApprovalInitDetails = await this._vendorApprovalService.getVendorApprovalInitData(req);
+        this.originalVendorDetails = this.vendorApprovalInitDetails.vendorMasterDetails;
+        this.vendorDetails = this.originalVendorDetails;
+        this.initializeFilesList();
+        this.loadDropDown();
+        this.getAttachments();
+        this._homeService.updateBusy(<BusyDataModel>{ isBusy: false, msg: null });
+
     }
+
 
     loadDropDown() {
         this.vendoraccGroupList = [];
@@ -490,8 +511,11 @@ export class VendorApprovalComponent implements OnInit {
         });
         if (globalConstant.userDetails.userRoles[0].roleCode == 'finance') {
             this.isFinance = true;
+            this.canApprove = true;
+
         } else if (globalConstant.userDetails.userRoles[0].roleCode == 'procurement') {
             this.isProcurement = true;
+            this.canApprove = true;
         }
 
         setTimeout(() => {

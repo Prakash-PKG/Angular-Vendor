@@ -19,7 +19,7 @@ export class EmpanelmentComponent implements OnInit {
 
     ngOnInit() {
         this.empanelmentForm = this._formBuilder.group({
-            emailId: [null, [Validators.required, Validators.email]],
+            emailId: [null, [Validators.required,Validators.email]],
         });
     }
 
