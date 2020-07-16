@@ -1,7 +1,7 @@
 
 export const globalConstant : any = {
-    poRoles: ["adp", "hrp", "isp", "itp", "lgp", "mkp"],
-    invUploadRoles: ["adp-upload", "hrp-upload", "isp-upload", "itp-upload", "lgp-upload", "mkp-upload"],
+    poRoles: ["adp", "hrp", "isp", "itp", "lgp", "mkp", 'fip'],
+    invUploadRoles: ["adp-upload", "hrp-upload", "isp-upload", "itp-upload", "lgp-upload", "mkp-upload", "fip-upload"],
     functionalHeadRoles: ["functional_head"],
     financeRoles: ["finance"],
     empanelmentRoles: ["empanelment"],
