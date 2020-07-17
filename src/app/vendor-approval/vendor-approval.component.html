@@ -97,9 +97,9 @@
             <input type="text" matInput [(ngModel)]="vendorDetails.city" [disabled]="isEditable" required>
           </mat-form-field> -
           <mat-form-field class="full-width" style="width:45%">
-            <input type="text" matInput [(ngModel)]="vendorDetails.pincode" [disabled]="isEditable">
+            <input type="text" matInput [(ngModel)]="vendorDetails.pincode" [disabled]="isEditable" required>
           </mat-form-field>
-          <div class="error-txt" *ngIf="!vendorDetails.city">This field is mandatory</div>
+          <div class="error-txt" *ngIf="!vendorDetails.city || !vendorDetails.pincode">This field is mandatory</div>
         </div>
 
         <div class="Rtable-cell Rtable-cell--head">State</div>
@@ -339,11 +339,9 @@
         <div class="Rtable-cell Rtable-cell--head">LUT No.</div>
         <div class="Rtable-cell">
           <mat-form-field class="full-width">
-            <input type="text" matInput [(ngModel)]="vendorDetails.lutNum" [disabled]="isEditable" required>
+            <input type="text" matInput [(ngModel)]="vendorDetails.lutNum" [disabled]="isEditable">
           </mat-form-field>
-
-          <div class="error-txt" *ngIf="!vendorDetails.lutNum">This field is mandatory</div>
-        </div>
+      </div>
 
         <div class="Rtable-cell Rtable-cell--head">Attachments</div>
         <div class="Rtable-cell">
@@ -738,14 +736,15 @@
       <div class="errortxt">
         {{ msg }}
       </div>
-
+      <button mat-raised-button class="footer-actions" (click)="onBackClick()" *ngIf="!isEditable" [disabled]="disableSubmit">Back</button>
       <button mat-raised-button class="footer-actions" [disabled]="!isEditable" (click)="onEditClick()"
         *ngIf="isProcurement">Edit</button>
       <!-- <button mat-raised-button class="footer-actions" (click)="onSendForCorrClick()">Send For Correction</button> -->
-      <button mat-raised-button class="footer-actions" (click)="onRejectClick()"
-        [disabled]="disableSubmit">Reject</button>
+
+      <button mat-raised-button class="footer-actions" (click)="onRejectClick()" [disabled]="disableSubmit"
+        *ngIf="canApprove">Reject</button>
       <button mat-raised-button class="footer-actions footer-actions-green" (click)="onApproveClick()"
-        [disabled]="disableSubmit">Approve</button>
+        [disabled]="disableSubmit" *ngIf="canApprove">Approve</button>
     </div>
   </div>
 </div>

@@ -91,7 +91,8 @@ export class AppService {
 
     selectedInvoice: InvoiceModel = null;
 
-    selectedVendor:VendorMasterDetailsModel =null;
+    selectedVendor: VendorMasterDetailsModel = null;
+    isexistingVendor: boolean = false;
 
     isInvoiceSearchForPayments: boolean = false;
     isInvoiceDetailsForPayments: boolean = false;

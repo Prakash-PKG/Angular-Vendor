@@ -91,6 +91,7 @@ export class VendorDashboardComponent implements OnInit {
     }
     onVendorClick(vendor: VendorMasterDetailsModel) {
         this._appService.selectedVendor = vendor;
+        this._appService.isexistingVendor = true;
         this._router.navigate([this._appService.routingConstants.vendorApproval]);
     }
 
