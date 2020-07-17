@@ -73,6 +73,8 @@ export class InvoiceUploadComponent implements OnInit {
 
     invoiceNumberErrMsg: string = "";
 
+    minInvoiceDate: Date = null;
+
     //totalItemsAmtValid: boolean = false;
 
     constructor(private _homeService: HomeService, 
@@ -617,6 +619,12 @@ export class InvoiceUploadComponent implements OnInit {
             this.selectedPOItem = null;
             if(val) {
                 this.selectedPOItem = this.poList.find( p => p.poNumber == val);
+                if(this.selectedPOItem.poDate) {
+                    this.minInvoiceDate = new Date(this.selectedPOItem.poDate);
+                }
+                else {
+                    this.minInvoiceDate = null;
+                }
                 this.currency = this.selectedPOItem.currencyType;
                 this.loadPOItems();
             }

@@ -12,8 +12,7 @@ import { HttpClient } from '@angular/common/http';
 })
 export class AppService {
 
-    //readonly domain = "http://localhost:8080";
-     readonly domain = "https://mvendor-stg.marlabs.com";  
+	readonly domain = "https://mvendor-stg.marlabs.com"; 
     //readonly domain = "https://mtime.marlabs.com";  
     readonly baseUrl = this.domain + "/mvendor/";
     readonly customerAuthUrl = this.domain + "/customerAuth/oauth/token";
@@ -90,6 +89,9 @@ export class AppService {
     selectedPO: PODetailsModel = null;
 
     selectedInvoice: InvoiceModel = null;
+
+    selectedVendor: VendorMasterDetailsModel = null;
+    isexistingVendor: boolean = false;
 
     isInvoiceSearchForPayments: boolean = false;
     isInvoiceDetailsForPayments: boolean = false;

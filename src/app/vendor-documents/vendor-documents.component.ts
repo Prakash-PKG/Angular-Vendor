@@ -283,7 +283,7 @@ export class VendorDocumentsComponent implements OnInit {
     }
 
     downloadFile(fileDetails: FileDetailsModel) {
-        this._appService.downloadInvoiceFile(fileDetails);
+        this._vendorRegistrationService.downloadFile(fileDetails);
     }
 
     updateVendorDetails() {

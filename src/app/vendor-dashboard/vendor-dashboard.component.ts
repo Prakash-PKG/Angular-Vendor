@@ -1,128 +1,134 @@
 import { Component, OnInit } from '@angular/core';
 import { DateAdapter, MAT_DATE_LOCALE, MAT_DATE_FORMATS } from '@angular/material';
 import { MomentDateAdapter, MAT_MOMENT_DATE_ADAPTER_OPTIONS } from '@angular/material-moment-adapter';
-import{VendorMasterDetailsModel, BusyDataModel} from '../../app/models/data-models'
+import { VendorMasterDetailsModel, BusyDataModel } from '../../app/models/data-models'
 import { HomeService } from '../home/home.service';
 import { AppService } from '../app.service';
 import { Router } from '@angular/router';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { DatePipe } from '@angular/common';
+import { VendorDashboardService } from './vendor-dashboard.service';
 export const MY_FORMATS = {
-  parse: {
-      dateInput: 'LL',
-  },
-  display: {
-      dateInput: 'LL',
-      monthYearLabel: 'MMM YYYY',
-      dateA11yLabel: 'LL',
-      monthYearA11yLabel: 'MMMM YYYY',
-  },
+    parse: {
+        dateInput: 'LL',
+    },
+    display: {
+        dateInput: 'LL',
+        monthYearLabel: 'MMM YYYY',
+        dateA11yLabel: 'LL',
+        monthYearA11yLabel: 'MMMM YYYY',
+    },
 };
 
 @Component({
-  selector: 'app-vendor-dashboard',
-  templateUrl: './vendor-dashboard.component.html',
-  styleUrls: ['./vendor-dashboard.component.scss'],
-  providers: [
-    // `MomentDateAdapter` can be automatically provided by importing `MomentDateModule` in your
-    // application's root module. We provide it at the component level here, due to limitations of
-    // our example generation script.
-    {
-        provide: DateAdapter,
-        useClass: MomentDateAdapter,
-        deps: [MAT_DATE_LOCALE, MAT_MOMENT_DATE_ADAPTER_OPTIONS]
-    },
-
-    { provide: MAT_DATE_FORMATS, useValue: MY_FORMATS },
-]
+    selector: 'app-vendor-dashboard',
+    templateUrl: './vendor-dashboard.component.html',
+    styleUrls: ['./vendor-dashboard.component.scss']
 })
 export class VendorDashboardComponent implements OnInit {
 
- 
-  isDashboardCollapsed: boolean = true;
-  _sidebarExpansionSubscription: any = null;
 
-  // _initDetails: VendorMasterDetailsModel = null;
+    isDashboardCollapsed: boolean = true;
+    _sidebarExpansionSubscription: any = null;
 
-  vendorList: VendorMasterDetailsModel[] = [];
+    // _initDetails: VendorMasterDetailsModel = null;
 
-  invoiceSearchForm: FormGroup;
+    vendorList: VendorMasterDetailsModel[] = [];
+    totalVendorList: VendorMasterDetailsModel[] = [];
+    vendorSearchForm: FormGroup;
 
-  constructor(private _homeService: HomeService,
-      private _appService: AppService,
-      private _router: Router,
-      private _formBuilder: FormBuilder,
-      private _datePipe: DatePipe) { }
+    headerArr: string[] = [];
 
-//   onInvoiceDownloadClick() {
-//       let req: InvoiceSearchRequestModel = this.getPOSearchRequestData();
+    constructor(private _homeService: HomeService,
+        private _appService: AppService,
+        private _router: Router,
+        private _formBuilder: FormBuilder,
+        private _vendorDashService: VendorDashboardService) { }
 
-//       let displayStartDt: string = this._datePipe.transform(new Date(), this._appService.displayDtFormat);;
-//       let fileName: string = "invoice-dump-" + displayStartDt + ".xlsx";
-//       this.downloadInvoiceDump(req, fileName);
-//   }
+    loadInitData() {
+        this.vendorList = [];
+        this.totalVendorList = [];
 
-//   downloadInvoiceDump(req: InvoiceSearchRequestModel, fileName: string) {
-//       this._homeService.updateBusy(<BusyDataModel>{ isBusy: true, msg: "Loading..." });
-//       this._invoiceSearchService.getFileData(req).subscribe(
-//           (data) => {
-//               this._homeService.updateBusy(<BusyDataModel>{ isBusy: false, msg: null });
-//               const blob = new Blob([data.body], { type: 'application/octet-stream' });
-//               const url = window.URL.createObjectURL(blob);
+        this._homeService.updateBusy(<BusyDataModel>{ isBusy: true, msg: "Loading..." });
+        this._vendorDashService.getVendorList().subscribe(response => {
+            this._homeService.updateBusy(<BusyDataModel>{ isBusy: false, msg: null });
+            if (response.body) {
+                let results: VendorMasterDetailsModel[] = response.body as VendorMasterDetailsModel[];
+                this.vendorList = results;
+                this.totalVendorList = this.vendorList.concat();
+            }
+        });
+        (error) => {
+            this._homeService.updateBusy(<BusyDataModel>{ isBusy: false, msg: null });
+            console.log(error);
+        };
+    }
 
-//               const a = document.createElement('a');
-//               a.href = url;
-//               a.download = fileName;
-//               document.body.appendChild(a);
-//               a.click();
-//           },
-//           error => {
-//               console.log(error);
-//               this._homeService.updateBusy(<BusyDataModel>{ isBusy: false, msg: null });
-//           });
-//   }
+    onClearClick() {
+        this.vendorSearchForm.reset();
+        this.vendorList = this.totalVendorList.concat();
+    }
 
-//   onInvoiceClick(inv: InvoiceModel) {
-//       this._appService.selectedInvoice = inv;
-//       this._router.navigate([this._appService.routingConstants.invoiceDetails]);
-//   }
+    onSearchChange() {
 
-  getFormattedDate(dtStr: string) {
-      if (dtStr) {
-          return this._appService.getFormattedDate(dtStr);
-      }
+        let vendorNameVal = this.vendorSearchForm.get("vendorName").value;
+        let lcvendorNameVal = (vendorNameVal) ? vendorNameVal.toLowerCase() : "";
 
-      return "";
-  }
+        let contactPersonVal = this.vendorSearchForm.get("contactPerson").value;
+        let lccontactPersonVal = (contactPersonVal) ? contactPersonVal.toLowerCase() : "";
 
-  async loadInitData() {
-      this.vendorList = [];
+        let mobileNumVal = this.vendorSearchForm.get("mobileNum").value;
+        let lcmobileNumVal = (mobileNumVal) ? mobileNumVal.toLowerCase() : "";
 
-      this._homeService.updateBusy(<BusyDataModel>{ isBusy: true, msg: "Loading..." });
-    //   this.vendorList = await this._invoiceSearchService.getInvoiceList(req).subscribe(result=>{
-    //   });
+        this.vendorList = this.totalVendorList.filter(function (req) {
+            if ((req.vendorName && req.vendorName.toString().toLowerCase().indexOf(lcvendorNameVal) > -1) &&
+                (req.contactPerson && req.contactPerson.toString().toLowerCase().indexOf(lccontactPersonVal) > -1) &&
+                (req.mobileNum && req.mobileNum.toString().toLowerCase().indexOf(lcmobileNumVal) > -1)) {
+                return true;
+            }
+        });
 
-      this._homeService.updateBusy(<BusyDataModel>{ isBusy: false, msg: null });
-  }
+    }
+    onVendorClick(vendor: VendorMasterDetailsModel) {
+        this._appService.selectedVendor = vendor;
+        this._appService.isexistingVendor = true;
+        this._router.navigate([this._appService.routingConstants.vendorApproval]);
+    }
+
+    ngOnDestroy() {
+        if (this._sidebarExpansionSubscription) {
+            this._sidebarExpansionSubscription.unsubscribe();
+        }
+    }
+
+    ngOnInit() {
+        this.isDashboardCollapsed = true;
+
+        this._sidebarExpansionSubscription = this._homeService.isSidebarCollapsed.subscribe(data => {
+            this.isDashboardCollapsed = !data;
+        });
 
 
-  ngOnDestroy() {
-      if (this._sidebarExpansionSubscription) {
-          this._sidebarExpansionSubscription.unsubscribe();
-      }
-  }
+        this.vendorSearchForm = this._formBuilder.group({
+            vendorName: null,
+            contactPerson: null,
+            mobileNum: null
+        });
 
-  ngOnInit() {
-      this.isDashboardCollapsed = true;
+        this.vendorSearchForm.get("vendorName").valueChanges.subscribe(val => {
+            this.onSearchChange();
+        });
 
-      this._sidebarExpansionSubscription = this._homeService.isSidebarCollapsed.subscribe(data => {
-          this.isDashboardCollapsed = !data;
-      });
+        this.vendorSearchForm.get("contactPerson").valueChanges.subscribe(val => {
+            this.onSearchChange();
+        });
 
-      setTimeout(() => {
-          this.loadInitData();
-      }, 100);
-  }
+        this.vendorSearchForm.get("mobileNum").valueChanges.subscribe(val => {
+            this.onSearchChange();
+        });
+        setTimeout(() => {
+            this.loadInitData();
+        }, 100);
+    }
 
 }
-
