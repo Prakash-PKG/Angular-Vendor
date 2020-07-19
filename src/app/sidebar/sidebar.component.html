@@ -92,7 +92,7 @@
             <div class="navtxt">Vendor</div>
         </li>
         <ul class="childdash">
-            <li [ngClass]="{'collapsed': isSidebarCollapsed == true}" (click)="onVendorRegistrationClickClick()">
+            <li *ngIf="isVendorRegistrationVisible == true" [ngClass]="{'collapsed': isSidebarCollapsed == true}" (click)="onVendorRegistrationClickClick()">
                 <div class="side-icon">
                     <mat-icon matTooltip="Vendor Registration">how_to_reg</mat-icon>
                 </div>
