@@ -177,6 +177,9 @@
                             <div class="errortxt">{{ paymentStatusErrMsg }}</div>
                         </td>
                         <td>
+                            <div>GRN/SES No: {{ (invoiceDetails && invoiceDetails.grnSesNumber) ? invoiceDetails.grnSesNumber : "" }}</div>
+                        </td>
+                        <td>
                             <div>
                                 <mat-form-field class="search-row-element remarks" *ngIf = "isForPayments == true" >
                                     <input type="text" matInput placeholder="Remarks" maxlength="50" (blur) = "onRemarksBlur()" [(ngModel)]="remarks" autocomplete="off">
