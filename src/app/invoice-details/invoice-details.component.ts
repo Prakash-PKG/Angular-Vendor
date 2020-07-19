@@ -190,40 +190,40 @@ export class InvoiceDetailsComponent implements OnInit {
     }
 
     getPaymentStatusDetails() {
-        if(this.invoicePaymentDetails && this.invoicePaymentDetails.statusDesc && this.invoicePaymentDetails.updatedDate) {
-            return this.invoicePaymentDetails.statusDesc + " on " + this._appService.getFormattedDate(this.invoicePaymentDetails.updatedDate);
+        if(this.invoicePaymentStatusDetails && this.invoicePaymentStatusDetails.status && this.invoicePaymentStatusDetails.paymentDate) {
+            return this.invoicePaymentStatusDetails.status + " on " + this._appService.getFormattedDate(this.invoicePaymentStatusDetails.paymentDate);
         }
 
         return "";
     }
 
     getPaidAmount() {
-        if(this.invoicePaymentDetails && this.invoicePaymentDetails.amountPaid) {
-            return this.invoicePaymentDetails.amountPaid + " " + this.currency;
+        if(this.invoicePaymentStatusDetails && this.invoicePaymentStatusDetails.invoiceAmountPaid) {
+            return this.invoicePaymentStatusDetails.invoiceAmountPaid + " " + this.currency;
         }
 
         return "";
     }
 
     getPaidDate() {
-        if(this.invoicePaymentDetails && this.invoicePaymentDetails.updatedDate) {
-            return this._appService.getFormattedDate(this.invoicePaymentDetails.updatedDate);
+        if(this.invoicePaymentStatusDetails && this.invoicePaymentStatusDetails.paymentDate) {
+            return this._appService.getFormattedDate(this.invoicePaymentStatusDetails.paymentDate);
         }
 
         return "";
     }
 
     getRemarks() {
-        if(this.invoicePaymentDetails && this.invoicePaymentDetails.remarks) {
-            return this.invoicePaymentDetails.remarks;
+        if(this.invoicePaymentStatusDetails && this.invoicePaymentStatusDetails.remarks) {
+            return this.invoicePaymentStatusDetails.remarks;
         }
 
         return "";
     }
 
     getPaidStatus() {
-        if(this.invoicePaymentDetails && this.invoicePaymentDetails.statusDesc) {
-            return this.invoicePaymentDetails.statusDesc;
+        if(this.invoicePaymentStatusDetails && this.invoicePaymentStatusDetails.status) {
+            return this.invoicePaymentStatusDetails.status;
         }
 
         return "";
@@ -349,10 +349,10 @@ export class InvoiceDetailsComponent implements OnInit {
                     }
                 }
 
-                if(this.invoicePaymentDetails) {
-                    this.amountPaid = this.invoicePaymentDetails.amountPaid;
-                    this.remarks = this.invoicePaymentDetails.remarks;
-                    this.selectedPaymentStatus = this.invoicePaymentDetails.statusCode;
+                if(this.invoicePaymentStatusDetails) {
+                    // this.amountPaid = this.invoicePaymentDetails.amountPaid;
+                    // this.remarks = this.invoicePaymentDetails.remarks;
+                    // this.selectedPaymentStatus = this.invoicePaymentDetails.statusCode;
 
                     let paymentLevel: ApprovalLevelsModel = {
                         levelName: "Payment",
