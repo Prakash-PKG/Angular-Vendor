@@ -32,6 +32,7 @@ export class SidebarComponent implements OnInit {
     isPOInvoiceDumpVisible: boolean = false;
     isEmpanelmentVisible: boolean = false;
     isVendorDashboardVisible: boolean = false;
+    isVendorRegistrationVisible: boolean = false;
 
     _sidebarExpansionSubscription: any = null;
 
@@ -157,6 +158,11 @@ export class SidebarComponent implements OnInit {
         this.isVendorDashboardVisible = false;
         if (globalConstant.userDetails.isFinance || globalConstant.userDetails.isProcurement) {
             this.isVendorDashboardVisible = true;
+        }
+
+        this.isVendorRegistrationVisible = false;
+        if (globalConstant.userDetails.isEmpanelment) {
+            this.isVendorRegistrationVisible = true;
         }
     }
 }

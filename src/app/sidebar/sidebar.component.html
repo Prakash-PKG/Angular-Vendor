@@ -45,7 +45,7 @@
             </div>
             <div class="navtxt">Vendor Dashboard</div>
         </li>
-        <li *ngIf="isPOInvoiceDumpVisible == true" [ngClass]="{'remove-li': isSidebarCollapsed == true}">
+        <!--<li *ngIf="isPOInvoiceDumpVisible == true" [ngClass]="{'remove-li': isSidebarCollapsed == true}">
             <div class="side-icon">
                 <mat-icon>description</mat-icon>
             </div>
@@ -58,7 +58,7 @@
                 </div>
                 <div class="navtxt">Pending Payments Invoices</div>
             </li>
-        </ul>
+        </ul>-->
         <li *ngIf="isPOInvoiceDumpVisible == true" [ngClass]="{'remove-li': isSidebarCollapsed == true}">
             <div class="side-icon">
                 <mat-icon>description</mat-icon>
@@ -92,7 +92,7 @@
             <div class="navtxt">Vendor</div>
         </li>
         <ul class="childdash">
-            <li [ngClass]="{'collapsed': isSidebarCollapsed == true}" (click)="onVendorRegistrationClickClick()">
+            <li *ngIf="isVendorRegistrationVisible == true" [ngClass]="{'collapsed': isSidebarCollapsed == true}" (click)="onVendorRegistrationClickClick()">
                 <div class="side-icon">
                     <mat-icon matTooltip="Vendor Registration">how_to_reg</mat-icon>
                 </div>
