@@ -347,9 +347,10 @@ export class VendorApprovalComponent implements OnInit {
     }
     isMandatoryFieldsEmpty() {
         if (this.isProcurement) {
-            if (!this.vendorDetails.vendorName || !this.vendorDetails.mobileNum || !this.vendorDetails.emailId || !this.vendorDetails.address1 || !this.vendorDetails.street || !this.vendorDetails.city || !this.vendorDetails.pincode || !this.vendorDetails.stateName || !this.vendorDetails.countryName || !this.vendorDetails.panNum)
+            if (!this.vendorDetails.vendorName || !this.vendorDetails.mobileNum || !this.vendorDetails.emailId || !this.vendorDetails.address1 || !this.vendorDetails.street || !this.vendorDetails.city || !this.vendorDetails.pincode || !this.vendorDetails.stateName || !this.vendorDetails.countryName || !this.vendorDetails.panNum) {
                 this.msg = "Your form contains error.Please check.";
-            return this.isValid = false;
+                this.isValid = false;
+            }
         }
     }
 
