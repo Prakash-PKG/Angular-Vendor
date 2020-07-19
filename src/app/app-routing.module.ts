@@ -141,14 +141,16 @@ const routes: Routes = [
                 canActivate: [AuthGuardLogin]
             },
             {
-                path: '**',
-                redirectTo: 'vendetails'
+                path: '',
+                redirectTo: 'vendetails',
+                pathMatch: 'full'
             }
         ]
     },
     {
-        path: '**',
-        redirectTo: 'login'
+        path: '',
+        redirectTo: 'login',
+        pathMatch: 'full'
     }
 ];
 
