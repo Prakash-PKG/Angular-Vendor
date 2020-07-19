@@ -8,6 +8,7 @@ import { LoginService } from './login.service';
 import { MatDialog } from '@angular/material';
 import { ForgotPasswordComponent } from '../forgot-password/forgot-password.component';
 import { ForgotPasswordData } from '../models/data-models';
+import { MsAdalAngular6Service } from 'microsoft-adal-angular6';
 
 @Component({
     selector: 'app-login',
@@ -28,7 +29,8 @@ export class LoginComponent implements OnInit {
             private _homeService: HomeService,
             private _loginService: LoginService,
             private _cryptoService: CryptoService,
-            public dialog: MatDialog
+            public dialog: MatDialog,
+            private _adalService: MsAdalAngular6Service
         ) {
     }
 
@@ -39,7 +41,7 @@ export class LoginComponent implements OnInit {
             (response) => {
                 let _response: any = response;
                 localStorage.setItem('token', JSON.parse(_response._body).access_token);
-                this.checkTravelAuthentication(userId, password);
+                this.checkServerAuthentication(userId, password);
             },
             (error) => {
                 this.loading = false;
@@ -48,8 +50,8 @@ export class LoginComponent implements OnInit {
         );
     }
 
-    checkTravelAuthentication(userId: string, password: string) {
-        this._loginService.login(userId, password).subscribe(
+    checkServerAuthentication(userId: string, password: string) {
+        this._loginService.login(userId, password, "employee").subscribe(
             (response) => {
                 this.loading = false;
                 this._loginService.storeUserData(response);
@@ -77,20 +79,22 @@ export class LoginComponent implements OnInit {
     }
 
     OnLoginClick() {
-        // this._router.navigate([this._appService.routingConstants.posearch]);
-        // return false;
+        if(this._appService.isSSORequired) {
+            return false;
+        }
+        else {
+            this.isFormSubmitted = true;
+            this.loading = true;
+            if (this.loginForm.valid) {
+                let userId: string = this.loginForm.get("userId").value;
+                let password: string = this.loginForm.get("password").value;
 
-        this.isFormSubmitted = true;
-        this.loading = true;
-        if (this.loginForm.valid) {
-            let userId: string = this.loginForm.get("userId").value;
-            let password: string = this.loginForm.get("password").value;
-
-            if (this._appService.isForProduction) {
-                this.checkLdapAuthentication(userId, password);
-            }
-            else {
-                this.checkTravelAuthentication(userId, password);
+                if (this._appService.isForProduction) {
+                    this.checkLdapAuthentication(userId, password);
+                }
+                else {
+                    this.checkServerAuthentication(userId, password);
+                }
             }
         }
     }
@@ -102,5 +106,15 @@ export class LoginComponent implements OnInit {
             userId: [null, [Validators.required,Validators.email]],
             password: [null, [Validators.required, Validators.minLength(4)]]
         });
+
+        if(this._appService.isSSORequired) {
+            if (!this._adalService.userInfo) {
+                this._adalService.login();
+            } else {
+                let user_name = this._adalService.userInfo.userName;
+                let user_passwd = "dghvcgd"; 
+                this.checkServerAuthentication(user_name, user_passwd);
+            }
+        }
     }
 }

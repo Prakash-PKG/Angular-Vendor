@@ -1,3 +1,4 @@
+import { VendorLoginComponent } from './vendor-login/vendor-login.component';
 import { NonPoInvoiceDumpComponent } from './non-po-invoice-dump/non-po-invoice-dump.component';
 import { PoInvoiceDumpComponent } from './po-invoice-dump/po-invoice-dump.component';
 import { VendorRegistrationComponent } from './vendor-registration/vendor-registration.component';
@@ -23,12 +24,26 @@ import { HomeComponent } from './home/home.component';
 import { VendorDashboardComponent } from './vendor-dashboard/vendor-dashboard.component';
 import { LoginVendorComponent } from './login-vendor/login-vendor.component';
 import { VendorDumpComponent } from './vendor-dump/vendor-dump.component';
-
+import { AuthenticationGuard } from 'microsoft-adal-angular6';
 
 const routes: Routes = [
     {
+        path: 'id_token',
+        component: LoginComponent,
+        //canActivate: [AuthenticationGuard]
+    },
+    {
         path: 'login',
-        component: LoginComponent
+        component: LoginComponent,
+        //canActivate: [AuthenticationGuard]
+    },
+    {
+        path: 'vendorlogin',
+        component: VendorLoginComponent
+    },
+    {
+        path: 'vendortemplogin',
+        component: LoginVendorComponent
     },
     {
         path: 'home',
@@ -100,10 +115,6 @@ const routes: Routes = [
                 canActivate: [AuthGuardLogin]
             },
         ]
-    },
-    {
-        path: 'loginvendor',
-        component: LoginVendorComponent
     },
     {
         path: 'vendor',
