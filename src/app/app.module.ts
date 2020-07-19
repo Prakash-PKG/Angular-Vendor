@@ -169,7 +169,7 @@ import { MsAdalAngular6Module, AuthenticationGuard } from 'microsoft-adal-angula
         ForgotPasswordComponent
     ],
     providers: [
-       // { provide: LocationStrategy, useClass: PathLocationStrategy },
+        { provide: LocationStrategy, useClass: HashLocationStrategy },
         { provide: HTTP_INTERCEPTORS, useClass: XsrfInterceptor, multi: true },
         { provide: MAT_DATE_FORMATS, useValue: MAT_NATIVE_DATE_FORMATS },
         {provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: {duration: 2500}},
