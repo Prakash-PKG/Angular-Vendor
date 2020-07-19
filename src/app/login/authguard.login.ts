@@ -5,6 +5,7 @@ import { CryptoService } from './../common/crypto.service';
 import { LoginService } from './login.service';
 import { Injectable } from '@angular/core';
 import { CanActivate, Router, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
+import { MsAdalAngular6Service } from 'microsoft-adal-angular6';
 
 @Injectable({
     providedIn: 'root'
@@ -18,6 +19,7 @@ export class AuthGuardLogin implements CanActivate {
 
     constructor(private authService: LoginService, 
                 private router: Router, 
+                private _adalService: MsAdalAngular6Service,
                 private cryptoService: CryptoService, 
                 private _appService: AppService) { }
 
@@ -26,7 +28,14 @@ export class AuthGuardLogin implements CanActivate {
         let routeRoles = route.data["roles"] as Array<string>;
         let isAuthorizesUser: boolean = false;
         if (!localStorage.getItem("x-auth-token")) {
-            this.router.navigate(['login']);
+
+            if(this._appService.isSSORequired) {
+                this._adalService.logout();
+            }
+            else {
+                this.router.navigate(['login']);
+            }
+
             return true;
         } else {
             let user = localStorage.getItem('user');

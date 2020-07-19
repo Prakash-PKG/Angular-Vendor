@@ -57,14 +57,13 @@ export class LoginService {
         let data = "username=" + userId + "&password=" + this.encodePassword(password) + "&grant_type=password&scope=read%20write&" + "client_secret=123456&client_id=clientapp";
 
         return this._http.post(this._appService.customerAuthUrl, data, options);
-
     };
 
-    login(userId: string, password: string) {
+    login(userId: string, password: string, loginType: string) {
         let body = new FormData();
         body.append('username', userId);
         body.append('password', password);
-        body.append('usertype', "vendor");
+        body.append('usertype', loginType);
 
         return this._http.post(this._appService.baseUrl + 'login', body);
     };

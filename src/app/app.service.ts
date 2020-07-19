@@ -12,12 +12,13 @@ import { HttpClient } from '@angular/common/http';
 })
 export class AppService {
 
-    // readonly domain = "http://localhost:8080";
+    //readonly domain = "http://localhost:8080";
     readonly domain = "https://mvendor-dev.marlabs.com";
     //readonly domain = "https://mtime.marlabs.com";  
     readonly baseUrl = this.domain + "/mvendor/";
     readonly customerAuthUrl = this.domain + "/customerAuth/oauth/token";
     readonly isForProduction: boolean = false;
+    readonly isSSORequired: boolean = false;
 
     constructor(private _datePipe: DatePipe, private _http: HttpClient) { }
 

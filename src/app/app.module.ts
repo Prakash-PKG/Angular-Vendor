@@ -78,7 +78,8 @@ import { NonPoInvoiceDumpComponent } from './non-po-invoice-dump/non-po-invoice-
 import { VendorDashboardComponent } from './vendor-dashboard/vendor-dashboard.component';
 import { LoginVendorComponent } from './login-vendor/login-vendor.component';
 import { VendorDumpComponent } from './vendor-dump/vendor-dump.component';
-
+import { VendorLoginComponent } from './vendor-login/vendor-login.component';
+import { MsAdalAngular6Module, AuthenticationGuard } from 'microsoft-adal-angular6';
 
 @NgModule({
     declarations: [
@@ -109,7 +110,8 @@ import { VendorDumpComponent } from './vendor-dump/vendor-dump.component';
         NonPoInvoiceDumpComponent,
         VendorDashboardComponent,
         LoginVendorComponent,
-        VendorDumpComponent
+        VendorDumpComponent,
+        VendorLoginComponent
     ],
     imports: [
         BrowserModule,
@@ -158,7 +160,8 @@ import { VendorDumpComponent } from './vendor-dump/vendor-dump.component';
         MatTabsModule,
         MatToolbarModule,
         MatTooltipModule,
-        NativeDateModule
+        NativeDateModule,
+        MsAdalAngular6Module.forRoot(getDevAdalConfig)
     ],
      entryComponents: [
         ConfirmDialogComponent,
@@ -166,7 +169,7 @@ import { VendorDumpComponent } from './vendor-dump/vendor-dump.component';
         ForgotPasswordComponent
     ],
     providers: [
-        { provide: LocationStrategy, useClass: HashLocationStrategy },
+        { provide: LocationStrategy, useClass: PathLocationStrategy },
         { provide: HTTP_INTERCEPTORS, useClass: XsrfInterceptor, multi: true },
         { provide: MAT_DATE_FORMATS, useValue: MAT_NATIVE_DATE_FORMATS },
         {provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: {duration: 2500}},
@@ -175,3 +178,32 @@ import { VendorDumpComponent } from './vendor-dump/vendor-dump.component';
     bootstrap: [AppComponent]
 })
 export class AppModule { }
+
+
+export function getDevAdalConfig() {
+    return {
+          tenant: 'cc6b2eea-c864-4839-85f5-94736facc3be',
+          clientId: '88dcd065-08d7-4267-b509-01a9c1692523',
+          //redirectUri: 'http://localhost:4200/#/login',
+          redirectUri: 'https://mtime-dev.marlabs.com/dist/#/login',//window.location.origin,
+          // endpoints: { <------------------------------------------- ADD
+          //     "https://localhost:/Api/": "36dfe25f-b1a0-412e-a134-c81e12148460",
+          //     ---
+          //     ---
+          // },
+          navigateToLoginRequestUrl: true,
+          cacheLocation: '<localStorage / sessionStorage>',
+          oauth2AllowIdTokenImplicitFlow: true
+    };
+}
+
+export function getProdAdalConfig() {
+    return {
+          tenant: 'cc6b2eea-c864-4839-85f5-94736facc3be',
+          clientId: 'e81a3f42-5ce1-4844-bb21-3090395fcaaf',
+          redirectUri: 'https://mtime.marlabs.com/dist/#/login',
+          navigateToLoginRequestUrl: true,
+          cacheLocation: '<localStorage / sessionStorage>',
+          oauth2AllowIdTokenImplicitFlow: true
+    };
+}
