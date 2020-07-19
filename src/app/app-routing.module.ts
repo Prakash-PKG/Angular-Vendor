@@ -141,21 +141,19 @@ const routes: Routes = [
                 canActivate: [AuthGuardLogin]
             },
             {
-                path: '',
-                redirectTo: 'vendetails',
-                pathMatch: 'full'
+                path: '**',
+                redirectTo: 'vendetails'
             }
         ]
     },
     {
-        path: '',
-        redirectTo: 'login',
-        pathMatch: 'full'
+        path: '**',
+        redirectTo: 'login'
     }
 ];
 
 @NgModule({
-    imports: [RouterModule.forRoot(routes, {onSameUrlNavigation: 'reload'})],
+    imports: [RouterModule.forRoot(routes)],
     exports: [RouterModule]
 })
 export class AppRoutingModule { }
