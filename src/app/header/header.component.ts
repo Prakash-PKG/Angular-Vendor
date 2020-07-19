@@ -5,6 +5,7 @@ import { AppService } from './../app.service';
 import { HeaderService } from './header.service';
 import { LoginService } from '../login/login.service';
 import { Router } from '@angular/router';
+import { MsAdalAngular6Service } from 'microsoft-adal-angular6';
 
 @Component({
     selector: 'app-header',
@@ -17,6 +18,7 @@ export class HeaderComponent implements OnInit {
     roleName: string = "";
 
     constructor(private _router: Router,
+                private _adalService: MsAdalAngular6Service,
                 private _appService: AppService,
                 private _loginService: LoginService) {
     }
@@ -25,13 +27,24 @@ export class HeaderComponent implements OnInit {
         this._loginService.logout().subscribe(
             (response) => {
                 localStorage.clear();
-                this._router.navigate([this._appService.routingConstants.login]);
-                
+                if(this._appService.isSSORequired) {
+                    this._adalService.logout();
+                }
+                else {
+                    this._router.navigate([this._appService.routingConstants.login]);
+                }
             },
             (error) => {
                 console.log("logout Falied");
                 console.log(error);
                 localStorage.clear();
+
+                if(this._appService.isSSORequired) {
+                    this._adalService.logout();
+                }
+                else {
+                    this._router.navigate([this._appService.routingConstants.login]);
+                }
             }
         )
     }
