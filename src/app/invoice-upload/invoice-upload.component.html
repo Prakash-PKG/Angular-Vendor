@@ -27,14 +27,13 @@
             <mat-form-field class="search-row-element">
                 <input type="text" matInput formControlName="invoiceNumber" placeholder="Invoice No." autocomplete="off"
                     (blur)="onInvoiceBlur()">
-                <mat-error *ngIf="( isSubmitted ) && f?.invoiceNumber?.errors?.required">Invoice No. is required <div
-                        class="errortxt">{{ invoiceNumberErrMsg }}</div>
+                <mat-error *ngIf="( isSubmitted ) && f?.invoiceNumber?.errors?.required">Invoice No. is required 
                 </mat-error>
             </mat-form-field>
-
+            <div class="errortxt">{{ invoiceNumberErrMsg }}</div>
 
             <mat-form-field class="search-row-element date">
-                <input matInput [matDatepicker]="picker" formControlName="invoiceDate" [min] = "minInvoiceDate" placeholder="Invoice Date"
+                <input matInput [matDatepicker]="picker" formControlName="invoiceDate" [min] = "minInvoiceDate" [max] = "maxInvoiceDate" placeholder="Invoice Date"
                     autocomplete="off">
                 <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                 <mat-datepicker #picker></mat-datepicker>
