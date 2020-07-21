@@ -178,7 +178,7 @@ export class InvoiceApprovalsComponent implements OnInit {
         }
 
         let isGrnSesValid: boolean = true;
-        if(this.isGrnSesRequired && this.isGrnDdlVisible) {
+        if(action == this._appService.updateOperations.approve && this.isGrnSesRequired && this.isGrnDdlVisible) {
             if(!this.selectedGrnSesNumber) {
                 this.grnSesErrMsg = "Please select GRN/SES No.";
                 isGrnSesValid = false;

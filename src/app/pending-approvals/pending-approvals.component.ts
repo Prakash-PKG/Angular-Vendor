@@ -5,6 +5,7 @@ import { PendingApprovalsService } from './pending-approvals.service';
 import { Component, OnInit } from '@angular/core';
 import { HomeService } from '../home/home.service';
 import { Router } from '@angular/router';
+import * as _ from 'underscore';
 
 @Component({
     selector: 'app-pending-approvals',
@@ -62,13 +63,19 @@ export class PendingApprovalsComponent implements OnInit {
 
     async loadInitData() {
         let req: PendingApprovalRequestModel = {
-            employeeId: globalConstant.userDetails.isFunctionalHead ? globalConstant.userDetails.userId : null,
+            employeeId: null,
             approvalLevels: [],
             departments: []
         };
 
         if(globalConstant.userDetails.isPurchaseOwner) {
+            req.approvalLevels.push(this._appService.approvalLevels.po);
             req.departments = req.departments.concat(globalConstant.userDetails.poDepts);
+        }
+
+        if(globalConstant.userDetails.isFunctionalHead) {
+            req.approvalLevels.push(this._appService.approvalLevels.functionalHead);
+            req.departments = req.departments.concat(globalConstant.userDetails.functionalHeadDepts);
         }
 
         if(globalConstant.userDetails.isProcurement) {
@@ -77,6 +84,10 @@ export class PendingApprovalsComponent implements OnInit {
 
         if(globalConstant.userDetails.isFinance) {
             req.approvalLevels.push(this._appService.approvalLevels.finance);
+        }
+
+        if(req.departments && req.departments.length > 0) {
+            req.departments = _.uniq(req.departments);
         }
 
         this._homeService.updateBusy(<BusyDataModel>{ isBusy: true, msg: "Loading..." });

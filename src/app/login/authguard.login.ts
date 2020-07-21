@@ -100,6 +100,12 @@ export class AuthGuardLogin implements CanActivate {
                 let functionalHeadRoles = globalConstant.userDetails.userRoles.filter(r => globalConstant.functionalHeadRoles.indexOf(r.roleCode) > -1);
                 if(functionalHeadRoles && functionalHeadRoles.length > 0) {
                     globalConstant.userDetails.isFunctionalHead = true;
+                    for(let fr = 0; fr < functionalHeadRoles.length; fr++) {
+                        let curDepartment: string = functionalHeadRoles[fr]["departmentId"];
+                        if(globalConstant.userDetails.functionalHeadDepts.indexOf(curDepartment) < 0) {
+                            globalConstant.userDetails.functionalHeadDepts.push(curDepartment);
+                        }
+                    }
                 }
                 else {
                     globalConstant.userDetails.isFunctionalHead = false;
