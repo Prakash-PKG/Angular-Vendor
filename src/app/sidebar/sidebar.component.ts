@@ -5,6 +5,7 @@ import { HomeService } from '../home/home.service';
 import { transition, animate, state, style, trigger } from '@angular/animations';
 import { Router } from '@angular/router';
 import { LoginService } from '../login/login.service';
+import { MsAdalAngular6Service } from 'microsoft-adal-angular6';
 
 @Component({
     selector: 'app-sidebar',
@@ -31,11 +32,13 @@ export class SidebarComponent implements OnInit {
     isPOInvoiceDumpVisible: boolean = false;
     isEmpanelmentVisible: boolean = false;
     isVendorDashboardVisible: boolean = false;
+    isVendorRegistrationVisible: boolean = false;
 
     _sidebarExpansionSubscription: any = null;
 
     constructor(private _appService: AppService,
         private _router: Router,
+        private _adalService: MsAdalAngular6Service,
         private _loginService: LoginService,
         private _homeService: HomeService) { }
 
@@ -102,13 +105,24 @@ export class SidebarComponent implements OnInit {
         this._loginService.logout().subscribe(
             (response) => {
                 localStorage.clear();
-                this._router.navigate([this._appService.routingConstants.login]);
-
+                if(this._appService.isSSORequired) {
+                    this._adalService.logout();
+                }
+                else {
+                    this._router.navigate([this._appService.routingConstants.login]);
+                }
             },
             (error) => {
                 console.log("logout Falied");
                 console.log(error);
                 localStorage.clear();
+
+                if(this._appService.isSSORequired) {
+                    this._adalService.logout();
+                }
+                else {
+                    this._router.navigate([this._appService.routingConstants.login]);
+                }
             }
         )
     }
@@ -144,6 +158,11 @@ export class SidebarComponent implements OnInit {
         this.isVendorDashboardVisible = false;
         if (globalConstant.userDetails.isFinance || globalConstant.userDetails.isProcurement) {
             this.isVendorDashboardVisible = true;
+        }
+
+        this.isVendorRegistrationVisible = false;
+        if (globalConstant.userDetails.isEmpanelment) {
+            this.isVendorRegistrationVisible = true;
         }
     }
 }

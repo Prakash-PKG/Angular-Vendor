@@ -74,6 +74,7 @@ export class InvoiceUploadComponent implements OnInit {
     invoiceNumberErrMsg: string = "";
 
     minInvoiceDate: Date = null;
+    maxInvoiceDate: Date = new Date();
 
     //totalItemsAmtValid: boolean = false;
 
@@ -839,7 +840,7 @@ export class InvoiceUploadComponent implements OnInit {
         //     this.totalItemsAmtValid = true;
         // }
 
-        if(isInvFilesValid && isSupportingFilesValid && isCntrlsValid) {
+        if(isInvFilesValid && isSupportingFilesValid && isCntrlsValid && this.isInvoiceValid) {
             return true;
         }
 
