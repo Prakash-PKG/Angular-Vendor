@@ -23,6 +23,7 @@ export const globalConstant : any = {
         isEmpanelment: false,
         isTempVendor: false,
         poDepts: [],
+        functionalHeadDepts: [],
         invDepts: []
     }
 }
