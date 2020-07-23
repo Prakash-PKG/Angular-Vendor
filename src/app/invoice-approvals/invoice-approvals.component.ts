@@ -46,7 +46,7 @@ export class InvoiceApprovalsComponent implements OnInit {
     invoiceFilesList: FileDetailsModel[] = [];
     supportFilesList: FileDetailsModel[] = [];
 
-    grnSesAccountCategories: string[] = ["1", "3", "4"];
+    grnSesAccountCategories: string[] = ["1", "3", "5", "2", "4"];
     isGrnSesRequired: boolean = false;
 
     remarksErrMsg: string = "";
