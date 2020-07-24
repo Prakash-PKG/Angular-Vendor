@@ -12,7 +12,7 @@ import { HttpClient } from '@angular/common/http';
 })
 export class AppService {
 
-    readonly domain = "https://mvendor-stg.marlabs.com"; 
+    readonly domain = "https://mvendor.marlabs.com"; 
     //readonly domain = "https://mtime.marlabs.com";  
     readonly baseUrl = this.domain + "/mvendor/";
     readonly customerAuthUrl = this.domain + "/customerAuth/oauth/token";

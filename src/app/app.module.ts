@@ -161,7 +161,7 @@ import { MsAdalAngular6Module, AuthenticationGuard } from 'microsoft-adal-angula
         MatToolbarModule,
         MatTooltipModule,
         NativeDateModule,
-        MsAdalAngular6Module.forRoot(getDevAdalConfig)
+        MsAdalAngular6Module.forRoot(getProdAdalConfig)
     ],
      entryComponents: [
         ConfirmDialogComponent,
