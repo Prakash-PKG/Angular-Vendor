@@ -30,12 +30,12 @@ const routes: Routes = [
     {
         path: 'id_token',
         component: LoginComponent,
-        //canActivate: [AuthenticationGuard]
+        canActivate: [AuthenticationGuard]
     },
     {
         path: 'login',
         component: LoginComponent,
-        //canActivate: [AuthenticationGuard]
+        canActivate: [AuthenticationGuard]
     },
     {
         path: 'vendorlogin',

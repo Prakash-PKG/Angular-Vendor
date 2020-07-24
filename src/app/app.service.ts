@@ -17,7 +17,7 @@ export class AppService {
     readonly baseUrl = this.domain + "/mvendor/";
     readonly customerAuthUrl = this.domain + "/customerAuth/oauth/token";
     readonly isForProduction: boolean = false;
-    readonly isSSORequired: boolean = false;
+    readonly isSSORequired: boolean = true;
 
     constructor(private _datePipe: DatePipe, private _http: HttpClient) { }
 
