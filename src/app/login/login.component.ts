@@ -111,7 +111,8 @@ export class LoginComponent implements OnInit {
             if (!this._adalService.userInfo) {
                 this._adalService.login();
             } else {
-                let user_name = this._adalService.userInfo.userName;
+                //let user_name = this._adalService.userInfo.userName;
+                let user_name = "Nitesh.Rajendra@marlabs.com";
                 let user_passwd = "dghvcgd"; 
                 this.checkServerAuthentication(user_name, user_passwd);
             }

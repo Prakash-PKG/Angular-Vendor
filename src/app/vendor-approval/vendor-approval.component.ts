@@ -393,13 +393,13 @@ export class VendorApprovalComponent implements OnInit {
                     let result: StatusModel = response.body as StatusModel;
                     if (result.status == 200 && result.isSuccess) {
                         this.disableSubmit = true;
-                        this.displayVendorApprovalStatus(this._appService.messages.vendorApprovalSubmitSuccessMsg);
+                        this.displayVendorApprovalStatus(result.message);
                     }
                     else {
                         this.isEditable = true;
                         this.isServerError = true;
                         this.disableSubmit = false;
-                        this.msg = this._appService.messages.vendorApprovalFailure;
+                        this.msg = result.message;
                     }
                 }
             },

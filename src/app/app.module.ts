@@ -173,7 +173,8 @@ import { MsAdalAngular6Module, AuthenticationGuard } from 'microsoft-adal-angula
         { provide: HTTP_INTERCEPTORS, useClass: XsrfInterceptor, multi: true },
         { provide: MAT_DATE_FORMATS, useValue: MAT_NATIVE_DATE_FORMATS },
         {provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: {duration: 2500}},
-        DatePipe
+        DatePipe,
+        AuthenticationGuard
     ],
     bootstrap: [AppComponent]
 })
@@ -183,9 +184,9 @@ export class AppModule { }
 export function getDevAdalConfig() {
     return {
           tenant: 'cc6b2eea-c864-4839-85f5-94736facc3be',
-          clientId: '88dcd065-08d7-4267-b509-01a9c1692523',
+          clientId: '303d1268-502c-4e7d-afaf-584e2dfd6c83',
           //redirectUri: 'http://localhost:4200/#/login',
-          redirectUri: 'https://mtime-dev.marlabs.com/dist/#/login',//window.location.origin,
+          redirectUri: 'https://mvendor-dev.marlabs.com/dist/#/login',//window.location.origin,
           // endpoints: { <------------------------------------------- ADD
           //     "https://localhost:/Api/": "36dfe25f-b1a0-412e-a134-c81e12148460",
           //     ---
@@ -200,8 +201,8 @@ export function getDevAdalConfig() {
 export function getProdAdalConfig() {
     return {
           tenant: 'cc6b2eea-c864-4839-85f5-94736facc3be',
-          clientId: 'e81a3f42-5ce1-4844-bb21-3090395fcaaf',
-          redirectUri: 'https://mtime.marlabs.com/dist/#/login',
+          clientId: 'd07ff15b-e80a-43cd-bd5c-bddbcedd2df7',
+          redirectUri: 'https://mvendor.marlabs.com/dist/#/login',
           navigateToLoginRequestUrl: true,
           cacheLocation: '<localStorage / sessionStorage>',
           oauth2AllowIdTokenImplicitFlow: true
