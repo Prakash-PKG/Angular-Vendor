@@ -10,18 +10,21 @@
                 <input type="text" matInput placeholder="Account Number" formControlName="accountNum"
                     autocomplete="off" required>
             </mat-form-field>
+            <mat-error class="errortxt" *ngIf="( isSubmitted ) && f?.accountNum?.errors?.required">Account Number is required</mat-error>
         </div>
         <div class="col-6 form-group">
             <mat-form-field class="full-width">
                 <input type="text" matInput placeholder="Account Name" formControlName="accountName" autocomplete="off"
                     required>
             </mat-form-field>
+            <mat-error class="errortxt" *ngIf="( isSubmitted ) && f?.accountName?.errors?.required">Account Name is required</mat-error>
         </div>
         <div class="col-3 form-group">
             <mat-form-field class="full-width">
                 <input type="text" matInput placeholder="IFSC code" formControlName="ifscCode" autocomplete="off"
                     required>
             </mat-form-field>
+            <mat-error class="errortxt" *ngIf="( isSubmitted ) && f?.ifscCode?.errors?.required">IFSC code is required</mat-error>
         </div>
    
     </div>
@@ -32,18 +35,21 @@
                 <input type="text" matInput placeholder="Account Type" formControlName="accountType" autocomplete="off"
                     required>
             </mat-form-field>
+            <mat-error class="errortxt" *ngIf="( isSubmitted ) && f?.accountType?.errors?.required">Account Type is required</mat-error>
         </div>
         <div class="col-6 form-group">
             <mat-form-field class="full-width">
                 <input type="text" matInput placeholder="Bank Name" formControlName="bankName" autocomplete="off"
                     required>
             </mat-form-field>
+            <mat-error class="errortxt" *ngIf="( isSubmitted ) && f?.bankName?.errors?.required">Bank Name is required</mat-error>
         </div>
         <div class="col-3 form-group">
             <mat-form-field class="full-width">
                 <input type="text" matInput placeholder="Bank Branch Name" formControlName="bankBranch"
                     autocomplete="off" required>
             </mat-form-field>
+            <mat-error class="errortxt" *ngIf="( isSubmitted ) && f?.bankBranch?.errors?.required">Bank Branch Name is required</mat-error>
         </div>
     </div>
 
@@ -52,6 +58,7 @@
             <mat-form-field class="full-width">
                 <input type="text" matInput placeholder="City" formControlName="bankCity" autocomplete="off" required>
             </mat-form-field>
+            <mat-error class="errortxt" *ngIf="( isSubmitted ) && f?.bankBranch?.errors?.required">City is required</mat-error>
         </div>
         <div class="col-6 form-group">
             <mat-form-field class="full-width">
@@ -61,6 +68,7 @@
                     </mat-option>
                 </mat-select>
             </mat-form-field>
+            <mat-error class="errortxt" *ngIf="( isSubmitted ) && f?.bankCountry?.errors?.required">Country is required</mat-error>
         </div>
 
         <div class="col-3 form-group">
@@ -71,6 +79,7 @@
                     </mat-option>
                 </mat-select>
             </mat-form-field>
+            <mat-error class="errortxt" *ngIf="( isSubmitted ) && f?.bankRegion?.errors?.required">Region is required</mat-error>
         </div>
 
     </div>
