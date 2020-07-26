@@ -93,7 +93,7 @@
                         Invoice Documents
                     </div>
                     <div class="filename value" *ngFor="let ifile of invoiceFilesList; let ifileInd = index">
-                        <mat-icon matTooltip="{{ifile.actualFileName}}" (click)="downloadFile(ifile)">
+                        <mat-icon style="cursor: pointer" matTooltip="{{ifile.actualFileName}}" (click)="downloadFile(ifile)">
                             description
                         </mat-icon>
                     </div>
@@ -140,7 +140,7 @@
                         Supporting Documents
                     </div>
                     <div class="filename value" *ngFor="let sf of supportFilesList; let sfInd = index">
-                        <mat-icon matTooltip=" {{ sf.actualFileName }}" (click)="downloadFile(sf)">
+                        <mat-icon style="cursor: pointer" matTooltip=" {{ sf.actualFileName }}" (click)="downloadFile(sf)">
                             description
                         </mat-icon>
                     </div>
