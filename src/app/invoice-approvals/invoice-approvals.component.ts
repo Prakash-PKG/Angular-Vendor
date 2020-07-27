@@ -1,15 +1,18 @@
+import { GrnSesItemsComponent } from './../grn-ses-items/grn-ses-items.component';
 import { MessageDialogModel } from './../models/popup-models';
 import { MessageDialogComponent } from './../message-dialog/message-dialog.component';
 import { globalConstant } from './../common/global-constant';
 import { AppService } from './../app.service';
 import { BusyDataModel, InvoiceApprovalInitResultModel, InvoiceApprovalInitReqModel, 
     ItemModel, ItemDisplayModel, GrnSesModel, FileDetailsModel, 
-    StatusModel, UpdateInvoiceApprovalReqModel } from './../models/data-models';
+    StatusModel, UpdateInvoiceApprovalReqModel, GrnSesDisplayModel, GrnSesItemModel,
+    GrnSesItemsDisplayModel } from './../models/data-models';
 import { InvoiceApprovalsService } from './invoice-approvals.service';
 import { Component, OnInit } from '@angular/core';
 import { HomeService } from '../home/home.service';
 import { Router } from '@angular/router';
 import { MatSort, MatPaginator, MatTableDataSource, MatDialogRef, MAT_DIALOG_DATA, MatDialog } from '@angular/material';
+import * as _ from 'underscore';
 
 @Component({
     selector: 'app-invoice-approvals',
@@ -52,11 +55,36 @@ export class InvoiceApprovalsComponent implements OnInit {
     remarksErrMsg: string = "";
     grnSesErrMsg: string = "";
 
+    grnSesItemsDisplayList: GrnSesDisplayModel[] = [];
+
+    selectedGrnSesModel: GrnSesDisplayModel = null;
+
     constructor(private _homeService: HomeService,
                 private _appService: AppService,
                 private _router: Router,
                 public _dialog: MatDialog,
                 private _invoiceApprovalsService: InvoiceApprovalsService) { }
+    
+    onGrnSesSelectClick() {
+        this.displayGrnSesItems();
+    }
+
+    displayGrnSesItems() {
+        const dialogRef = this._dialog.open(GrnSesItemsComponent, {
+            disableClose: true,
+            panelClass: 'dialog-box',
+            width: '550px',
+            data: this.grnSesItemsDisplayList
+        });
+
+        dialogRef.afterClosed().subscribe(result => {
+            if (result as GrnSesDisplayModel) {
+                this.selectedGrnSesModel = result;
+                this.selectedGrnSesNumber = this.selectedGrnSesModel.grnSesNumber;
+                this.grnSesErrMsg = "";
+            }
+        });
+    }
 
     onRemarksBlur() {
         if(this.remarks) {
@@ -132,6 +160,8 @@ export class InvoiceApprovalsComponent implements OnInit {
 
                 this.invoiceFilesList = this.initDetails.invoiceFilesList;
                 this.supportFilesList = this.initDetails.supportFilesList;
+
+                this.updateGrnSesItemsDisplayData();
             }
 
             if(this.isPOInvoice) {
@@ -142,6 +172,24 @@ export class InvoiceApprovalsComponent implements OnInit {
             }
 
             this._homeService.updateBusy(<BusyDataModel>{ isBusy: false, msg: null });
+        }
+    }
+
+    updateGrnSesItemsDisplayData() {
+        this.grnSesItemsDisplayList = [];
+        if(this.initDetails.grnSesItemsList && this.initDetails.grnSesItemsList.length > 0) {
+
+            let grnSesList = _.pluck(this.initDetails.grnSesItemsList, 'grnSesNumber');
+            let uniqGrnSesList = _.uniq(grnSesList);
+            //for(let gs in uniqGrnSesList) {
+            for(let i = 0; i < uniqGrnSesList.length; i++) {
+                let sslGrsSesItems: GrnSesItemModel[] = this.initDetails.grnSesItemsList.filter(x => x.grnSesNumber == uniqGrnSesList[i]);
+                let gsDisplayModel: GrnSesDisplayModel = {
+                    grnSesNumber: uniqGrnSesList[i],
+                    itemsList: sslGrsSesItems
+                };
+                this.grnSesItemsDisplayList.push(gsDisplayModel);
+            }
         }
     }
 
@@ -171,6 +219,8 @@ export class InvoiceApprovalsComponent implements OnInit {
     }
 
     updateInvoiceApprovals(action: string) {
+        this.remarksErrMsg = "";
+        this.grnSesErrMsg = "";
         let isRemarksValid: boolean = true;
         if(!this.remarks || this.remarks.trim().length == 0) {
             this.remarksErrMsg = "Please provide Remarks";
@@ -182,6 +232,25 @@ export class InvoiceApprovalsComponent implements OnInit {
             if(!this.selectedGrnSesNumber) {
                 this.grnSesErrMsg = "Please select GRN/SES No.";
                 isGrnSesValid = false;
+            }
+            else {
+                if(this.selectedGrnSesModel && this.selectedGrnSesModel.itemsList) {
+                    if(this.selectedGrnSesModel.itemsList.length == this.itemsList.length) {
+                        for(let i = 0; i < this.selectedGrnSesModel.itemsList.length; i++) {
+                            let selActualItem: GrnSesItemsDisplayModel = this.selectedGrnSesModel.itemsList[i];
+                            let existItem = this.itemsList.find(si => si.itemNumber == selActualItem.itemNo && si.invoiceUnits == selActualItem.grnSesUnits);
+                            if(!existItem) {
+                                this.grnSesErrMsg = "Items are not matched.";
+                                isGrnSesValid = false;
+                                break;
+                            }
+                        }
+                    }
+                    else {
+                        this.grnSesErrMsg = "Items are not matched.";
+                        isGrnSesValid = false;
+                    }
+                }
             }
         }
         

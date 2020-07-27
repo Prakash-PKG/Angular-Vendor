@@ -258,9 +258,9 @@
                 <input class="attachment-elements" style="display: none" [attr.id]="'invoiceFileCtrl'" type="file"
                     accept=".xls,.xlsx,.doc,.docx,.pdf,.png,.jpg,.zip" (change)="onInvoiceFileChange($event)" />
                 <button mat-raised-button class="footer-actions attachment-elements"
-                    (click)="onInvoiceBrowseClick($event)">Browse</button>
-                <button mat-raised-button class="footer-actions  attachment-elements"
-                    (click)="onInvoiceAttachFileClick()">Attach</button>
+                    (click)="onInvoiceBrowseClick($event)">Browse & Attach</button>
+                <!--<button mat-raised-button class="footer-actions  attachment-elements"
+                    (click)="onInvoiceAttachFileClick()">Attach</button>-->
                 <div class="filename attachment-elements" *ngFor="let f of invoiceFilesList; let fInd = index">
                     <span>
                         {{ f.actualFileName }}
@@ -287,9 +287,9 @@
                     multiple accept=".xls,.xlsx,.doc,.docx,.pdf,.png,.jpg,.zip"
                     (change)="onSupportingFileChange($event)" />
                 <button mat-raised-button class="footer-actions attachment-elements"
-                    (click)="onSupportingBrowseClick($event)">Browse</button>
-                <button mat-raised-button class="footer-actions  attachment-elements"
-                    (click)="onSupportingAttachFileClick()">Attach</button>
+                    (click)="onSupportingBrowseClick($event)">Browse & Attach</button>
+                <!--<button mat-raised-button class="footer-actions  attachment-elements"
+                    (click)="onSupportingAttachFileClick()">Attach</button>-->
                 <div class="filename attachment-elements" *ngFor="let f of supportingFilesList; let fInd = index">
                     <span>
                         {{ f.actualFileName }}

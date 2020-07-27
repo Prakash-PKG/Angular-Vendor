@@ -40,7 +40,12 @@ export class InvoiceUploadComponent implements OnInit {
     //msg: string = "";
 
     invoiceFilesList: FileDetailsModel[] = [];
+    private _tempInvoiceFilesList: FileDetailsModel[] = [];
+    private _invoicefileCnt: number = 0;
+
     supportingFilesList: FileDetailsModel[] = [];
+    private _tempSupportingFilesList: FileDetailsModel[] = [];
+    private _supportingfileCnt: number = 0;
 
     invoiceUpdateResults: UpdateInvoiceResultModel = null;
 
@@ -350,25 +355,33 @@ export class InvoiceUploadComponent implements OnInit {
     }
 
     onInvoiceFileChange(event: any) {
-        this.invoiceFilesList = [];
-        if (event.target.files && event.target.files.length > 0) {
-            for (let f = 0; f < event.target.files.length; f++) {
-                let file = event.target.files[f];
-                if (file) {
-                    let fileDetails: FileDetailsModel = {
-                        actualFileName: file.name,
-                        uniqueFileName: null,
-                        fileData: null,
-                        documentTypeId: this.invoiceFileTypeId,
-                        fileId: null,
-                        createdDate: null,
-                        createdBy: null
-                    };
-                    this.invoiceFilesList.push(fileDetails);
+        this.invoiceFilesErrMsg = "";
 
-                    let reader = new FileReader();
-                    reader.onload = this._handleInvoiceFileReaderLoaded.bind(this, file.name);
-                    reader.readAsBinaryString(file);
+        if(this.invoiceFilesList.length > 0) {
+            this.invoiceFilesErrMsg = "More than one Invoice files can't be attached.";
+        }
+        else {
+            this._tempInvoiceFilesList = [];
+            this._invoicefileCnt = 0;
+            if (event.target.files && event.target.files.length > 0) {
+                for (let f = 0; f < event.target.files.length; f++) {
+                    let file = event.target.files[f];
+                    if (file) {
+                        let fileDetails: FileDetailsModel = {
+                            actualFileName: file.name,
+                            uniqueFileName: null,
+                            fileData: null,
+                            documentTypeId: this.invoiceFileTypeId,
+                            fileId: null,
+                            createdDate: null,
+                            createdBy: null
+                        };
+                        this._tempInvoiceFilesList.push(fileDetails);
+
+                        let reader = new FileReader();
+                        reader.onload = this._handleInvoiceFileReaderLoaded.bind(this, file.name);
+                        reader.readAsBinaryString(file);
+                    }
                 }
             }
         }
@@ -378,11 +391,16 @@ export class InvoiceUploadComponent implements OnInit {
         let binaryString = readerEvt.target.result;
         let base64textString = btoa(binaryString);
 
-        for (let fileItem of this.invoiceFilesList) {
+        for (let fileItem of this._tempInvoiceFilesList) {
             if (fileItem.actualFileName == actualFileName) {
                 fileItem.fileData = base64textString;
+                this._invoicefileCnt = this._invoicefileCnt + 1;
                 break;
             }
+        }
+
+        if(this._tempInvoiceFilesList.length > 0 && this._tempInvoiceFilesList.length == this._invoicefileCnt) {
+            this.onInvoiceAttachFileClick();
         }
     }
 
@@ -392,7 +410,7 @@ export class InvoiceUploadComponent implements OnInit {
         let filesReq: InvoiceDocumentReqModel = {
             invoiceId: invId,
             userId: globalConstant.userDetails.isVendor ? globalConstant.userDetails.userEmail : globalConstant.userDetails.userId,
-            fileDetails: this.invoiceFilesList
+            fileDetails: this._tempInvoiceFilesList
         }
 
         this._homeService.updateBusy(<BusyDataModel>{ isBusy: true, msg: "Attaching..." });
@@ -403,8 +421,7 @@ export class InvoiceUploadComponent implements OnInit {
                     let results: InvoiceDocumentResultModel = response.body as InvoiceDocumentResultModel;
 
                     if (results.status.status == 200 && results.status.isSuccess) {
-                        this.invoiceFilesList = [];
-                        this.invoiceFilesList = results.fileDetails.concat();
+                        this.invoiceFilesList = this.invoiceFilesList.concat(results.fileDetails);
                     }
                 }
             },
@@ -425,16 +442,22 @@ export class InvoiceUploadComponent implements OnInit {
         let binaryString = readerEvt.target.result;
         let base64textString = btoa(binaryString);
 
-        for (let fileItem of this.supportingFilesList) {
+        for (let fileItem of this._tempSupportingFilesList) {
             if (fileItem.actualFileName == actualFileName) {
                 fileItem.fileData = base64textString;
+                this._supportingfileCnt = this._supportingfileCnt + 1;
                 break;
             }
+        }
+
+        if(this._tempSupportingFilesList.length > 0 && this._tempSupportingFilesList.length == this._supportingfileCnt) {
+            this.onSupportingAttachFileClick();
         }
     }
 
     onSupportingFileChange(event: any) {
-        this.supportingFilesList = [];
+        this._tempSupportingFilesList = [];
+        this._supportingfileCnt = 0;
         if (event.target.files && event.target.files.length > 0) {
             for (let f = 0; f < event.target.files.length; f++) {
                 let file = event.target.files[f];
@@ -448,7 +471,7 @@ export class InvoiceUploadComponent implements OnInit {
                         createdDate: null,
                         createdBy: null
                     };
-                    this.supportingFilesList.push(fileDetails);
+                    this._tempSupportingFilesList.push(fileDetails);
 
                     let reader = new FileReader();
                     reader.onload = this._handleSuportingReaderLoaded.bind(this, file.name);
@@ -464,7 +487,7 @@ export class InvoiceUploadComponent implements OnInit {
         let filesReq: InvoiceDocumentReqModel = {
             userId: globalConstant.userDetails.isVendor ? globalConstant.userDetails.userEmail : globalConstant.userDetails.userId,
             invoiceId: invId,
-            fileDetails: this.supportingFilesList
+            fileDetails: this._tempSupportingFilesList
         }
 
         this._homeService.updateBusy(<BusyDataModel>{ isBusy: true, msg: "Attaching..." });
@@ -476,8 +499,7 @@ export class InvoiceUploadComponent implements OnInit {
                     let results: InvoiceDocumentResultModel = response.body as InvoiceDocumentResultModel;
 
                     if (results.status.status == 200 && results.status.isSuccess) {
-                        this.supportingFilesList = [];
-                        this.supportingFilesList = results.fileDetails.concat();
+                        this.supportingFilesList = this.supportingFilesList.concat(results.fileDetails);
                     }
                     // else {
                     //     this.msg = "failed";

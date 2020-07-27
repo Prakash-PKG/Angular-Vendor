@@ -1,0 +1,61 @@
+<div style="padding:1em;">
+    <div class="title">GRN / SES Selection</div>
+    <mat-divider style="margin-bottom: 2em;"></mat-divider>
+
+    <table class="dataTable full-width">
+        <thead>
+            <tr>
+                <th class="headers" scope="col">
+                    <span>GRN/SES No. </span>
+                </th>
+                <th class="headers" scope="col">
+                    <table class="dataTable full-width">
+                        <thead>
+                            <tr>
+                                <th class="headers" >
+                                    <span>Item No.</span>
+                                </th>
+                                <th class="headers" >
+                                    <span>GRN/SES Units</span>
+                                </th>
+                            </tr>
+                        </thead>
+                    </table>
+                </th>
+
+                <th class="headers" scope="col">
+                    <span></span>
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let gs of grnSesList; let gsInd = index">
+                <td>
+                    {{ gs.grnSesNumber }}
+                </td>
+                <td>
+                    <table class="dataTable full-width">
+                        <tbody>
+                            <tr *ngFor="let item of gs.itemsList; let itemInd = index">
+                                <td>
+                                    {{ item.itemNo }}
+                                </td>
+                                <td>
+                                    {{ item.grnSesUnits }}
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </td>
+                <td>
+                    <button mat-raised-button style="line-height: 2em" class="footer-actions attachment-elements clsBtnColor"
+                            (click)="onSelectClick(gs)">Select</button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="row actions margin-unset">
+        <button mat-raised-button type="submit" class="mat-elevation-z8 clsBtnColor" (click)="onCancelClick()">Cancel</button>
+    </div>
+</div>

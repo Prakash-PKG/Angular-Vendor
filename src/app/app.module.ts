@@ -80,6 +80,7 @@ import { LoginVendorComponent } from './login-vendor/login-vendor.component';
 import { VendorDumpComponent } from './vendor-dump/vendor-dump.component';
 import { VendorLoginComponent } from './vendor-login/vendor-login.component';
 import { MsAdalAngular6Module, AuthenticationGuard } from 'microsoft-adal-angular6';
+import { GrnSesItemsComponent } from './grn-ses-items/grn-ses-items.component';
 
 @NgModule({
     declarations: [
@@ -111,7 +112,8 @@ import { MsAdalAngular6Module, AuthenticationGuard } from 'microsoft-adal-angula
         VendorDashboardComponent,
         LoginVendorComponent,
         VendorDumpComponent,
-        VendorLoginComponent
+        VendorLoginComponent,
+        GrnSesItemsComponent
     ],
     imports: [
         BrowserModule,
@@ -166,7 +168,8 @@ import { MsAdalAngular6Module, AuthenticationGuard } from 'microsoft-adal-angula
      entryComponents: [
         ConfirmDialogComponent,
         MessageDialogComponent,
-        ForgotPasswordComponent
+        ForgotPasswordComponent,
+        GrnSesItemsComponent
     ],
     providers: [
         { provide: LocationStrategy, useClass: HashLocationStrategy },
