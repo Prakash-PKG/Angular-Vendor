@@ -19,11 +19,14 @@ export class VendorAddressComponent implements OnInit {
     failureMsg: string = "";
     countryList: CountryDataModel[] = [];
     regionMasterVOList: regionMasterVOList[] = [];
+    isSubmitted: boolean = false;
 
     constructor(private _appService: AppService,
         private _vendorRegistrationService: VendorRegistrationService,
         private _router: Router,
         private _formBuilder: FormBuilder) { }
+
+    get f() { return this.vendorAddressForm.controls; }
 
     onPrevClick() {
         this._router.navigate([this._appService.routingConstants.vendorDetails]);
@@ -32,6 +35,7 @@ export class VendorAddressComponent implements OnInit {
     onNextClick() {
 
         this.failureMsg = "";
+        this.isSubmitted = true;
 
         if (this.vendorAddressForm.valid) {
             this._appService.vendorRegistrationDetails.address1 = this.vendorAddressForm.get("address1").value;
@@ -46,6 +50,9 @@ export class VendorAddressComponent implements OnInit {
                 action: this._appService.updateOperations.save,
                 vendorMasterDetails: this._appService.vendorRegistrationDetails
             }
+            // console.log(req);
+            // this._router.navigate([this._appService.routingConstants.vendorBankDetails]);
+
             this._vendorRegistrationService.updateBusy(<BusyDataModel>{ isBusy: true, msg: null });
             this._vendorRegistrationService.updateVendorRegistrationDetails(req)
                 .subscribe(response => {
@@ -80,17 +87,36 @@ export class VendorAddressComponent implements OnInit {
         this.vendorAddressForm.get("pincode").setValue(this._appService.vendorRegistrationDetails.pincode);
         this.vendorAddressForm.get("stateCode").setValue(this._appService.vendorRegistrationDetails.stateCode);
         this.vendorAddressForm.get("countryCode").setValue(this._appService.vendorRegistrationDetails.countryCode);
+
+        this.updatePincodeValidation();
     }
+
     updateRegion() {
         this.regionMasterVOList = [];
         if (this._appService.vendorRegistrationInitDetails && this._appService.vendorRegistrationInitDetails.regionMasterVOList &&
             this._appService.vendorRegistrationInitDetails.regionMasterVOList.length > 0) {
             this.regionMasterVOList = this._appService.vendorRegistrationInitDetails.regionMasterVOList;
         }
-        this.regionMasterVOList = this.regionMasterVOList.filter(r => r.countryCode == this.vendorAddressForm.get('countryCode').value)
+        this.regionMasterVOList = this.regionMasterVOList.filter(r => r.countryCode == this.vendorAddressForm.get('countryCode').value);
+
+        this.updatePincodeValidation();
+    }
+
+    updatePincodeValidation() {
+        let countryCodeVal = this.vendorAddressForm.get("countryCode").value;
+        if(countryCodeVal == "US") {
+            this.vendorAddressForm.get("pincode").setValidators([Validators.required, Validators.minLength(5), Validators.maxLength(5)]);
+        }
+        else {
+            this.vendorAddressForm.get("pincode").setValidators([Validators.required, Validators.minLength(6),  Validators.maxLength(6)]);
+        }
+
+        this.vendorAddressForm.get("pincode").updateValueAndValidity();
     }
 
     ngOnInit() {
+        this.isSubmitted = false;
+
         this.countryList = [];
         if (this._appService.vendorRegistrationInitDetails && this._appService.vendorRegistrationInitDetails.countriesList &&
             this._appService.vendorRegistrationInitDetails.countriesList.length > 0) {
@@ -106,7 +132,7 @@ export class VendorAddressComponent implements OnInit {
             address2: [null],
             city: [null, [Validators.required]],
             street: [null, [Validators.required]],
-            pincode: [null],
+            pincode: [null, [Validators.required, Validators.minLength(6), Validators.maxLength(6)]],
             stateCode: [null, [Validators.required]],
             countryCode: [null, [Validators.required]]
         });

@@ -19,11 +19,14 @@ export class VendorBankDetailsComponent implements OnInit {
     failureMsg: string = "";
     countryList: CountryDataModel[] = [];
     regionMasterVOList: regionMasterVOList[] = [];
+    isSubmitted: boolean = false;
 
     constructor(private _appService: AppService,
         private _vendorRegistrationService: VendorRegistrationService,
         private _router: Router,
         private _formBuilder: FormBuilder) { }
+
+    get f() { return this.vendorBankForm.controls; }
 
     onPrevClick() {
         this._router.navigate([this._appService.routingConstants.vendorAddressDetails]);
@@ -33,6 +36,7 @@ export class VendorBankDetailsComponent implements OnInit {
         // this._router.navigate([this._appService.routingConstants.vendorDocuments]);
 
         this.failureMsg = "";
+        this.isSubmitted = true;
 
         if (this.vendorBankForm.valid) {
 
@@ -54,6 +58,10 @@ export class VendorBankDetailsComponent implements OnInit {
                 action: this._appService.updateOperations.save,
                 vendorMasterDetails: this._appService.vendorRegistrationDetails
             }
+            
+            // console.log(req);
+            // this._router.navigate([this._appService.routingConstants.vendorDocuments]);
+
             this._vendorRegistrationService.updateBusy(<BusyDataModel>{ isBusy: true, msg: null });
             this._vendorRegistrationService.updateVendorRegistrationDetails(req)
                 .subscribe(response => {
@@ -95,6 +103,7 @@ export class VendorBankDetailsComponent implements OnInit {
         this.vendorBankForm.get("routingBank").setValue(this._appService.vendorRegistrationDetails.routingBank);
         this.vendorBankForm.get("swiftInterm").setValue(this._appService.vendorRegistrationDetails.swiftInterm);
     }
+
     updateRegion() {
         this.regionMasterVOList = [];
         if (this._appService.vendorRegistrationInitDetails && this._appService.vendorRegistrationInitDetails.regionMasterVOList &&
@@ -105,6 +114,8 @@ export class VendorBankDetailsComponent implements OnInit {
     }
 
     ngOnInit() {
+        this.isSubmitted = false;
+
         this.countryList = [];
         if (this._appService.vendorRegistrationInitDetails && this._appService.vendorRegistrationInitDetails.countriesList &&
             this._appService.vendorRegistrationInitDetails.countriesList.length > 0) {

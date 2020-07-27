@@ -148,3 +148,17 @@ th.mat-header-cell:last-of-type {
   font-size: x-small;
   font-weight: 100;
 }
+
+.clsBtnGrnSes {
+    background-color: blueviolet;
+    color: white;
+    margin: 0.5em;
+    min-width: 6em;
+    font-size: inherit;
+    line-height: inherit;
+    padding: 0.5em 0.5em;
+    max-height: 2em;
+    height: 3em;
+    align-items: center;
+    justify-content: center;
+}

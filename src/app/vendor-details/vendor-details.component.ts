@@ -18,17 +18,20 @@ export class VendorDetailsComponent implements OnInit {
 
     vendorDetailsForm: FormGroup;
     failureMsg: string = "";
-    requiredErrorMsg: string = "This field is mandatory"
+    requiredErrorMsg: string = "This field is mandatory";
+    isSubmitted: boolean = false;
 
     constructor(private _appService: AppService,
         private _vendorRegistrationService: VendorRegistrationService,
         private _router: Router,
         private _formBuilder: FormBuilder) { }
 
+    get f() { return this.vendorDetailsForm.controls; }
+
     onNextClick() {
         // this._router.navigate([this._appService.routingConstants.vendorAddressDetails]);
         this.failureMsg = "";
-
+        this.isSubmitted = true;
         if (this.vendorDetailsForm.valid) {
 
             this._appService.vendorRegistrationDetails.vendorName = this.vendorDetailsForm.get("vendorName").value;
@@ -42,6 +45,10 @@ export class VendorDetailsComponent implements OnInit {
                 action: this._appService.updateOperations.save,
                 vendorMasterDetails: this._appService.vendorRegistrationDetails
             }
+
+            // console.log(req);
+            // this._router.navigate([this._appService.routingConstants.vendorAddressDetails]);
+
             this._vendorRegistrationService.updateBusy(<BusyDataModel>{ isBusy: true, msg: null });
             this._vendorRegistrationService.updateVendorRegistrationDetails(req)
                 .subscribe(response => {
@@ -50,7 +57,7 @@ export class VendorDetailsComponent implements OnInit {
                     if (response.body) {
                         let result: VendorRegistrationResultModel = response.body as VendorRegistrationResultModel;
                         if (result.status.status == 200) {
-                            if(result.status.isSuccess) {
+                            if (result.status.isSuccess) {
                                 this._appService.vendorRegistrationDetails = result.vendorMasterDetails;
                                 this._router.navigate([this._appService.routingConstants.vendorAddressDetails]);
                             }
@@ -63,10 +70,10 @@ export class VendorDetailsComponent implements OnInit {
                         }
                     }
                 },
-                    (error) => {
-                        this._vendorRegistrationService.updateBusy(<BusyDataModel>{ isBusy: false, msg: null });
-                        console.log(error);
-                    });
+                (error) => {
+                    this._vendorRegistrationService.updateBusy(<BusyDataModel>{ isBusy: false, msg: null });
+                    console.log(error);
+                });
         }
         else {
             this.failureMsg = this._appService.messages.vendorRegistrationFormInvalid;
@@ -82,24 +89,25 @@ export class VendorDetailsComponent implements OnInit {
         this.vendorDetailsForm.get("password").setValue(this._appService.vendorRegistrationDetails.password);
         this.vendorDetailsForm.get("confirmPassword").setValue(this._appService.vendorRegistrationDetails.password);
     }
-    isNumberKey(evt)
-    {
-       let charCode = (evt.which) ? evt.which : evt.keyCode
-       if (charCode > 31 && (charCode < 48 || charCode > 57))
-          return false;
+    isNumberKey(evt) {
+        let charCode = (evt.which) ? evt.which : evt.keyCode
+        if (charCode > 31 && (charCode < 48 || charCode > 57))
+            return false;
 
-       return true;
+        return true;
     }
 
     ngOnInit() {
+        this.isSubmitted = false;
+
         this.vendorDetailsForm = this._formBuilder.group({
-            vendorName: [null, [Validators.required,Validators.nullValidator]],
+            vendorName: [null, [Validators.required, Validators.nullValidator]],
             contactPerson: [null],
-            mobileNum: [null, [Validators.required,Validators.minLength(10), Validators.maxLength(10),Validators.nullValidator]],
-            telephoneNum: [null,[Validators.minLength(12), Validators.maxLength(12)]],
-            emailId: [null, [Validators.required, Validators.email,Validators.nullValidator]],
-            password: [null, [Validators.required,Validators.nullValidator]],
-            confirmPassword: [null, [Validators.required,Validators.nullValidator]]
+            mobileNum: [null, [Validators.required, Validators.minLength(10), Validators.nullValidator]],
+            telephoneNum: null,
+            emailId: [null, [Validators.required, Validators.email, Validators.nullValidator]],
+            password: [null, [Validators.required, Validators.nullValidator]],
+            confirmPassword: [null, [Validators.required, Validators.nullValidator]]
         },
             { validator: equalValueValidator('password', 'confirmPassword') }
         );

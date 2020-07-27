@@ -10,6 +10,7 @@
                 <input type="text" matInput placeholder="Address Line 1" formControlName="address1" autocomplete="off"
                     required>
             </mat-form-field>
+            <mat-error class="errortxt" *ngIf="( isSubmitted ) && f?.address1?.errors?.required">Address Line 1 is required</mat-error>
         </div>
         <div class="col-6 form-group">
             <mat-form-field class="full-width">
@@ -19,22 +20,26 @@
     </div>
 
     <div class="row field">
-
         <div class="col-6 form-group">
             <mat-form-field class="full-width">
                 <input type="text" matInput placeholder="Street" formControlName="street" autocomplete="off" required>
             </mat-form-field>
+            <mat-error class="errortxt" *ngIf="( isSubmitted ) && f?.street?.errors?.required">Street is required</mat-error>
         </div>
         <div class="col-4 form-group">
             <mat-form-field class="full-width">
-                <input type="text" placeholder="Type/Choose City " matInput formControlName="city" autocomplete="off"
+                <input type="text" placeholder="Town / City" matInput formControlName="city" autocomplete="off"
                     required>
             </mat-form-field>
+            <mat-error class="errortxt" *ngIf="( isSubmitted ) && f?.city?.errors?.required">Town / City is required</mat-error>
         </div>
         <div class="col-2 form-group">
             <mat-form-field class="full-width">
-                <input type="text" placeholder="Pincode " required  onkeypress='return event.charCode >= 48 && event.charCode <= 57' matInput formControlName="pincode" autocomplete="off" maxlength="6">
+                <input type="text" placeholder="Pincode" required  onkeypress='return event.charCode >= 48 && event.charCode <= 57' matInput formControlName="pincode" autocomplete="off" maxlength="6">
             </mat-form-field>
+            <mat-error class="errortxt" *ngIf="( isSubmitted ) && f?.pincode?.errors?.required">Pincode is required</mat-error>
+            <mat-error class="errortxt" *ngIf="( isSubmitted ) && f?.pincode?.errors?.minlength">Minimum {{ f?.pincode?.errors?.minlength?.requiredLength }} characters are required</mat-error>
+            <mat-error class="errortxt" *ngIf="( isSubmitted ) && f?.pincode?.errors?.maxlength">Maximum {{ f?.pincode?.errors?.maxlength?.requiredLength }} characters are required</mat-error>
         </div>
     </div>
     
@@ -48,6 +53,7 @@
                     </mat-option>
                 </mat-select>
             </mat-form-field>
+            <mat-error class="errortxt" *ngIf="( isSubmitted ) && f?.countryCode?.errors?.required">Country is required</mat-error>
         </div>
 
         <div class="col-6 form-group">
@@ -58,6 +64,7 @@
                     </mat-option>
                 </mat-select>
             </mat-form-field>
+            <mat-error class="errortxt" *ngIf="( isSubmitted ) && f?.stateCode?.errors?.required">State is required</mat-error>
         </div>
     </div>
 </form>

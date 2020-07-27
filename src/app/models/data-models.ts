@@ -471,10 +471,27 @@ export class InvoiceApprovalInitResultModel {
     grnSesList: GrnSesModel[];
     invoiceFilesList: FileDetailsModel[];
     supportFilesList: FileDetailsModel[];
+    grnSesItemsList: GrnSesItemModel[];
 }
 
 export class GrnSesModel {
     grnSesNumber: string;
+}
+
+export class GrnSesItemModel extends GrnSesModel {
+    itemNo: string;
+    grnSesUnits: string;
+}
+
+export class GrnSesDisplayModel {
+    grnSesNumber: string;
+    itemsList: GrnSesItemsDisplayModel[];
+}
+
+export class GrnSesItemsDisplayModel {
+    grnSesNumber: string;
+    itemNo: string;
+    grnSesUnits: string;
 }
 
 export class InvoiceApprovalModel {
