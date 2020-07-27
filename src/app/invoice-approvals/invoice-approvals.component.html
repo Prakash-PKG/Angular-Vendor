@@ -185,7 +185,7 @@
         </div>
     </div>
     <div class="flex-container details">
-        <div class="flex-item" style=" flex-grow: 0;width: 20%;">
+        <div class="flex-item" style=" flex-grow: 0;width: 38%;">
             <div class="flex-container">
                 <div class="flex-item">
                     <div *ngIf="isGrnSesRequired == true && isGrnDdlVisible == false">
@@ -202,9 +202,15 @@
                             </mat-option>
                         </mat-select>
                     </mat-form-field>-->
-                    <mat-form-field class="full-width">
+                    <!--<mat-form-field class="full-width">
                         <input matInput placeholder="GRN/SES No." [(ngModel)]="selectedGrnSesNumber" autocomplete="off">
-                    </mat-form-field>
+                    </mat-form-field>-->
+                    <div>
+                        <mat-label style="color:black;">GRN/SES No.</mat-label>
+                        <mat-label class="min-width: 200px">{{ selectedGrnSesNumber }}</mat-label>
+                        <button mat-raised-button class="clsBtnGrnSes"
+                            (click)="onGrnSesSelectClick()">Select GRN / SES</button>
+                    </div>
                 </div>
                 <div class="error-txt">
                     {{ grnSesErrMsg }}
