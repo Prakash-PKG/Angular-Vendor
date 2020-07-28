@@ -425,32 +425,23 @@ export class VendorApprovalComponent implements OnInit {
 
 
     async loadInitData() {
-        let req: VendorApprovalInitReqModel = null;
-        if (this._appService.isexistingVendor) {
-            req = {
-                vendorMasterId: this._appService.selectedVendor.vendorMasterId,
-                departmentCode: null
-            };
-        }
-
         if (this._appService.selectedPendingApprovalRecord) {
-            req = {
+            let req: VendorApprovalInitReqModel = {
                 vendorMasterId: this._appService.selectedPendingApprovalRecord.vendorMasterId,
-                departmentCode: this._appService.selectedPendingApprovalRecord.approvalLevel
+                departmentCode: this._appService.selectedPendingApprovalRecord.approvalLevel,
+                approvalId: this._appService.selectedPendingApprovalRecord.approvalId
             };
+
+            this._homeService.updateBusy(<BusyDataModel>{ isBusy: true, msg: "Loading..." });
+            this.vendorApprovalInitDetails = await this._vendorApprovalService.getVendorApprovalInitData(req);
+            this.originalVendorDetails = this.vendorApprovalInitDetails.vendorMasterDetails;
+            this.vendorDetails = this.originalVendorDetails;
+            this.initializeFilesList();
+            this.loadDropDown();
+            this.getAttachments();
+            this._homeService.updateBusy(<BusyDataModel>{ isBusy: false, msg: null });
         }
-
-        this._homeService.updateBusy(<BusyDataModel>{ isBusy: true, msg: "Loading..." });
-        this.vendorApprovalInitDetails = await this._vendorApprovalService.getVendorApprovalInitData(req);
-        this.originalVendorDetails = this.vendorApprovalInitDetails.vendorMasterDetails;
-        this.vendorDetails = this.originalVendorDetails;
-        this.initializeFilesList();
-        this.loadDropDown();
-        this.getAttachments();
-        this._homeService.updateBusy(<BusyDataModel>{ isBusy: false, msg: null });
-
     }
-
 
     loadDropDown() {
         this.vendoraccGroupList = [];

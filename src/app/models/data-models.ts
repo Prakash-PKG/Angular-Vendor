@@ -343,6 +343,7 @@ export class VendorApprovalInitResultModel {
 export class VendorApprovalInitReqModel {
     vendorMasterId: number;
     departmentCode: string;
+    approvalId: number;
 }
 
 export class vendorApprovalDetails {

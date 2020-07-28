@@ -1,1 +1,9 @@
+<div class = "clsTimmerDiv" *ngIf = "timeRemaining > 0"> 
+    <span>Time Remaining for session expire: {{ timeRemaining }}. Click 
+        <button mat-raised-button style="line-height: 2em; height: 25px;
+            background-color: antiquewhite;" class="footer-actions attachment-elements clsBtnColor"
+                            (click)="onCancelClick()">Cancel</button> to avoid session expiration.
+    </span>
+</div>
+
 <router-outlet></router-outlet>
