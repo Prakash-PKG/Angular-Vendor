@@ -144,16 +144,16 @@ export class AppService {
         swiftInterm: null,
         panNum: null,
         gstNum: null,
-        isSez: null,
-        isRcmApplicable: null,
+        isSez: false,
+        isRcmApplicable: false,
         lutNum: null,
         lutDate: null,
         // paymentTerms: null,
         cinNum: null,
-        isMsmedRegistered: null,
+        isMsmedRegistered: false,
         pfNum: null,
         esiNum: null,
-        hasTdsLower: null,
+        hasTdsLower: false,
         createdBy: null,
         updatedBy: null,
         createdDate: null,
@@ -210,16 +210,16 @@ export class AppService {
             swiftInterm: null,
             panNum: null,
             gstNum: null,
-            isSez: null,
-            isRcmApplicable: null,
+            isSez: false,
+            isRcmApplicable: false,
             lutNum: null,
             lutDate: null,
             // paymentTerms: null,
             cinNum: null,
-            isMsmedRegistered: null,
+            isMsmedRegistered: false,
             pfNum: null,
             esiNum: null,
-            hasTdsLower: null,
+            hasTdsLower: false,
             createdBy: null,
             updatedBy: null,
             createdDate: null,
@@ -248,6 +248,10 @@ export class AppService {
         };
 
         return regDetails;
+    }
+
+    isEmpty(obj) {
+        return Object.keys(obj).length === 0;
     }
 
     selectedPendingApprovalRecord: PendingApprovalsModel = null;

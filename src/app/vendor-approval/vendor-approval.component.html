@@ -261,7 +261,7 @@
         <div class="Rtable-cell Rtable-cell--head">GST No.</div>
         <div class="Rtable-cell">
           <mat-form-field class="full-width">
-            <input type="text" matInput [(ngModel)]="vendorDetails.gstNum" [disabled]="isEditable"
+            <input type="text" matInput [(ngModel)]="vendorDetails.gstNum" [disabled]="isEditable" maxlength="15"
               (blur)="updateMandatoryDocs(vendorDetails.gstNum,vendorDocCtrl.gstCtrl.documentTypeId)">
           </mat-form-field>
         </div>
@@ -300,7 +300,7 @@
         <div class="Rtable-cell Rtable-cell--head">Pan No.</div>
         <div class="Rtable-cell">
           <mat-form-field class="full-width">
-            <input type="text" matInput [(ngModel)]="vendorDetails.panNum" [disabled]="isEditable" required>
+            <input type="text" matInput [(ngModel)]="vendorDetails.panNum" [disabled]="isEditable" required maxlength="10">
           </mat-form-field>
           <div class="error-txt" *ngIf="!vendorDetails.panNum">This field is mandatory</div>
         </div>

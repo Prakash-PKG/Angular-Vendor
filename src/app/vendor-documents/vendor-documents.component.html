@@ -76,6 +76,7 @@
                     required>
             </mat-form-field>
             <mat-error *ngIf="isSubmitted == true && vdf?.panNum?.errors?.required">PAn No. is required</mat-error>
+            <mat-error *ngIf="isSubmitted == true && vdf?.panNum?.errors?.minlength">10 characters are required</mat-error>
         </div>
         <div class="col-7 actions">
             <input style="display: none" [attr.id]="vendorDocCtrl.panCtrl.browserId" type="file" multiple accept=".xls,.xlsx,.doc,.docx,.pdf,.png,.jpg,.zip"
@@ -247,7 +248,7 @@
         <div class="col-2 doc-form-field">
             <mat-radio-group formControlName="isMsmedRegistered" (change)="updateMandatory('isMsmedRegistered',vendorDocCtrl.msmeCtrl.documentTypeId)">
                 <mat-radio-button [value]=true>YES</mat-radio-button>
-                <mat-radio-button [value]=false [checked]=true>NO</mat-radio-button>
+                <mat-radio-button [value]=false>NO</mat-radio-button>
             </mat-radio-group>
         </div>
         <div class="col-7 actions">
@@ -281,7 +282,7 @@
         <div class="col-2 doc-form-field">
             <mat-radio-group formControlName="hasTdsLower" (change)="updateMandatory('hasTdsLower',vendorDocCtrl.tdsCtrl.documentTypeId)">
                 <mat-radio-button [value]=true>YES</mat-radio-button>
-                <mat-radio-button [value]=false [checked]=true>NO</mat-radio-button>
+                <mat-radio-button [value]=false>NO</mat-radio-button>
             </mat-radio-group>
         </div>
         <div class="col-7 actions">
@@ -316,7 +317,7 @@
         <div class="col-2 doc-form-field">
             <mat-radio-group formControlName="isSez" (change)="updateMandatory('isSez',vendorDocCtrl.sezCtrl.documentTypeId)">
                 <mat-radio-button [value]=true>YES</mat-radio-button>
-                <mat-radio-button [value]=false [checked]=true>NO</mat-radio-button>
+                <mat-radio-button [value]=false>NO</mat-radio-button>
             </mat-radio-group>
         </div>
         <div class="col-7 actions">
@@ -350,7 +351,7 @@
         <div class="col-2 doc-form-field">
             <mat-radio-group aria-label="Is RCM applicable?" formControlName="isRcmApplicable">
                 <mat-radio-button [value]=true>YES</mat-radio-button>
-                <mat-radio-button [value]=false [checked]=true>NO</mat-radio-button>
+                <mat-radio-button [value]=false>NO</mat-radio-button>
             </mat-radio-group>
         </div>
         <div class="col-7 doc-form-field"></div>

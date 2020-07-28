@@ -26,6 +26,14 @@ export class VendorBankDetailsComponent implements OnInit {
         private _router: Router,
         private _formBuilder: FormBuilder) { }
 
+    onIFSCblur() {
+        let ifscVal = this.vendorBankForm.get("ifscCode").value;
+
+        if(ifscVal) {
+            this.vendorBankForm.get("ifscCode").setValue(ifscVal.toUpperCase());
+        }
+    }
+
     get f() { return this.vendorBankForm.controls; }
 
     onPrevClick() {
