@@ -75,7 +75,7 @@
                 <input type="text" matInput placeholder="{{vendorDocCtrl.panCtrl.placeholder}}" formControlName="panNum" maxlength="10" autocomplete="off"
                     required>
             </mat-form-field>
-            <mat-label></mat-label>
+            <mat-error *ngIf="isSubmitted == true && vdf?.panNum?.errors?.required">PAn No. is required</mat-error>
         </div>
         <div class="col-7 actions">
             <input style="display: none" [attr.id]="vendorDocCtrl.panCtrl.browserId" type="file" multiple accept=".xls,.xlsx,.doc,.docx,.pdf,.png,.jpg,.zip"

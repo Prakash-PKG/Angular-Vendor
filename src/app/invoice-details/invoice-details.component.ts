@@ -62,6 +62,8 @@ export class InvoiceDetailsComponent implements OnInit {
     paymentStatusErrMsg: string = "";
     remarksErrMsg: string = "";
 
+    remarksList: string[] = [];
+
     constructor(private _homeService: HomeService,
                 private _router: Router,
                 public _dialog: MatDialog,
@@ -221,6 +223,13 @@ export class InvoiceDetailsComponent implements OnInit {
         return "";
     }
 
+    updateRemarksList() {
+        this.remarksList = [];
+        if(this.invoicePaymentStatusDetails && this.invoicePaymentStatusDetails.remarks) {
+            this.remarksList = this.invoicePaymentStatusDetails.remarks.split(",");
+        }
+    }
+
     getPaidStatus() {
         if(this.invoicePaymentStatusDetails && this.invoicePaymentStatusDetails.status) {
             return this.invoicePaymentStatusDetails.status;
@@ -363,6 +372,8 @@ export class InvoiceDetailsComponent implements OnInit {
                     
                     this.approvalLevelList.push(paymentLevel);
                 }
+
+                this.updateRemarksList();
             }
             this._homeService.updateBusy(<BusyDataModel>{ isBusy: false, msg: null });
         }

@@ -1,11 +1,13 @@
+import { LoginService } from './login/login.service';
 import {
     VendorMasterDetailsModel, VendorRegistrationInitDataModel,
-    PendingApprovalsModel, FileDetailsModel, PODetailsModel, InvoiceModel
+    PendingApprovalsModel, FileDetailsModel, PODetailsModel, InvoiceModel, FileMap
 } from './models/data-models';
 
 import { Injectable } from '@angular/core';
 import { DatePipe } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
+import { UserIdleService } from 'angular-user-idle';
 
 @Injectable({
     providedIn: 'root'
@@ -20,7 +22,9 @@ export class AppService {
     readonly isForProduction: boolean = false;
     readonly isSSORequired: boolean = false;
 
-    constructor(private _datePipe: DatePipe, private _http: HttpClient) { }
+    constructor(private _datePipe: DatePipe, 
+                private _http: HttpClient,
+                private _userIdleService: UserIdleService) { }
 
     readonly routingConstants: any = {
         login: "/",
@@ -43,7 +47,7 @@ export class AppService {
         vendorDocuments: "/vendor/vendocs",
         vendorOther: "/vendor/venothers",
         vendorDashboard: "/home/vendashboard",
-        loginVendor: "/loginvendor"
+        loginVendor: "/vendorlogin"
     };
 
     readonly pageConstants: any = {
@@ -177,6 +181,8 @@ export class AppService {
         otherDocDesc: null
     };
 
+    selectedFileMap: FileMap = {};
+
     resetVendorRegistrationDetails() {
         let regDetails: VendorMasterDetailsModel = {
             vendorMasterId: null,
@@ -279,6 +285,22 @@ export class AppService {
             error => {
                 console.log(error);
             });
+    }
+
+    startWatching() {
+        this._userIdleService.startWatching();
+    }
+
+    stopWatching() {
+        this._userIdleService.stopWatching();
+    }
+
+    stopTimer() {
+        this._userIdleService.stopTimer();
+    }
+
+    restartTimer() {
+        this._userIdleService.resetTimer();
     }
 
 }
