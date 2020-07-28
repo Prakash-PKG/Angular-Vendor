@@ -1,7 +1,7 @@
 import { LoginService } from './login/login.service';
 import {
     VendorMasterDetailsModel, VendorRegistrationInitDataModel,
-    PendingApprovalsModel, FileDetailsModel, PODetailsModel, InvoiceModel
+    PendingApprovalsModel, FileDetailsModel, PODetailsModel, InvoiceModel, FileMap
 } from './models/data-models';
 
 import { Injectable } from '@angular/core';
@@ -47,7 +47,7 @@ export class AppService {
         vendorDocuments: "/vendor/vendocs",
         vendorOther: "/vendor/venothers",
         vendorDashboard: "/home/vendashboard",
-        loginVendor: "/loginvendor"
+        loginVendor: "/vendorlogin"
     };
 
     readonly pageConstants: any = {
@@ -180,6 +180,8 @@ export class AppService {
         // isGSTReg:null,
         otherDocDesc: null
     };
+
+    selectedFileMap: FileMap = {};
 
     resetVendorRegistrationDetails() {
         let regDetails: VendorMasterDetailsModel = {

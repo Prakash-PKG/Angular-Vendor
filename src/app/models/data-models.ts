@@ -156,6 +156,16 @@ export class VendorMasterDetailsModel {
     otherDocDesc: string;
 }
 
+export interface FileMap {
+    [key: number]: {
+        filesList: FileDetailsModel[],
+        isMandatory: boolean,
+        isAttached: boolean,
+        isError: boolean,
+        toAttach: FileDetailsModel[],
+    }
+}
+
 export class VendorMasterDocumentModel {
     vendorMasterDocumentsId: number;
     documentDescription: string;
