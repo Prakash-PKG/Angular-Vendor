@@ -135,14 +135,14 @@
     <div class="row doc-field">
         <div class="col-5 doc-form-field">
             <mat-form-field>
-                <input type="text" matInput placeholder="{{vendorDocCtrl.lutNoCtrl.placeholder}}" 
-                        formControlName="lutNum" autocomplete="off" (blur)="updateMandatory('lutNum',vendorDocCtrl.lutNoCtrl.documentTypeId)">
+                <input type="text" matInput placeholder="{{vendorDocCtrl.lutNoCtrl.placeholder}}" formControlName="lutNum" autocomplete="off"
+                    (blur)="updateMandatory('lutNum',vendorDocCtrl.lutNoCtrl.documentTypeId)">
             </mat-form-field>
             <mat-form-field style="width:9em;">
                 <mat-label>LUT Date</mat-label>
                 <input matInput [matDatepicker]="picker" formControlName="lutDate" autocomplete="off">
                 <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-                <mat-datepicker #picker ></mat-datepicker>
+                <mat-datepicker #picker></mat-datepicker>
             </mat-form-field>
             <div *ngIf="vdf?.lutDate?.errors?.required" class="errortxt">
                 LUT Date is required
@@ -151,9 +151,7 @@
         <div class="col-7 actions">
             <input style="display: none" [attr.id]="vendorDocCtrl.lutNoCtrl.browserId" type="file" multiple accept=".xls,.xlsx,.doc,.docx,.pdf,.png,.jpg,.zip"
                 (change)="onFileChange($event, vendorDocCtrl.lutNoCtrl.documentTypeId)" />
-            <button mat-raised-button class="footer-actions"  
-                [disabled]="!vendorDocumentForm.get('lutNum').value" 
-                (click)="onBrowseFileClick($event, vendorDocCtrl.lutNoCtrl.browserId)">Attach</button>
+            <button mat-raised-button class="footer-actions" [disabled]="!vendorDocumentForm.get('lutNum').value" (click)="onBrowseFileClick($event, vendorDocCtrl.lutNoCtrl.browserId)">Attach</button>
             <div *ngIf="filesMap[vendorDocCtrl.lutNoCtrl.documentTypeId]?.isAttached" style="display: flex;
     flex-wrap: wrap;">
                 <span class="filename" *ngFor="let f of filesMap[vendorDocCtrl.lutNoCtrl.documentTypeId]?.filesList; let fInd = index">
@@ -380,7 +378,7 @@
                 (change)="onFileChange($event, vendorDocCtrl.otherCtrl.documentTypeId)" />
             <button mat-raised-button class="footer-actions" [disabled]="!vendorDocumentForm.get('otherDocDesc').value" (click)="onBrowseFileClick($event, vendorDocCtrl.otherCtrl.browserId)">Attach</button>
             <div *ngIf="filesMap[vendorDocCtrl.otherCtrl.documentTypeId]?.isAttached" style="display: flex;
-    flex-wrap: wrap;">
+                flex-wrap: wrap;">
                 <span class="filename" *ngFor="let f of filesMap[vendorDocCtrl.otherCtrl.documentTypeId]?.filesList; let fInd = index">
                     <span>
                         <mat-icon matTooltip="{{ f.actualFileName }}" (click)="downloadFile(f)">description</mat-icon>
@@ -390,10 +388,10 @@
                         </button>
                     </span>
                 </span>
-                <div *ngIf="filesMap[vendorDocCtrl.otherCtrl.documentTypeId] && 
+            </div>
+            <div *ngIf="filesMap[vendorDocCtrl.otherCtrl.documentTypeId] && 
                 filesMap[vendorDocCtrl.otherCtrl.documentTypeId]?.isError" class="errortxt">
-                    Please attach the Documents
-                </div>
+                Please attach the Documents
             </div>
         </div>
     </div>
