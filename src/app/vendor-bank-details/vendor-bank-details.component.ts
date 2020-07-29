@@ -26,6 +26,14 @@ export class VendorBankDetailsComponent implements OnInit {
         private _router: Router,
         private _formBuilder: FormBuilder) { }
 
+    onIFSCblur() {
+        let ifscVal = this.vendorBankForm.get("ifscCode").value;
+
+        if(ifscVal) {
+            this.vendorBankForm.get("ifscCode").setValue(ifscVal.toUpperCase());
+        }
+    }
+
     get f() { return this.vendorBankForm.controls; }
 
     onPrevClick() {
@@ -121,6 +129,7 @@ export class VendorBankDetailsComponent implements OnInit {
             this._appService.vendorRegistrationInitDetails.countriesList.length > 0) {
             this.countryList = this._appService.vendorRegistrationInitDetails.countriesList;
         }
+        
         this.vendorBankForm = this._formBuilder.group({
             // bankAddress: [null, [Validators.required]],
             accountNum: [null, [Validators.required]],
