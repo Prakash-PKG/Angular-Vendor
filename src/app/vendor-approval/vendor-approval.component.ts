@@ -22,6 +22,7 @@ import { MessageDialogComponent } from '../message-dialog/message-dialog.compone
 import { MessageDialogModel } from '../models/popup-models';
 import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
 import { Router } from '@angular/router';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 interface FileMap {
     [key: number]: {
@@ -97,6 +98,7 @@ export class VendorApprovalComponent implements OnInit {
         private _vendorApprovalService: VendorApprovalService,
         private _snackBar: MatSnackBar,
         private _dialog: MatDialog,
+        private _formBuilder: FormBuilder,
         private _router: Router) { }
 
     onEditClick() {
@@ -411,6 +413,7 @@ export class VendorApprovalComponent implements OnInit {
                     console.log(error);
                 });
     }
+
     displayVendorApprovalStatus(msg: string) {
         const dialogRef = this._dialog.open(MessageDialogComponent, {
             disableClose: true,
@@ -420,6 +423,10 @@ export class VendorApprovalComponent implements OnInit {
                 title: "Vendor Approval Status",
                 message: msg
             }
+        });
+
+        dialogRef.afterClosed().subscribe(result => {
+            this._router.navigate([this._appService.routingConstants.pendingApprovals]);
         });
     }
 
@@ -509,6 +516,22 @@ export class VendorApprovalComponent implements OnInit {
             this.isProcurement = true;
             this.canApprove = true;
         }
+
+        // this.vendorForm = this._formBuilder.group({
+        //     // bankAddress: [null, [Validators.required]],
+        //     accountNum: [null, [Validators.required]],
+        //     accountType: [null, [Validators.required]],
+        //     accountName: [null, [Validators.required]],
+        //     ifscCode: [null, [Validators.required]],
+        //     bankName: [null, [Validators.required]],
+        //     bankBranch: [null, [Validators.required]],
+        //     bankCity: [null, [Validators.required]],
+        //     bankRegion: [null, [Validators.required]],
+        //     bankCountry: [null, [Validators.required]],
+        //     swiftIbanCode: [null],
+        //     routingBank: [null],
+        //     swiftInterm: [null],
+        // });
 
         setTimeout(() => {
             this.loadInitData();

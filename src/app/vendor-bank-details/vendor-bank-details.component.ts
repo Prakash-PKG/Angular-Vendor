@@ -129,6 +129,7 @@ export class VendorBankDetailsComponent implements OnInit {
             this._appService.vendorRegistrationInitDetails.countriesList.length > 0) {
             this.countryList = this._appService.vendorRegistrationInitDetails.countriesList;
         }
+        
         this.vendorBankForm = this._formBuilder.group({
             // bankAddress: [null, [Validators.required]],
             accountNum: [null, [Validators.required]],
