@@ -317,10 +317,11 @@ export class VendorDocumentsComponent implements OnInit {
 
         this.filesMap = this._appService.selectedFileMap;
 
+        this.updateLUTValidations(this.vendorDocumentForm.get("lutNum").value);
+
         this.vendorDocumentForm.get("lutNum").valueChanges.subscribe(val => {
             this.updateLUTValidations(val);
         });
-
     }
 
     updateLUTValidations(lutVal: string) {
@@ -338,10 +339,14 @@ export class VendorDocumentsComponent implements OnInit {
     }
 
     initializeFilesList() {
-        if (this._appService.vendorRegistrationInitDetails && this._appService.vendorRegistrationInitDetails.documentDetailsList &&
-            this._appService.vendorRegistrationInitDetails.documentDetailsList.length > 0) {
-            this._appService.vendorRegistrationInitDetails.documentDetailsList.forEach(item =>
-                this.filesMap[item.vendorMasterDocumentsId] = { filesList: [], isMandatory: item.isMandatory, isAttached: false, isError: false, toAttach: [] });
+        if(this._appService.isEmpty(this._appService.selectedFileMap)) {
+            if (this._appService.vendorRegistrationInitDetails && this._appService.vendorRegistrationInitDetails.documentDetailsList &&
+                this._appService.vendorRegistrationInitDetails.documentDetailsList.length > 0) {
+                this._appService.vendorRegistrationInitDetails.documentDetailsList.forEach(item =>
+                    this.filesMap[item.vendorMasterDocumentsId] = { filesList: [], isMandatory: item.isMandatory, isAttached: false, isError: false, toAttach: [] });
+            }
+
+            this._appService.selectedFileMap = this.filesMap;
         }
     }
 
@@ -368,15 +373,15 @@ export class VendorDocumentsComponent implements OnInit {
 
         this.vendorDocumentForm = this._formBuilder.group({
 
-            panNum: [null, [Validators.required]],
+            panNum: [null, [Validators.required, Validators.minLength(10)]],
             gstNum: [null],
             pfNum: [null],
             esiNum: [null],
             cinNum: [null],
-            isSez: [null],
-            isRcmApplicable: [null],
-            isMsmedRegistered: [null],
-            hasTdsLower: [null],
+            isSez: [false],
+            isRcmApplicable: [false],
+            isMsmedRegistered: [false],
+            hasTdsLower: [false],
             lutNum: [null],
             lutDate: [{ value: null, disabled: true}],
             otherDocDesc: [null]

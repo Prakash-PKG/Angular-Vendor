@@ -8,135 +8,134 @@ import { HomeService } from '../home/home.service';
 import { VendorDumpService } from './vendor-dump.service';
 
 @Component({
-  selector: 'app-vendor-dump',
-  templateUrl: './vendor-dump.component.html',
-  styleUrls: ['./vendor-dump.component.scss']
+    selector: 'app-vendor-dump',
+    templateUrl: './vendor-dump.component.html',
+    styleUrls: ['./vendor-dump.component.scss']
 })
 export class VendorDumpComponent implements OnInit {
-  selectedDump: string = "incremental";
-  maxStartDate: Date = new Date();
-  minStartDate: Date = null;
+    selectedDump: string = "incremental";
+    maxStartDate: Date = new Date();
+    minStartDate: Date = null;
 
-  maxEndDate: Date = new Date();
-  minEndDate: Date = null;
+    maxEndDate: Date = new Date();
+    minEndDate: Date = null;
 
-  startDate: Date = null;
-  endDate: Date = null;
+    startDate: Date = null;
+    endDate: Date = null;
 
-  startDateErrMsg: string = "";
-  endDateErrMsg: string = "";
+    startDateErrMsg: string = "";
+    endDateErrMsg: string = "";
 
-  _initDetails: VendorDumpInitResultModel = null;
+    _initDetails: VendorDumpInitResultModel = null;
 
-  incrementalStartDate: string = " - ";
+    incrementalStartDate: string = " - ";
 
-  constructor(private __vendorDumpService: VendorDumpService,
-              private _appService: AppService,
-              private _datePipe: DatePipe,
-              private _homeService: HomeService) { }
+    constructor(private __vendorDumpService: VendorDumpService,
+        private _appService: AppService,
+        private _datePipe: DatePipe,
+        private _homeService: HomeService) { }
 
-  
 
-  onDumpTypeChange(evtData) {
 
-      if(evtData.value == "incremental") {
-          
-      }
-      else {
-         this.startDate = null;
-         this.endDate = null;
-      }
+    onDumpTypeChange(evtData) {
 
-  }
+        if (evtData.value == "incremental") {
 
-  onIncrementalDownloadClick() {
-      let req: VendorDumpReqModel = {
-          startDate: this._initDetails.lastDumpDt,
-          endDate: null,
-          employeeId: globalConstant.userDetails.userId,
-          isIncremental: true
-      };
+        }
+        else {
+            this.startDate = null;
+            this.endDate = null;
+        }
 
-      let displayStartDt: string = this._initDetails.lastDumpDt ? "-" + this._initDetails.lastDumpDt : "";
-      let fileName: string = "vendor-dump" + displayStartDt + ".csv";
-      this.downloadVendorFile(req, fileName);
-  }
+    }
 
-  onDateRangeDownloadClick() {
+    onIncrementalDownloadClick() {
+        let req: VendorDumpReqModel = {
+            startDate: this._initDetails.lastDumpDt,
+            endDate: null,
+            employeeId: globalConstant.userDetails.userId,
+            isIncremental: true
+        };
 
-      if(!this.startDate) {
-          this.startDateErrMsg = "Start Date is required";
-      }
+        let displayStartDt: string = this._initDetails.lastDumpDt ? "-" + this._initDetails.lastDumpDt : "";
+        let fileName: string = "vendor-dump" + displayStartDt + ".csv";
+        this.downloadVendorFile(req, fileName);
+    }
 
-      if(!this.endDate) {
-          this.endDateErrMsg = "End Date is required";
-      }
+    onDateRangeDownloadClick() {
 
-      if(this.startDate && this.endDate) {
-          let req: VendorDumpReqModel = {
-              startDate: this._datePipe.transform(this.startDate, this._appService.dbDateTimeFormat),
-              endDate: this._datePipe.transform(this.endDate, this._appService.dbDateTimeFormat),
-              employeeId: globalConstant.userDetails.userId,
-              isIncremental: false
-          };
+        if (!this.startDate) {
+            this.startDateErrMsg = "Start Date is required";
+        }
 
-          let displayStartDt: string = this._datePipe.transform(this.startDate, this._appService.displayDtFormat);
-          let displayEndDt: string = this._datePipe.transform(this.endDate, this._appService.displayDtFormat);
-          let fileName: string = "vendor-dump-" + displayStartDt + " to " + displayEndDt + ".csv";
+        if (!this.endDate) {
+            this.endDateErrMsg = "End Date is required";
+        }
 
-          this.downloadVendorFile(req, fileName);
-      }
-  }
+        if (this.startDate && this.endDate) {
+            let updatedEndDt: Date = new Date(this.endDate);
+            updatedEndDt.setDate(this.endDate.getDate() + 1);
 
-  onStartDateChange(evt: MatDatepickerInputEvent<Date>) {
-      this.minEndDate = evt.value;
-      this.startDateErrMsg = "";
-  }
+            let req: VendorDumpReqModel = {
+                startDate: this._datePipe.transform(this.startDate, this._appService.dbDateTimeFormat),
+                endDate: this._datePipe.transform(updatedEndDt, this._appService.dbDateTimeFormat),
+                employeeId: globalConstant.userDetails.userId,
+                isIncremental: false
+            };
 
-  onEndDateChange(evt: MatDatepickerInputEvent<Date>) {
-      this.maxStartDate = evt.value;
-      this.endDateErrMsg = "";
-  }
+            let displayStartDt: string = this._datePipe.transform(this.startDate, this._appService.displayDtFormat);
+            let displayEndDt: string = this._datePipe.transform(this.endDate, this._appService.displayDtFormat);
+            let fileName: string = "vendor-dump-" + displayStartDt + " to " + displayEndDt + ".csv";
 
-  downloadVendorFile(req: VendorDumpReqModel, fileName: string) {
-      this._homeService.updateBusy(<BusyDataModel>{ isBusy: true, msg: "Loading..." });
-      this.__vendorDumpService.getFileData(req).subscribe(
-          (data) => {
-              this._homeService.updateBusy(<BusyDataModel>{ isBusy: false, msg: null });
-              const blob = new Blob([data.body], { type: 'application/octet-stream' });
-              const url = window.URL.createObjectURL(blob);
+            this.downloadVendorFile(req, fileName);
+        }
+    }
 
-              const a = document.createElement('a');
-              a.href = url;
-              a.download = fileName;
-              document.body.appendChild(a);
-              a.click();
+    onStartDateChange(evt: MatDatepickerInputEvent<Date>) {
+        this.minEndDate = evt.value;
+        this.startDateErrMsg = "";
+    }
 
-              this.loadInitData();
-          },
-          error => {
-              console.log(error);
-              this._homeService.updateBusy(<BusyDataModel>{ isBusy: false, msg: null });
-          });
-  }
+    onEndDateChange(evt: MatDatepickerInputEvent<Date>) {
+        this.maxStartDate = evt.value;
+        this.endDateErrMsg = "";
+    }
 
-  async loadInitData() {
-      this.incrementalStartDate = " - ";
-      this._homeService.updateBusy(<BusyDataModel>{ isBusy: true, msg: "Loading..." });
-      this._initDetails = await this.__vendorDumpService.getVendorDumpInitDetails();
-      if(this._initDetails && this._initDetails.lastDumpDt) {
-          this.incrementalStartDate = this._datePipe.transform(new Date(this._initDetails.lastDumpDt), this._appService.displayDateTimeFormat);
-      }
-      this._homeService.updateBusy(<BusyDataModel>{ isBusy: false, msg: null });
-  }
+    downloadVendorFile(req: VendorDumpReqModel, fileName: string) {
+        this._homeService.updateBusy(<BusyDataModel>{ isBusy: true, msg: "Loading..." });
+        this.__vendorDumpService.getFileData(req).subscribe(
+            (data) => {
+                this._homeService.updateBusy(<BusyDataModel>{ isBusy: false, msg: null });
+                const blob = new Blob([data.body], { type: 'application/octet-stream' });
+                const url = window.URL.createObjectURL(blob);
 
-  ngOnInit() {
-      let dt: Date = new Date();
-      dt.setDate(dt.getDate() + 1);
-      this.maxEndDate = dt;
-      
-      setTimeout(() => {
-         this.loadInitData();
-      }, 100);
-  }
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = fileName;
+                document.body.appendChild(a);
+                a.click();
+
+                this.loadInitData();
+            },
+            error => {
+                console.log(error);
+                this._homeService.updateBusy(<BusyDataModel>{ isBusy: false, msg: null });
+            });
+    }
+
+    async loadInitData() {
+        this.incrementalStartDate = " - ";
+        this._homeService.updateBusy(<BusyDataModel>{ isBusy: true, msg: "Loading..." });
+        this._initDetails = await this.__vendorDumpService.getVendorDumpInitDetails();
+        if (this._initDetails && this._initDetails.lastDumpDt) {
+            this.incrementalStartDate = this._datePipe.transform(new Date(this._initDetails.lastDumpDt), this._appService.displayDateTimeFormat);
+        }
+        this._homeService.updateBusy(<BusyDataModel>{ isBusy: false, msg: null });
+    }
+
+    ngOnInit() {
+        setTimeout(() => {
+            this.loadInitData();
+        }, 100);
+    }
 }
