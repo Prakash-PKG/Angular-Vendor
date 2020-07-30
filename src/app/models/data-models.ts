@@ -348,6 +348,8 @@ export class VendorApprovalInitResultModel {
     withholdTypeVOList: WithholdTypeList[];
     withholdTaxVOList: WithholdTaxList[];
     vendorMasterDocumentVOList: VendorMasterDocumentModel[];
+    countriesList: CountryDataModel[];
+    regionMasterVOList: regionMasterVOList[];
 }
 
 export class VendorApprovalInitReqModel {
