@@ -36,7 +36,23 @@ export class VendorBankDetailsComponent implements OnInit {
 
     get f() { return this.vendorBankForm.controls; }
 
+    updateControlsData() {
+        this._appService.vendorRegistrationDetails.accountNum = this.vendorBankForm.get("accountNum").value;
+        this._appService.vendorRegistrationDetails.accountType = this.vendorBankForm.get("accountType").value;
+        this._appService.vendorRegistrationDetails.accountName = this.vendorBankForm.get("accountName").value;
+        this._appService.vendorRegistrationDetails.ifscCode = this.vendorBankForm.get("ifscCode").value;
+        this._appService.vendorRegistrationDetails.bankName = this.vendorBankForm.get("bankName").value;
+        this._appService.vendorRegistrationDetails.bankBranch = this.vendorBankForm.get("bankBranch").value;
+        this._appService.vendorRegistrationDetails.bankCity = this.vendorBankForm.get("bankCity").value;
+        this._appService.vendorRegistrationDetails.bankRegion = this.vendorBankForm.get("bankRegion").value;
+        this._appService.vendorRegistrationDetails.bankCountry = this.vendorBankForm.get("bankCountry").value;
+        this._appService.vendorRegistrationDetails.swiftIbanCode = this.vendorBankForm.get("swiftIbanCode").value;
+        this._appService.vendorRegistrationDetails.routingBank = this.vendorBankForm.get("routingBank").value;
+        this._appService.vendorRegistrationDetails.swiftInterm = this.vendorBankForm.get("swiftInterm").value;
+    }
+
     onPrevClick() {
+        this.updateControlsData();
         this._router.navigate([this._appService.routingConstants.vendorAddressDetails]);
     }
 
@@ -49,18 +65,7 @@ export class VendorBankDetailsComponent implements OnInit {
         if (this.vendorBankForm.valid) {
 
             // this._appService.vendorRegistrationDetails.bankAddress = this.vendorBankForm.get("bankAddress").value;
-            this._appService.vendorRegistrationDetails.accountNum = this.vendorBankForm.get("accountNum").value;
-            this._appService.vendorRegistrationDetails.accountType = this.vendorBankForm.get("accountType").value;
-            this._appService.vendorRegistrationDetails.accountName = this.vendorBankForm.get("accountName").value;
-            this._appService.vendorRegistrationDetails.ifscCode = this.vendorBankForm.get("ifscCode").value;
-            this._appService.vendorRegistrationDetails.bankName = this.vendorBankForm.get("bankName").value;
-            this._appService.vendorRegistrationDetails.bankBranch = this.vendorBankForm.get("bankBranch").value;
-            this._appService.vendorRegistrationDetails.bankCity = this.vendorBankForm.get("bankCity").value;
-            this._appService.vendorRegistrationDetails.bankRegion = this.vendorBankForm.get("bankRegion").value;
-            this._appService.vendorRegistrationDetails.bankCountry = this.vendorBankForm.get("bankCountry").value;
-            this._appService.vendorRegistrationDetails.swiftIbanCode = this.vendorBankForm.get("swiftIbanCode").value;
-            this._appService.vendorRegistrationDetails.routingBank = this.vendorBankForm.get("routingBank").value;
-            this._appService.vendorRegistrationDetails.swiftInterm = this.vendorBankForm.get("swiftInterm").value;
+            this.updateControlsData();
 
             let req: VendorRegistrationRequestModel = {
                 action: this._appService.updateOperations.save,
@@ -110,6 +115,8 @@ export class VendorBankDetailsComponent implements OnInit {
         this.vendorBankForm.get("swiftIbanCode").setValue(this._appService.vendorRegistrationDetails.swiftIbanCode);
         this.vendorBankForm.get("routingBank").setValue(this._appService.vendorRegistrationDetails.routingBank);
         this.vendorBankForm.get("swiftInterm").setValue(this._appService.vendorRegistrationDetails.swiftInterm);
+
+        this.updateRegion();
     }
 
     updateRegion() {
@@ -119,6 +126,11 @@ export class VendorBankDetailsComponent implements OnInit {
             this.regionMasterVOList = this._appService.vendorRegistrationInitDetails.regionMasterVOList;
         }
         this.regionMasterVOList = this.regionMasterVOList.filter(r => r.countryCode == this.vendorBankForm.get('bankCountry').value)
+    }
+
+    onBankCountryChange() {
+        this.vendorBankForm.get("bankRegion").setValue(null);
+        this.updateRegion();
     }
 
     ngOnInit() {

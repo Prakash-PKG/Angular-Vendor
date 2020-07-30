@@ -25,7 +25,7 @@
             </mat-form-field>
 
             <mat-form-field class="search-row-element">
-                <input type="text" matInput formControlName="invoiceNumber" placeholder="Invoice No." autocomplete="off"
+                <input type="text" matInput formControlName="invoiceNumber" placeholder="Invoice No." maxlength="16" autocomplete="off"
                     (blur)="onInvoiceBlur()">
                 <mat-error *ngIf="( isSubmitted ) && f?.invoiceNumber?.errors?.required">Invoice No. is required 
                 </mat-error>

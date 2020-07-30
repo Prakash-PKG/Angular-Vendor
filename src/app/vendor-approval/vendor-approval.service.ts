@@ -43,6 +43,8 @@ export class VendorApprovalService {
             detailsModel.withholdTaxVOList = data["withholdTaxVOList"];
             detailsModel.withholdTypeVOList = data["withholdTypeVOList"];
             detailsModel.vendorMasterDocumentVOList = data["vendorMasterDocumentVOList"];
+            detailsModel.countriesList = data["countryDataVOList"];
+            detailsModel.regionMasterVOList = data["regionMasterVOList"];
         }
 
         return detailsModel;
