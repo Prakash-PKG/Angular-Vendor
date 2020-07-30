@@ -28,7 +28,19 @@ export class VendorAddressComponent implements OnInit {
 
     get f() { return this.vendorAddressForm.controls; }
 
+    updateControlsData() {
+        this._appService.vendorRegistrationDetails.address1 = this.vendorAddressForm.get("address1").value;
+        this._appService.vendorRegistrationDetails.address2 = this.vendorAddressForm.get("address2").value;
+        this._appService.vendorRegistrationDetails.city = this.vendorAddressForm.get("city").value;
+        this._appService.vendorRegistrationDetails.street = this.vendorAddressForm.get("street").value;
+        this._appService.vendorRegistrationDetails.pincode = this.vendorAddressForm.get("pincode").value;
+        this._appService.vendorRegistrationDetails.stateCode = this.vendorAddressForm.get("stateCode").value;
+        this._appService.vendorRegistrationDetails.countryCode = this.vendorAddressForm.get("countryCode").value;
+    }
+
     onPrevClick() {
+        this.updateControlsData();
+
         this._router.navigate([this._appService.routingConstants.vendorDetails]);
     }
 
@@ -38,13 +50,8 @@ export class VendorAddressComponent implements OnInit {
         this.isSubmitted = true;
 
         if (this.vendorAddressForm.valid) {
-            this._appService.vendorRegistrationDetails.address1 = this.vendorAddressForm.get("address1").value;
-            this._appService.vendorRegistrationDetails.address2 = this.vendorAddressForm.get("address2").value;
-            this._appService.vendorRegistrationDetails.city = this.vendorAddressForm.get("city").value;
-            this._appService.vendorRegistrationDetails.street = this.vendorAddressForm.get("street").value;
-            this._appService.vendorRegistrationDetails.pincode = this.vendorAddressForm.get("pincode").value;
-            this._appService.vendorRegistrationDetails.stateCode = this.vendorAddressForm.get("stateCode").value;
-            this._appService.vendorRegistrationDetails.countryCode = this.vendorAddressForm.get("countryCode").value;
+            
+            this.updateControlsData();
 
             let req: VendorRegistrationRequestModel = {
                 action: this._appService.updateOperations.save,
@@ -88,7 +95,7 @@ export class VendorAddressComponent implements OnInit {
         this.vendorAddressForm.get("stateCode").setValue(this._appService.vendorRegistrationDetails.stateCode);
         this.vendorAddressForm.get("countryCode").setValue(this._appService.vendorRegistrationDetails.countryCode);
 
-        this.updatePincodeValidation();
+        this.updateRegion();
     }
 
     updateRegion() {
@@ -100,6 +107,11 @@ export class VendorAddressComponent implements OnInit {
         this.regionMasterVOList = this.regionMasterVOList.filter(r => r.countryCode == this.vendorAddressForm.get('countryCode').value);
 
         this.updatePincodeValidation();
+    }
+
+    onCountryChange() {
+        this.vendorAddressForm.get("stateCode").setValue(null);
+        this.updateRegion();
     }
 
     updatePincodeValidation() {
