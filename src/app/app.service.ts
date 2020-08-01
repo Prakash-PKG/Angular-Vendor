@@ -19,7 +19,7 @@ export class AppService {
     //readonly domain = "https://mtime.marlabs.com";  
     readonly baseUrl = this.domain + "/mvendor/";
     readonly customerAuthUrl = this.domain + "/customerAuth/oauth/token";
-    readonly isForProduction: boolean = false;
+    readonly isForProduction: boolean = true;
     readonly isSSORequired: boolean = true;
 
     constructor(private _datePipe: DatePipe, 
