@@ -169,8 +169,8 @@ import { UserIdleModule } from 'angular-user-idle';
         // Default values: `idle` is 600 (10 minutes), `timeout` is 300 (5 minutes) 
         // and `ping` is 120 (2 minutes).
         //UserIdleModule.forRoot({idle: 600, timeout: 300, ping: 120})
-        //UserIdleModule.forRoot({idle: 10, timeout: 15, ping: 5})
-        UserIdleModule.forRoot({idle: 1800, timeout: 300, ping: 120})
+        //UserIdleModule.forRoot({idle: 10, timeout: 5, ping: 5})
+        UserIdleModule.forRoot({idle: 1200, timeout: 300, ping: 120})
     ],
      entryComponents: [
         ConfirmDialogComponent,

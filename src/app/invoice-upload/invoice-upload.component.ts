@@ -14,11 +14,49 @@ import { FormBuilder, FormGroup, FormArray, Validators, FormControl, AbstractCon
 import { debounceTime, tap, switchMap, finalize } from 'rxjs/operators';
 import { Router } from '@angular/router';
 import { MatSort, MatPaginator, MatTableDataSource, MatDialogRef, MAT_DIALOG_DATA, MatDialog } from '@angular/material';
+import {MomentDateAdapter, MAT_MOMENT_DATE_ADAPTER_OPTIONS} from '@angular/material-moment-adapter';
+import {DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE} from '@angular/material/core';
+
+// Depending on whether rollup is used, moment needs to be imported differently.
+// Since Moment.js doesn't have a default export, we normally need to import using the `* as`
+// syntax. However, rollup creates a synthetic default module and we thus need to import it using
+// the `default as` syntax.
+import * as _moment from 'moment';
+// tslint:disable-next-line:no-duplicate-imports
+import {default as _rollupMoment} from 'moment';
+
+const moment = _rollupMoment || _moment;
+
+// See the Moment.js docs for the meaning of these formats:
+// https://momentjs.com/docs/#/displaying/format/
+export const MY_FORMATS = {
+  parse: {
+    dateInput: 'LL',
+  },
+  display: {
+    dateInput: 'DD MMM YYYY',
+    monthYearLabel: 'MMM YYYY',
+    dateA11yLabel: 'LL',
+    monthYearA11yLabel: 'MMMM YYYY',
+  },
+};
 
 @Component({
     selector: 'app-invoice-upload',
     templateUrl: './invoice-upload.component.html',
-    styleUrls: ['./invoice-upload.component.scss']
+    styleUrls: ['./invoice-upload.component.scss'],
+    providers: [
+    // `MomentDateAdapter` can be automatically provided by importing `MomentDateModule` in your
+    // application's root module. We provide it at the component level here, due to limitations of
+    // our example generation script.
+    {
+      provide: DateAdapter,
+      useClass: MomentDateAdapter,
+      deps: [MAT_DATE_LOCALE, MAT_MOMENT_DATE_ADAPTER_OPTIONS]
+    },
+
+    {provide: MAT_DATE_FORMATS, useValue: MY_FORMATS},
+  ]
 })
 export class InvoiceUploadComponent implements OnInit {
 
@@ -27,7 +65,7 @@ export class InvoiceUploadComponent implements OnInit {
 
     headerArr: string[] = [];
     nonPOHeaderArr: string [] = ['Item No.', 'Item Desc', "HSN/SAC", 'Invoice Units', 'Rate', 'Amount'];
-    poHeaderArr: string[] = ['Item No.', 'Item Desc', "UOM", "HSN/SAC", 'Order Units', 'Supplied Units', 'Balance Units', 
+    poHeaderArr: string[] = ['Item No.', 'Item Desc', "UOM", "HSN/SAC", "From Date", "To Date", "Personnel Number", 'Order Units', 'Supplied Units', 'Balance Units', 
                             'Invoice Units', 'Currency', 'Rate', 'Amount'];
 
     _initDetails: InvoiceUploadResultModel = null;
@@ -756,6 +794,9 @@ export class InvoiceUploadComponent implements OnInit {
             unitPrice: item.unitPrice,
             unitsAmt: unitsAmt,
             hsn: [ item.hsn, [Validators.required, Validators.maxLength(8), Validators.pattern("^[0-9]*$")] ],
+            fromDate: [null],
+            toDate: [null],
+            personnelNumber: null,
             createdBy: item.createdBy,
             createdDate: item.createdDate
         },
@@ -906,6 +947,10 @@ export class InvoiceUploadComponent implements OnInit {
                 unitPrice: itemsFa.controls[i].get("unitPrice").value,
                 totalAmt: itemsFa.controls[i].get("unitsAmt").value,
                 hsn: itemsFa.controls[i].get("hsn").value,
+                fromDate: itemsFa.controls[i].get("fromDate").value ? this._appService.getFormattedDate(itemsFa.controls[i].get("fromDate").value) : null,
+                toDate: itemsFa.controls[i].get("toDate").value ? this._appService.getFormattedDate(itemsFa.controls[i].get("toDate").value) : null,
+                personnelNumber: "101802",
+                remarks: null,
                 createdBy: itemsFa.controls[i].get("createdBy").value,
                 createdDate: itemsFa.controls[i].get("createdDate").value
             };

@@ -125,7 +125,7 @@ export class VendorBankDetailsComponent implements OnInit {
             this._appService.vendorRegistrationInitDetails.regionMasterVOList.length > 0) {
             this.regionMasterVOList = this._appService.vendorRegistrationInitDetails.regionMasterVOList;
         }
-        this.regionMasterVOList = this.regionMasterVOList.filter(r => r.countryCode == this.vendorBankForm.get('bankCountry').value)
+        this.regionMasterVOList = this.regionMasterVOList.filter(r => r.countryCode == this.vendorBankForm.get('bankCountry').value);
     }
 
     onBankCountryChange() {

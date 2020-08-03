@@ -421,6 +421,10 @@ export class ItemModel {
     unitPrice: string;
     totalAmt: string;
     hsn: string;
+    fromDate: string;
+    toDate: string;
+    remarks: string;
+    personnelNumber: string;
     createdBy: string;
     createdDate: string;
 }
