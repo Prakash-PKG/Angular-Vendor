@@ -65,7 +65,8 @@ export class AppService {
     readonly statusNames: any = {
         new: "In Progress",
         approved: "Approved",
-        rejected: "Rejected"
+        rejected: "Rejected",
+        received: 'Recieved'
     };
 
     readonly statusCodes: any = {

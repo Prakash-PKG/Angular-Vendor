@@ -65,9 +65,9 @@ export class InvoiceUploadComponent implements OnInit {
 
     headerArr: string[] = [];
     nonPOHeaderArr: string [] = ['Item No.', 'Item Desc', "HSN/SAC", 'Invoice Units', 'Rate', 'Amount'];
-    poHeaderArr: string[] = ['Item No.', 'Item Desc', "UOM", "HSN/SAC", "From Date", "To Date", "Personnel Number", 'Order Units', 'Supplied Units', 'Balance Units', 
+    poHeaderArr: string[] = ['Item No.', 'Item Desc', "UOM", "HSN/SAC", "From Date", "To Date", "Personnel Number", 'Order Units', 'Balance Units', 
                             'Invoice Units', 'Currency', 'Rate', 'Amount'];
-    poHeaderArrWithoutDates: string[] = ['Item No.', 'Item Desc', "UOM", "HSN/SAC", 'Order Units', 'Supplied Units', 'Balance Units', 
+    poHeaderArrWithoutDates: string[] = ['Item No.', 'Item Desc', "UOM", "HSN/SAC", 'Order Units', 'Balance Units', 
                             'Invoice Units', 'Currency', 'Rate', 'Amount'];
 
     _initDetails: InvoiceUploadResultModel = null;
@@ -695,7 +695,7 @@ export class InvoiceUploadComponent implements OnInit {
                 this.currency = this.selectedPOItem.currencyType;
 
                 if(this.selectedPOItem.accountAssignmenCategory == '4' && 
-                    (this.selectedPOItem.documentType == 'ZFO' || this.selectedPOItem.documentType == 'ZFO')) {
+                    (this.selectedPOItem.documentType == 'ZFO' || this.selectedPOItem.documentType == 'ZHR')) {
                     
                     this.isFromToMandatory = true;
                     this.headerArr = this.poHeaderArr.concat();
@@ -812,7 +812,7 @@ export class InvoiceUploadComponent implements OnInit {
             hsn: [ item.hsn, [Validators.required, Validators.maxLength(8), Validators.pattern("^[0-9]*$")] ],
             fromDate: [null, validatorRequiredArr],
             toDate: [null, validatorRequiredArr],
-            personnelNumber: null,
+            personnelNumber: item.personnelNumber ? item.personnelNumber : "",
             createdBy: item.createdBy,
             createdDate: item.createdDate
         },
@@ -965,7 +965,7 @@ export class InvoiceUploadComponent implements OnInit {
                 hsn: itemsFa.controls[i].get("hsn").value,
                 fromDate: itemsFa.controls[i].get("fromDate").value ? this._appService.getFormattedDate(itemsFa.controls[i].get("fromDate").value) : null,
                 toDate: itemsFa.controls[i].get("toDate").value ? this._appService.getFormattedDate(itemsFa.controls[i].get("toDate").value) : null,
-                personnelNumber: "101802",
+                personnelNumber: itemsFa.controls[i].get("personnelNumber").value,
                 remarks: null,
                 createdBy: itemsFa.controls[i].get("createdBy").value,
                 createdDate: itemsFa.controls[i].get("createdDate").value

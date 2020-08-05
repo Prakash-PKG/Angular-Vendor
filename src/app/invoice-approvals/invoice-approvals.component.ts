@@ -65,6 +65,8 @@ export class InvoiceApprovalsComponent implements OnInit {
 
     isFromToMandatory: boolean = false;
 
+    approveBtnTxt: string = "Approve";
+
     constructor(private _homeService: HomeService,
                 private _appService: AppService,
                 private _router: Router,
@@ -187,7 +189,7 @@ export class InvoiceApprovalsComponent implements OnInit {
 
             if(this.isPOInvoice) {
                 if(this.initDetails.poDetails.accountAssignmenCategory == '4' && 
-                    (this.initDetails.poDetails.documentType == 'ZFO' || this.initDetails.poDetails.documentType == 'ZFO')) {
+                    (this.initDetails.poDetails.documentType == 'ZFO' || this.initDetails.poDetails.documentType == 'ZHR')) {
                     
                     this.isFromToMandatory = true;
                     this.headerArr = this.poHeaderArr.concat();
@@ -369,6 +371,13 @@ export class InvoiceApprovalsComponent implements OnInit {
 
     ngOnInit() {
         this.isDashboardCollapsed = true;
+
+        if(globalConstant.userDetails.isPurchaseOwner) {
+            this.approveBtnTxt = "Recieved";
+        }
+        else {
+            this.approveBtnTxt = "Approve";
+        }
 
         this._sidebarExpansionSubscription = this._homeService.isSidebarCollapsed.subscribe(data => {
             this.isDashboardCollapsed = !data;

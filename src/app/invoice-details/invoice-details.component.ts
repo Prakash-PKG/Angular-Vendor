@@ -282,7 +282,7 @@ export class InvoiceDetailsComponent implements OnInit {
             }
             else {
                 if(this.invoiceDetails.accountAssignmenCategory == '4' && 
-                    (this.invoiceDetails.documentType == 'ZFO' || this.invoiceDetails.documentType == 'ZFO')) {
+                    (this.invoiceDetails.documentType == 'ZFO' || this.invoiceDetails.documentType == 'ZHR')) {
                     
                     this.isFromToMandatory = true;
                     this.headerArr = this.poInvHeaderArr.concat();
@@ -338,9 +338,10 @@ export class InvoiceDetailsComponent implements OnInit {
                         };
                         this.approvalLevelList.push(this.uploadLevel);
 
+                        let poStatusCode = (poApprovalModel.statusCode == 'approved') ? 'received' : poApprovalModel.statusCode;
                         this.poLevel = {
                             levelName: "Buyer",
-                            status: this._appService.statusNames[poApprovalModel.statusCode],
+                            status: this._appService.statusNames[poStatusCode],
                             date: (poApprovalModel.statusCode == this._appService.statusCodes.approved || poApprovalModel.statusCode == this._appService.statusCodes.rejected) ? this._appService.getFormattedDate(poApprovalModel.updatedDate) : "",
                             remarks: poApprovalModel.remarks
                         };
