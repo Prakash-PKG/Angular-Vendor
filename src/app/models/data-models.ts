@@ -534,6 +534,7 @@ export class UpdateInvoiceApprovalReqModel {
     grnSesNumber: string;
     departmentHeadId: string;
     approvalDetails: InvoiceApprovalModel;
+    itemsList: ItemDisplayModel[];
 }
 
 export class FileDetailsModel {

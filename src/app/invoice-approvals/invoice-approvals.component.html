@@ -280,6 +280,12 @@
                     <td class="amount tencharacters">
                         {{ item.totalAmt }}
                     </td>
+                    <td>
+                        <mat-form-field class="full-width">
+                            <input matInput placeholder="Remarks" [(ngModel)]="item.remarks" maxlength="35" (blur) = "onItemRemarksBlur(item)" autocomplete="off">
+                        </mat-form-field>
+                         
+                    </td>
                 </tr>
             </tbody>
         </table>

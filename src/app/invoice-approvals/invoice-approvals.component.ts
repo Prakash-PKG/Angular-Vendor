@@ -24,11 +24,11 @@ export class InvoiceApprovalsComponent implements OnInit {
     _sidebarExpansionSubscription: any = null;
 
     headerArr: string[] = [];
-    nonPOHeaderArr: string [] = ['Item No.', 'Item Desc', "HSN/SAC", 'Invoice Units', 'Rate', 'Amount'];
+    nonPOHeaderArr: string [] = ['Item No.', 'Item Desc', "HSN/SAC", 'Invoice Units', 'Rate', 'Amount', 'Remarks'];
     poHeaderArr: string[] = ['Item No.', 'Item Desc', "UOM", "HSN/SAC", "From Date", "To Date", "Personnel Number",  'Order Units', 
-                            'Invoice Units', 'Currency', 'Rate', 'Amount'];
+                            'Invoice Units', 'Currency', 'Rate', 'Amount', 'Remarks'];
     poHeaderArrWithoutDates: string[] = ['Item No.', 'Item Desc', "UOM", "HSN/SAC", 'Order Units', 'Invoice Units', 
-                                'Currency', 'Rate', 'Amount'];
+                                'Currency', 'Rate', 'Amount', 'Remarks'];
 
     initDetails: InvoiceApprovalInitResultModel = null;
     itemsList: ItemDisplayModel[] = [];
@@ -95,6 +95,12 @@ export class InvoiceApprovalsComponent implements OnInit {
     onRemarksBlur() {
         if(this.remarks) {
             this.remarks = this.remarks.trim();
+        }
+    }
+
+    onItemRemarksBlur(item: ItemDisplayModel) {
+        if(item.remarks) {
+            item.remarks = item.remarks.trim();
         }
     }
 
@@ -303,7 +309,8 @@ export class InvoiceApprovalsComponent implements OnInit {
                     createdDate: this.initDetails.approvalDetails.createdDate,
                     updatedBy: null,
                     updatedDate: null
-                }
+                },
+                itemsList: this.itemsList
             };
 
             this._homeService.updateBusy(<BusyDataModel>{ isBusy: true, msg: null });
