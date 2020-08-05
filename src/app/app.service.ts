@@ -26,6 +26,8 @@ export class AppService {
                 private _http: HttpClient,
                 private _userIdleService: UserIdleService) { }
 
+    token: string = '';
+
     readonly routingConstants: any = {
         login: "/",
         posearch: "/home/posearch",

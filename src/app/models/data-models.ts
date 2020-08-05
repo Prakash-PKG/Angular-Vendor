@@ -613,7 +613,14 @@ export class ProjectAutoCompleteModel {
 
 export class ForgotPasswordData {
     email: string;
+    employeeId: string;
 }
 export class EmpanelmentOtpReqModel {
     userName: string;
+}
+
+export class ResetPasswordData {
+    userName: string;
+    password: string;
+    oTP: string;
 }

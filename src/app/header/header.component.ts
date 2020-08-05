@@ -24,7 +24,7 @@ export class HeaderComponent implements OnInit {
     }
 
     onLogoutClick() {
-        this._loginService.logout().subscribe(
+        this._loginService.logout(localStorage.getItem('x-auth-token')).subscribe(
             (response) => {
                 localStorage.clear();
                 if(this._appService.isSSORequired) {

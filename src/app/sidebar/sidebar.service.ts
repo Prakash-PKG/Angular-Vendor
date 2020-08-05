@@ -16,7 +16,7 @@ export class SidebarService {
                 private _loginService: LoginService) { }
 
     logout() {
-        this._loginService.logout().subscribe(
+        this._loginService.logout(localStorage.getItem('x-auth-token')).subscribe(
             (response) => {
                 this._appService.stopWatching();
                 
