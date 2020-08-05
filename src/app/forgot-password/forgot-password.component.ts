@@ -42,7 +42,7 @@ export class ForgotPasswordComponent implements OnInit {
 
         this.isLoading = true;
 
-        this._loginService.login(this.emailId, Math.random().toString(36).slice(-8), "venndor-otp").subscribe(
+        this._loginService.login(this.emailId, Math.random().toString(36).slice(-8), "venndor_otp").subscribe(
             (response) => {
                 this.isLoading = false;
                 this._appService.token = response.headers.get("x-auth-token");
