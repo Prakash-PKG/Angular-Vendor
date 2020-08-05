@@ -67,6 +67,8 @@ export class InvoiceUploadComponent implements OnInit {
     nonPOHeaderArr: string [] = ['Item No.', 'Item Desc', "HSN/SAC", 'Invoice Units', 'Rate', 'Amount'];
     poHeaderArr: string[] = ['Item No.', 'Item Desc', "UOM", "HSN/SAC", "From Date", "To Date", "Personnel Number", 'Order Units', 'Supplied Units', 'Balance Units', 
                             'Invoice Units', 'Currency', 'Rate', 'Amount'];
+    poHeaderArrWithoutDates: string[] = ['Item No.', 'Item Desc', "UOM", "HSN/SAC", 'Order Units', 'Supplied Units', 'Balance Units', 
+                            'Invoice Units', 'Currency', 'Rate', 'Amount'];
 
     _initDetails: InvoiceUploadResultModel = null;
     _poItemsResultDetails: POItemsResultModel = null;
@@ -118,6 +120,8 @@ export class InvoiceUploadComponent implements OnInit {
 
     minInvoiceDate: Date = null;
     maxInvoiceDate: Date = new Date();
+
+    isFromToMandatory: boolean = false;
 
     //totalItemsAmtValid: boolean = false;
 
@@ -660,6 +664,7 @@ export class InvoiceUploadComponent implements OnInit {
 
     async loadInitData() {
         this.invoiceNumberErrMsg = "";
+        this.headerArr = this.poHeaderArrWithoutDates.concat();
 
         let req: InvoiceUploadReqModel = {
             vendorId: (globalConstant.userDetails.isVendor) ? globalConstant.userDetails.userId : null,
@@ -677,6 +682,7 @@ export class InvoiceUploadComponent implements OnInit {
         this._homeService.updateBusy(<BusyDataModel>{ isBusy: false, msg: null });
 
         this.invoiceUploadForm.get("poList").valueChanges.subscribe(val => {
+            this.isFromToMandatory = false;
             this.selectedPOItem = null;
             if(val) {
                 this.selectedPOItem = this.poList.find( p => p.poNumber == val);
@@ -687,6 +693,14 @@ export class InvoiceUploadComponent implements OnInit {
                     this.minInvoiceDate = null;
                 }
                 this.currency = this.selectedPOItem.currencyType;
+
+                if(this.selectedPOItem.accountAssignmenCategory == '4' && 
+                    (this.selectedPOItem.documentType == 'ZFO' || this.selectedPOItem.documentType == 'ZFO')) {
+                    
+                    this.isFromToMandatory = true;
+                    this.headerArr = this.poHeaderArr.concat();
+                }
+
                 this.loadPOItems();
             }
 
@@ -781,6 +795,8 @@ export class InvoiceUploadComponent implements OnInit {
         let suppliedUnits: number = (item.suppliedUnits) ? +item.suppliedUnits : 0.000;
         let balanceUnits: number = orderedUnits - suppliedUnits;
 
+        let validatorRequiredArr = (this.isFromToMandatory) ? [Validators.required] : [];
+
         let fg: FormGroup = this._formBuilder.group({
             itemId: item.itemId,
             itemNumber: [item.itemNumber, [Validators.pattern("^[0-9]*$")]],
@@ -794,8 +810,8 @@ export class InvoiceUploadComponent implements OnInit {
             unitPrice: item.unitPrice,
             unitsAmt: unitsAmt,
             hsn: [ item.hsn, [Validators.required, Validators.maxLength(8), Validators.pattern("^[0-9]*$")] ],
-            fromDate: [null],
-            toDate: [null],
+            fromDate: [null, validatorRequiredArr],
+            toDate: [null, validatorRequiredArr],
             personnelNumber: null,
             createdBy: item.createdBy,
             createdDate: item.createdDate

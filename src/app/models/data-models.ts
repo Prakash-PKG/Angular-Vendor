@@ -202,6 +202,8 @@ export class InvoiceModel {
     companyName: string;
     projectId: string;
     projectName: string;
+    accountAssignmenCategory: string;
+    documentType: string;
 }
 
 export class InvoiceSearchRequestModel {
@@ -431,6 +433,7 @@ export class ItemModel {
 
 export class ItemDisplayModel extends ItemModel {
     unitsTotalAmount: number;
+    invoiceNumber: string;
 }
 
 export class InvoiceDetailsModel {

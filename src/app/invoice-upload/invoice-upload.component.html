@@ -152,27 +152,27 @@
                                     numbers only</div>
                             </div>
                         </td>
-                        <td>
+                        <td *ngIf = "isFromToMandatory == true">
                             <mat-form-field class="search-row-element date">
-                                <input matInput [matDatepicker]='fromDate_itemInd' formControlName="fromDate" [min] = "minInvoiceDate" [max] = "maxInvoiceDate" placeholder="Invoice Date"
+                                <input matInput [matDatepicker]='fromDate_itemInd' formControlName="fromDate" [min] = "minInvoiceDate" [max] = "maxInvoiceDate" placeholder="From Date"
                                     autocomplete="off">
                                 <mat-datepicker-toggle matSuffix [for]="fromDate_itemInd"></mat-datepicker-toggle>
                                 <mat-datepicker #fromDate_itemInd></mat-datepicker>
-                                <!--<mat-error *ngIf="( isSubmitted ) && f?.invoiceDate?.errors?.required">Inv Date is required
-                                </mat-error>-->
+                                <mat-error *ngIf="( isSubmitted ) && fa.controls[itemInd].controls.fromDate.errors?.required">Inv Date is required
+                                </mat-error>
                             </mat-form-field>
                         </td>
-                        <td>
+                        <td *ngIf = "isFromToMandatory == true">
                             <mat-form-field class="search-row-element date">
-                                <input matInput [matDatepicker]="toDate_itemInd" formControlName="toDate" [min] = "minInvoiceDate" [max] = "maxInvoiceDate" placeholder="Invoice Date"
+                                <input matInput [matDatepicker]="toDate_itemInd" formControlName="toDate" [min] = "minInvoiceDate" [max] = "maxInvoiceDate" placeholder="To Date"
                                     autocomplete="off">
                                 <mat-datepicker-toggle matSuffix [for]="toDate_itemInd"></mat-datepicker-toggle>
                                 <mat-datepicker #toDate_itemInd></mat-datepicker>
-                                <!--<mat-error *ngIf="( isSubmitted ) && f?.invoiceDate?.errors?.required">Inv Date is required
-                                </mat-error>-->
+                                <mat-error *ngIf="( isSubmitted ) && fa.controls[itemInd].controls.toDate.errors?.required">Inv Date is required
+                                </mat-error>
                             </mat-form-field>
                         </td>
-                        <td>
+                        <td *ngIf = "isFromToMandatory == true">
                             <span>{{ item.get("personnelNumber").value }}</span>
                         </td>
                         <td *ngIf="selectedInvoiceType == 'po'" style="width:6em;">
