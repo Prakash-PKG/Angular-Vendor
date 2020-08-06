@@ -5,8 +5,8 @@
     <div class="search-row">
         <form [formGroup]="vendorSearchForm" class="search-row-element">
             <mat-form-field class="field search-row-element">
-                <mat-label>Vendor Name</mat-label>
-                <input type="text" matInput formControlName="vendorName" autocomplete="off">
+                <mat-label>Vendor Id</mat-label>
+                <input type="text" matInput formControlName="vendorId" autocomplete="off">
             </mat-form-field>
 
             <mat-form-field class="field search-row-element">
@@ -53,7 +53,7 @@
                 <tr *ngFor="let vendor of vendorList; let poInd = index">
                
                     <td class="eightcharacters" (click)="onVendorClick(vendor)" style="cursor:pointer;" >
-                        {{ vendor.vendorMasterId }}
+                        {{ vendor.vendorId }}
                     </td>
                     <td>
                         {{ vendor.vendorName }}

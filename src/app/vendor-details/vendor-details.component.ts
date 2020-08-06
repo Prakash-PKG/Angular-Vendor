@@ -103,11 +103,11 @@ export class VendorDetailsComponent implements OnInit {
         this.vendorDetailsForm = this._formBuilder.group({
             vendorName: [null, [Validators.required, Validators.nullValidator]],
             contactPerson: [null],
-            mobileNum: [null, [Validators.required, Validators.minLength(10), Validators.nullValidator]],
-            telephoneNum: null,
-            emailId: [null, [Validators.required, Validators.email, Validators.nullValidator]],
-            password: [null, [Validators.required, Validators.nullValidator]],
-            confirmPassword: [null, [Validators.required, Validators.nullValidator]]
+            mobileNum: [null, [Validators.required,Validators.minLength(10), Validators.maxLength(10),Validators.nullValidator]],
+            telephoneNum: [null, Validators.maxLength(12)],
+            emailId: [null, [Validators.required, Validators.email,Validators.nullValidator]],
+            password: [null, [Validators.required,Validators.nullValidator]],
+            confirmPassword: [null, [Validators.required,Validators.nullValidator]]
         },
             { validator: equalValueValidator('password', 'confirmPassword') }
         );

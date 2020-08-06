@@ -154,6 +154,7 @@ export class VendorMasterDetailsModel {
     finRemark: string;
     // isGSTReg: boolean;
     otherDocDesc: string;
+    vendorId: string;
 }
 
 export interface FileMap {
@@ -242,21 +243,21 @@ export class paymentStatusModel {
 
 export class PaymentDetailsModel {
     paymentDetailsId: number;
-	purchaseOrderId: number;
-	poNumber: string;
-	invoiceId: number;
-	invoiceNumber: string;
-	amountPaid: string;
-	statusCode: string;
-	statusDesc: string;
-	remarks: string;
-	createdDate: string;
-	createdBy: string;
+    purchaseOrderId: number;
+    poNumber: string;
+    invoiceId: number;
+    invoiceNumber: string;
+    amountPaid: string;
+    statusCode: string;
+    statusDesc: string;
+    remarks: string;
+    createdDate: string;
+    createdBy: string;
     updatedDate: string;
 }
 
-export class PaymentReqModel extends PaymentDetailsModel{
-	updatedBy: string;
+export class PaymentReqModel extends PaymentDetailsModel {
+    updatedBy: string;
 }
 
 export class PaymentStatusDetailsModel {

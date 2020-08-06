@@ -14,17 +14,17 @@ import { UserIdleService } from 'angular-user-idle';
 })
 export class AppService {
 
-    //readonly domain = "http://localhost:8080";
-    readonly domain = "https://mvendor-dev.marlabs.com";
+    readonly domain = "http://localhost:8080";
+    // readonly domain = "https://mvendor-dev.marlabs.com";
     //readonly domain = "https://mtime.marlabs.com";  
     readonly baseUrl = this.domain + "/mvendor/";
     readonly customerAuthUrl = this.domain + "/customerAuth/oauth/token";
     readonly isForProduction: boolean = false;
     readonly isSSORequired: boolean = false;
 
-    constructor(private _datePipe: DatePipe, 
-                private _http: HttpClient,
-                private _userIdleService: UserIdleService) { }
+    constructor(private _datePipe: DatePipe,
+        private _http: HttpClient,
+        private _userIdleService: UserIdleService) { }
 
     token: string = '';
 
@@ -100,10 +100,11 @@ export class AppService {
     selectedInvoice: InvoiceModel = null;
 
     selectedVendor: VendorMasterDetailsModel = null;
-    isexistingVendor: boolean = false;
-
+  
     isInvoiceSearchForPayments: boolean = false;
     isInvoiceDetailsForPayments: boolean = false;
+
+    isExistingVendor: boolean = false;
 
     getFormattedDate(dtStr: string) {
         if (dtStr) {
@@ -123,6 +124,7 @@ export class AppService {
 
     vendorRegistrationDetails: VendorMasterDetailsModel = {
         vendorMasterId: null,
+        vendorId: null,
         vendorName: null,
         emailId: null,
         password: null,
@@ -247,7 +249,8 @@ export class AppService {
             finApprByName: null,
             finRemark: null,
             // isGSTReg:null,
-            otherDocDesc: null
+            otherDocDesc: null,
+            vendorId: null
         };
 
         return regDetails;
