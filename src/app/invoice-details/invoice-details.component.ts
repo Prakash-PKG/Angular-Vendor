@@ -20,11 +20,12 @@ export class InvoiceDetailsComponent implements OnInit {
     isDashboardCollapsed: boolean = true;
     _sidebarExpansionSubscription: any = null;
 
-    statusHeaderArr: string[] = ['Stages', 'Status', 'Action Date', 'Remarks'];
+    statusHeaderArr: string[] = ['Stages', 'Status', 'Remarks'];
     headerArr: string[] = [];
 
-    poInvHeaderArr: string[] = ['Item No.', 'Item Desc', "UOM", "HSN/SAC", 'Order Units', 'Supplied Units', 'Balance Units', 
-                            'Inv Units', 'Curr', 'Rate', 'Amount'];
+    poInvHeaderArr: string[] = ['Item No.', 'Item Desc', "UOM", "HSN/SAC", "From Date", "To Date", "Personnel Number", 'Order Units', 'Inv Units', 'Curr', 'Rate', 'Amount'];
+
+    poInvHeaderArrWithoutDates: string[] = ['Item No.', 'Item Desc', "UOM", "HSN/SAC", 'Order Units', 'Inv Units', 'Curr', 'Rate', 'Amount'];
 
     nonPoInvHeaderArr: string[] = ['Item No.', 'Item Desc', "HSN/SAC", 'Inv Units', 'Curr', 'Rate', 'Amount'];
 
@@ -63,6 +64,8 @@ export class InvoiceDetailsComponent implements OnInit {
     remarksErrMsg: string = "";
 
     remarksList: string[] = [];
+
+    isFromToMandatory: boolean = false;
 
     constructor(private _homeService: HomeService,
                 private _router: Router,
@@ -272,7 +275,24 @@ export class InvoiceDetailsComponent implements OnInit {
 
         if(this.invoiceDetails && this.invoiceDetails.invoiceId) {
             this.currency = this.invoiceDetails.currencyType;
-            
+
+            if(!this.invoiceDetails.purchaseOrderId) {
+                this.isPOBasedInvoice = false;
+                this.headerArr = this.nonPoInvHeaderArr.concat();
+            }
+            else {
+                if(this.invoiceDetails.accountAssignmenCategory == '4' && 
+                    (this.invoiceDetails.documentType == 'ZFO' || this.invoiceDetails.documentType == 'ZHR')) {
+                    
+                    this.isFromToMandatory = true;
+                    this.headerArr = this.poInvHeaderArr.concat();
+                }
+                else {
+                    this.isFromToMandatory = false;
+                    this.headerArr = this.poInvHeaderArrWithoutDates.concat();
+                }
+            }
+
             let req: InvoiceDetailsRequestModel = {
                 purchaseOrderId: this.invoiceDetails.purchaseOrderId,
                 invoiceId: this.invoiceDetails.invoiceId,
@@ -281,14 +301,6 @@ export class InvoiceDetailsComponent implements OnInit {
                 vendorId: this.invoiceDetails.vendorId,
                 isForPayment: this.isForPayments
             };
-
-            if(!this.invoiceDetails.purchaseOrderId) {
-                this.isPOBasedInvoice = false;
-                this.headerArr = this.nonPoInvHeaderArr.concat();
-            }
-            else {
-                this.headerArr = this.poInvHeaderArr.concat();
-            }
 
             this._homeService.updateBusy(<BusyDataModel>{ isBusy: true, msg: "Loading..." });
             this._initDetails = await this._invoiceDetailsService.getInvoiceDetails(req);
@@ -326,9 +338,10 @@ export class InvoiceDetailsComponent implements OnInit {
                         };
                         this.approvalLevelList.push(this.uploadLevel);
 
+                        let poStatusCode = (poApprovalModel.statusCode == 'approved') ? 'received' : poApprovalModel.statusCode;
                         this.poLevel = {
                             levelName: "Buyer",
-                            status: this._appService.statusNames[poApprovalModel.statusCode],
+                            status: this._appService.statusNames[poStatusCode],
                             date: (poApprovalModel.statusCode == this._appService.statusCodes.approved || poApprovalModel.statusCode == this._appService.statusCodes.rejected) ? this._appService.getFormattedDate(poApprovalModel.updatedDate) : "",
                             remarks: poApprovalModel.remarks
                         };

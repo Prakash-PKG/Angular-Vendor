@@ -24,9 +24,11 @@ export class InvoiceApprovalsComponent implements OnInit {
     _sidebarExpansionSubscription: any = null;
 
     headerArr: string[] = [];
-    nonPOHeaderArr: string [] = ['Item No.', 'Item Desc', "HSN/SAC", 'Invoice Units', 'Rate', 'Amount'];
-    poHeaderArr: string[] = ['Item No.', 'Item Desc', "UOM", "HSN/SAC", 'Order Units', 'Supplied Units', 'Balance Units', 
-                            'Invoice Units', 'Currency', 'Rate', 'Amount'];
+    nonPOHeaderArr: string [] = ['Item No.', 'Item Desc', "HSN/SAC", 'Invoice Units', 'Rate', 'Amount', 'Remarks'];
+    poHeaderArr: string[] = ['Item No.', 'Item Desc', "UOM", "HSN/SAC", "From Date", "To Date", "Personnel Number",  'Order Units', 
+                            'Invoice Units', 'Currency', 'Rate', 'Amount', 'Remarks'];
+    poHeaderArrWithoutDates: string[] = ['Item No.', 'Item Desc', "UOM", "HSN/SAC", 'Order Units', 'Invoice Units', 
+                                'Currency', 'Rate', 'Amount', 'Remarks'];
 
     initDetails: InvoiceApprovalInitResultModel = null;
     itemsList: ItemDisplayModel[] = [];
@@ -59,36 +61,48 @@ export class InvoiceApprovalsComponent implements OnInit {
 
     selectedGrnSesModel: GrnSesDisplayModel = null;
 
+    isGrnSesVisible: boolean = false;
+
+    isFromToMandatory: boolean = false;
+
+    approveBtnTxt: string = "Approve";
+
     constructor(private _homeService: HomeService,
                 private _appService: AppService,
                 private _router: Router,
                 public _dialog: MatDialog,
                 private _invoiceApprovalsService: InvoiceApprovalsService) { }
     
-    onGrnSesSelectClick() {
-        this.displayGrnSesItems();
-    }
+    // onGrnSesSelectClick() {
+    //     this.displayGrnSesItems();
+    // }
 
-    displayGrnSesItems() {
-        const dialogRef = this._dialog.open(GrnSesItemsComponent, {
-            disableClose: true,
-            panelClass: 'dialog-box',
-            width: '550px',
-            data: this.grnSesItemsDisplayList
-        });
+    // displayGrnSesItems() {
+    //     const dialogRef = this._dialog.open(GrnSesItemsComponent, {
+    //         disableClose: true,
+    //         panelClass: 'dialog-box',
+    //         width: '550px',
+    //         data: this.grnSesItemsDisplayList
+    //     });
 
-        dialogRef.afterClosed().subscribe(result => {
-            if (result as GrnSesDisplayModel) {
-                this.selectedGrnSesModel = result;
-                this.selectedGrnSesNumber = this.selectedGrnSesModel.grnSesNumber;
-                this.grnSesErrMsg = "";
-            }
-        });
-    }
+    //     dialogRef.afterClosed().subscribe(result => {
+    //         if (result as GrnSesDisplayModel) {
+    //             this.selectedGrnSesModel = result;
+    //             this.selectedGrnSesNumber = this.selectedGrnSesModel.grnSesNumber;
+    //             this.grnSesErrMsg = "";
+    //         }
+    //     });
+    // }
 
     onRemarksBlur() {
         if(this.remarks) {
             this.remarks = this.remarks.trim();
+        }
+    }
+
+    onItemRemarksBlur(item: ItemDisplayModel) {
+        if(item.remarks) {
+            item.remarks = item.remarks.trim();
         }
     }
 
@@ -152,8 +166,17 @@ export class InvoiceApprovalsComponent implements OnInit {
 
                 this.grnSesList = this.initDetails.grnSesList;
 
-                if(this.grnSesList && this.grnSesList.length > 0) {
-                    this.selectedGrnSesNumber = this.grnSesList[0].grnSesNumber;
+                // if(this.grnSesList && this.grnSesList.length > 0) {
+                //     this.selectedGrnSesNumber = this.grnSesList[0].grnSesNumber;
+                // }
+
+                if(this.initDetails.invoiceDetails) {
+                    this.selectedGrnSesNumber = this.initDetails.invoiceDetails.grnSesNumber;
+                }
+
+                this.isGrnSesVisible = false;
+                if(globalConstant.userDetails.isFunctionalHead || globalConstant.userDetails.isFinance) {
+                    this.isGrnSesVisible = true;
                 }
 
                 this.updateStatusFlow();
@@ -165,7 +188,16 @@ export class InvoiceApprovalsComponent implements OnInit {
             }
 
             if(this.isPOInvoice) {
-                this.headerArr = this.poHeaderArr.concat();
+                if(this.initDetails.poDetails.accountAssignmenCategory == '4' && 
+                    (this.initDetails.poDetails.documentType == 'ZFO' || this.initDetails.poDetails.documentType == 'ZHR')) {
+                    
+                    this.isFromToMandatory = true;
+                    this.headerArr = this.poHeaderArr.concat();
+                }
+                else {
+                    this.isFromToMandatory = false;
+                    this.headerArr = this.poHeaderArrWithoutDates.concat();
+                }
             }
             else {
                 this.headerArr = this.nonPOHeaderArr.concat();
@@ -228,37 +260,44 @@ export class InvoiceApprovalsComponent implements OnInit {
         }
 
         let isGrnSesValid: boolean = true;
-        if(action == this._appService.updateOperations.approve && this.isGrnSesRequired && this.isGrnDdlVisible) {
+        if(this.isGrnSesRequired && (globalConstant.userDetails.isFunctionalHead || globalConstant.userDetails.isFinance)) {
             if(!this.selectedGrnSesNumber) {
-                this.grnSesErrMsg = "Please select GRN/SES No.";
                 isGrnSesValid = false;
-            }
-            else {
-                if(this.selectedGrnSesModel && this.selectedGrnSesModel.itemsList) {
-                    if(this.selectedGrnSesModel.itemsList.length == this.itemsList.length) {
-                        for(let i = 0; i < this.selectedGrnSesModel.itemsList.length; i++) {
-                            let selActualItem: GrnSesItemsDisplayModel = this.selectedGrnSesModel.itemsList[i];
-                            let existItem = this.itemsList.find(si => si.itemNumber == selActualItem.itemNo && si.invoiceUnits == selActualItem.grnSesUnits);
-                            if(!existItem) {
-                                this.grnSesErrMsg = "Items are not matched.";
-                                isGrnSesValid = false;
-                                break;
-                            }
-                        }
-                    }
-                    else {
-                        this.grnSesErrMsg = "Items are not matched.";
-                        isGrnSesValid = false;
-                    }
-                }
+                this.grnSesErrMsg = "GRN/SES No. is not available.";
             }
         }
+
+        // if(action == this._appService.updateOperations.approve && this.isGrnSesRequired && this.isGrnDdlVisible) {
+        //     if(!this.selectedGrnSesNumber) {
+        //         this.grnSesErrMsg = "Please select GRN/SES No.";
+        //         isGrnSesValid = false;
+        //     }
+        //     else {
+        //         if(this.selectedGrnSesModel && this.selectedGrnSesModel.itemsList) {
+        //             if(this.selectedGrnSesModel.itemsList.length == this.itemsList.length) {
+        //                 for(let i = 0; i < this.selectedGrnSesModel.itemsList.length; i++) {
+        //                     let selActualItem: GrnSesItemsDisplayModel = this.selectedGrnSesModel.itemsList[i];
+        //                     let existItem = this.itemsList.find(si => si.itemNumber == selActualItem.itemNo && si.invoiceUnits == selActualItem.grnSesUnits);
+        //                     if(!existItem) {
+        //                         this.grnSesErrMsg = "Items are not matched.";
+        //                         isGrnSesValid = false;
+        //                         break;
+        //                     }
+        //                 }
+        //             }
+        //             else {
+        //                 this.grnSesErrMsg = "Items are not matched.";
+        //                 isGrnSesValid = false;
+        //             }
+        //         }
+        //     }
+        // }
         
         if(isRemarksValid && isGrnSesValid) {
             let req: UpdateInvoiceApprovalReqModel = {
                 action: action,
                 departmentHeadId: globalConstant.userDetails.departmentHead,
-                grnSesNumber: (this.isGrnSesRequired && this.isGrnDdlVisible) ? this.selectedGrnSesNumber : this.initDetails.invoiceDetails.grnSesNumber,
+                grnSesNumber: (this.selectedGrnSesNumber) ? this.selectedGrnSesNumber : null,
                 approvalDetails: {
                     invoiceApprovalId: this.initDetails.approvalDetails.invoiceApprovalId,
                     purchaseOrderId: this.initDetails.approvalDetails.purchaseOrderId,
@@ -272,7 +311,8 @@ export class InvoiceApprovalsComponent implements OnInit {
                     createdDate: this.initDetails.approvalDetails.createdDate,
                     updatedBy: null,
                     updatedDate: null
-                }
+                },
+                itemsList: this.itemsList
             };
 
             this._homeService.updateBusy(<BusyDataModel>{ isBusy: true, msg: null });
@@ -331,6 +371,13 @@ export class InvoiceApprovalsComponent implements OnInit {
 
     ngOnInit() {
         this.isDashboardCollapsed = true;
+
+        if(globalConstant.userDetails.isPurchaseOwner) {
+            this.approveBtnTxt = "Recieved";
+        }
+        else {
+            this.approveBtnTxt = "Approve";
+        }
 
         this._sidebarExpansionSubscription = this._homeService.isSidebarCollapsed.subscribe(data => {
             this.isDashboardCollapsed = !data;

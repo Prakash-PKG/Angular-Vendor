@@ -154,6 +154,7 @@ export class VendorMasterDetailsModel {
     finRemark: string;
     // isGSTReg: boolean;
     otherDocDesc: string;
+    vendorId: string;
 }
 
 export interface FileMap {
@@ -202,6 +203,8 @@ export class InvoiceModel {
     companyName: string;
     projectId: string;
     projectName: string;
+    accountAssignmenCategory: string;
+    documentType: string;
 }
 
 export class InvoiceSearchRequestModel {
@@ -240,21 +243,21 @@ export class paymentStatusModel {
 
 export class PaymentDetailsModel {
     paymentDetailsId: number;
-	purchaseOrderId: number;
-	poNumber: string;
-	invoiceId: number;
-	invoiceNumber: string;
-	amountPaid: string;
-	statusCode: string;
-	statusDesc: string;
-	remarks: string;
-	createdDate: string;
-	createdBy: string;
+    purchaseOrderId: number;
+    poNumber: string;
+    invoiceId: number;
+    invoiceNumber: string;
+    amountPaid: string;
+    statusCode: string;
+    statusDesc: string;
+    remarks: string;
+    createdDate: string;
+    createdBy: string;
     updatedDate: string;
 }
 
-export class PaymentReqModel extends PaymentDetailsModel{
-	updatedBy: string;
+export class PaymentReqModel extends PaymentDetailsModel {
+    updatedBy: string;
 }
 
 export class PaymentStatusDetailsModel {
@@ -421,12 +424,17 @@ export class ItemModel {
     unitPrice: string;
     totalAmt: string;
     hsn: string;
+    fromDate: string;
+    toDate: string;
+    remarks: string;
+    personnelNumber: string;
     createdBy: string;
     createdDate: string;
 }
 
 export class ItemDisplayModel extends ItemModel {
     unitsTotalAmount: number;
+    invoiceNumber: string;
 }
 
 export class InvoiceDetailsModel {
@@ -527,6 +535,7 @@ export class UpdateInvoiceApprovalReqModel {
     grnSesNumber: string;
     departmentHeadId: string;
     approvalDetails: InvoiceApprovalModel;
+    itemsList: ItemDisplayModel[];
 }
 
 export class FileDetailsModel {
@@ -605,7 +614,14 @@ export class ProjectAutoCompleteModel {
 
 export class ForgotPasswordData {
     email: string;
+    employeeId: string;
 }
 export class EmpanelmentOtpReqModel {
     userName: string;
+}
+
+export class ResetPasswordData {
+    userName: string;
+    password: string;
+    oTP: string;
 }

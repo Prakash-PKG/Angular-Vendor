@@ -21,9 +21,11 @@ export class AppService {
     readonly isForProduction: boolean = false;
     readonly isSSORequired: boolean = false;
 
-    constructor(private _datePipe: DatePipe, 
-                private _http: HttpClient,
-                private _userIdleService: UserIdleService) { }
+    constructor(private _datePipe: DatePipe,
+        private _http: HttpClient,
+        private _userIdleService: UserIdleService) { }
+
+    token: string = '';
 
     readonly routingConstants: any = {
         login: "/",
@@ -46,7 +48,8 @@ export class AppService {
         vendorDocuments: "/vendor/vendocs",
         vendorOther: "/vendor/venothers",
         vendorDashboard: "/home/vendashboard",
-        loginVendor: "/vendorlogin"
+        loginVendor: "/vendorlogin",
+        contact: "/home/contact"
     };
 
     readonly pageConstants: any = {
@@ -64,7 +67,8 @@ export class AppService {
     readonly statusNames: any = {
         new: "In Progress",
         approved: "Approved",
-        rejected: "Rejected"
+        rejected: "Rejected",
+        received: 'Recieved'
     };
 
     readonly statusCodes: any = {
@@ -96,10 +100,11 @@ export class AppService {
     selectedInvoice: InvoiceModel = null;
 
     selectedVendor: VendorMasterDetailsModel = null;
-    isexistingVendor: boolean = false;
 
     isInvoiceSearchForPayments: boolean = false;
     isInvoiceDetailsForPayments: boolean = false;
+
+    isExistingVendor: boolean = false;
 
     getFormattedDate(dtStr: string) {
         if (dtStr) {
@@ -119,6 +124,7 @@ export class AppService {
 
     vendorRegistrationDetails: VendorMasterDetailsModel = {
         vendorMasterId: null,
+        vendorId: null,
         vendorName: null,
         emailId: null,
         password: null,
@@ -243,7 +249,8 @@ export class AppService {
             finApprByName: null,
             finRemark: null,
             // isGSTReg:null,
-            otherDocDesc: null
+            otherDocDesc: null,
+            vendorId: null
         };
 
         return regDetails;

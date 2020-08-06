@@ -11,7 +11,7 @@ import {
     currencyMasterList,
     WithholdTypeList,
     WithholdTaxList,
-    VendorRegistrationDetailRequestModel, VendorDocumentResultModel, FileDetailsModel, 
+    VendorRegistrationDetailRequestModel, VendorDocumentResultModel, FileDetailsModel,
     VendorMasterDocumentModel, VendorDocumentReqModel, CountryDataModel, regionMasterVOList
 } from './../models/data-models';
 import { Component, OnInit } from '@angular/core';
@@ -148,13 +148,13 @@ export class VendorApprovalComponent implements OnInit {
 
         this.vendorForm.get("lutNum").enable();
         let lutVal = this.vendorForm.get("lutNum").value;
-        if(lutVal) {
+        if (lutVal) {
             this.vendorForm.get("lutDate").enable();
         }
         else {
             this.vendorForm.get("lutDate").disable();
         }
-        
+
         this.vendorForm.get("otherDocDesc").enable();
     }
 
@@ -198,7 +198,7 @@ export class VendorApprovalComponent implements OnInit {
         this.updateAttachments();
         this.updateFilesValidity();
     }
-    
+
     updateAttachments() {
         if (this.vendorApprovalInitDetails && this.vendorApprovalInitDetails.fileDetails &&
             this.vendorApprovalInitDetails.fileDetails.length > 0) {
@@ -213,14 +213,14 @@ export class VendorApprovalComponent implements OnInit {
         for (let key in this.filesMap) {
             this.filesMap[key].isError = false;
             if (this.filesMap[key].isMandatory) {
-                if(!this.filesMap[key].isAttached) {
+                if (!this.filesMap[key].isAttached) {
                     this.filesMap[key].isError = true;
                 }
             }
             else {
-                if(this.documentControlDetails[key]) {
+                if (this.documentControlDetails[key]) {
                     let controlVal = this.vendorForm.get(this.documentControlDetails[key].controlName).value;
-                    if(controlVal && this.filesMap[key].filesList.length == 0) {
+                    if (controlVal && this.filesMap[key].filesList.length == 0) {
                         this.filesMap[key].isError = true;
                     }
                 }
@@ -355,17 +355,17 @@ export class VendorApprovalComponent implements OnInit {
             this.filesMap[documentTypeId].filesList.splice(fileIndex, 1);
             this.filesMap[documentTypeId].isAttached =
                 (this.filesMap[documentTypeId].filesList.length === 0) ? false : true;
-            
+
             this.filesMap[documentTypeId].isError = false;
             if (this.filesMap[documentTypeId].isMandatory) {
-                if(!this.filesMap[documentTypeId].isAttached) {
+                if (!this.filesMap[documentTypeId].isAttached) {
                     this.filesMap[documentTypeId].isError = true;
                 }
             }
             else {
-                if(this.documentControlDetails[documentTypeId]) {
+                if (this.documentControlDetails[documentTypeId]) {
                     let controlVal = this.vendorForm.get(this.documentControlDetails[documentTypeId].controlName).value;
-                    if(controlVal && this.filesMap[documentTypeId].filesList.length == 0) {
+                    if (controlVal && this.filesMap[documentTypeId].filesList.length == 0) {
                         this.filesMap[documentTypeId].isError = true;
                     }
                 }
@@ -413,7 +413,7 @@ export class VendorApprovalComponent implements OnInit {
     isFilesValid() {
         this.isValid = true;
         for (let key in this.filesMap) {
-            if(this.filesMap[key].isError) {
+            if (this.filesMap[key].isError) {
                 this.isValid = false;
                 break;
             }
@@ -421,14 +421,14 @@ export class VendorApprovalComponent implements OnInit {
     }
 
     isMandatoryFieldsEmpty() {
-        if(!this.vendorForm.valid) {
+        if (!this.vendorForm.valid) {
             this.msg = "Your form contains error.Please check.";
             this.isValid = false;
         }
     }
 
     updateVendorApprovals(action: string) {
-        
+
         this.isFilesValid();
         if (!this.isValid) return;
 
@@ -450,7 +450,7 @@ export class VendorApprovalComponent implements OnInit {
                 });
 
                 dialogRef.afterClosed().subscribe(result => {
-                    if(result) {
+                    if (result) {
                         this.updateVendorApprovalDetails(action);
                     }
                 });
@@ -529,23 +529,31 @@ export class VendorApprovalComponent implements OnInit {
 
 
     async loadInitData() {
-        if (this._appService.selectedPendingApprovalRecord) {
+
+        this._homeService.updateBusy(<BusyDataModel>{ isBusy: true, msg: "Loading..." });
+
+        if (this._appService.isExistingVendor) {
+            this.vendorDetails = this._appService.selectedVendor;
+            this.canApprove = false;
+            this.isEditable = true;
+        }
+
+        else if (this._appService.selectedPendingApprovalRecord) {
             let req: VendorApprovalInitReqModel = {
                 vendorMasterId: this._appService.selectedPendingApprovalRecord.vendorMasterId,
                 departmentCode: this._appService.selectedPendingApprovalRecord.approvalLevel,
                 approvalId: this._appService.selectedPendingApprovalRecord.approvalId
             };
-
-            this._homeService.updateBusy(<BusyDataModel>{ isBusy: true, msg: "Loading..." });
             this.vendorApprovalInitDetails = await this._vendorApprovalService.getVendorApprovalInitData(req);
             this.vendorDetails = this.vendorApprovalInitDetails.vendorMasterDetails;
             // this.vendorDetails = this.originalVendorDetails;
-            
-            this.loadDropDown();
-            this.updateVendorFields();
-            this.updateFileDetails();
-            this._homeService.updateBusy(<BusyDataModel>{ isBusy: false, msg: null });
         }
+
+        this.loadDropDown();
+        this.updateVendorFields();
+        this.updateFileDetails();
+        this._homeService.updateBusy(<BusyDataModel>{ isBusy: false, msg: null });
+
     }
 
     updateStates() {
@@ -555,7 +563,7 @@ export class VendorApprovalComponent implements OnInit {
             this.vendorApprovalInitDetails.regionMasterVOList.length > 0 && this.vendorApprovalInitDetails.vendorMasterDetails) {
 
             let cntryCode = this.vendorForm.get("countryCode").value ? this.vendorForm.get("countryCode").value : null;
-            if(cntryCode) {
+            if (cntryCode) {
                 this.regionMasterVOList = this.vendorApprovalInitDetails.regionMasterVOList.filter(r => r.countryCode == cntryCode);
             }
         }
@@ -565,11 +573,11 @@ export class VendorApprovalComponent implements OnInit {
 
     updatePincodeValidation() {
         let countryCodeVal = this.vendorForm.get("countryCode").value;
-        if(countryCodeVal == "US") {
+        if (countryCodeVal == "US") {
             this.vendorForm.get("pincode").setValidators([Validators.required, Validators.minLength(5), Validators.maxLength(5)]);
         }
         else {
-            this.vendorForm.get("pincode").setValidators([Validators.required, Validators.minLength(6),  Validators.maxLength(6)]);
+            this.vendorForm.get("pincode").setValidators([Validators.required, Validators.minLength(6), Validators.maxLength(6)]);
         }
 
         this.vendorForm.get("pincode").updateValueAndValidity();
@@ -620,7 +628,7 @@ export class VendorApprovalComponent implements OnInit {
 
             this.vendorForm.get("remarks").setValidators([Validators.required]);
             this.vendorForm.get("remarks").updateValueAndValidity();
-        } 
+        }
 
         this.updatePincodeValidation();
 
@@ -632,7 +640,8 @@ export class VendorApprovalComponent implements OnInit {
     }
 
     updateLUTValidations(lutVal: string) {
-        if(lutVal && lutVal.trim()) {
+
+        if (lutVal && lutVal.trim()) {
             this.vendorForm.get("lutDate").enable();
             this.vendorForm.get("lutDate").setValidators([Validators.required]);
         }
@@ -680,7 +689,7 @@ export class VendorApprovalComponent implements OnInit {
             this.vendorApprovalInitDetails.regionMasterVOList.length > 0 && this.vendorApprovalInitDetails.vendorMasterDetails) {
 
             let cntryCode = this.vendorApprovalInitDetails.vendorMasterDetails.countryCode ? this.vendorApprovalInitDetails.vendorMasterDetails.countryCode : null;
-            if(cntryCode) {
+            if (cntryCode) {
                 this.regionMasterVOList = this.vendorApprovalInitDetails.regionMasterVOList.filter(r => r.countryCode == cntryCode);
             }
         }
@@ -712,13 +721,15 @@ export class VendorApprovalComponent implements OnInit {
         if (this._sidebarExpansionSubscription) {
             this._sidebarExpansionSubscription.unsubscribe();
         }
+        this._appService.isExistingVendor = false;
+        this._appService.selectedVendor = null;
     }
 
     get f() { return this.vendorForm.controls; }
 
     getUpdatedVendorDetails() {
 
-        if(this.isEditable) {
+        if (this.isEditable) {
             this.vendorDetails.vendorName = this.vendorForm.get("vendorName").value ? this.vendorForm.get("vendorName").value.trim() : null;
             this.vendorDetails.contactPerson = this.vendorForm.get("contactPerson").value ? this.vendorForm.get("contactPerson").value.trim() : null;
             this.vendorDetails.mobileNum = this.vendorForm.get("mobileNum").value;
@@ -758,40 +769,40 @@ export class VendorApprovalComponent implements OnInit {
         if (globalConstant.userDetails.isFinance) {
             this.isFinance = true;
             this.canApprove = true;
-        } 
-        
+        }
+
         if (globalConstant.userDetails.isProcurement) {
             this.isProcurement = true;
             this.canApprove = true;
         }
 
         this.vendorForm = this._formBuilder.group({
-            vendorName: [{value: null, disabled: true}, [Validators.required, Validators.nullValidator]],
-            contactPerson: [{value: null, disabled: true}],
-            mobileNum: [{value: null, disabled: true}, [Validators.required, Validators.minLength(10), Validators.nullValidator]],
-            telephoneNum: {value: null, disabled: true},
-            emailId: [{value: null, disabled: true}, [Validators.required, Validators.email, Validators.nullValidator]],
-            
-            address1: [{value: null, disabled: true}, [Validators.required]],
-            address2: [{value: null, disabled: true}],
-            city: [{value: null, disabled: true}, [Validators.required]],
-            street: [{value: null, disabled: true}, [Validators.required]],
-            pincode: [{value: null, disabled: true}, [Validators.required, Validators.minLength(6), Validators.maxLength(6)]],
-            stateCode: [{value: null, disabled: true}, [Validators.required]],
-            countryCode: [{value: null, disabled: true}, [Validators.required]],
+            vendorName: [{ value: null, disabled: true }, [Validators.required, Validators.nullValidator]],
+            contactPerson: [{ value: null, disabled: true }],
+            mobileNum: [{ value: null, disabled: true }, [Validators.required, Validators.minLength(10), Validators.nullValidator]],
+            telephoneNum: { value: null, disabled: true },
+            emailId: [{ value: null, disabled: true }, [Validators.required, Validators.email, Validators.nullValidator]],
 
-            panNum: [{value: null, disabled: true}, [Validators.required, Validators.minLength(10)]],
-            gstNum: [{value: null, disabled: true}],
-            pfNum: [{value: null, disabled: true}],
-            esiNum: [{value: null, disabled: true}],
-            cinNum: [{value: null, disabled: true}],
+            address1: [{ value: null, disabled: true }, [Validators.required]],
+            address2: [{ value: null, disabled: true }],
+            city: [{ value: null, disabled: true }, [Validators.required]],
+            street: [{ value: null, disabled: true }, [Validators.required]],
+            pincode: [{ value: null, disabled: true }, [Validators.required, Validators.minLength(6), Validators.maxLength(6)]],
+            stateCode: [{ value: null, disabled: true }, [Validators.required]],
+            countryCode: [{ value: null, disabled: true }, [Validators.required]],
+
+            panNum: [{ value: null, disabled: true }, [Validators.required, Validators.minLength(10)]],
+            gstNum: [{ value: null, disabled: true }],
+            pfNum: [{ value: null, disabled: true }],
+            esiNum: [{ value: null, disabled: true }],
+            cinNum: [{ value: null, disabled: true }],
             isSez: [false],
             isRcmApplicable: [false],
             isMsmedRegistered: [false],
             hasTdsLower: [false],
-            lutNum: [{value: null, disabled: true}],
-            lutDate: [{ value: null, disabled: true}],
-            otherDocDesc: [{value: null, disabled: true}],
+            lutNum: [{ value: null, disabled: true }],
+            lutDate: [{ value: null, disabled: true }],
+            otherDocDesc: [{ value: null, disabled: true }],
 
             selectedVendorGroup: null,
             selectedCompanyCode: null,
@@ -801,7 +812,7 @@ export class VendorApprovalComponent implements OnInit {
             remarks: null
         });
 
-        setTimeout(() => {  
+        setTimeout(() => {
             this.loadInitData();
         }, 100);
     }

@@ -21,7 +21,7 @@
         </div>
         <div class="col-3 form-group">
             <mat-form-field class="full-width">
-                <input type="text" matInput placeholder="IFSC code" formControlName="ifscCode" autocomplete="off" (blur) = "onIFSCblur()"
+                <input type="text" matInput placeholder="IFSC code" formControlName="ifscCode" autocomplete="off" (blur) = "onIFSCblur()" maxlength="11" 
                     required>
             </mat-form-field>
             <mat-error class="errortxt" *ngIf="( isSubmitted ) && f?.ifscCode?.errors?.required">IFSC code is required</mat-error>

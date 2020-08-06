@@ -216,9 +216,9 @@
                             <td  class="eightcharacters">
                                 <span>{{ apprlevel.status }}</span>
                             </td>
-                            <td  class="tencharacters">
+                            <!--<td  class="tencharacters">
                                 <span>{{ apprlevel.date }}</span>
-                            </td>
+                            </td>-->
                             <td  class="tencharacters remarks">
                                 <span  matTooltip="{{apprlevel.remarks}}">{{ apprlevel.remarks }}</span>
                             </td>
@@ -252,15 +252,24 @@
                     <td class="eightcharacters">
                         <span>{{ item.hsn }}</span>
                     </td>
+                    <td *ngIf = "isFromToMandatory == true">
+                        {{ getFormattedDate(item.fromDate) }}
+                    </td>
+                    <td *ngIf = "isFromToMandatory == true">
+                        {{ getFormattedDate(item.toDate) }}
+                    </td>
+                    <td class="eightcharacters" *ngIf = "isFromToMandatory == true">
+                        {{ item.personnelNumber }}
+                    </td>
                     <td *ngIf="isPOBasedInvoice == true" class="tencharacters">
                         <span>{{ item.orderedUnits }}</span>
                     </td>
-                    <td *ngIf="isPOBasedInvoice == true" class="tencharacters">
+                    <!--<td *ngIf="isPOBasedInvoice == true" class="tencharacters">
                         <span>{{ item.suppliedUnits }}</span>
                     </td>
                     <td *ngIf="isPOBasedInvoice == true" class="tencharacters">
                         <span>{{ item.consumedUnits }}</span>
-                    </td>
+                    </td>-->
                     <td style="width:4em;">
                         <span>{{ item.invoiceUnits }}</span>
                     </td>

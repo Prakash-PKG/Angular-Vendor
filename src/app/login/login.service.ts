@@ -1,7 +1,8 @@
+import { ResetPasswordData } from './../models/data-models';
 import { CryptoService } from './../common/crypto.service';
 import { Observable } from 'rxjs';
 import { Injectable } from '@angular/core';
-import { Response, Headers, RequestOptions, Http } from '@angular/http';
+import { Response, Headers, RequestOptions, Http, ResponseContentType } from '@angular/http';
 import { HttpClient, HttpResponse, HttpParams, HttpHeaders } from "@angular/common/http";
 
 import { AppService } from './../app.service';
@@ -73,13 +74,24 @@ export class LoginService {
         localStorage.setItem('user', this._cryptoService.encrypt(response._body));
     }
 
-
-    logout() {
-        let accessToken = localStorage.getItem('x-auth-token');
+    resetPassword(req: ResetPasswordData) {
         let options = new RequestOptions({
             headers: new Headers({
                 'Accept': 'application/json',
-                // 'Access-Control-Allow-Origin': '*',
+                'x-auth-token': this._appService.token
+            }),
+            withCredentials: true,
+            responseType: ResponseContentType.Json
+        });
+        let url = this._appService.baseUrl + "venForgetPassword";
+        return this._http.post(url, req, options);
+    }
+
+    logout(accessToken: string) {
+       // let accessToken = localStorage.getItem('x-auth-token');
+        let options = new RequestOptions({
+            headers: new Headers({
+                'Accept': 'application/json',
                 'x-auth-token': accessToken
             }),
             withCredentials: true
@@ -90,7 +102,6 @@ export class LoginService {
 
         return this._httpClient.post(this._appService.baseUrl + 'logout', body, this.options);
     }
-
 
     getData() {
         return this.userRole;

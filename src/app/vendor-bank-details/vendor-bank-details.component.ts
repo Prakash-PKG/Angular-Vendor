@@ -125,7 +125,7 @@ export class VendorBankDetailsComponent implements OnInit {
             this._appService.vendorRegistrationInitDetails.regionMasterVOList.length > 0) {
             this.regionMasterVOList = this._appService.vendorRegistrationInitDetails.regionMasterVOList;
         }
-        this.regionMasterVOList = this.regionMasterVOList.filter(r => r.countryCode == this.vendorBankForm.get('bankCountry').value)
+        this.regionMasterVOList = this.regionMasterVOList.filter(r => r.countryCode == this.vendorBankForm.get('bankCountry').value);
     }
 
     onBankCountryChange() {
@@ -147,7 +147,7 @@ export class VendorBankDetailsComponent implements OnInit {
             accountNum: [null, [Validators.required]],
             accountType: [null, [Validators.required]],
             accountName: [null, [Validators.required]],
-            ifscCode: [null, [Validators.required]],
+            ifscCode: [null, [Validators.required,Validators.maxLength(11)]],
             bankName: [null, [Validators.required]],
             bankBranch: [null, [Validators.required]],
             bankCity: [null, [Validators.required]],
