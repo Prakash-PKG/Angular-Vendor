@@ -14,8 +14,8 @@ import { UserIdleService } from 'angular-user-idle';
 })
 export class AppService {
 
-    readonly domain = "http://localhost:8080";
-    // readonly domain = "https://mvendor-dev.marlabs.com";
+    //readonly domain = "http://localhost:8080";
+    readonly domain = "https://mvendor-dev.marlabs.com";
     //readonly domain = "https://mtime.marlabs.com";  
     readonly baseUrl = this.domain + "/mvendor/";
     readonly customerAuthUrl = this.domain + "/customerAuth/oauth/token";
@@ -118,6 +118,14 @@ export class AppService {
     getFormattedDateTime(dtStr: string) {
         if (dtStr) {
             return this._datePipe.transform(new Date(dtStr), this.dbDateTimeFormat);
+        }
+
+        return "";
+    }
+
+    getDBFormattedDate(dtStr: string) {
+        if (dtStr) {
+            return this._datePipe.transform(new Date(dtStr), this.dbDateFormat);
         }
 
         return "";

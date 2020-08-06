@@ -96,6 +96,7 @@ export class VendorRegistrationResultModel {
 export class VendorMasterDetailsModel {
     vendorMasterId: number;
     vendorName: string;
+    vendorId: string;
     emailId: string;
     password: string;
     contactPerson: string;
