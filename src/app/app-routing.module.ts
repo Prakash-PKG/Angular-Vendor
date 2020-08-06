@@ -25,6 +25,7 @@ import { VendorDashboardComponent } from './vendor-dashboard/vendor-dashboard.co
 import { LoginVendorComponent } from './login-vendor/login-vendor.component';
 import { VendorDumpComponent } from './vendor-dump/vendor-dump.component';
 import { AuthenticationGuard } from 'microsoft-adal-angular6';
+import { ContactComponent } from './contact/contact.component';
 
 const routes: Routes = [
     {
@@ -112,6 +113,11 @@ const routes: Routes = [
             {
                 path: 'empanelment',
                 component: EmpanelmentComponent,
+                canActivate: [AuthGuardLogin]
+            },
+            {
+                path: 'contact',
+                component: ContactComponent,
                 canActivate: [AuthGuardLogin]
             },
         ]

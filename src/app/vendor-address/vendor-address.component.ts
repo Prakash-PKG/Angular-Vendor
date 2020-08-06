@@ -144,7 +144,7 @@ export class VendorAddressComponent implements OnInit {
             address2: [null],
             city: [null, [Validators.required]],
             street: [null, [Validators.required]],
-            pincode: [null, [Validators.required, Validators.minLength(6), Validators.maxLength(6)]],
+            pincode: [null, [Validators.required, Validators.maxLength(6)]],
             stateCode: [null, [Validators.required]],
             countryCode: [null, [Validators.required]]
         });

@@ -24,7 +24,7 @@ export class HeaderComponent implements OnInit {
     }
 
     onLogoutClick() {
-        this._loginService.logout().subscribe(
+        this._loginService.logout(localStorage.getItem('x-auth-token')).subscribe(
             (response) => {
                 localStorage.clear();
                 if(this._appService.isSSORequired) {
@@ -48,7 +48,9 @@ export class HeaderComponent implements OnInit {
             }
         )
     }
-
+    onContactClick(){
+        this._router.navigate([this._appService.routingConstants.contact]);
+    }
     ngOnInit() {
         this.userName = globalConstant.userDetails.userName;
         this.userId = globalConstant.userDetails.userId;
