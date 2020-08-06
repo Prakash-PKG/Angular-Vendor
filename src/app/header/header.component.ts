@@ -48,7 +48,9 @@ export class HeaderComponent implements OnInit {
             }
         )
     }
-
+    onContactClick(){
+        this._router.navigate([this._appService.routingConstants.contact]);
+    }
     ngOnInit() {
         this.userName = globalConstant.userDetails.userName;
         this.userId = globalConstant.userDetails.userId;

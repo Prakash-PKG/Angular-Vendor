@@ -49,7 +49,8 @@ export class AppService {
         vendorDocuments: "/vendor/vendocs",
         vendorOther: "/vendor/venothers",
         vendorDashboard: "/home/vendashboard",
-        loginVendor: "/vendorlogin"
+        loginVendor: "/vendorlogin",
+        contact: "/home/contact"
     };
 
     readonly pageConstants: any = {
@@ -100,7 +101,7 @@ export class AppService {
     selectedInvoice: InvoiceModel = null;
 
     selectedVendor: VendorMasterDetailsModel = null;
-  
+
     isInvoiceSearchForPayments: boolean = false;
     isInvoiceDetailsForPayments: boolean = false;
 

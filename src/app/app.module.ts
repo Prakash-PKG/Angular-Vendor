@@ -82,6 +82,7 @@ import { VendorLoginComponent } from './vendor-login/vendor-login.component';
 import { MsAdalAngular6Module, AuthenticationGuard } from 'microsoft-adal-angular6';
 import { GrnSesItemsComponent } from './grn-ses-items/grn-ses-items.component';
 import { UserIdleModule } from 'angular-user-idle';
+import { ContactComponent } from './contact/contact.component';
 
 @NgModule({
     declarations: [
@@ -114,7 +115,8 @@ import { UserIdleModule } from 'angular-user-idle';
         LoginVendorComponent,
         VendorDumpComponent,
         VendorLoginComponent,
-        GrnSesItemsComponent
+        GrnSesItemsComponent,
+        ContactComponent
     ],
     imports: [
         BrowserModule,
