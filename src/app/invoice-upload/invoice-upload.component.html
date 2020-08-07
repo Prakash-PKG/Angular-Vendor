@@ -154,7 +154,7 @@
                         </td>
                         <td *ngIf = "isFromToMandatory == true">
                             <mat-form-field class="search-row-element date">
-                                <input matInput [matDatepicker]='fromDate_itemInd' formControlName="fromDate" [min] = "minInvoiceDate" [max] = "maxInvoiceDate" placeholder="From Date"
+                                <input matInput [matDatepicker]='fromDate_itemInd' formControlName="fromDate" placeholder="From Date"
                                     autocomplete="off">
                                 <mat-datepicker-toggle matSuffix [for]="fromDate_itemInd"></mat-datepicker-toggle>
                                 <mat-datepicker #fromDate_itemInd></mat-datepicker>
@@ -164,7 +164,7 @@
                         </td>
                         <td *ngIf = "isFromToMandatory == true">
                             <mat-form-field class="search-row-element date">
-                                <input matInput [matDatepicker]="toDate_itemInd" formControlName="toDate" [min] = "minInvoiceDate" [max] = "maxInvoiceDate" placeholder="To Date"
+                                <input matInput [matDatepicker]="toDate_itemInd" formControlName="toDate" placeholder="To Date"
                                     autocomplete="off">
                                 <mat-datepicker-toggle matSuffix [for]="toDate_itemInd"></mat-datepicker-toggle>
                                 <mat-datepicker #toDate_itemInd></mat-datepicker>

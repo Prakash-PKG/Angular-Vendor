@@ -43,10 +43,10 @@
                     <th class="headers" scope="col">
                         <span>PO No. </span>
                     </th>
-                    <th class="headers" scope="col">
+                    <th class="headers" scope="col" *ngIf = "isVendor == false">
                         <span>Vendor Id</span>
                     </th>
-                    <th class="headers" scope="col">
+                    <th class="headers" scope="col" *ngIf = "isVendor == false">
                         <span>Vendor Name</span>
                     </th>
                     <th class="headers" scope="col">
@@ -71,10 +71,10 @@
                     <td style="cursor: pointer" (click)="onPOClick(po)" class="tencharacters">
                         {{ po.poNumber }}
                     </td>
-                    <td class="tencharacters">
+                    <td class="tencharacters" *ngIf = "isVendor == false">
                         {{ po.vendorId }}
                     </td>
-                    <td>
+                    <td *ngIf = "isVendor == false">
                         {{ po.vendorName }}
                     </td>
                     <td>

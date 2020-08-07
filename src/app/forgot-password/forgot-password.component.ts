@@ -76,8 +76,8 @@ export class ForgotPasswordComponent implements OnInit {
         this._loginService.resetPassword(resetPasswordReq)
             .subscribe(response => {
                 this.isLoading = false;
-                let result = response["_body"] as StatusModel;
-                if (result.isSuccess) {
+                let result = response["_body"];
+                if (result && result.statusDetails && result.statusDetails.isSuccess) {
                     this.invalid = false;
                     this.generateOTP = false;
                     this.resetPassword = false;
