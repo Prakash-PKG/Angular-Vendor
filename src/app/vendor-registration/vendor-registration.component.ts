@@ -1,5 +1,5 @@
 import { VendorRegistrationService } from './vendor-registration.service';
-import { BusyDataModel, VendorRegistrationInitDataModel } from './../models/data-models';
+import { BusyDataModel, VendorRegistrationInitDataModel, PageDetailsModel } from './../models/data-models';
 import { HomeService } from './../home/home.service';
 import { Component, OnInit } from '@angular/core';
 import { AppService } from '../app.service';
@@ -58,8 +58,11 @@ export class VendorRegistrationComponent implements OnInit {
         });
 
         this.subscription = this._vendorRegistrationService.currentPageDetails.pipe(debounceTime(300)).subscribe(page => {
-            this.currentPage = page.pageName;
+            this.currentPage = (page as PageDetailsModel).pageName;
         });
+
+        this._appService.vendorRegistrationDetails = this._appService.resetVendorRegistrationDetails();
+        this._appService.selectedFileMap = {};
 
         setTimeout(() => {
             this.loadInitData();

@@ -75,7 +75,8 @@
                 <input type="text" matInput placeholder="{{vendorDocCtrl.panCtrl.placeholder}}" formControlName="panNum" maxlength="10" autocomplete="off"
                     required>
             </mat-form-field>
-            <mat-label></mat-label>
+            <mat-error *ngIf="isSubmitted == true && vdf?.panNum?.errors?.required">PAn No. is required</mat-error>
+            <mat-error *ngIf="isSubmitted == true && vdf?.panNum?.errors?.minlength">10 characters are required</mat-error>
         </div>
         <div class="col-7 actions">
             <input style="display: none" [attr.id]="vendorDocCtrl.panCtrl.browserId" type="file" multiple accept=".xls,.xlsx,.doc,.docx,.pdf,.png,.jpg,.zip"
@@ -134,14 +135,14 @@
     <div class="row doc-field">
         <div class="col-5 doc-form-field">
             <mat-form-field>
-                <input type="text" matInput placeholder="{{vendorDocCtrl.lutNoCtrl.placeholder}}" 
-                        formControlName="lutNum" autocomplete="off" (blur)="updateMandatory('lutNum',vendorDocCtrl.lutNoCtrl.documentTypeId)">
+                <input type="text" matInput placeholder="{{vendorDocCtrl.lutNoCtrl.placeholder}}" formControlName="lutNum" autocomplete="off"
+                    (blur)="updateMandatory('lutNum',vendorDocCtrl.lutNoCtrl.documentTypeId)">
             </mat-form-field>
             <mat-form-field style="width:9em;">
                 <mat-label>LUT Date</mat-label>
                 <input matInput [matDatepicker]="picker" formControlName="lutDate" autocomplete="off">
                 <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-                <mat-datepicker #picker ></mat-datepicker>
+                <mat-datepicker #picker></mat-datepicker>
             </mat-form-field>
             <div *ngIf="vdf?.lutDate?.errors?.required" class="errortxt">
                 LUT Date is required
@@ -150,9 +151,7 @@
         <div class="col-7 actions">
             <input style="display: none" [attr.id]="vendorDocCtrl.lutNoCtrl.browserId" type="file" multiple accept=".xls,.xlsx,.doc,.docx,.pdf,.png,.jpg,.zip"
                 (change)="onFileChange($event, vendorDocCtrl.lutNoCtrl.documentTypeId)" />
-            <button mat-raised-button class="footer-actions"  
-                [disabled]="!vendorDocumentForm.get('lutNum').value" 
-                (click)="onBrowseFileClick($event, vendorDocCtrl.lutNoCtrl.browserId)">Attach</button>
+            <button mat-raised-button class="footer-actions" [disabled]="!vendorDocumentForm.get('lutNum').value" (click)="onBrowseFileClick($event, vendorDocCtrl.lutNoCtrl.browserId)">Attach</button>
             <div *ngIf="filesMap[vendorDocCtrl.lutNoCtrl.documentTypeId]?.isAttached" style="display: flex;
     flex-wrap: wrap;">
                 <span class="filename" *ngFor="let f of filesMap[vendorDocCtrl.lutNoCtrl.documentTypeId]?.filesList; let fInd = index">
@@ -214,14 +213,13 @@
                 <input type="text" matInput placeholder="{{vendorDocCtrl.esiCtrl.placeholder}}" formControlName="esiNum" autocomplete="off"
                     (blur)="updateMandatory('esiNum',vendorDocCtrl.esiCtrl.documentTypeId)">
             </mat-form-field>
-
         </div>
         <div class="col-7 actions">
             <input style="display: none" [attr.id]="vendorDocCtrl.esiCtrl.browserId" type="file" multiple accept=".xls,.xlsx,.doc,.docx,.pdf,.png,.jpg,.zip"
                 (change)="onFileChange($event, vendorDocCtrl.esiCtrl.documentTypeId)" />
             <button mat-raised-button class="footer-actions" [disabled]="!vendorDocumentForm.get('esiNum').value" (click)="onBrowseFileClick($event, vendorDocCtrl.esiCtrl.browserId)">Attach</button>
             <div *ngIf="filesMap[vendorDocCtrl.esiCtrl.documentTypeId]?.isAttached" style="display: flex;
-    flex-wrap: wrap;">
+                    flex-wrap: wrap;">
                 <span class="filename" *ngFor="let f of filesMap[vendorDocCtrl.esiCtrl.documentTypeId]?.filesList; let fInd = index">
                     <span>
                         <mat-icon matTooltip="{{ f.actualFileName }}" (click)="downloadFile(f)">description</mat-icon>
@@ -247,7 +245,7 @@
         <div class="col-2 doc-form-field">
             <mat-radio-group formControlName="isMsmedRegistered" (change)="updateMandatory('isMsmedRegistered',vendorDocCtrl.msmeCtrl.documentTypeId)">
                 <mat-radio-button [value]=true>YES</mat-radio-button>
-                <mat-radio-button [value]=false [checked]=true>NO</mat-radio-button>
+                <mat-radio-button [value]=false>NO</mat-radio-button>
             </mat-radio-group>
         </div>
         <div class="col-7 actions">
@@ -281,7 +279,7 @@
         <div class="col-2 doc-form-field">
             <mat-radio-group formControlName="hasTdsLower" (change)="updateMandatory('hasTdsLower',vendorDocCtrl.tdsCtrl.documentTypeId)">
                 <mat-radio-button [value]=true>YES</mat-radio-button>
-                <mat-radio-button [value]=false [checked]=true>NO</mat-radio-button>
+                <mat-radio-button [value]=false>NO</mat-radio-button>
             </mat-radio-group>
         </div>
         <div class="col-7 actions">
@@ -316,7 +314,7 @@
         <div class="col-2 doc-form-field">
             <mat-radio-group formControlName="isSez" (change)="updateMandatory('isSez',vendorDocCtrl.sezCtrl.documentTypeId)">
                 <mat-radio-button [value]=true>YES</mat-radio-button>
-                <mat-radio-button [value]=false [checked]=true>NO</mat-radio-button>
+                <mat-radio-button [value]=false>NO</mat-radio-button>
             </mat-radio-group>
         </div>
         <div class="col-7 actions">
@@ -350,7 +348,7 @@
         <div class="col-2 doc-form-field">
             <mat-radio-group aria-label="Is RCM applicable?" formControlName="isRcmApplicable">
                 <mat-radio-button [value]=true>YES</mat-radio-button>
-                <mat-radio-button [value]=false [checked]=true>NO</mat-radio-button>
+                <mat-radio-button [value]=false>NO</mat-radio-button>
             </mat-radio-group>
         </div>
         <div class="col-7 doc-form-field"></div>
@@ -379,7 +377,7 @@
                 (change)="onFileChange($event, vendorDocCtrl.otherCtrl.documentTypeId)" />
             <button mat-raised-button class="footer-actions" [disabled]="!vendorDocumentForm.get('otherDocDesc').value" (click)="onBrowseFileClick($event, vendorDocCtrl.otherCtrl.browserId)">Attach</button>
             <div *ngIf="filesMap[vendorDocCtrl.otherCtrl.documentTypeId]?.isAttached" style="display: flex;
-    flex-wrap: wrap;">
+                flex-wrap: wrap;">
                 <span class="filename" *ngFor="let f of filesMap[vendorDocCtrl.otherCtrl.documentTypeId]?.filesList; let fInd = index">
                     <span>
                         <mat-icon matTooltip="{{ f.actualFileName }}" (click)="downloadFile(f)">description</mat-icon>
@@ -389,10 +387,10 @@
                         </button>
                     </span>
                 </span>
-                <div *ngIf="filesMap[vendorDocCtrl.otherCtrl.documentTypeId] && 
+            </div>
+            <div *ngIf="filesMap[vendorDocCtrl.otherCtrl.documentTypeId] && 
                 filesMap[vendorDocCtrl.otherCtrl.documentTypeId]?.isError" class="errortxt">
-                    Please attach the Documents
-                </div>
+                Please attach the Documents
             </div>
         </div>
     </div>

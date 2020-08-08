@@ -1,11 +1,13 @@
+import { LoginService } from './login/login.service';
 import {
     VendorMasterDetailsModel, VendorRegistrationInitDataModel,
-    PendingApprovalsModel, FileDetailsModel, PODetailsModel, InvoiceModel
+    PendingApprovalsModel, FileDetailsModel, PODetailsModel, InvoiceModel, FileMap
 } from './models/data-models';
 
 import { Injectable } from '@angular/core';
 import { DatePipe } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
+import { UserIdleService } from 'angular-user-idle';
 
 @Injectable({
     providedIn: 'root'
@@ -19,7 +21,11 @@ export class AppService {
     readonly isForProduction: boolean = false;
     readonly isSSORequired: boolean = false;
 
-    constructor(private _datePipe: DatePipe, private _http: HttpClient) { }
+    constructor(private _datePipe: DatePipe,
+        private _http: HttpClient,
+        private _userIdleService: UserIdleService) { }
+
+    token: string = '';
 
     readonly routingConstants: any = {
         login: "/",
@@ -42,7 +48,8 @@ export class AppService {
         vendorDocuments: "/vendor/vendocs",
         vendorOther: "/vendor/venothers",
         vendorDashboard: "/home/vendashboard",
-        loginVendor: "/loginvendor"
+        loginVendor: "/vendorlogin",
+        contact: "/home/contact"
     };
 
     readonly pageConstants: any = {
@@ -60,7 +67,8 @@ export class AppService {
     readonly statusNames: any = {
         new: "In Progress",
         approved: "Approved",
-        rejected: "Rejected"
+        rejected: "Rejected",
+        received: 'Recieved'
     };
 
     readonly statusCodes: any = {
@@ -92,10 +100,11 @@ export class AppService {
     selectedInvoice: InvoiceModel = null;
 
     selectedVendor: VendorMasterDetailsModel = null;
-    isexistingVendor: boolean = false;
 
     isInvoiceSearchForPayments: boolean = false;
     isInvoiceDetailsForPayments: boolean = false;
+
+    isExistingVendor: boolean = false;
 
     getFormattedDate(dtStr: string) {
         if (dtStr) {
@@ -113,8 +122,17 @@ export class AppService {
         return "";
     }
 
+    getDBFormattedDate(dtStr: string) {
+        if (dtStr) {
+            return this._datePipe.transform(new Date(dtStr), this.dbDateFormat);
+        }
+
+        return "";
+    }
+
     vendorRegistrationDetails: VendorMasterDetailsModel = {
         vendorMasterId: null,
+        vendorId: null,
         vendorName: null,
         emailId: null,
         password: null,
@@ -139,16 +157,16 @@ export class AppService {
         swiftInterm: null,
         panNum: null,
         gstNum: null,
-        isSez: null,
-        isRcmApplicable: null,
+        isSez: false,
+        isRcmApplicable: false,
         lutNum: null,
         lutDate: null,
         // paymentTerms: null,
         cinNum: null,
-        isMsmedRegistered: null,
+        isMsmedRegistered: false,
         pfNum: null,
         esiNum: null,
-        hasTdsLower: null,
+        hasTdsLower: false,
         createdBy: null,
         updatedBy: null,
         createdDate: null,
@@ -175,6 +193,8 @@ export class AppService {
         // isGSTReg:null,
         otherDocDesc: null
     };
+
+    selectedFileMap: FileMap = {};
 
     resetVendorRegistrationDetails() {
         let regDetails: VendorMasterDetailsModel = {
@@ -203,16 +223,16 @@ export class AppService {
             swiftInterm: null,
             panNum: null,
             gstNum: null,
-            isSez: null,
-            isRcmApplicable: null,
+            isSez: false,
+            isRcmApplicable: false,
             lutNum: null,
             lutDate: null,
             // paymentTerms: null,
             cinNum: null,
-            isMsmedRegistered: null,
+            isMsmedRegistered: false,
             pfNum: null,
             esiNum: null,
-            hasTdsLower: null,
+            hasTdsLower: false,
             createdBy: null,
             updatedBy: null,
             createdDate: null,
@@ -237,10 +257,15 @@ export class AppService {
             finApprByName: null,
             finRemark: null,
             // isGSTReg:null,
-            otherDocDesc: null
+            otherDocDesc: null,
+            vendorId: null
         };
 
         return regDetails;
+    }
+
+    isEmpty(obj) {
+        return Object.keys(obj).length === 0;
     }
 
     selectedPendingApprovalRecord: PendingApprovalsModel = null;
@@ -278,6 +303,22 @@ export class AppService {
             error => {
                 console.log(error);
             });
+    }
+
+    startWatching() {
+        this._userIdleService.startWatching();
+    }
+
+    stopWatching() {
+        this._userIdleService.stopWatching();
+    }
+
+    stopTimer() {
+        this._userIdleService.stopTimer();
+    }
+
+    restartTimer() {
+        this._userIdleService.resetTimer();
     }
 
 }

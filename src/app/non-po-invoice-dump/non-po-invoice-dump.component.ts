@@ -72,9 +72,12 @@ export class NonPoInvoiceDumpComponent implements OnInit {
         }
 
         if (this.startDate && this.endDate) {
+            let updatedEndDt: Date = new Date(this.endDate);
+            updatedEndDt.setDate(this.endDate.getDate() + 1);
+
             let req: InvoiceFinanceDumpReqModel = {
                 startDate: this._datePipe.transform(this.startDate, this._appService.dbDateTimeFormat),
-                endDate: this._datePipe.transform(this.endDate, this._appService.dbDateTimeFormat),
+                endDate: this._datePipe.transform(updatedEndDt, this._appService.dbDateTimeFormat),
                 employeeId: globalConstant.userDetails.userId,
                 isIncremental: false
             };
@@ -130,10 +133,6 @@ export class NonPoInvoiceDumpComponent implements OnInit {
     }
 
     ngOnInit() {
-        let dt: Date = new Date();
-        dt.setDate(dt.getDate() + 1);
-        this.maxEndDate = dt;
-
         setTimeout(() => {
             this.loadInitData();
         }, 100);

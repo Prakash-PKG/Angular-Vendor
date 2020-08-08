@@ -16,8 +16,11 @@
                  </div>
             </div>
             <div class="flex-item">
-                <button mat-button matSuffix mat-icon-button aria-label="LogOut" (click)=" onLogoutClick()">
+                <button mat-button matSuffix mat-icon-button  matTooltip="Log Out" (click)=" onLogoutClick()">
                     <mat-icon>exit_to_app</mat-icon>
+                </button>
+                <button mat-button matSuffix mat-icon-button matTooltip="Contact_Us" (click)=" onContactClick()">
+                    <mat-icon>contact_support</mat-icon>
                 </button>
             </div>
         </div>

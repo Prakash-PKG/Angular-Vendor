@@ -22,6 +22,8 @@ export class LoginComponent implements OnInit {
     isFormSubmitted: boolean = false;
     errorMessage: string = "";
     loading: boolean = false;
+    private _isSessionExpiredSubscription: any = null;
+    isSessionExpireVisible: boolean = false;
 
     constructor(private _router: Router,
             private _formBuilder: FormBuilder,
@@ -57,6 +59,8 @@ export class LoginComponent implements OnInit {
                 this._loginService.storeUserData(response);
 
                 this._router.navigate([this._appService.routingConstants.posearch]);
+
+                this._appService.startWatching();
             },
             (error) => {
                 this.loading = false;
@@ -99,7 +103,15 @@ export class LoginComponent implements OnInit {
         }
     }
 
+    ngOnDestroy() {
+        if (this._isSessionExpiredSubscription) {
+            this._isSessionExpiredSubscription.unsubscribe();
+        }
+    }
+
     ngOnInit() {
+        this.isSessionExpireVisible = false;
+        this._homeService.updateSessionExpireDetails(false);
         this.isFormSubmitted = false;
         this.loading = false;
         this.loginForm = this._formBuilder.group({
@@ -116,5 +128,11 @@ export class LoginComponent implements OnInit {
                 this.checkServerAuthentication(user_name, user_passwd);
             }
         }
+
+        this._isSessionExpiredSubscription = this._homeService.isSessionExpired.subscribe(data => {
+            if(data) {
+                this.isSessionExpireVisible = true;
+            }
+        });
     }
 }

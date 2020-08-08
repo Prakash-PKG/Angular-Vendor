@@ -28,14 +28,14 @@
         </div>
         <div class="col-4 form-group">
             <mat-form-field class="full-width">
-                <input type="text" placeholder="Town / City" matInput formControlName="city" autocomplete="off"
+                <input type="text" placeholder="Town / City " matInput formControlName="city" autocomplete="off"
                     required>
             </mat-form-field>
             <mat-error class="errortxt" *ngIf="( isSubmitted ) && f?.city?.errors?.required">Town / City is required</mat-error>
         </div>
         <div class="col-2 form-group">
             <mat-form-field class="full-width">
-                <input type="text" placeholder="Pincode" required  onkeypress='return event.charCode >= 48 && event.charCode <= 57' matInput formControlName="pincode" autocomplete="off" maxlength="6">
+                <input type="text" placeholder="Pincode " required  onkeypress='return event.charCode >= 48 && event.charCode <= 57' matInput formControlName="pincode" autocomplete="off"  maxlength="6" required>
             </mat-form-field>
             <mat-error class="errortxt" *ngIf="( isSubmitted ) && f?.pincode?.errors?.required">Pincode is required</mat-error>
             <mat-error class="errortxt" *ngIf="( isSubmitted ) && f?.pincode?.errors?.minlength">Minimum {{ f?.pincode?.errors?.minlength?.requiredLength }} characters are required</mat-error>
@@ -47,7 +47,7 @@
 
         <div class="col-6 form-group">
             <mat-form-field class="full-width">
-                <mat-select formControlName="countryCode" placeholder="Country" required (selectionChange)="updateRegion()">
+                <mat-select formControlName="countryCode" placeholder="Country" required (selectionChange)="onCountryChange()">
                     <mat-option *ngFor="let c of countryList" [value]="c.countryCode">
                         {{ c.countryName }}
                     </mat-option>

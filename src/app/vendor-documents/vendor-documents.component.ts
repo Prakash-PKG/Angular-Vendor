@@ -1,3 +1,4 @@
+import { SidebarService } from './../sidebar/sidebar.service';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -8,7 +9,7 @@ import { VendorRegistrationService } from './../vendor-registration/vendor-regis
 import {
     BusyDataModel, VendorRegistrationRequestModel,
     VendorRegistrationResultModel, VendorDocumentReqModel,
-    VendorMasterDocumentModel, FileDetailsModel, VendorDocumentResultModel, StatusModel
+    VendorMasterDocumentModel, FileDetailsModel, VendorDocumentResultModel, StatusModel, FileMap
 } from './../models/data-models';
 import { DatePipe } from '@angular/common';
 import { HomeService } from '../home/home.service';
@@ -19,15 +20,7 @@ import { scan, takeWhile, takeLast } from 'rxjs/operators';
 import { MessageDialogComponent } from '../message-dialog/message-dialog.component';
 import { MessageDialogModel } from '../models/popup-models';
 
-interface FileMap {
-    [key: number]: {
-        filesList: FileDetailsModel[],
-        isMandatory: boolean,
-        isAttached: boolean,
-        isError: boolean,
-        toAttach: FileDetailsModel[],
-    }
-}
+
 
 @Component({
     selector: 'app-vendor-documents',
@@ -62,12 +55,15 @@ export class VendorDocumentsComponent implements OnInit {
         otherCtrl: { documentTypeId: 13, browserId: 'otherFileCtrl', placeholder: 'Document Description' }
     }
 
+    isSubmitted: boolean = false;
+
     constructor(private _appService: AppService,
         private _vendorRegistrationService: VendorRegistrationService,
         private _router: Router,
         private _formBuilder: FormBuilder,
         private _datePipe: DatePipe,
         private _snackBar: MatSnackBar,
+        private _sidebarService: SidebarService,
         private _dialog: MatDialog) { }
 
     onFileChange(event: any, documentTypeId: number) {
@@ -170,12 +166,31 @@ export class VendorDocumentsComponent implements OnInit {
             });
     }
 
+    updateDataForBackup() {
+        this._appService.vendorRegistrationDetails.panNum = this.vendorDocumentForm.get("panNum").value;
+        this._appService.vendorRegistrationDetails.gstNum = this.vendorDocumentForm.get("gstNum").value;
+        this._appService.vendorRegistrationDetails.pfNum = this.vendorDocumentForm.get("pfNum").value;
+        this._appService.vendorRegistrationDetails.esiNum = this.vendorDocumentForm.get("esiNum").value;
+        this._appService.vendorRegistrationDetails.cinNum = this.vendorDocumentForm.get("cinNum").value;
+        this._appService.vendorRegistrationDetails.isSez = this.vendorDocumentForm.get("isSez").value;
+        this._appService.vendorRegistrationDetails.isRcmApplicable = this.vendorDocumentForm.get("isRcmApplicable").value;
+        this._appService.vendorRegistrationDetails.isMsmedRegistered = this.vendorDocumentForm.get("isMsmedRegistered").value;
+        this._appService.vendorRegistrationDetails.hasTdsLower = this.vendorDocumentForm.get("hasTdsLower").value;
+        this._appService.vendorRegistrationDetails.lutNum = this.vendorDocumentForm.get("lutNum").value;
+        this._appService.vendorRegistrationDetails.lutDate = this._datePipe.transform(this.vendorDocumentForm.get("lutDate").value, this._appService.dbDateFormat);
+        this._appService.vendorRegistrationDetails.otherDocDesc = this.vendorDocumentForm.get("otherDocDesc").value;
+    }
+
     onPrevClick() {
+        this.updateDataForBackup();
+        this._appService.selectedFileMap = this.filesMap;
         this._router.navigate([this._appService.routingConstants.vendorBankDetails]);
     }
 
     onSubmitClick() {
         this.failureMsg = "";
+
+        this.isSubmitted = true;
 
         this.isValid = true;
         for (let key in this.filesMap) {
@@ -188,18 +203,8 @@ export class VendorDocumentsComponent implements OnInit {
         if (!this.isValid) { return };
 
         if (this.vendorDocumentForm.valid) {
-            this._appService.vendorRegistrationDetails.panNum = this.vendorDocumentForm.get("panNum").value;
-            this._appService.vendorRegistrationDetails.gstNum = this.vendorDocumentForm.get("gstNum").value;
-            this._appService.vendorRegistrationDetails.pfNum = this.vendorDocumentForm.get("pfNum").value;
-            this._appService.vendorRegistrationDetails.esiNum = this.vendorDocumentForm.get("esiNum").value;
-            this._appService.vendorRegistrationDetails.cinNum = this.vendorDocumentForm.get("cinNum").value;
-            this._appService.vendorRegistrationDetails.isSez = this.vendorDocumentForm.get("isSez").value;
-            this._appService.vendorRegistrationDetails.isRcmApplicable = this.vendorDocumentForm.get("isRcmApplicable").value;
-            this._appService.vendorRegistrationDetails.isMsmedRegistered = this.vendorDocumentForm.get("isMsmedRegistered").value;
-            this._appService.vendorRegistrationDetails.hasTdsLower = this.vendorDocumentForm.get("hasTdsLower").value;
-            this._appService.vendorRegistrationDetails.lutNum = this.vendorDocumentForm.get("lutNum").value;
-            this._appService.vendorRegistrationDetails.lutDate = this._datePipe.transform(this.vendorDocumentForm.get("lutDate").value, this._appService.dbDateFormat);
-            this._appService.vendorRegistrationDetails.otherDocDesc = this.vendorDocumentForm.get("otherDocDesc").value;
+            
+            this.updateDataForBackup();
 
             let req: VendorRegistrationRequestModel = {
                 action: this._appService.updateOperations.submit,
@@ -250,7 +255,12 @@ export class VendorDocumentsComponent implements OnInit {
         });
 
         dialogRef.afterClosed().subscribe(result => {
-            this._router.navigate([this._appService.routingConstants.login]);
+            if(globalConstant.userDetails.isEmpanelment) {
+                this._router.navigate([this._appService.routingConstants.posearch]);
+            }
+            else {
+                this._sidebarService.logout();
+            }
         });
     }
 
@@ -305,10 +315,13 @@ export class VendorDocumentsComponent implements OnInit {
         this.vendorDocumentForm.get("lutDate").setValue(this._appService.vendorRegistrationDetails.lutDate ? new Date(this._appService.vendorRegistrationDetails.lutDate) : null);
         this.vendorDocumentForm.get("otherDocDesc").setValue(this._appService.vendorRegistrationDetails.otherDocDesc);
 
+        this.filesMap = this._appService.selectedFileMap;
+
+        this.updateLUTValidations(this.vendorDocumentForm.get("lutNum").value);
+
         this.vendorDocumentForm.get("lutNum").valueChanges.subscribe(val => {
             this.updateLUTValidations(val);
         });
-
     }
 
     updateLUTValidations(lutVal: string) {
@@ -326,10 +339,14 @@ export class VendorDocumentsComponent implements OnInit {
     }
 
     initializeFilesList() {
-        if (this._appService.vendorRegistrationInitDetails && this._appService.vendorRegistrationInitDetails.documentDetailsList &&
-            this._appService.vendorRegistrationInitDetails.documentDetailsList.length > 0) {
-            this._appService.vendorRegistrationInitDetails.documentDetailsList.forEach(item =>
-                this.filesMap[item.vendorMasterDocumentsId] = { filesList: [], isMandatory: item.isMandatory, isAttached: false, isError: false, toAttach: [] });
+        if(this._appService.isEmpty(this._appService.selectedFileMap)) {
+            if (this._appService.vendorRegistrationInitDetails && this._appService.vendorRegistrationInitDetails.documentDetailsList &&
+                this._appService.vendorRegistrationInitDetails.documentDetailsList.length > 0) {
+                this._appService.vendorRegistrationInitDetails.documentDetailsList.forEach(item =>
+                    this.filesMap[item.vendorMasterDocumentsId] = { filesList: [], isMandatory: item.isMandatory, isAttached: false, isError: false, toAttach: [] });
+            }
+
+            this._appService.selectedFileMap = this.filesMap;
         }
     }
 
@@ -350,19 +367,21 @@ export class VendorDocumentsComponent implements OnInit {
     get vdf() { return this.vendorDocumentForm.controls; }
 
     ngOnInit() {
+        this.isSubmitted = false;
+
         this.initializeFilesList();
 
         this.vendorDocumentForm = this._formBuilder.group({
 
-            panNum: [null, [Validators.required]],
+            panNum: [null, [Validators.required, Validators.minLength(10)]],
             gstNum: [null],
             pfNum: [null],
             esiNum: [null],
             cinNum: [null],
-            isSez: [null],
-            isRcmApplicable: [null],
-            isMsmedRegistered: [null],
-            hasTdsLower: [null],
+            isSez: [false],
+            isRcmApplicable: [false],
+            isMsmedRegistered: [false],
+            hasTdsLower: [false],
             lutNum: [null],
             lutDate: [{ value: null, disabled: true}],
             otherDocDesc: [null]

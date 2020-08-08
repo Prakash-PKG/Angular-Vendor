@@ -188,30 +188,30 @@
         <div class="flex-item" style=" flex-grow: 0;width: 38%;">
             <div class="flex-container">
                 <div class="flex-item">
-                    <div *ngIf="isGrnSesRequired == true && isGrnDdlVisible == false">
+                    <div *ngIf="isGrnSesRequired == true && isGrnSesVisible == true">
                         <mat-label style="color:black;">GRN/SES No.</mat-label>
-                        <span>{{ initDetails?.invoiceDetails?.grnSesNumber }}</span>
+                        <span>{{ selectedGrnSesNumber ? selectedGrnSesNumber : "" }}</span>
                     </div>
                 </div>
-                <div class="flex-item" *ngIf="isGrnSesRequired == true && isGrnDdlVisible == true">
-                    <!--<mat-form-field>
+                <!--<div class="flex-item" *ngIf="isGrnSesRequired == true && isGrnSesVisible == true">
+                    <mat-form-field>
                         <mat-label>GRN/SES No.</mat-label>
                         <mat-select matNativeControl [(ngModel)]="selectedGrnSesNumber">
                             <mat-option *ngFor="let gs of grnSesList" [value]="gs.grnSesNumber">
                                 {{ gs.grnSesNumber }}
                             </mat-option>
                         </mat-select>
-                    </mat-form-field>-->
-                    <!--<mat-form-field class="full-width">
+                    </mat-form-field>
+                    <mat-form-field class="full-width">
                         <input matInput placeholder="GRN/SES No." [(ngModel)]="selectedGrnSesNumber" autocomplete="off">
-                    </mat-form-field>-->
+                    </mat-form-field>
                     <div>
                         <mat-label style="color:black;">GRN/SES No.</mat-label>
                         <mat-label class="min-width: 200px">{{ selectedGrnSesNumber }}</mat-label>
                         <button mat-raised-button class="clsBtnGrnSes"
                             (click)="onGrnSesSelectClick()">Select GRN / SES</button>
                     </div>
-                </div>
+                </div>-->
                 <div class="error-txt">
                     {{ grnSesErrMsg }}
                 </div>
@@ -250,15 +250,24 @@
                     <td class="eightcharacters">
                         {{ item.hsn }}
                     </td>
+                    <td *ngIf = "isFromToMandatory == true">
+                        {{ getFormattedDate(item.fromDate) }}
+                    </td>
+                    <td *ngIf = "isFromToMandatory == true">
+                        {{ getFormattedDate(item.toDate) }}
+                    </td>
+                    <td class="eightcharacters" *ngIf = "isFromToMandatory == true">
+                        {{ item.personnelNumber }}
+                    </td>
                     <td *ngIf="isPOInvoice == true" class="tencharacters">
                         {{ item.orderedUnits }}
                     </td>
-                    <td *ngIf="isPOInvoice == true" class="tencharacters">
+                    <!--<td *ngIf="isPOInvoice == true" class="tencharacters">
                         {{ item.suppliedUnits }}
                     </td>
                     <td *ngIf="isPOInvoice == true" class="tencharacters">
                         {{ item.consumedUnits }}
-                    </td>
+                    </td>-->
                     <td class="tencharacters">
                         {{ item.invoiceUnits }}
                     </td>
@@ -271,6 +280,12 @@
                     <td class="amount tencharacters">
                         {{ item.totalAmt }}
                     </td>
+                    <td>
+                        <mat-form-field class="full-width">
+                            <input matInput placeholder="Remarks" [(ngModel)]="item.remarks" maxlength="35" (blur) = "onItemRemarksBlur(item)" autocomplete="off">
+                        </mat-form-field>
+                         
+                    </td>
                 </tr>
             </tbody>
         </table>
@@ -281,7 +296,7 @@
             <button mat-raised-button class="footer-actions" (click)="onBackBtnClick()">Back</button>
             <button mat-raised-button class="footer-actions" (click)="onRejectClick()">Reject</button>
             <button mat-raised-button class="footer-actions footer-actions-green"
-                (click)="onApproveClick()">Approve</button>
+                (click)="onApproveClick()">{{ approveBtnTxt }}</button>
         </div>
     </div>
 </div>

@@ -71,18 +71,18 @@ export class VendorDashboardComponent implements OnInit {
 
     onSearchChange() {
 
+        let vendorIdVal = this.vendorSearchForm.get("vendorId").value;
+        let lcvendorIdVal = (vendorIdVal) ? vendorIdVal.toLowerCase() : "";
+
         let vendorNameVal = this.vendorSearchForm.get("vendorName").value;
         let lcvendorNameVal = (vendorNameVal) ? vendorNameVal.toLowerCase() : "";
-
-        let contactPersonVal = this.vendorSearchForm.get("contactPerson").value;
-        let lccontactPersonVal = (contactPersonVal) ? contactPersonVal.toLowerCase() : "";
 
         let mobileNumVal = this.vendorSearchForm.get("mobileNum").value;
         let lcmobileNumVal = (mobileNumVal) ? mobileNumVal.toLowerCase() : "";
 
         this.vendorList = this.totalVendorList.filter(function (req) {
-            if ((req.vendorName && req.vendorName.toString().toLowerCase().indexOf(lcvendorNameVal) > -1) &&
-                (req.contactPerson && req.contactPerson.toString().toLowerCase().indexOf(lccontactPersonVal) > -1) &&
+            if ((req.vendorId && req.vendorId.toString().toLowerCase().indexOf(lcvendorIdVal) > -1) &&
+                (req.vendorName && req.vendorName.toString().toLowerCase().indexOf(lcvendorNameVal) > -1) &&
                 (req.mobileNum && req.mobileNum.toString().toLowerCase().indexOf(lcmobileNumVal) > -1)) {
                 return true;
             }
@@ -91,7 +91,7 @@ export class VendorDashboardComponent implements OnInit {
     }
     onVendorClick(vendor: VendorMasterDetailsModel) {
         this._appService.selectedVendor = vendor;
-        this._appService.isexistingVendor = true;
+        this._appService.isExistingVendor = true;
         this._router.navigate([this._appService.routingConstants.vendorApproval]);
     }
 
@@ -110,16 +110,16 @@ export class VendorDashboardComponent implements OnInit {
 
 
         this.vendorSearchForm = this._formBuilder.group({
+            vendorId: null,
             vendorName: null,
-            contactPerson: null,
             mobileNum: null
         });
 
-        this.vendorSearchForm.get("vendorName").valueChanges.subscribe(val => {
+        this.vendorSearchForm.get("vendorId").valueChanges.subscribe(val => {
             this.onSearchChange();
         });
 
-        this.vendorSearchForm.get("contactPerson").valueChanges.subscribe(val => {
+        this.vendorSearchForm.get("vendorName").valueChanges.subscribe(val => {
             this.onSearchChange();
         });
 

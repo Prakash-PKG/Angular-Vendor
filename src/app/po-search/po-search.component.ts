@@ -66,6 +66,8 @@ export class PoSearchComponent implements OnInit {
 
     poSearchForm: FormGroup;
 
+    isVendor: boolean = false;
+
     constructor(private _homeService: HomeService,
                 private _appService: AppService,
                 private _router: Router,
@@ -186,6 +188,8 @@ export class PoSearchComponent implements OnInit {
     }
 
     ngOnInit() {
+        this.isVendor = (globalConstant.userDetails.isVendor) ? true : false;
+
         this._appService.selectedPO = null;
 
         this.isDashboardCollapsed = true;

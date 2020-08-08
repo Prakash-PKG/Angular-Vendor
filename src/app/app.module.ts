@@ -81,6 +81,8 @@ import { VendorDumpComponent } from './vendor-dump/vendor-dump.component';
 import { VendorLoginComponent } from './vendor-login/vendor-login.component';
 import { MsAdalAngular6Module, AuthenticationGuard } from 'microsoft-adal-angular6';
 import { GrnSesItemsComponent } from './grn-ses-items/grn-ses-items.component';
+import { UserIdleModule } from 'angular-user-idle';
+import { ContactComponent } from './contact/contact.component';
 
 @NgModule({
     declarations: [
@@ -113,7 +115,8 @@ import { GrnSesItemsComponent } from './grn-ses-items/grn-ses-items.component';
         LoginVendorComponent,
         VendorDumpComponent,
         VendorLoginComponent,
-        GrnSesItemsComponent
+        GrnSesItemsComponent,
+        ContactComponent
     ],
     imports: [
         BrowserModule,
@@ -163,7 +166,13 @@ import { GrnSesItemsComponent } from './grn-ses-items/grn-ses-items.component';
         MatToolbarModule,
         MatTooltipModule,
         NativeDateModule,
-        MsAdalAngular6Module.forRoot(getProdAdalConfig)
+        MsAdalAngular6Module.forRoot(getDevAdalConfig),
+        // Optionally you can set time for `idle`, `timeout` and `ping` in seconds.
+        // Default values: `idle` is 600 (10 minutes), `timeout` is 300 (5 minutes) 
+        // and `ping` is 120 (2 minutes).
+        //UserIdleModule.forRoot({idle: 600, timeout: 300, ping: 120})
+        //UserIdleModule.forRoot({idle: 10, timeout: 5, ping: 5})
+        UserIdleModule.forRoot({idle: 1200, timeout: 300, ping: 120})
     ],
      entryComponents: [
         ConfirmDialogComponent,

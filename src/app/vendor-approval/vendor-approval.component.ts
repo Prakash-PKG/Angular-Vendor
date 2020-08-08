@@ -1,3 +1,4 @@
+import { trigger } from '@angular/animations';
 import { globalConstant } from './../common/global-constant';
 import { VendorApprovalService } from './vendor-approval.service';
 import { AppService } from './../app.service';
@@ -10,7 +11,8 @@ import {
     currencyMasterList,
     WithholdTypeList,
     WithholdTaxList,
-    VendorRegistrationDetailRequestModel, VendorDocumentResultModel, FileDetailsModel, VendorMasterDocumentModel, VendorDocumentReqModel
+    VendorRegistrationDetailRequestModel, VendorDocumentResultModel, FileDetailsModel,
+    VendorMasterDocumentModel, VendorDocumentReqModel, CountryDataModel, regionMasterVOList
 } from './../models/data-models';
 import { Component, OnInit } from '@angular/core';
 import { HomeService } from '../home/home.service';
@@ -22,6 +24,8 @@ import { MessageDialogComponent } from '../message-dialog/message-dialog.compone
 import { MessageDialogModel } from '../models/popup-models';
 import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
 import { Router } from '@angular/router';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { DatePipe } from '@angular/common';
 
 interface FileMap {
     [key: number]: {
@@ -64,7 +68,7 @@ export class VendorApprovalComponent implements OnInit {
 
     msg: string = "";
 
-    isEditable = true;
+    isEditable = false;
     isValid = true;
     isServerError = false;
     disableSubmit: boolean = false;
@@ -75,6 +79,12 @@ export class VendorApprovalComponent implements OnInit {
     filesMap: FileMap = {};
     private counterSubject: BehaviorSubject<number>;
     private counterSubscription: Subscription;
+
+    vendorForm: FormGroup;
+    isSubmitted: boolean = false;
+
+    countriesList: CountryDataModel[] = [];
+    regionMasterVOList: regionMasterVOList[] = [];
 
     vendorDocCtrl = {
         incCerCtrl: { documentTypeId: 1, browserId: 'incCerFileCtrl', placeholder: 'Incorporation Certificate' },
@@ -92,15 +102,60 @@ export class VendorApprovalComponent implements OnInit {
         msaCtrl: { documentTypeId: 12, browserId: 'msaFileCtrl', placeholder: 'Attach MSA' }
     }
 
+    documentControlDetails = {
+        2: { controlName: "gstNum", controlType: "text" },
+        3: { controlName: "panNum", controlType: "text" },
+        4: { controlName: "pfNum", controlType: "text" },
+        5: { controlName: "esiNum", controlType: "text" },
+        7: { controlName: "isMsmedRegistered", controlType: "radio" },
+        8: { controlName: "hasTdsLower", controlType: "radio" },
+        9: { controlName: "isSez", controlType: "radio" },
+        10: { controlName: "lutNum", controlType: "text" },
+        13: { controlName: "otherDocDesc", controlType: "text" },
+    }
+
     constructor(private _homeService: HomeService,
         private _appService: AppService,
         private _vendorApprovalService: VendorApprovalService,
         private _snackBar: MatSnackBar,
         private _dialog: MatDialog,
+        private _datePipe: DatePipe,
+        private _formBuilder: FormBuilder,
         private _router: Router) { }
 
     onEditClick() {
-        this.isEditable = false;
+        this.isEditable = true;
+
+        this.vendorForm.get("vendorName").enable();
+        this.vendorForm.get("contactPerson").enable();
+        this.vendorForm.get("mobileNum").enable();
+        this.vendorForm.get("telephoneNum").enable();
+        this.vendorForm.get("emailId").enable();
+
+        this.vendorForm.get("address1").enable();
+        this.vendorForm.get("address2").enable();
+        this.vendorForm.get("city").enable();
+        this.vendorForm.get("street").enable();
+        this.vendorForm.get("pincode").enable();
+        this.vendorForm.get("countryCode").enable();
+        this.vendorForm.get("stateCode").enable();
+
+        this.vendorForm.get("panNum").enable();
+        this.vendorForm.get("gstNum").enable();
+        this.vendorForm.get("pfNum").enable();
+        this.vendorForm.get("esiNum").enable();
+        this.vendorForm.get("cinNum").enable();
+
+        this.vendorForm.get("lutNum").enable();
+        let lutVal = this.vendorForm.get("lutNum").value;
+        if (lutVal) {
+            this.vendorForm.get("lutDate").enable();
+        }
+        else {
+            this.vendorForm.get("lutDate").disable();
+        }
+
+        this.vendorForm.get("otherDocDesc").enable();
     }
 
 
@@ -133,20 +188,43 @@ export class VendorApprovalComponent implements OnInit {
 
     //for document attachments
 
-    initializeFilesList() {
+    updateFileDetails() {
         if (this.vendorApprovalInitDetails && this.vendorApprovalInitDetails.vendorMasterDocumentVOList &&
             this.vendorApprovalInitDetails.vendorMasterDocumentVOList.length > 0) {
             this.vendorApprovalInitDetails.vendorMasterDocumentVOList.forEach(item =>
                 this.filesMap[item.vendorMasterDocumentsId] = { filesList: [], isMandatory: item.isMandatory, isAttached: false, isError: false });
         }
+
+        this.updateAttachments();
+        this.updateFilesValidity();
     }
-    getAttachments() {
+
+    updateAttachments() {
         if (this.vendorApprovalInitDetails && this.vendorApprovalInitDetails.fileDetails &&
             this.vendorApprovalInitDetails.fileDetails.length > 0) {
             this.vendorApprovalInitDetails.fileDetails.forEach(item => {
                 this.filesMap[item.documentTypeId].filesList.push(item);
                 this.filesMap[item.documentTypeId].isAttached = true;
             });
+        }
+    }
+
+    updateFilesValidity() {
+        for (let key in this.filesMap) {
+            this.filesMap[key].isError = false;
+            if (this.filesMap[key].isMandatory) {
+                if (!this.filesMap[key].isAttached) {
+                    this.filesMap[key].isError = true;
+                }
+            }
+            else {
+                if (this.documentControlDetails[key]) {
+                    let controlVal = this.vendorForm.get(this.documentControlDetails[key].controlName).value;
+                    if (controlVal && this.filesMap[key].filesList.length == 0) {
+                        this.filesMap[key].isError = true;
+                    }
+                }
+            }
         }
     }
 
@@ -273,11 +351,26 @@ export class VendorApprovalComponent implements OnInit {
         if (this.filesMap[documentTypeId]
             && this.filesMap[documentTypeId].filesList
             && this.filesMap[documentTypeId].filesList.length > 0) {
+
             this.filesMap[documentTypeId].filesList.splice(fileIndex, 1);
             this.filesMap[documentTypeId].isAttached =
                 (this.filesMap[documentTypeId].filesList.length === 0) ? false : true;
-        }
 
+            this.filesMap[documentTypeId].isError = false;
+            if (this.filesMap[documentTypeId].isMandatory) {
+                if (!this.filesMap[documentTypeId].isAttached) {
+                    this.filesMap[documentTypeId].isError = true;
+                }
+            }
+            else {
+                if (this.documentControlDetails[documentTypeId]) {
+                    let controlVal = this.vendorForm.get(this.documentControlDetails[documentTypeId].controlName).value;
+                    if (controlVal && this.filesMap[documentTypeId].filesList.length == 0) {
+                        this.filesMap[documentTypeId].isError = true;
+                    }
+                }
+            }
+        }
     }
 
     downloadFile(fileDetails: FileDetailsModel) {
@@ -285,50 +378,67 @@ export class VendorApprovalComponent implements OnInit {
     }
 
     onApproveClick() {
+        this.isSubmitted = true;
         this.updateVendorApprovals(this._appService.updateOperations.approve);
     }
 
     onRejectClick() {
         this.updateVendorApprovals(this._appService.updateOperations.reject);
     }
+
     onBackClick() {
         this.vendorDetails = this.originalVendorDetails;
         this._router.navigate([this._appService.routingConstants.vendorDashboard]);
     }
 
     updateMandatoryDocs(selfValue: any, documentTypeId: number) {
-        if (!selfValue) {
-            this.filesMap[documentTypeId].isAttached = false;
-            this.filesMap[documentTypeId].isError = false;
-            this.filesMap[documentTypeId].isMandatory = false;
-            console.log(this.filesMap);
-            return;
+        if (selfValue) {
+            this.filesMap[documentTypeId].isError = this.filesMap[documentTypeId].filesList.length > 0 ? false : true;
         }
-        this.filesMap[documentTypeId].isMandatory = true;
-        this.filesMap[documentTypeId].isError = true;
-        console.log(this.filesMap);
+        else {
+            this.filesMap[documentTypeId].isAttached = this.filesMap[documentTypeId].filesList.length > 0 ? true : false;
+            this.filesMap[documentTypeId].isError = false;
+        }
     }
-    // functions for document attachment ends here
 
+    onRadioBtnSelectionChange(evtData, documentTypeId) {
+        this.updateMandatoryDocs(evtData.value, documentTypeId);
+    }
+
+    onTextFieldValueChange(cntrlName, documentTypeId) {
+        this.updateMandatoryDocs(this.vendorForm.get(cntrlName).value, documentTypeId);
+    }
+
+    // functions for document attachment ends here
     isFilesValid() {
         this.isValid = true;
         for (let key in this.filesMap) {
-            this.filesMap[key].isError = false;
-            if (this.filesMap[key].isMandatory && !this.filesMap[key].isAttached) {
+            if (this.filesMap[key].isError) {
                 this.isValid = false;
-                this.filesMap[key].isError = true;
-                return;
+                break;
             }
         }
     }
-    async isFormValid() {
-        if (this.isFinance) {
 
-            if (!this.selectedVendorGroup || !this.selectedCompanyCode || !this.selectedCurrency) {
-                this.msg = "Your form contains error.Please check.";
-                return this.isValid = false;
-            }
-            if (!this.withholdTax || !this.withholdType || !this.remarks) {
+    isMandatoryFieldsEmpty() {
+        if (!this.vendorForm.valid) {
+            this.msg = "Your form contains error.Please check.";
+            this.isValid = false;
+        }
+    }
+
+    updateVendorApprovals(action: string) {
+
+        this.isFilesValid();
+        if (!this.isValid) return;
+
+        this.isMandatoryFieldsEmpty();
+        if (!this.isValid) return;
+
+        if (this.isFinance) {
+            let withholdTaxVal = this.vendorForm.get("withholdTax").value;
+            let withholdTypeVal = this.vendorForm.get("withholdType").value;
+            if (!withholdTaxVal || !withholdTaxVal) {
                 const dialogRef = this._dialog.open(ConfirmDialogComponent, {
                     disableClose: true,
                     panelClass: 'dialog-box',
@@ -338,34 +448,23 @@ export class VendorApprovalComponent implements OnInit {
                         message: "You are trying to submit without with Hold Tax and Type. Do you wish to Continue?"
                     }
                 });
-                return await dialogRef.afterClosed().toPromise();
+
+                dialogRef.afterClosed().subscribe(result => {
+                    if (result) {
+                        this.updateVendorApprovalDetails(action);
+                    }
+                });
+            }
+            else {
+                this.updateVendorApprovalDetails(action);
             }
         }
         else {
-            return true;
-        }
-    }
-    isMandatoryFieldsEmpty() {
-        if (this.isProcurement) {
-            if (!this.vendorDetails.vendorName || !this.vendorDetails.mobileNum || !this.vendorDetails.emailId || !this.vendorDetails.address1 || !this.vendorDetails.street || !this.vendorDetails.city || !this.vendorDetails.pincode || !this.vendorDetails.stateName || !this.vendorDetails.countryName || !this.vendorDetails.panNum) {
-                this.msg = "Your form contains error.Please check.";
-                this.isValid = false;
-            }
+            this.updateVendorApprovalDetails(action);
         }
     }
 
-    async updateVendorApprovals(action: string) {
-        this.isFilesValid();
-        if (!this.isValid) return;
-
-        this.isMandatoryFieldsEmpty();
-        if (!this.isValid) return;
-
-        this.isValid = await this.isFormValid();
-        if (!this.isValid) { return };
-
-
-
+    updateVendorApprovalDetails(action: string) {
         let req: VendorApprovalReqModel = {
             action: action,
             vendorApprovalID: this.vendorApprovalInitDetails.vendorApprovalDetails.vendorApprovalID,
@@ -373,16 +472,16 @@ export class VendorApprovalComponent implements OnInit {
             departmentCode: this.vendorApprovalInitDetails.vendorApprovalDetails.departmentCode ?
                 this.vendorApprovalInitDetails.vendorApprovalDetails.departmentCode : globalConstant.userDetails.userRoles[0].roleCode,
             approverId: globalConstant.userDetails.userId,
-            remarks: this.remarks,
-            groupCode: this.selectedVendorGroup,
-            companyCode: this.selectedCompanyCode,
-            currencyCode: this.selectedCurrency,
-            withholdTaxCode: this.withholdTax,
-            withholdTypeCode: this.withholdType,
+            remarks: this.vendorForm.get("remarks").value ? this.vendorForm.get("remarks").value : null,
+            groupCode: this.vendorForm.get("selectedVendorGroup").value ? this.vendorForm.get("selectedVendorGroup").value : null,
+            companyCode: this.vendorForm.get("selectedCompanyCode").value ? this.vendorForm.get("selectedCompanyCode").value : null,
+            currencyCode: this.vendorForm.get("selectedCurrency").value ? this.vendorForm.get("selectedCurrency").value : null,
+            withholdTaxCode: this.vendorForm.get("withholdTax").value ? this.vendorForm.get("withholdTax").value : null,
+            withholdTypeCode: this.vendorForm.get("withholdType").value ? this.vendorForm.get("withholdType").value : null,
             createdBy: this.vendorApprovalInitDetails.vendorApprovalDetails.createdBy ? this.vendorApprovalInitDetails.vendorApprovalDetails.createdBy : globalConstant.userId,
             createDate: this.vendorApprovalInitDetails.vendorApprovalDetails.createDate ? this.vendorApprovalInitDetails.vendorApprovalDetails.createDate : null,
-            vendorMasterDetails: this.vendorDetails
-        }
+            vendorMasterDetails: this.getUpdatedVendorDetails()
+        };
 
         this._homeService.updateBusy(<BusyDataModel>{ isBusy: true, msg: null });
         this._vendorApprovalService.updateVendorApprovalDetails(req)
@@ -396,7 +495,7 @@ export class VendorApprovalComponent implements OnInit {
                         this.displayVendorApprovalStatus(result.message);
                     }
                     else {
-                        this.isEditable = true;
+                        this.isEditable = false;
                         this.isServerError = true;
                         this.disableSubmit = false;
                         this.msg = result.message;
@@ -404,13 +503,14 @@ export class VendorApprovalComponent implements OnInit {
                 }
             },
                 (error) => {
-                    this.isEditable = true;
+                    this.isEditable = false;
                     this.disableSubmit = false;
                     this._homeService.updateBusy(<BusyDataModel>{ isBusy: false, msg: null });
                     this.msg = this._appService.messages.vendorApprovalFailure;
                     console.log(error);
                 });
     }
+
     displayVendorApprovalStatus(msg: string) {
         const dialogRef = this._dialog.open(MessageDialogComponent, {
             disableClose: true,
@@ -421,73 +521,193 @@ export class VendorApprovalComponent implements OnInit {
                 message: msg
             }
         });
+
+        dialogRef.afterClosed().subscribe(result => {
+            this._router.navigate([this._appService.routingConstants.pendingApprovals]);
+        });
     }
 
 
     async loadInitData() {
-        let req: VendorApprovalInitReqModel = null;
-        if (this._appService.isexistingVendor) {
-            req = {
-                vendorMasterId: this._appService.selectedVendor.vendorMasterId,
-                departmentCode: null
-            };
-        }
-
-        if (this._appService.selectedPendingApprovalRecord) {
-            req = {
-                vendorMasterId: this._appService.selectedPendingApprovalRecord.vendorMasterId,
-                departmentCode: this._appService.selectedPendingApprovalRecord.approvalLevel
-            };
-        }
 
         this._homeService.updateBusy(<BusyDataModel>{ isBusy: true, msg: "Loading..." });
-        this.vendorApprovalInitDetails = await this._vendorApprovalService.getVendorApprovalInitData(req);
-        this.originalVendorDetails = this.vendorApprovalInitDetails.vendorMasterDetails;
-        this.vendorDetails = this.originalVendorDetails;
-        this.initializeFilesList();
+
+        if (this._appService.isExistingVendor) {
+            this.vendorDetails = this._appService.selectedVendor;
+            this.canApprove = false;
+            this.isEditable = true;
+        }
+
+        else if (this._appService.selectedPendingApprovalRecord) {
+            let req: VendorApprovalInitReqModel = {
+                vendorMasterId: this._appService.selectedPendingApprovalRecord.vendorMasterId,
+                departmentCode: this._appService.selectedPendingApprovalRecord.approvalLevel,
+                approvalId: this._appService.selectedPendingApprovalRecord.approvalId
+            };
+            this.vendorApprovalInitDetails = await this._vendorApprovalService.getVendorApprovalInitData(req);
+            this.vendorDetails = this.vendorApprovalInitDetails.vendorMasterDetails;
+            // this.vendorDetails = this.originalVendorDetails;
+        }
+
         this.loadDropDown();
-        this.getAttachments();
+        this.updateVendorFields();
+        this.updateFileDetails();
         this._homeService.updateBusy(<BusyDataModel>{ isBusy: false, msg: null });
 
     }
 
+    updateStates() {
+        this.vendorForm.get("stateCode").setValue(null);
+        this.regionMasterVOList = [];
+        if (this.vendorApprovalInitDetails && this.vendorApprovalInitDetails.regionMasterVOList &&
+            this.vendorApprovalInitDetails.regionMasterVOList.length > 0 && this.vendorApprovalInitDetails.vendorMasterDetails) {
+
+            let cntryCode = this.vendorForm.get("countryCode").value ? this.vendorForm.get("countryCode").value : null;
+            if (cntryCode) {
+                this.regionMasterVOList = this.vendorApprovalInitDetails.regionMasterVOList.filter(r => r.countryCode == cntryCode);
+            }
+        }
+
+        this.updatePincodeValidation();
+    }
+
+    updatePincodeValidation() {
+        let countryCodeVal = this.vendorForm.get("countryCode").value;
+        if (countryCodeVal == "US") {
+            this.vendorForm.get("pincode").setValidators([Validators.required, Validators.minLength(5), Validators.maxLength(5)]);
+        }
+        else {
+            this.vendorForm.get("pincode").setValidators([Validators.required, Validators.minLength(6), Validators.maxLength(6)]);
+        }
+
+        this.vendorForm.get("pincode").updateValueAndValidity();
+    }
+
+    updateVendorFields() {
+        this.vendorForm.get("vendorName").setValue(this.vendorDetails.vendorName);
+        this.vendorForm.get("contactPerson").setValue(this.vendorDetails.contactPerson);
+        this.vendorForm.get("mobileNum").setValue(this.vendorDetails.mobileNum);
+        this.vendorForm.get("telephoneNum").setValue(this.vendorDetails.telephoneNum);
+        this.vendorForm.get("emailId").setValue(this.vendorDetails.emailId);
+
+        this.vendorForm.get("address1").setValue(this.vendorDetails.address1);
+        this.vendorForm.get("address2").setValue(this.vendorDetails.address2);
+        this.vendorForm.get("city").setValue(this.vendorDetails.city);
+        this.vendorForm.get("street").setValue(this.vendorDetails.street);
+        this.vendorForm.get("pincode").setValue(this.vendorDetails.pincode);
+        this.vendorForm.get("countryCode").setValue(this.vendorDetails.countryCode);
+        this.vendorForm.get("stateCode").setValue(this.vendorDetails.stateCode);
+
+        this.vendorForm.get("panNum").setValue(this.vendorDetails.panNum);
+        this.vendorForm.get("gstNum").setValue(this.vendorDetails.gstNum);
+        this.vendorForm.get("pfNum").setValue(this.vendorDetails.pfNum);
+        this.vendorForm.get("esiNum").setValue(this.vendorDetails.esiNum);
+        this.vendorForm.get("cinNum").setValue(this.vendorDetails.cinNum);
+        this.vendorForm.get("isSez").setValue(this.vendorDetails.isSez);
+        this.vendorForm.get("isRcmApplicable").setValue(this.vendorDetails.isRcmApplicable);
+        this.vendorForm.get("isMsmedRegistered").setValue(this.vendorDetails.isMsmedRegistered);
+        this.vendorForm.get("hasTdsLower").setValue(this.vendorDetails.hasTdsLower);
+        this.vendorForm.get("lutNum").setValue(this.vendorDetails.lutNum);
+        this.vendorForm.get("lutDate").setValue(this.vendorDetails.lutDate ? new Date(this.vendorDetails.lutDate) : null);
+        this.vendorForm.get("otherDocDesc").setValue(this.vendorDetails.otherDocDesc);
+
+        this.vendorForm.get("selectedVendorGroup").setValue(this.vendorDetails.groupCode ? this.vendorDetails.groupCode : null);
+        this.vendorForm.get("selectedCompanyCode").setValue(this.vendorDetails.companyCode ? this.vendorDetails.companyCode : null);
+        this.vendorForm.get("selectedCurrency").setValue(this.vendorDetails.currencyCode ? this.vendorDetails.currencyCode : null);
+
+
+        if (globalConstant.userDetails.isFinance) {
+            this.vendorForm.get("selectedVendorGroup").setValidators([Validators.required]);
+            this.vendorForm.get("selectedVendorGroup").updateValueAndValidity();
+
+            this.vendorForm.get("selectedCompanyCode").setValidators([Validators.required]);
+            this.vendorForm.get("selectedCompanyCode").updateValueAndValidity();
+
+            this.vendorForm.get("selectedCurrency").setValidators([Validators.required]);
+            this.vendorForm.get("selectedCurrency").updateValueAndValidity();
+
+            this.vendorForm.get("remarks").setValidators([Validators.required]);
+            this.vendorForm.get("remarks").updateValueAndValidity();
+        }
+
+        this.updatePincodeValidation();
+
+        this.updateLUTValidations(this.vendorForm.get("lutNum").value);
+
+        this.vendorForm.get("lutNum").valueChanges.subscribe(val => {
+            this.updateLUTValidations(val);
+        });
+    }
+
+    updateLUTValidations(lutVal: string) {
+
+        if (lutVal && lutVal.trim()) {
+            this.vendorForm.get("lutDate").enable();
+            this.vendorForm.get("lutDate").setValidators([Validators.required]);
+        }
+        else {
+            this.vendorForm.get("lutDate").setValue(null);
+            this.vendorForm.get("lutDate").disable();
+            this.vendorForm.get("lutDate").setValidators([]);
+        }
+
+        this.vendorForm.get("lutDate").updateValueAndValidity();
+    }
 
     loadDropDown() {
         this.vendoraccGroupList = [];
 
         if (this.vendorApprovalInitDetails && this.vendorApprovalInitDetails.accGroupMasterList &&
             this.vendorApprovalInitDetails.accGroupMasterList.length > 0) {
-            this.vendoraccGroupList = this.vendorApprovalInitDetails.accGroupMasterList;
+            this.vendoraccGroupList = this.vendorApprovalInitDetails.accGroupMasterList.concat();
         }
         this.companyCodeList = [];
         if (this.vendorApprovalInitDetails && this.vendorApprovalInitDetails.companyCodeMasterList &&
             this.vendorApprovalInitDetails.companyCodeMasterList.length > 0) {
-            this.companyCodeList = this.vendorApprovalInitDetails.companyCodeMasterList;
+            this.companyCodeList = this.vendorApprovalInitDetails.companyCodeMasterList.concat();
         }
         this.currencyList = [];
         if (this.vendorApprovalInitDetails && this.vendorApprovalInitDetails.currencyMasterList &&
             this.vendorApprovalInitDetails.currencyMasterList.length > 0) {
-            this.currencyList = this.vendorApprovalInitDetails.currencyMasterList;
+            this.currencyList = this.vendorApprovalInitDetails.currencyMasterList.concat();
         }
 
         this.withholdTypeList = [];
         if (this.vendorApprovalInitDetails && this.vendorApprovalInitDetails.withholdTypeVOList &&
             this.vendorApprovalInitDetails.withholdTypeVOList.length > 0) {
-            this.withholdTypeList = this.vendorApprovalInitDetails.withholdTypeVOList;
+            this.withholdTypeList = this.vendorApprovalInitDetails.withholdTypeVOList.concat();
         }
 
-        this.selectedCompanyCode = this.vendorApprovalInitDetails.vendorMasterDetails &&
-            this.vendorApprovalInitDetails.vendorMasterDetails.companyCode ?
-            this.vendorApprovalInitDetails.vendorMasterDetails.companyCode : undefined;
+        this.countriesList = [];
+        if (this.vendorApprovalInitDetails && this.vendorApprovalInitDetails.countriesList &&
+            this.vendorApprovalInitDetails.countriesList.length > 0) {
+            this.countriesList = this.vendorApprovalInitDetails.countriesList.concat();
+        }
 
-        this.selectedCurrency = this.vendorApprovalInitDetails.vendorMasterDetails &&
-            this.vendorApprovalInitDetails.vendorMasterDetails.currencyCode ?
-            this.vendorApprovalInitDetails.vendorMasterDetails.currencyCode : undefined;
+        this.regionMasterVOList = [];
+        if (this.vendorApprovalInitDetails && this.vendorApprovalInitDetails.regionMasterVOList &&
+            this.vendorApprovalInitDetails.regionMasterVOList.length > 0 && this.vendorApprovalInitDetails.vendorMasterDetails) {
 
-        this.selectedVendorGroup = this.vendorApprovalInitDetails.vendorMasterDetails &&
-            this.vendorApprovalInitDetails.vendorMasterDetails.groupCode ?
-            this.vendorApprovalInitDetails.vendorMasterDetails.groupCode : undefined;
+            let cntryCode = this.vendorApprovalInitDetails.vendorMasterDetails.countryCode ? this.vendorApprovalInitDetails.vendorMasterDetails.countryCode : null;
+            if (cntryCode) {
+                this.regionMasterVOList = this.vendorApprovalInitDetails.regionMasterVOList.filter(r => r.countryCode == cntryCode);
+            }
+        }
+
+
+        // this.selectedCompanyCode = this.vendorApprovalInitDetails.vendorMasterDetails &&
+        //     this.vendorApprovalInitDetails.vendorMasterDetails.companyCode ?
+        //     this.vendorApprovalInitDetails.vendorMasterDetails.companyCode : undefined;
+
+        // this.selectedCurrency = this.vendorApprovalInitDetails.vendorMasterDetails &&
+        //     this.vendorApprovalInitDetails.vendorMasterDetails.currencyCode ?
+        //     this.vendorApprovalInitDetails.vendorMasterDetails.currencyCode : undefined;
+
+        // this.selectedVendorGroup = this.vendorApprovalInitDetails.vendorMasterDetails &&
+        //     this.vendorApprovalInitDetails.vendorMasterDetails.groupCode ?
+        //     this.vendorApprovalInitDetails.vendorMasterDetails.groupCode : undefined;
     }
+
     onHoldTypeSelected(holdType) {
         this.withholdTaxList = [];
         if (this.vendorApprovalInitDetails && this.vendorApprovalInitDetails.withholdTaxVOList &&
@@ -501,6 +721,41 @@ export class VendorApprovalComponent implements OnInit {
         if (this._sidebarExpansionSubscription) {
             this._sidebarExpansionSubscription.unsubscribe();
         }
+        this._appService.isExistingVendor = false;
+        this._appService.selectedVendor = null;
+    }
+
+    get f() { return this.vendorForm.controls; }
+
+    getUpdatedVendorDetails() {
+
+        if (this.isEditable) {
+            this.vendorDetails.vendorName = this.vendorForm.get("vendorName").value ? this.vendorForm.get("vendorName").value.trim() : null;
+            this.vendorDetails.contactPerson = this.vendorForm.get("contactPerson").value ? this.vendorForm.get("contactPerson").value.trim() : null;
+            this.vendorDetails.mobileNum = this.vendorForm.get("mobileNum").value;
+            this.vendorDetails.telephoneNum = this.vendorForm.get("telephoneNum").value;
+            this.vendorDetails.emailId = this.vendorForm.get("emailId").value;
+
+            this.vendorDetails.address1 = this.vendorForm.get("address1").value ? this.vendorForm.get("address1").value.trim() : null;
+            this.vendorDetails.address2 = this.vendorForm.get("address2").value ? this.vendorForm.get("address2").value.trim() : null;
+            this.vendorDetails.city = this.vendorForm.get("city").value ? this.vendorForm.get("city").value.trim() : null;
+            this.vendorDetails.street = this.vendorForm.get("street").value ? this.vendorForm.get("street").value.trim() : null;
+            this.vendorDetails.pincode = this.vendorForm.get("pincode").value;
+            this.vendorDetails.countryCode = this.vendorForm.get("countryCode").value;
+            this.vendorDetails.stateCode = this.vendorForm.get("stateCode").value;
+
+            this.vendorDetails.panNum = this.vendorForm.get("panNum").value;
+            this.vendorDetails.gstNum = this.vendorForm.get("gstNum").value;
+            this.vendorDetails.pfNum = this.vendorForm.get("pfNum").value;
+            this.vendorDetails.esiNum = this.vendorForm.get("esiNum").value;
+            this.vendorDetails.cinNum = this.vendorForm.get("cinNum").value;
+            this.vendorDetails.lutNum = this.vendorForm.get("lutNum").value;
+            this.vendorDetails.lutDate = this.vendorForm.get("lutDate").value ? this._datePipe.transform(this.vendorForm.get("lutDate").value, this._appService.dbDateFormat) : null;
+
+            this.vendorDetails.otherDocDesc = this.vendorForm.get("otherDocDesc").value;
+        }
+
+        return this.vendorDetails;
     }
 
     ngOnInit() {
@@ -510,14 +765,52 @@ export class VendorApprovalComponent implements OnInit {
         this._sidebarExpansionSubscription = this._homeService.isSidebarCollapsed.subscribe(data => {
             this.isDashboardCollapsed = !data;
         });
-        if (globalConstant.userDetails.userRoles[0].roleCode == 'finance') {
+
+        if (globalConstant.userDetails.isFinance) {
             this.isFinance = true;
             this.canApprove = true;
+        }
 
-        } else if (globalConstant.userDetails.userRoles[0].roleCode == 'procurement') {
+        if (globalConstant.userDetails.isProcurement) {
             this.isProcurement = true;
             this.canApprove = true;
         }
+
+        this.vendorForm = this._formBuilder.group({
+            vendorName: [{ value: null, disabled: true }, [Validators.required, Validators.nullValidator]],
+            contactPerson: [{ value: null, disabled: true }],
+            mobileNum: [{ value: null, disabled: true }, [Validators.required, Validators.minLength(10), Validators.nullValidator]],
+            telephoneNum: { value: null, disabled: true },
+            emailId: [{ value: null, disabled: true }, [Validators.required, Validators.email, Validators.nullValidator]],
+
+            address1: [{ value: null, disabled: true }, [Validators.required]],
+            address2: [{ value: null, disabled: true }],
+            city: [{ value: null, disabled: true }, [Validators.required]],
+            street: [{ value: null, disabled: true }, [Validators.required]],
+            pincode: [{ value: null, disabled: true }, [Validators.required, Validators.minLength(6), Validators.maxLength(6)]],
+            stateCode: [{ value: null, disabled: true }, [Validators.required]],
+            countryCode: [{ value: null, disabled: true }, [Validators.required]],
+
+            panNum: [{ value: null, disabled: true }, [Validators.required, Validators.minLength(10)]],
+            gstNum: [{ value: null, disabled: true }],
+            pfNum: [{ value: null, disabled: true }],
+            esiNum: [{ value: null, disabled: true }],
+            cinNum: [{ value: null, disabled: true }],
+            isSez: [false],
+            isRcmApplicable: [false],
+            isMsmedRegistered: [false],
+            hasTdsLower: [false],
+            lutNum: [{ value: null, disabled: true }],
+            lutDate: [{ value: null, disabled: true }],
+            otherDocDesc: [{ value: null, disabled: true }],
+
+            selectedVendorGroup: null,
+            selectedCompanyCode: null,
+            selectedCurrency: null,
+            withholdType: null,
+            withholdTax: null,
+            remarks: null
+        });
 
         setTimeout(() => {
             this.loadInitData();

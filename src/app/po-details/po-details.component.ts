@@ -19,7 +19,7 @@ export class PoDetailsComponent implements OnInit {
     _initDetails: PODetailsResultsModel = null;
     itemsList: ItemDisplayModel[] = [];
 
-    headerArr: string[] = ['Item No.', 'Item Desc', "HSN/SAC", 'Order Qty', 'Supplied Qty', 'Balance Qty', 
+    headerArr: string[] = ['Item No.', 'Item Desc', "Invoice Number", "HSN/SAC", 'Order Qty', 'Supplied Qty', 'Balance Qty', 
                             'Invoice Qty', 'Currency', 'Rate', 'Amount'];
 
     currency: string = "";

@@ -1,3 +1,4 @@
+import { SidebarService } from './sidebar.service';
 import { globalConstant } from './../common/global-constant';
 import { Component, OnInit } from '@angular/core';
 import { AppService } from '../app.service';
@@ -40,6 +41,7 @@ export class SidebarComponent implements OnInit {
         private _router: Router,
         private _adalService: MsAdalAngular6Service,
         private _loginService: LoginService,
+        private _sidebarService: SidebarService,
         private _homeService: HomeService) { }
 
     onCollapseClick() {
@@ -102,29 +104,31 @@ export class SidebarComponent implements OnInit {
     }
 
     onLogoutClick() {
-        this._loginService.logout().subscribe(
-            (response) => {
-                localStorage.clear();
-                if(this._appService.isSSORequired) {
-                    this._adalService.logout();
-                }
-                else {
-                    this._router.navigate([this._appService.routingConstants.login]);
-                }
-            },
-            (error) => {
-                console.log("logout Falied");
-                console.log(error);
-                localStorage.clear();
+        // this._loginService.logout().subscribe(
+        //     (response) => {
+        //         localStorage.clear();
+        //         if(this._appService.isSSORequired) {
+        //             this._adalService.logout();
+        //         }
+        //         else {
+        //             this._router.navigate([this._appService.routingConstants.login]);
+        //         }
+        //     },
+        //     (error) => {
+        //         console.log("logout Falied");
+        //         console.log(error);
+        //         localStorage.clear();
 
-                if(this._appService.isSSORequired) {
-                    this._adalService.logout();
-                }
-                else {
-                    this._router.navigate([this._appService.routingConstants.login]);
-                }
-            }
-        )
+        //         if(this._appService.isSSORequired) {
+        //             this._adalService.logout();
+        //         }
+        //         else {
+        //             this._router.navigate([this._appService.routingConstants.login]);
+        //         }
+        //     }
+        // )
+
+        this._sidebarService.logout();
     }
 
     ngOnInit() {

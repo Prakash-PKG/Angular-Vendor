@@ -177,14 +177,19 @@
                             <div class="errortxt">{{ paymentStatusErrMsg }}</div>
                         </td>
                         <td>
-                            <div>GRN/SES No: {{ (invoiceDetails && invoiceDetails.grnSesNumber) ? invoiceDetails.grnSesNumber : "" }}</div>
+                            <div><span style="font-weight: bold">GRN/SES No: </span>{{ (invoiceDetails && invoiceDetails.grnSesNumber) ? invoiceDetails.grnSesNumber : "" }}</div>
                         </td>
                         <td>
                             <div>
                                 <mat-form-field class="search-row-element remarks" *ngIf = "isForPayments == true" >
                                     <input type="text" matInput placeholder="Remarks" maxlength="50" (blur) = "onRemarksBlur()" [(ngModel)]="remarks" autocomplete="off">
                                 </mat-form-field>
-                                <span *ngIf = "isForPayments == false">Remarks: {{ getRemarks() }}</span>
+                                <div *ngIf = "isForPayments == false">
+                                    <div style="font-weight: bold">Remarks: </div>
+                                    <div *ngFor="let rmk of remarksList">
+                                        {{ rmk }}
+                                    </div>
+                                </div>
                             </div>
                             <div class="errortxt">{{ remarksErrMsg }}</div>
                         </td>
@@ -211,9 +216,9 @@
                             <td  class="eightcharacters">
                                 <span>{{ apprlevel.status }}</span>
                             </td>
-                            <td  class="tencharacters">
+                            <!--<td  class="tencharacters">
                                 <span>{{ apprlevel.date }}</span>
-                            </td>
+                            </td>-->
                             <td  class="tencharacters remarks">
                                 <span  matTooltip="{{apprlevel.remarks}}">{{ apprlevel.remarks }}</span>
                             </td>
@@ -247,15 +252,24 @@
                     <td class="eightcharacters">
                         <span>{{ item.hsn }}</span>
                     </td>
+                    <td *ngIf = "isFromToMandatory == true">
+                        {{ getFormattedDate(item.fromDate) }}
+                    </td>
+                    <td *ngIf = "isFromToMandatory == true">
+                        {{ getFormattedDate(item.toDate) }}
+                    </td>
+                    <td class="eightcharacters" *ngIf = "isFromToMandatory == true">
+                        {{ item.personnelNumber }}
+                    </td>
                     <td *ngIf="isPOBasedInvoice == true" class="tencharacters">
                         <span>{{ item.orderedUnits }}</span>
                     </td>
-                    <td *ngIf="isPOBasedInvoice == true" class="tencharacters">
+                    <!--<td *ngIf="isPOBasedInvoice == true" class="tencharacters">
                         <span>{{ item.suppliedUnits }}</span>
                     </td>
                     <td *ngIf="isPOBasedInvoice == true" class="tencharacters">
                         <span>{{ item.consumedUnits }}</span>
-                    </td>
+                    </td>-->
                     <td style="width:4em;">
                         <span>{{ item.invoiceUnits }}</span>
                     </td>

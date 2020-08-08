@@ -54,6 +54,9 @@ textarea {
 .mat-radio-button.mat-accent .mat-radio-ripple .mat-ripple-element {
   background-color: rgba(36, 244, 213, 0.26) !important;
 }
+.black-overlay, .loading-text{
+  position: fixed!important;
+}
 
 // --------------------------------------------------------------css for data table starts here-----------------------------------------------------
 .dataTable tbody tr td.amount {

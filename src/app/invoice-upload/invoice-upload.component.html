@@ -25,7 +25,7 @@
             </mat-form-field>
 
             <mat-form-field class="search-row-element">
-                <input type="text" matInput formControlName="invoiceNumber" placeholder="Invoice No." autocomplete="off"
+                <input type="text" matInput formControlName="invoiceNumber" placeholder="Invoice No." maxlength="16" autocomplete="off"
                     (blur)="onInvoiceBlur()">
                 <mat-error *ngIf="( isSubmitted ) && f?.invoiceNumber?.errors?.required">Invoice No. is required 
                 </mat-error>
@@ -113,8 +113,8 @@
                     </tr>
                 </thead>
                 <tbody formArrayName="itemsList">
-                    <tr *ngFor="let item of invoiceUploadForm.get('itemsList')?.controls; let itemInd = index"
-                        [formGroupName]="itemInd" style="  vertical-align: baseline;">
+                    <tr *ngFor="let item of invoiceUploadForm.get('itemsList')?.controls; let itemInd = index; "
+                        [formGroupName]="itemInd" style="vertical-align: baseline;">
                         <td style="width:5em;">
                             <span *ngIf="selectedInvoiceType == 'po'">{{ item.get("itemNumber").value }}</span>
                             <input *ngIf="selectedInvoiceType == 'non-po'" class="inv-qty"
@@ -152,12 +152,35 @@
                                     numbers only</div>
                             </div>
                         </td>
+                        <td *ngIf = "isFromToMandatory == true">
+                            <mat-form-field class="search-row-element date">
+                                <input matInput [matDatepicker]='fromDate_itemInd' formControlName="fromDate" placeholder="From Date"
+                                    autocomplete="off">
+                                <mat-datepicker-toggle matSuffix [for]="fromDate_itemInd"></mat-datepicker-toggle>
+                                <mat-datepicker #fromDate_itemInd></mat-datepicker>
+                                <mat-error *ngIf="( isSubmitted ) && fa.controls[itemInd].controls.fromDate.errors?.required">Inv Date is required
+                                </mat-error>
+                            </mat-form-field>
+                        </td>
+                        <td *ngIf = "isFromToMandatory == true">
+                            <mat-form-field class="search-row-element date">
+                                <input matInput [matDatepicker]="toDate_itemInd" formControlName="toDate" placeholder="To Date"
+                                    autocomplete="off">
+                                <mat-datepicker-toggle matSuffix [for]="toDate_itemInd"></mat-datepicker-toggle>
+                                <mat-datepicker #toDate_itemInd></mat-datepicker>
+                                <mat-error *ngIf="( isSubmitted ) && fa.controls[itemInd].controls.toDate.errors?.required">Inv Date is required
+                                </mat-error>
+                            </mat-form-field>
+                        </td>
+                        <td *ngIf = "isFromToMandatory == true">
+                            <span>{{ item.get("personnelNumber").value }}</span>
+                        </td>
                         <td *ngIf="selectedInvoiceType == 'po'" style="width:6em;">
                             <span>{{ item.get("orderedUnits").value }}</span>
                         </td>
-                        <td *ngIf="selectedInvoiceType == 'po'" style="width:6em;">
+                        <!--<td *ngIf="selectedInvoiceType == 'po'" style="width:6em;">
                             <span>{{ item.get("suppliedUnits").value }}</span>
-                        </td>
+                        </td>-->
                         <td *ngIf="selectedInvoiceType == 'po'" style="width:6em;">
                             <span>{{ item.get("balanceUnits").value }}</span>
                         </td>
