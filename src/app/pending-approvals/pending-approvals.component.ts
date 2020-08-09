@@ -65,7 +65,8 @@ export class PendingApprovalsComponent implements OnInit {
         let req: PendingApprovalRequestModel = {
             employeeId: null,
             approvalLevels: [],
-            departments: []
+            departments: [],
+            projectIds: []
         };
 
         if(globalConstant.userDetails.isPurchaseOwner) {
@@ -76,6 +77,7 @@ export class PendingApprovalsComponent implements OnInit {
         if(globalConstant.userDetails.isFunctionalHead) {
             req.approvalLevels.push(this._appService.approvalLevels.functionalHead);
             req.departments = req.departments.concat(globalConstant.userDetails.functionalHeadDepts);
+            req.projectIds = req.projectIds.concat(globalConstant.userDetails.functionalHeadProjects);
         }
 
         if(globalConstant.userDetails.isProcurement) {
