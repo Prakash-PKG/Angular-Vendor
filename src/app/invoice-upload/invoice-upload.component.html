@@ -46,6 +46,10 @@
                     formControlName="remarks" autocomplete="off">
                 <mat-error *ngIf="( isSubmitted ) && f?.remarks?.errors?.required">Remarks is required</mat-error>
             </mat-form-field>
+
+            <div>
+                Project Id: {{ (selectedPOItem) ? selectedPOItem.projectId : "" }}
+            </div>
         </div>
         <div class="search-row">
             <mat-form-field *ngIf="selectedInvoiceType == 'non-po'">

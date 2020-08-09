@@ -303,6 +303,7 @@ export class InvoiceApprovalsComponent implements OnInit {
                     purchaseOrderId: this.initDetails.approvalDetails.purchaseOrderId,
                     invoiceId: this.initDetails.approvalDetails.invoiceId,
                     departmentId: this.initDetails.approvalDetails.departmentId,
+                    projectId: this.initDetails.approvalDetails.projectId,
                     statusCode: null,
                     approverId: globalConstant.userDetails.userId,
                     approvalLevel: this.initDetails.approvalDetails.approvalLevel,

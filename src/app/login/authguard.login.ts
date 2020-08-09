@@ -62,6 +62,8 @@ export class AuthGuardLogin implements CanActivate {
             globalConstant.userDetails.isEmpanelment = false;
             globalConstant.userDetails.isTempVendor = false;
             globalConstant.userDetails.poDepts = [];
+            globalConstant.userDetails.functionalHeadDepts = [];
+            globalConstant.userDetails.functionalHeadProjects = [];
 
             if(globalConstant.userDetails.userRoles && globalConstant.userDetails.userRoles.length > 0) {
                 let vendorRoles = globalConstant.userDetails.userRoles.filter(r => globalConstant.vendorRoles.indexOf(r.roleCode) > -1);
@@ -104,6 +106,11 @@ export class AuthGuardLogin implements CanActivate {
                         let curDepartment: string = functionalHeadRoles[fr]["departmentId"];
                         if(globalConstant.userDetails.functionalHeadDepts.indexOf(curDepartment) < 0) {
                             globalConstant.userDetails.functionalHeadDepts.push(curDepartment);
+                        }
+
+                        let curProject: string = functionalHeadRoles[fr]["projectId"];
+                        if(globalConstant.userDetails.functionalHeadProjects.indexOf(curProject) < 0) {
+                            globalConstant.userDetails.functionalHeadProjects.push(curProject);
                         }
                     }
                 }

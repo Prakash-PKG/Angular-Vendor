@@ -24,6 +24,7 @@ export const globalConstant : any = {
         isTempVendor: false,
         poDepts: [],
         functionalHeadDepts: [],
+        functionalHeadProjects: [],
         invDepts: []
     }
 }
