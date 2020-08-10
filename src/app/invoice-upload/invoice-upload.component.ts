@@ -983,9 +983,9 @@ export class InvoiceUploadComponent implements OnInit {
                 unitPrice: itemsFa.controls[i].get("unitPrice").value,
                 totalAmt: itemsFa.controls[i].get("unitsAmt").value,
                 hsn: itemsFa.controls[i].get("hsn").value,
-                fromDate: itemsFa.controls[i].get("fromDate").value ? this._appService.getDBFormattedDate(itemsFa.controls[i].get("fromDate").value) : null,
-                toDate: itemsFa.controls[i].get("toDate").value ? this._appService.getDBFormattedDate(itemsFa.controls[i].get("toDate").value) : null,
-                personnelNumber: itemsFa.controls[i].get("personnelNumber").value,
+                fromDate: (this.selectedInvoiceType == 'po' && itemsFa.controls[i].get("fromDate").value) ? this._appService.getDBFormattedDate(itemsFa.controls[i].get("fromDate").value) : null,
+                toDate: (this.selectedInvoiceType == 'po' && itemsFa.controls[i].get("toDate").value) ? this._appService.getDBFormattedDate(itemsFa.controls[i].get("toDate").value) : null,
+                personnelNumber: (this.selectedInvoiceType == 'po') ? itemsFa.controls[i].get("personnelNumber").value : null,
                 remarks: null,
                 createdBy: itemsFa.controls[i].get("createdBy").value,
                 createdDate: itemsFa.controls[i].get("createdDate").value
