@@ -11,6 +11,10 @@
         <mat-radio-button class="tp-radio-button" value="non-po" (change)="onInvoiceTypeChange($event)">
             Non PO Invoice
         </mat-radio-button>
+
+        <span *ngIf="selectedInvoiceType == 'po'" style="margin-left: 50px">
+            <b>Project Name: </b> {{ getPOProjectName() }}
+        </span>
     </mat-radio-group>
 
     <form [formGroup]="invoiceUploadForm">
@@ -46,10 +50,6 @@
                     formControlName="remarks" autocomplete="off">
                 <mat-error *ngIf="( isSubmitted ) && f?.remarks?.errors?.required">Remarks is required</mat-error>
             </mat-form-field>
-
-            <div>
-                Project Id: {{ (selectedPOItem) ? selectedPOItem.projectId : "" }}
-            </div>
         </div>
         <div class="search-row">
             <mat-form-field *ngIf="selectedInvoiceType == 'non-po'">

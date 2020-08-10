@@ -136,6 +136,15 @@ export class InvoiceUploadComponent implements OnInit {
 
     get fa() { return <FormArray>this.invoiceUploadForm.controls['itemsList']; }
 
+    getPOProjectName() {
+        let projectName: string = "";
+        if(this.selectedPOItem && this.selectedPOItem.projectName && this.selectedPOItem.projectId) {
+            projectName = this.selectedPOItem.projectName + "( " + this.selectedPOItem.projectId + " )";
+        }
+
+        return projectName;
+    }
+
     onCancelClick() {
         this._router.navigate([this._appService.routingConstants.invoiceSearch]);
     }
