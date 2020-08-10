@@ -67,6 +67,8 @@ export class InvoiceDetailsComponent implements OnInit {
 
     isFromToMandatory: boolean = false;
 
+    isSesSubContractPO: boolean = false;
+
     constructor(private _homeService: HomeService,
                 private _router: Router,
                 public _dialog: MatDialog,
@@ -274,6 +276,8 @@ export class InvoiceDetailsComponent implements OnInit {
         this.financeLevel = null;
 
         if(this.invoiceDetails && this.invoiceDetails.invoiceId) {
+            this.isSesSubContractPO = this.invoiceDetails.documentType == 'ZHR' ? true : false;
+
             this.currency = this.invoiceDetails.currencyType;
 
             if(!this.invoiceDetails.purchaseOrderId) {
@@ -328,24 +332,27 @@ export class InvoiceDetailsComponent implements OnInit {
 
                 if(this._initDetails.approvalsList && this._initDetails.approvalsList.length > 0) {
                     this.approvalLevelList = [];
-                    let poApprovalModel: InvoiceApprovalModel = this._initDetails.approvalsList.find(a => a.approvalLevel == this._appService.approvalLevels.po);
-                    if(poApprovalModel != null) {
-                        this.uploadLevel = {
-                            levelName: "Upload",
-                            status: "Submitted",
-                            date: this._appService.getFormattedDate(poApprovalModel.createdDate),
-                            remarks: this.invoiceDetails.remarks
-                        };
-                        this.approvalLevelList.push(this.uploadLevel);
 
-                        let poStatusCode = (poApprovalModel.statusCode == 'approved') ? 'received' : poApprovalModel.statusCode;
-                        this.poLevel = {
-                            levelName: "Buyer",
-                            status: this._appService.statusNames[poStatusCode],
-                            date: (poApprovalModel.statusCode == this._appService.statusCodes.approved || poApprovalModel.statusCode == this._appService.statusCodes.rejected) ? this._appService.getFormattedDate(poApprovalModel.updatedDate) : "",
-                            remarks: poApprovalModel.remarks
-                        };
-                        this.approvalLevelList.push(this.poLevel);
+                    if(this.isSesSubContractPO == false) {
+                        let poApprovalModel: InvoiceApprovalModel = this._initDetails.approvalsList.find(a => a.approvalLevel == this._appService.approvalLevels.po);
+                        if(poApprovalModel != null) {
+                            this.uploadLevel = {
+                                levelName: "Upload",
+                                status: "Submitted",
+                                date: this._appService.getFormattedDate(poApprovalModel.createdDate),
+                                remarks: this.invoiceDetails.remarks
+                            };
+                            this.approvalLevelList.push(this.uploadLevel);
+
+                            let poStatusCode = (poApprovalModel.statusCode == 'approved') ? 'received' : poApprovalModel.statusCode;
+                            this.poLevel = {
+                                levelName: "Buyer",
+                                status: this._appService.statusNames[poStatusCode],
+                                date: (poApprovalModel.statusCode == this._appService.statusCodes.approved || poApprovalModel.statusCode == this._appService.statusCodes.rejected) ? this._appService.getFormattedDate(poApprovalModel.updatedDate) : "",
+                                remarks: poApprovalModel.remarks
+                            };
+                            this.approvalLevelList.push(this.poLevel);
+                        }
                     }
 
                     let functionalHeadApprovalModel: InvoiceApprovalModel = this._initDetails.approvalsList.find(a => a.approvalLevel == this._appService.approvalLevels.functionalHead);
