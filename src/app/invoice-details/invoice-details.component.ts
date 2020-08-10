@@ -75,6 +75,15 @@ export class InvoiceDetailsComponent implements OnInit {
                 private _invoiceDetailsService: InvoiceDetailsService,
                 private _appService: AppService) { }
 
+    getPOProjectName() {
+        let projectName: string = "";
+        if(this.invoiceDetails && this.invoiceDetails.projectName && this.invoiceDetails.projectId) {
+            projectName = this.invoiceDetails.projectName + "( " + this.invoiceDetails.projectId + " )";
+        }
+
+        return projectName;
+    }
+
     onAmountPaidBlur() {
         this.amountPaidErrMsg = "";
         let amountPaidVal: any = this.amountPaid;
