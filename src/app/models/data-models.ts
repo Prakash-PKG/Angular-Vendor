@@ -426,6 +426,7 @@ export class ItemModel {
     orderedUnits: string;
     suppliedUnits: string;
     consumedUnits: string;
+    submittedUnits: string;
     invoiceUnits: string;
     unitPrice: string;
     totalAmt: string;

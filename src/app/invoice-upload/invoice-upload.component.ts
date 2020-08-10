@@ -793,7 +793,8 @@ export class InvoiceUploadComponent implements OnInit {
         let unitsAmt = (item.unitPrice && item.invoiceUnits) ? +item.unitPrice * +item.invoiceUnits : null;
         let orderedUnits: number = (item.orderedUnits) ? +item.orderedUnits : 0.000;
         let suppliedUnits: number = (item.suppliedUnits) ? +item.suppliedUnits : 0.000;
-        let balanceUnits: number = orderedUnits - suppliedUnits;
+        let submittedUnits: number = (item.submittedUnits) ? +item.submittedUnits : 0.000;
+        let balanceUnits: number = orderedUnits - suppliedUnits - submittedUnits;
 
         let validatorRequiredArr = (this.isFromToMandatory) ? [Validators.required] : [];
 
@@ -827,36 +828,45 @@ export class InvoiceUploadComponent implements OnInit {
             let balCtrl = group.controls[balanceUnits];
 
             if(this.selectedInvoiceType == 'po') {
-                let existingItem: NotRejectedItemsModel = null;
-                if(this._poItemsResultDetails && this._poItemsResultDetails.notRejectedItemsList && this._poItemsResultDetails.notRejectedItemsList.length > 0) {
-                    let itemNumberCtrl = group.controls[itemNumber];
-                    existingItem = this._poItemsResultDetails.notRejectedItemsList.find(x => x.itemNumber == itemNumberCtrl.value);
-                }
-
-                if(existingItem) {
-                    if (invCtrl.value && balCtrl.value) {
-                        let invUnits: number = +invCtrl.value;
-                        let balUnits: number = +balCtrl.value;
-                        if (invUnits > balUnits) {
-                            return {
-                                invErrMsg: "Invoice units shouldn't greater than Balance units."
-                            };
-                        }
+                if (invCtrl.value && balCtrl.value) {
+                    let invUnits: number = +invCtrl.value;
+                    let balUnits: number = +balCtrl.value;
+                    if (invUnits > balUnits) {
+                        return {
+                            invErrMsg: "Invoice units shouldn't greater than Balance units."
+                        };
                     }
                 }
-                else {
-                    let orderedUnitsCtrl = group.controls[orderedUnits];
+                // let existingItem: NotRejectedItemsModel = null;
+                // if(this._poItemsResultDetails && this._poItemsResultDetails.notRejectedItemsList && this._poItemsResultDetails.notRejectedItemsList.length > 0) {
+                //     let itemNumberCtrl = group.controls[itemNumber];
+                //     existingItem = this._poItemsResultDetails.notRejectedItemsList.find(x => x.itemNumber == itemNumberCtrl.value);
+                // }
 
-                    if (invCtrl.value && orderedUnitsCtrl.value) {
-                        let invUnits: number = +invCtrl.value;
-                        let orderedUnits: number = +orderedUnitsCtrl.value;
-                        if (invUnits > orderedUnits) {
-                            return {
-                                invErrMsg: "Invoice units shouldn't greater than Order units."
-                            };
-                        }
-                    }
-                }
+                // if(existingItem) {
+                //     if (invCtrl.value && balCtrl.value) {
+                //         let invUnits: number = +invCtrl.value;
+                //         let balUnits: number = +balCtrl.value;
+                //         if (invUnits > balUnits) {
+                //             return {
+                //                 invErrMsg: "Invoice units shouldn't greater than Balance units."
+                //             };
+                //         }
+                //     }
+                // }
+                // else {
+                //     let orderedUnitsCtrl = group.controls[orderedUnits];
+
+                //     if (invCtrl.value && orderedUnitsCtrl.value) {
+                //         let invUnits: number = +invCtrl.value;
+                //         let orderedUnits: number = +orderedUnitsCtrl.value;
+                //         if (invUnits > orderedUnits) {
+                //             return {
+                //                 invErrMsg: "Invoice units shouldn't greater than Order units."
+                //             };
+                //         }
+                //     }
+                // }
             }
             else {
                 if (invCtrl.value && balCtrl.value) {
@@ -959,6 +969,7 @@ export class InvoiceUploadComponent implements OnInit {
                 orderedUnits: itemsFa.controls[i].get("orderedUnits").value,
                 suppliedUnits: itemsFa.controls[i].get("suppliedUnits").value,
                 consumedUnits: itemsFa.controls[i].get("consumedUnits").value,
+                submittedUnits: null,
                 invoiceUnits: itemsFa.controls[i].get("invoiceUnits").value,
                 unitPrice: itemsFa.controls[i].get("unitPrice").value,
                 totalAmt: itemsFa.controls[i].get("unitsAmt").value,
