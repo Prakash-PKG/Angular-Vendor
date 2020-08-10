@@ -176,7 +176,14 @@ export class InvoiceApprovalsComponent implements OnInit {
 
                 this.isGrnSesVisible = false;
                 if(globalConstant.userDetails.isFunctionalHead || globalConstant.userDetails.isFinance) {
-                    this.isGrnSesVisible = true;
+                    if(this._appService.selectedPendingApprovalRecord.documentType == 'ZHR') {
+                        if(globalConstant.userDetails.isFinance) {
+                            this.isGrnSesVisible = true;
+                        }
+                    }
+                    else {
+                        this.isGrnSesVisible = true;
+                    }
                 }
 
                 this.updateStatusFlow();
@@ -261,9 +268,20 @@ export class InvoiceApprovalsComponent implements OnInit {
 
         let isGrnSesValid: boolean = true;
         if(this.isGrnSesRequired && (globalConstant.userDetails.isFunctionalHead || globalConstant.userDetails.isFinance)) {
-            if(!this.selectedGrnSesNumber) {
-                isGrnSesValid = false;
-                this.grnSesErrMsg = "GRN/SES No. is not available.";
+            
+            if(this._appService.selectedPendingApprovalRecord.documentType == 'ZHR') {
+                if(globalConstant.userDetails.isFinance) {
+                    if(!this.selectedGrnSesNumber) {
+                        isGrnSesValid = false;
+                        this.grnSesErrMsg = "GRN/SES No. is not available.";
+                    }
+                }
+            }
+            else {
+                if(!this.selectedGrnSesNumber) {
+                    isGrnSesValid = false;
+                    this.grnSesErrMsg = "GRN/SES No. is not available.";
+                }
             }
         }
 
@@ -348,7 +366,7 @@ export class InvoiceApprovalsComponent implements OnInit {
             panelClass: 'dialog-box',
             width: '550px',
             data: <MessageDialogModel>{
-                title: "Invoice Upload Action",
+                title: "Invoice Approval Action",
                 message: msg
             }
         });

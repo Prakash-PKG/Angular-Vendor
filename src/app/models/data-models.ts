@@ -328,6 +328,7 @@ export class PendingApprovalsModel {
     departmentId: string;
     projectId: string;
     grnSesNumber: string;
+    documentType: string;
     approverId: string;
     approvalLevel: string;
     statusCode: string;
