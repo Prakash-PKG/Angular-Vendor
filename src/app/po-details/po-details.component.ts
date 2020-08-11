@@ -4,6 +4,7 @@ import { PODetailsModel, PODetailsRequestModel, BusyDataModel,
 import { AppService } from './../app.service';
 import { Component, OnInit } from '@angular/core';
 import { HomeService } from '../home/home.service';
+import { Router } from '@angular/router';
 
 @Component({
     selector: 'app-po-details',
@@ -27,8 +28,13 @@ export class PoDetailsComponent implements OnInit {
     totalAmount: number = 0;
 
     constructor(private _homeService: HomeService,
+                private _router: Router,
                 private _poDetailsService: PoDetailsService,
                 private _appService: AppService) { }
+
+    onBackBtnClick() {
+        this._router.navigate([this._appService.routingConstants.posearch]);
+    }
 
     getFormattedDate(dtStr: string) {
         if(dtStr) {

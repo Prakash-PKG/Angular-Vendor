@@ -23,9 +23,9 @@ export class InvoiceDetailsComponent implements OnInit {
     statusHeaderArr: string[] = ['Stages', 'Status', 'Remarks'];
     headerArr: string[] = [];
 
-    poInvHeaderArr: string[] = ['Item No.', 'Item Desc', "UOM", "HSN/SAC", "From Date", "To Date", "Personnel Number", 'Order Units', 'Inv Units', 'Curr', 'Rate', 'Amount'];
+    poInvHeaderArr: string[] = ['Item No.', 'Item Desc', "HSN/SAC", "From Date", "To Date", "Personnel Number", 'Order Units', "UOM", 'Inv Units', 'Curr', 'Rate', 'Amount'];
 
-    poInvHeaderArrWithoutDates: string[] = ['Item No.', 'Item Desc', "UOM", "HSN/SAC", 'Order Units', 'Inv Units', 'Curr', 'Rate', 'Amount'];
+    poInvHeaderArrWithoutDates: string[] = ['Item No.', 'Item Desc', "HSN/SAC", 'Order Units', "UOM", 'Inv Units', 'Curr', 'Rate', 'Amount'];
 
     nonPoInvHeaderArr: string[] = ['Item No.', 'Item Desc', "HSN/SAC", 'Inv Units', 'Curr', 'Rate', 'Amount'];
 
@@ -74,6 +74,15 @@ export class InvoiceDetailsComponent implements OnInit {
                 public _dialog: MatDialog,
                 private _invoiceDetailsService: InvoiceDetailsService,
                 private _appService: AppService) { }
+
+    getPOProjectName() {
+        let projectName: string = "";
+        if(this.invoiceDetails && this.invoiceDetails.projectName && this.invoiceDetails.projectId) {
+            projectName = this.invoiceDetails.projectName + "( " + this.invoiceDetails.projectId + " )";
+        }
+
+        return projectName;
+    }
 
     onAmountPaidBlur() {
         this.amountPaidErrMsg = "";

@@ -276,7 +276,7 @@ export class AppService {
         vendorRegistrationSaveFailure: "Due to technical problems not able to proceed further. Please try later.",
         vendorRegistrationSubmitSuccessMsg: "Vendor details submitted successfully",
         vendorApprovalSubmitSuccessMsg: "Vendor details approved successfully",
-        vendorApprovalFailure: "Vendor approval is failed",
+        vendorApprovalFailure: "Vendor approval/receiving is failed",
         vendorSendBackSuccess: "Vendor Details are send back for correction",
         vendorSendBackFailure: "Vendor details sent back for correction failed",
         vendorRegistrationFormInvalid: "Your Form Contains Error. Please Check",

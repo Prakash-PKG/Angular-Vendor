@@ -65,9 +65,9 @@ export class InvoiceUploadComponent implements OnInit {
 
     headerArr: string[] = [];
     nonPOHeaderArr: string [] = ['Item No.', 'Item Desc', "HSN/SAC", 'Invoice Units', 'Rate', 'Amount'];
-    poHeaderArr: string[] = ['Item No.', 'Item Desc', "UOM", "HSN/SAC", "From Date", "To Date", "Personnel Number", 'Order Units', 'Balance Units', 
+    poHeaderArr: string[] = ['Item No.', 'Item Desc', "HSN/SAC", "From Date", "To Date", "Personnel Number", 'Order Units', 'Balance Units', "UOM", 
                             'Invoice Units', 'Currency', 'Rate', 'Amount'];
-    poHeaderArrWithoutDates: string[] = ['Item No.', 'Item Desc', "UOM", "HSN/SAC", 'Order Units', 'Balance Units', 
+    poHeaderArrWithoutDates: string[] = ['Item No.', 'Item Desc', "HSN/SAC", 'Order Units', 'Balance Units', "UOM", 
                             'Invoice Units', 'Currency', 'Rate', 'Amount'];
 
     _initDetails: InvoiceUploadResultModel = null;
@@ -135,6 +135,15 @@ export class InvoiceUploadComponent implements OnInit {
     get f() { return this.invoiceUploadForm.controls; }
 
     get fa() { return <FormArray>this.invoiceUploadForm.controls['itemsList']; }
+
+    getPOProjectName() {
+        let projectName: string = "";
+        if(this.selectedPOItem && this.selectedPOItem.projectName && this.selectedPOItem.projectId) {
+            projectName = this.selectedPOItem.projectName + "( " + this.selectedPOItem.projectId + " )";
+        }
+
+        return projectName;
+    }
 
     onCancelClick() {
         this._router.navigate([this._appService.routingConstants.invoiceSearch]);
@@ -974,9 +983,9 @@ export class InvoiceUploadComponent implements OnInit {
                 unitPrice: itemsFa.controls[i].get("unitPrice").value,
                 totalAmt: itemsFa.controls[i].get("unitsAmt").value,
                 hsn: itemsFa.controls[i].get("hsn").value,
-                fromDate: itemsFa.controls[i].get("fromDate").value ? this._appService.getDBFormattedDate(itemsFa.controls[i].get("fromDate").value) : null,
-                toDate: itemsFa.controls[i].get("toDate").value ? this._appService.getDBFormattedDate(itemsFa.controls[i].get("toDate").value) : null,
-                personnelNumber: itemsFa.controls[i].get("personnelNumber").value,
+                fromDate: (this.selectedInvoiceType == 'po' && itemsFa.controls[i].get("fromDate").value) ? this._appService.getDBFormattedDate(itemsFa.controls[i].get("fromDate").value) : null,
+                toDate: (this.selectedInvoiceType == 'po' && itemsFa.controls[i].get("toDate").value) ? this._appService.getDBFormattedDate(itemsFa.controls[i].get("toDate").value) : null,
+                personnelNumber: (this.selectedInvoiceType == 'po') ? itemsFa.controls[i].get("personnelNumber").value : null,
                 remarks: null,
                 createdBy: itemsFa.controls[i].get("createdBy").value,
                 createdDate: itemsFa.controls[i].get("createdDate").value
