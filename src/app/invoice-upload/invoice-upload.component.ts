@@ -65,9 +65,9 @@ export class InvoiceUploadComponent implements OnInit {
 
     headerArr: string[] = [];
     nonPOHeaderArr: string [] = ['Item No.', 'Item Desc', "HSN/SAC", 'Invoice Units', 'Rate', 'Amount'];
-    poHeaderArr: string[] = ['Item No.', 'Item Desc', "UOM", "HSN/SAC", "From Date", "To Date", "Personnel Number", 'Order Units', 'Balance Units', 
+    poHeaderArr: string[] = ['Item No.', 'Item Desc', "HSN/SAC", "From Date", "To Date", "Personnel Number", 'Order Units', 'Balance Units', "UOM", 
                             'Invoice Units', 'Currency', 'Rate', 'Amount'];
-    poHeaderArrWithoutDates: string[] = ['Item No.', 'Item Desc', "UOM", "HSN/SAC", 'Order Units', 'Balance Units', 
+    poHeaderArrWithoutDates: string[] = ['Item No.', 'Item Desc', "HSN/SAC", 'Order Units', 'Balance Units', "UOM", 
                             'Invoice Units', 'Currency', 'Rate', 'Amount'];
 
     _initDetails: InvoiceUploadResultModel = null;

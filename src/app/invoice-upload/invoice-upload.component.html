@@ -141,9 +141,6 @@
                                     class="errortxt">Item Desc is required</div>
                             </div>
                         </td>
-                        <td *ngIf="selectedInvoiceType == 'po'" style="width:6em;">
-                            <span>{{ item.get("uom").value }}</span>
-                        </td>
                         <td style="width:7em;">
                             <input class="inv-qty" formControlName="hsn"
                                 [ngClass]="{ 'errorinput': isSubmitted && fa.controls[itemInd].controls.hsn.errors }">
@@ -187,6 +184,9 @@
                         </td>-->
                         <td *ngIf="selectedInvoiceType == 'po'" style="width:6em;">
                             <span>{{ item.get("balanceUnits").value }}</span>
+                        </td>
+                        <td *ngIf="selectedInvoiceType == 'po'" style="width:6em;">
+                            <span>{{ item.get("uom").value }}</span>
                         </td>
                         <td style="width:10em;">
                             <input class="inv-qty" formControlName="invoiceUnits"

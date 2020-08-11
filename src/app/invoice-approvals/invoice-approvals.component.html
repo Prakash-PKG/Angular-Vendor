@@ -244,9 +244,6 @@
                     <td>
                         {{ item.itemDescription }}
                     </td>
-                    <td *ngIf="isPOInvoice == true" class="eightcharacters">
-                        {{ item.uom }}
-                    </td>
                     <td class="eightcharacters">
                         {{ item.hsn }}
                     </td>
@@ -268,12 +265,15 @@
                     <td *ngIf="isPOInvoice == true" class="tencharacters">
                         {{ item.consumedUnits }}
                     </td>-->
+                    <td *ngIf="isPOInvoice == true" class="eightcharacters">
+                        {{ item.uom }}
+                    </td>
                     <td class="tencharacters">
                         {{ item.invoiceUnits }}
                     </td>
-                    <td *ngIf="isPOInvoice == true" class="eightcharacters">
+                    <!--<td *ngIf="isPOInvoice == true" class="eightcharacters">
                         {{ getCurrencyType() }}
-                    </td>
+                    </td>-->
                     <td class="amount tencharacters">
                         {{ item.unitPrice }}
                     </td>

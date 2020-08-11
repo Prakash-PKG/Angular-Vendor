@@ -25,10 +25,10 @@ export class InvoiceApprovalsComponent implements OnInit {
 
     headerArr: string[] = [];
     nonPOHeaderArr: string [] = ['Item No.', 'Item Desc', "HSN/SAC", 'Invoice Units', 'Rate', 'Amount', 'Remarks'];
-    poHeaderArr: string[] = ['Item No.', 'Item Desc', "UOM", "HSN/SAC", "From Date", "To Date", "Personnel Number",  'Order Units', 
-                            'Invoice Units', 'Currency', 'Rate', 'Amount', 'Remarks'];
-    poHeaderArrWithoutDates: string[] = ['Item No.', 'Item Desc', "UOM", "HSN/SAC", 'Order Units', 'Invoice Units', 
-                                'Currency', 'Rate', 'Amount', 'Remarks'];
+    poHeaderArr: string[] = ['Item No.', 'Item Desc', "HSN/SAC", "From Date", "To Date", "Personnel Number", 'Order Units', "UOM", 
+                            'Invoice Units', 'Rate', 'Amount', 'Remarks'];
+    poHeaderArrWithoutDates: string[] = ['Item No.', 'Item Desc', "HSN/SAC", 'Order Units', "UOM", 'Invoice Units', 
+                                'Rate', 'Amount', 'Remarks'];
 
     initDetails: InvoiceApprovalInitResultModel = null;
     itemsList: ItemDisplayModel[] = [];
@@ -266,6 +266,19 @@ export class InvoiceApprovalsComponent implements OnInit {
             isRemarksValid = false;
         }
 
+        let approveSuccessMsg: string = "Approved.";
+        let approveFailureMsg: string = "Approval is failed.";
+        if(globalConstant.userDetails.isPurchaseOwner) {
+            approveSuccessMsg = "Recieved.";
+            approveFailureMsg = "Receiving is failed.";
+        }
+        else {
+            if(globalConstant.userDetails.isFunctionalHead && this._appService.selectedPendingApprovalRecord.documentType == 'ZHR') {
+                approveSuccessMsg = "Recieved.";
+                approveFailureMsg = "Receiving is failed.";
+            }
+        }
+        
         let isGrnSesValid: boolean = true;
         if(this.isGrnSesRequired && (globalConstant.userDetails.isFunctionalHead || globalConstant.userDetails.isFinance)) {
             
@@ -343,18 +356,18 @@ export class InvoiceApprovalsComponent implements OnInit {
                         let result: StatusModel = response.body as StatusModel;
                         if (result.status == 200 && result.isSuccess) {
                             //this.msg = "Invoice approval is success";
-                            this.displayInvoiceApprovalStatus(result.message, true);
+                            this.displayInvoiceApprovalStatus(approveSuccessMsg, true);
                         }
                         else {
                             //this.msg = this._appService.messages.vendorApprovalFailure;
-                            this.displayInvoiceApprovalStatus(result.message, false);
+                            this.displayInvoiceApprovalStatus(approveFailureMsg, false);
                         }
                     }
                 },
                 (error) => {
                     this._homeService.updateBusy(<BusyDataModel>{ isBusy: false, msg: null });
                     //this.msg = this._appService.messages.vendorApprovalFailure;
-                    this.displayInvoiceApprovalStatus(this._appService.messages.vendorApprovalFailure, false);
+                    this.displayInvoiceApprovalStatus(approveFailureMsg, false);
                     console.log(error);
                 });
         }
