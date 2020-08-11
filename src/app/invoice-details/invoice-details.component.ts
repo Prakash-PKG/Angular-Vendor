@@ -23,9 +23,9 @@ export class InvoiceDetailsComponent implements OnInit {
     statusHeaderArr: string[] = ['Stages', 'Status', 'Remarks'];
     headerArr: string[] = [];
 
-    poInvHeaderArr: string[] = ['Item No.', 'Item Desc', "UOM", "HSN/SAC", "From Date", "To Date", "Personnel Number", 'Order Units', 'Inv Units', 'Curr', 'Rate', 'Amount'];
+    poInvHeaderArr: string[] = ['Item No.', 'Item Desc', "HSN/SAC", "From Date", "To Date", "Personnel Number", 'Order Units', "UOM", 'Inv Units', 'Curr', 'Rate', 'Amount'];
 
-    poInvHeaderArrWithoutDates: string[] = ['Item No.', 'Item Desc', "UOM", "HSN/SAC", 'Order Units', 'Inv Units', 'Curr', 'Rate', 'Amount'];
+    poInvHeaderArrWithoutDates: string[] = ['Item No.', 'Item Desc', "HSN/SAC", 'Order Units', "UOM", 'Inv Units', 'Curr', 'Rate', 'Amount'];
 
     nonPoInvHeaderArr: string[] = ['Item No.', 'Item Desc', "HSN/SAC", 'Inv Units', 'Curr', 'Rate', 'Amount'];
 
@@ -67,11 +67,22 @@ export class InvoiceDetailsComponent implements OnInit {
 
     isFromToMandatory: boolean = false;
 
+    isSesSubContractPO: boolean = false;
+
     constructor(private _homeService: HomeService,
                 private _router: Router,
                 public _dialog: MatDialog,
                 private _invoiceDetailsService: InvoiceDetailsService,
                 private _appService: AppService) { }
+
+    getPOProjectName() {
+        let projectName: string = "";
+        if(this.invoiceDetails && this.invoiceDetails.projectName && this.invoiceDetails.projectId) {
+            projectName = this.invoiceDetails.projectName + "( " + this.invoiceDetails.projectId + " )";
+        }
+
+        return projectName;
+    }
 
     onAmountPaidBlur() {
         this.amountPaidErrMsg = "";
@@ -274,6 +285,8 @@ export class InvoiceDetailsComponent implements OnInit {
         this.financeLevel = null;
 
         if(this.invoiceDetails && this.invoiceDetails.invoiceId) {
+            this.isSesSubContractPO = this.invoiceDetails.documentType == 'ZHR' ? true : false;
+
             this.currency = this.invoiceDetails.currencyType;
 
             if(!this.invoiceDetails.purchaseOrderId) {
@@ -328,24 +341,27 @@ export class InvoiceDetailsComponent implements OnInit {
 
                 if(this._initDetails.approvalsList && this._initDetails.approvalsList.length > 0) {
                     this.approvalLevelList = [];
-                    let poApprovalModel: InvoiceApprovalModel = this._initDetails.approvalsList.find(a => a.approvalLevel == this._appService.approvalLevels.po);
-                    if(poApprovalModel != null) {
-                        this.uploadLevel = {
-                            levelName: "Upload",
-                            status: "Submitted",
-                            date: this._appService.getFormattedDate(poApprovalModel.createdDate),
-                            remarks: this.invoiceDetails.remarks
-                        };
-                        this.approvalLevelList.push(this.uploadLevel);
 
-                        let poStatusCode = (poApprovalModel.statusCode == 'approved') ? 'received' : poApprovalModel.statusCode;
-                        this.poLevel = {
-                            levelName: "Buyer",
-                            status: this._appService.statusNames[poStatusCode],
-                            date: (poApprovalModel.statusCode == this._appService.statusCodes.approved || poApprovalModel.statusCode == this._appService.statusCodes.rejected) ? this._appService.getFormattedDate(poApprovalModel.updatedDate) : "",
-                            remarks: poApprovalModel.remarks
-                        };
-                        this.approvalLevelList.push(this.poLevel);
+                    if(this.isSesSubContractPO == false) {
+                        let poApprovalModel: InvoiceApprovalModel = this._initDetails.approvalsList.find(a => a.approvalLevel == this._appService.approvalLevels.po);
+                        if(poApprovalModel != null) {
+                            this.uploadLevel = {
+                                levelName: "Upload",
+                                status: "Submitted",
+                                date: this._appService.getFormattedDate(poApprovalModel.createdDate),
+                                remarks: this.invoiceDetails.remarks
+                            };
+                            this.approvalLevelList.push(this.uploadLevel);
+
+                            let poStatusCode = (poApprovalModel.statusCode == 'approved') ? 'received' : poApprovalModel.statusCode;
+                            this.poLevel = {
+                                levelName: "Buyer",
+                                status: this._appService.statusNames[poStatusCode],
+                                date: (poApprovalModel.statusCode == this._appService.statusCodes.approved || poApprovalModel.statusCode == this._appService.statusCodes.rejected) ? this._appService.getFormattedDate(poApprovalModel.updatedDate) : "",
+                                remarks: poApprovalModel.remarks
+                            };
+                            this.approvalLevelList.push(this.poLevel);
+                        }
                     }
 
                     let functionalHeadApprovalModel: InvoiceApprovalModel = this._initDetails.approvalsList.find(a => a.approvalLevel == this._appService.approvalLevels.functionalHead);

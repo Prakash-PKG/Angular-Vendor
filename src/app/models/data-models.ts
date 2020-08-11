@@ -64,6 +64,8 @@ export class PODetailsModel {
     paidAmount: string = null;
     companyCode: string = null;
     companyName: string = null;
+    projectId: string = null;
+    projectName: string = null;
     createdBy: string = null;
     createdDate: string = null;
 }
@@ -287,6 +289,7 @@ export class PendingApprovalRequestModel {
     employeeId: string;
     approvalLevels: string[];
     departments: string[];
+    projectIds: string[];
 }
 
 export class POSearchReqModel extends PendingApprovalRequestModel {
@@ -323,6 +326,9 @@ export class PendingApprovalsModel {
     vendorId: string;
     vendorName: string;
     departmentId: string;
+    projectId: string;
+    grnSesNumber: string;
+    documentType: string;
     approverId: string;
     approvalLevel: string;
     statusCode: string;
@@ -420,6 +426,7 @@ export class ItemModel {
     orderedUnits: string;
     suppliedUnits: string;
     consumedUnits: string;
+    submittedUnits: string;
     invoiceUnits: string;
     unitPrice: string;
     totalAmt: string;
@@ -520,6 +527,7 @@ export class InvoiceApprovalModel {
     purchaseOrderId: number;
     invoiceId: number;
     departmentId: string;
+    projectId: string;
     statusCode: string;
     approverId: string;
     approvalLevel: string;
