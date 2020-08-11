@@ -266,16 +266,16 @@ export class InvoiceApprovalsComponent implements OnInit {
             isRemarksValid = false;
         }
 
-        let approveSuccessMsg: string = "Approved.";
-        let approveFailureMsg: string = "Approval is failed.";
+        let approveSuccessMsg: string = (action == this._appService.updateOperations.approve) ? "Approved." : "Rejected.";
+        let approveFailureMsg: string = (action == this._appService.updateOperations.approve) ? "Approval is failed." : "Reject is failed.";
         if(globalConstant.userDetails.isPurchaseOwner) {
-            approveSuccessMsg = "Recieved.";
-            approveFailureMsg = "Receiving is failed.";
+            approveSuccessMsg = (action == this._appService.updateOperations.approve) ? "Recieved." : "Rejected.";
+            approveFailureMsg = (action == this._appService.updateOperations.approve) ? "Receiving is failed." : "Reject is failed.";
         }
         else {
             if(globalConstant.userDetails.isFunctionalHead && this._appService.selectedPendingApprovalRecord.documentType == 'ZHR') {
-                approveSuccessMsg = "Recieved.";
-                approveFailureMsg = "Receiving is failed.";
+                approveSuccessMsg = (action == this._appService.updateOperations.approve) ? "Recieved." : "Rejected.";
+                approveFailureMsg = (action == this._appService.updateOperations.approve) ? "Receiving is failed." : "Reject is failed.";
             }
         }
         
