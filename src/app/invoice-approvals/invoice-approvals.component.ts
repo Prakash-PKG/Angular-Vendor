@@ -272,12 +272,12 @@ export class InvoiceApprovalsComponent implements OnInit {
             approveSuccessMsg = (action == this._appService.updateOperations.approve) ? "Recieved." : "Rejected.";
             approveFailureMsg = (action == this._appService.updateOperations.approve) ? "Receiving is failed." : "Reject is failed.";
         }
-        else {
-            if(globalConstant.userDetails.isFunctionalHead && this._appService.selectedPendingApprovalRecord.documentType == 'ZHR') {
-                approveSuccessMsg = (action == this._appService.updateOperations.approve) ? "Recieved." : "Rejected.";
-                approveFailureMsg = (action == this._appService.updateOperations.approve) ? "Receiving is failed." : "Reject is failed.";
-            }
-        }
+        // else {
+        //     if(globalConstant.userDetails.isFunctionalHead && this._appService.selectedPendingApprovalRecord.documentType == 'ZHR') {
+        //         approveSuccessMsg = (action == this._appService.updateOperations.approve) ? "Recieved." : "Rejected.";
+        //         approveFailureMsg = (action == this._appService.updateOperations.approve) ? "Receiving is failed." : "Reject is failed.";
+        //     }
+        // }
         
         let isGrnSesValid: boolean = true;
         if(this.isGrnSesRequired && (globalConstant.userDetails.isFunctionalHead || globalConstant.userDetails.isFinance)) {
