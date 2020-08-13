@@ -279,7 +279,7 @@ export class InvoiceUploadComponent implements OnInit {
     }
 
     displayProject(p: ProjectAutoCompleteModel) {
-        if (p) { return p.projectName + " ( " + p.projectId + " )"; }
+        if (p) { return p.projectId + " ( " + p.projectName + " )"; }
     }
 
     onProjectOptionSelected(evt: ProjectAutoCompleteModel) {
@@ -288,7 +288,7 @@ export class InvoiceUploadComponent implements OnInit {
 
     getDisplayProjectName(p: ProjectAutoCompleteModel) {
         if(p) {
-            return "<b>" + p.projectName + "</b> (" + p.projectId + ")";
+            return "<b>" + p.projectId + "</b> (" + p.projectName + ")";
         }
 
         return "";
