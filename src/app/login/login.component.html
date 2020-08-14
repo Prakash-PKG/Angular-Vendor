@@ -44,9 +44,9 @@
                     <!--  login button -->
                     <div class="row actions margin-unset">
 
-                        <a style="color: blueviolet; cursor: pointer;" (click)="onForgotPasswordClick()">
+                        <!--<a style="color: blueviolet; cursor: pointer;" (click)="onForgotPasswordClick()">
                         Forgot Password?
-                        </a>
+                        </a>-->
                         <button mat-raised-button type="submit" class=" footer-actions mat-elevation-z8" [disabled]="f.userId.invalid || f.password.invalid || loading">
                             <i *ngIf="loading" class="fa fa-spin fa-spinner pull-right" style="padding:5px"
                                 aria-hidden="true"></i>Sign In</button>

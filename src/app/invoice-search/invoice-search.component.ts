@@ -173,12 +173,17 @@ export class InvoiceSearchComponent implements OnInit {
     }
 
     onSearchChange() {
+        let invoiceNumberVal = this.invoiceSearchForm.get("invoiceNumber").value;
+        let lcInvoiceNumberVal = (invoiceNumberVal) ? invoiceNumberVal.toLowerCase() : "";
 
         let poNumberVal = this.invoiceSearchForm.get("poNumber").value;
         let lcPoNumberVal = (poNumberVal) ? poNumberVal.toLowerCase() : "";
 
-        let invoiceNumberVal = this.invoiceSearchForm.get("invoiceNumber").value;
-        let lcInvoiceNumberVal = (invoiceNumberVal) ? invoiceNumberVal.toLowerCase() : "";
+        let entityNoVal = this.invoiceSearchForm.get("entityNo").value;
+        let lcEntityNoVal = (entityNoVal) ? entityNoVal.toLowerCase() : "";
+
+        let projectIdVal = this.invoiceSearchForm.get("projectId").value;
+        let lcProjectIdVal = (projectIdVal) ? projectIdVal.toLowerCase() : "";
 
         let startDateVal = this.invoiceSearchForm.get("startDate").value;
 
@@ -187,6 +192,8 @@ export class InvoiceSearchComponent implements OnInit {
         this.invoiceList = this.totalInvoiceList.filter(function (req) {
             if ((req.poNumber && req.poNumber.toString().toLowerCase().indexOf(lcPoNumberVal) > -1) &&
                 (req.invoiceNumber && req.invoiceNumber.toString().toLowerCase().indexOf(lcInvoiceNumberVal) > -1) &&
+                (req.companyCode && req.companyCode.toString().toLowerCase().indexOf(lcEntityNoVal) > -1) &&
+                (req.projectId && req.projectId.toString().toLowerCase().indexOf(lcProjectIdVal) > -1) &&
                 ((req.invoiceDate && startDateVal) ? new Date(req.invoiceDate) > startDateVal : true) &&
                 ((req.invoiceDate && endDateVal) ? new Date(req.invoiceDate) < endDateVal : true)) {
                 return true;
@@ -213,17 +220,27 @@ export class InvoiceSearchComponent implements OnInit {
         });
 
         this.invoiceSearchForm = this._formBuilder.group({
-            poNumber: null,
             invoiceNumber: null,
+            poNumber: null,
+            entityNo: null,
+            projectId: null,
             startDate: null,
             endDate: null
+        });
+
+        this.invoiceSearchForm.get("invoiceNumber").valueChanges.subscribe(val => {
+            this.onSearchChange();
         });
 
         this.invoiceSearchForm.get("poNumber").valueChanges.subscribe(val => {
             this.onSearchChange();
         });
 
-        this.invoiceSearchForm.get("invoiceNumber").valueChanges.subscribe(val => {
+        this.invoiceSearchForm.get("entityNo").valueChanges.subscribe(val => {
+            this.onSearchChange();
+        });
+
+        this.invoiceSearchForm.get("projectId").valueChanges.subscribe(val => {
             this.onSearchChange();
         });
 
