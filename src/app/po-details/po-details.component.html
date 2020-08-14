@@ -20,6 +20,11 @@
         </div>
 
         <div class="search-row-element">
+            <mat-label>Currency</mat-label>
+            <div class="value">{{ currency }}</div>
+        </div>
+
+        <div class="search-row-element">
             <mat-label>Total Amount</mat-label>
             <div class="value">{{ poDetails?.totalAmount }}</div>
         </div>
@@ -65,14 +70,11 @@
                     <td   class="tencharacters">
                         <span>{{ item.suppliedUnits }}</span>
                     </td >
-                    <td  class="tencharacters">
+                    <!--<td  class="tencharacters">
                         <span>{{ item.consumedUnits }}</span>
-                    </td>
+                    </td>-->
                     <td  class="tencharacters">
                         <span>{{ item.invoiceUnits }}</span>
-                    </td>
-                    <td>
-                        <span>{{ currency }}</span>
                     </td>
                     <td class="amount tencharacters">
                         <span>{{ item.unitPrice }}</span>
