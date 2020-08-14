@@ -5,7 +5,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AppService } from '../app.service';
 import { VendorRegistrationService } from './../vendor-registration/vendor-registration.service';
 
-import { BusyDataModel, VendorRegistrationRequestModel, VendorRegistrationResultModel, CountryDataModel, regionMasterVOList } from './../models/data-models';
+import { BusyDataModel, VendorRegistrationRequestModel, VendorRegistrationResultModel, CountryDataModel, regionMasterVOList, BankAccountTypeModel } from './../models/data-models';
 import { HomeService } from '../home/home.service';
 
 @Component({
@@ -18,6 +18,7 @@ export class VendorBankDetailsComponent implements OnInit {
     vendorBankForm: FormGroup;
     failureMsg: string = "";
     countryList: CountryDataModel[] = [];
+    bankAccountTypeList: BankAccountTypeModel[] = [];
     regionMasterVOList: regionMasterVOList[] = [];
     isSubmitted: boolean = false;
 
@@ -29,7 +30,7 @@ export class VendorBankDetailsComponent implements OnInit {
     onIFSCblur() {
         let ifscVal = this.vendorBankForm.get("ifscCode").value;
 
-        if(ifscVal) {
+        if (ifscVal) {
             this.vendorBankForm.get("ifscCode").setValue(ifscVal.toUpperCase());
         }
     }
@@ -71,7 +72,7 @@ export class VendorBankDetailsComponent implements OnInit {
                 action: this._appService.updateOperations.save,
                 vendorMasterDetails: this._appService.vendorRegistrationDetails
             }
-            
+
             // console.log(req);
             // this._router.navigate([this._appService.routingConstants.vendorDocuments]);
 
@@ -141,13 +142,19 @@ export class VendorBankDetailsComponent implements OnInit {
             this._appService.vendorRegistrationInitDetails.countriesList.length > 0) {
             this.countryList = this._appService.vendorRegistrationInitDetails.countriesList;
         }
-        
+
+        this.bankAccountTypeList = [];
+        if (this._appService.vendorRegistrationInitDetails && this._appService.vendorRegistrationInitDetails.bankAccountTypeList &&
+            this._appService.vendorRegistrationInitDetails.bankAccountTypeList.length > 0) {
+            this.bankAccountTypeList = this._appService.vendorRegistrationInitDetails.bankAccountTypeList;
+        }
+
         this.vendorBankForm = this._formBuilder.group({
             // bankAddress: [null, [Validators.required]],
             accountNum: [null, [Validators.required]],
             accountType: [null, [Validators.required]],
             accountName: [null, [Validators.required]],
-            ifscCode: [null, [Validators.required,Validators.maxLength(11)]],
+            ifscCode: [null, [Validators.required, Validators.maxLength(11)]],
             bankName: [null, [Validators.required]],
             bankBranch: [null, [Validators.required]],
             bankCity: [null, [Validators.required]],

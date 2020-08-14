@@ -43,6 +43,7 @@ export class VendorRegistrationService {
             initModel.countriesList = data["countryDataVOList"];
             initModel.documentDetailsList = data["vendorMasterDocumentVOList"];
             initModel.regionMasterVOList = data["regionMasterVOList"];
+            initModel.bankAccountTypeList = data ["bankAccountTypeVOList"]
         }
 
         return initModel;

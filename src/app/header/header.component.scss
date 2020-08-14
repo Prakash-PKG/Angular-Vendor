@@ -38,3 +38,17 @@
 .flex-item.logo{
     background-color: white;
 }
+.contact_me,.logout{
+    cursor: pointer;
+    background-position: center;
+    background-size: contain;
+   
+}
+.contact_me{
+    background-image: url("./../../assets/images/contact_me2.png");
+    margin-right: 2em;
+  }
+  .logout{
+    background-image: url("./../../assets/images/logout.png");
+    margin: 0 1em;
+  }
