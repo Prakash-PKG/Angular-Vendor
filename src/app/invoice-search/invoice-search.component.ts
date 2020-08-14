@@ -14,6 +14,7 @@ import { FormBuilder, FormGroup, FormArray, Validators, FormControl, AbstractCon
 import { MomentDateAdapter, MAT_MOMENT_DATE_ADAPTER_OPTIONS } from '@angular/material-moment-adapter';
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
 import { DatePipe } from '@angular/common';
+import * as _ from 'underscore';
 
 // Depending on whether rollup is used, moment needs to be imported differently.
 // Since Moment.js doesn't have a default export, we normally need to import using the `* as`
@@ -126,26 +127,71 @@ export class InvoiceSearchComponent implements OnInit {
     }
 
     getPOSearchRequestData() {
+        // let req: InvoiceSearchRequestModel = {
+        //     vendorId: null,
+        //     employeeId: null,
+        //     approvalLevels: [],
+        //     departments: [],
+        //     isForPayments: this.isForPayments
+        // };
+
+        // if (globalConstant.userDetails.isVendor) {
+        //     req.vendorId = globalConstant.userDetails.userId;
+        // }
+        // else {
+        //     req.employeeId = globalConstant.userDetails.isFunctionalHead ? globalConstant.userDetails.userId : null;
+
+        //     if (globalConstant.userDetails.isPurchaseOwner || globalConstant.userDetails.isInvoiceUploader) {
+        //         req.departments = req.departments.concat(globalConstant.userDetails.poDepts);
+        //     }
+
+        //     if (globalConstant.userDetails.isFinance) {
+        //         req.approvalLevels.push(this._appService.approvalLevels.finance);
+        //     }
+        // }
+
+        // return req;
+        
         let req: InvoiceSearchRequestModel = {
             vendorId: null,
             employeeId: null,
             approvalLevels: [],
             departments: [],
-            isForPayments: this.isForPayments
+            isForPayments: this.isForPayments,
+            projectIds: []
         };
 
-        if (globalConstant.userDetails.isVendor) {
+        if(globalConstant.userDetails.isVendor) {
             req.vendorId = globalConstant.userDetails.userId;
         }
         else {
-            req.employeeId = globalConstant.userDetails.isFunctionalHead ? globalConstant.userDetails.userId : null;
+            //req.employeeId = globalConstant.userDetails.isFunctionalHead ? globalConstant.userDetails.userId : null;
 
-            if (globalConstant.userDetails.isPurchaseOwner || globalConstant.userDetails.isInvoiceUploader) {
+            // if(globalConstant.userDetails.isPurchaseOwner || globalConstant.userDetails.isInvoiceUploader) {
+            //     req.departments = req.departments.concat(globalConstant.userDetails.poDepts);
+            // }
+
+            // if(globalConstant.userDetails.isFinance) {
+            //     req.approvalLevels.push(this._appService.approvalLevels.finance);
+            // }
+
+            if(globalConstant.userDetails.isPurchaseOwner || globalConstant.userDetails.isInvoiceUploader) {
+                req.approvalLevels.push(this._appService.approvalLevels.po);
                 req.departments = req.departments.concat(globalConstant.userDetails.poDepts);
             }
 
-            if (globalConstant.userDetails.isFinance) {
+            if(globalConstant.userDetails.isFunctionalHead) {
+                req.approvalLevels.push(this._appService.approvalLevels.functionalHead);
+                req.departments = req.departments.concat(globalConstant.userDetails.functionalHeadDepts);
+                req.projectIds = req.projectIds.concat(globalConstant.userDetails.functionalHeadProjects);
+            }
+
+            if(globalConstant.userDetails.isFinance) {
                 req.approvalLevels.push(this._appService.approvalLevels.finance);
+            }
+
+            if(req.departments && req.departments.length > 0) {
+                req.departments = _.uniq(req.departments);
             }
         }
 
