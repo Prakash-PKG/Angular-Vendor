@@ -11,14 +11,14 @@
         <mat-radio-button class="tp-radio-button" value="non-po" (change)="onInvoiceTypeChange($event)">
             Non PO Invoice
         </mat-radio-button>
-
-        <span *ngIf="selectedInvoiceType == 'po'" style="margin-left: 50px">
-            <b>Project Name: </b> {{ getPOProjectName() }}
-        </span>
     </mat-radio-group>
 
     <form [formGroup]="invoiceUploadForm">
-        <div class="search-row">
+        
+       <div class="search-row">
+        <mat-label *ngIf="selectedInvoiceType == 'po'" class="search-row-element">
+            <b>Project Name: </b> {{ getPOProjectName() }}
+        </mat-label>
             <mat-form-field *ngIf="selectedInvoiceType == 'po'" class="search-row-element">
                 <mat-select matNativeControl formControlName="poList" placeholder="Choose PO No.">
                     <mat-option *ngFor="let p of poList" [value]="p.poNumber">

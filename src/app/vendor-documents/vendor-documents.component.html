@@ -37,7 +37,7 @@
     <div class="row doc-field">
         <div class="col-5 doc-form-field">
             <mat-form-field class="full-width">
-                <input type="text" matInput placeholder="{{vendorDocCtrl.gstCtrl.placeholder}}" formControlName="gstNum" maxlength="15" autocomplete="off"
+                <input type="text" matInput (keypress)="omit_special_char($event)" placeholder="{{vendorDocCtrl.gstCtrl.placeholder}}" formControlName="gstNum" minlength="15" maxlength="15" autocomplete="off"
                     (blur)="updateMandatory('gstNum',vendorDocCtrl.gstCtrl.documentTypeId)">
             </mat-form-field>
         </div>
@@ -72,7 +72,7 @@
     <div class="row doc-field">
         <div class="col-5 doc-form-field">
             <mat-form-field class="full-width">
-                <input type="text" matInput placeholder="{{vendorDocCtrl.panCtrl.placeholder}}" formControlName="panNum" maxlength="10" autocomplete="off"
+                <input type="text" matInput (keypress)="omit_special_char($event)" placeholder="{{vendorDocCtrl.panCtrl.placeholder}}" formControlName="panNum" minlength="10" maxlength="10" autocomplete="off"
                     required>
             </mat-form-field>
             <mat-error *ngIf="isSubmitted == true && vdf?.panNum?.errors?.required">PAn No. is required</mat-error>
@@ -177,7 +177,7 @@
     <div class="row doc-field">
         <div class="col-5 doc-form-field">
             <mat-form-field class="full-width">
-                <input type="text" matInput placeholder="{{vendorDocCtrl.pfCtrl.placeholder}}" formControlName="pfNum" autocomplete="off"
+                <input type="text" matInput (keypress)="omit_special_char($event)" placeholder="{{vendorDocCtrl.pfCtrl.placeholder}}" formControlName="pfNum" autocomplete="off" maxlength="30"
                     (blur)="updateMandatory('pfNum',vendorDocCtrl.pfCtrl.documentTypeId)">
             </mat-form-field>
 
@@ -210,7 +210,7 @@
     <div class="row doc-field">
         <div class="col-5 doc-form-field">
             <mat-form-field class="full-width">
-                <input type="text" matInput placeholder="{{vendorDocCtrl.esiCtrl.placeholder}}" formControlName="esiNum" autocomplete="off"
+                <input type="text" matInput placeholder="{{vendorDocCtrl.esiCtrl.placeholder}}" formControlName="esiNum" autocomplete="off"  maxlength="30"
                     (blur)="updateMandatory('esiNum',vendorDocCtrl.esiCtrl.documentTypeId)">
             </mat-form-field>
         </div>

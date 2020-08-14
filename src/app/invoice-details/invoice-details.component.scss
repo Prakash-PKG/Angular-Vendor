@@ -145,6 +145,7 @@ th.mat-header-cell:last-of-type {
 .header{
   color: black;
   font-weight: 500;
+  margin-right: 1em;
 }
 .filename{
   cursor:pointer;
@@ -155,6 +156,7 @@ th.mat-header-cell:last-of-type {
   justify-content: flex-end;
   align-items: stretch;
   flex-direction: row;
+  margin-top:1em;
 }
 .description .dataTable tr{
   height:auto;
