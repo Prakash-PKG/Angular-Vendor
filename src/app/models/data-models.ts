@@ -215,6 +215,7 @@ export class InvoiceSearchRequestModel {
     approvalLevels: string[];
     departments: string[];
     isForPayments: boolean;
+    projectIds: string[];
 }
 
 export class InvoiceDetailsRequestModel {
