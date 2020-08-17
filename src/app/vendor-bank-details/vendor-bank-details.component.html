@@ -32,8 +32,12 @@
     <div class="row field">
         <div class="col-3 form-group">
             <mat-form-field class="full-width">
-                <input type="text" matInput placeholder="Account Type" formControlName="accountType" autocomplete="off"
-                    required>
+
+                <mat-select formControlName="accountType" placeholder="Account Type" required>
+                    <mat-option *ngFor="let at of bankAccountTypeList" [value]="at.bankAccountTypeId">
+                        {{ at.accountTypeName }}
+                    </mat-option>
+                </mat-select>
             </mat-form-field>
             <mat-error class="errortxt" *ngIf="( isSubmitted ) && f?.accountType?.errors?.required">Account Type is required</mat-error>
         </div>

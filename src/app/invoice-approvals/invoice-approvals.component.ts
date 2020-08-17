@@ -1,3 +1,4 @@
+import { ConfirmDialogComponent } from './../confirm-dialog/confirm-dialog.component';
 import { GrnSesItemsComponent } from './../grn-ses-items/grn-ses-items.component';
 import { MessageDialogModel } from './../models/popup-models';
 import { MessageDialogComponent } from './../message-dialog/message-dialog.component';
@@ -254,7 +255,21 @@ export class InvoiceApprovalsComponent implements OnInit {
     }
 
     onRejectClick() {
-        this.updateInvoiceApprovals(this._appService.updateOperations.reject);
+        const dialogRef = this._dialog.open(ConfirmDialogComponent, {
+            disableClose: true,
+            panelClass: 'dialog-box',
+            width: '550px',
+            data: <MessageDialogModel>{
+                title: "Invoice Action",
+                message: "Are you sure you want to Reject?"
+            }
+        });
+
+        dialogRef.afterClosed().subscribe(result => {
+            if (result) {
+                this.updateInvoiceApprovals(this._appService.updateOperations.reject);
+            }
+        });
     }
 
     updateInvoiceApprovals(action: string) {
@@ -266,18 +281,18 @@ export class InvoiceApprovalsComponent implements OnInit {
             isRemarksValid = false;
         }
 
-        let approveSuccessMsg: string = "Approved.";
-        let approveFailureMsg: string = "Approval is failed.";
+        let approveSuccessMsg: string = (action == this._appService.updateOperations.approve) ? "Approved." : "Rejected.";
+        let approveFailureMsg: string = (action == this._appService.updateOperations.approve) ? "Approval is failed." : "Reject is failed.";
         if(globalConstant.userDetails.isPurchaseOwner) {
-            approveSuccessMsg = "Recieved.";
-            approveFailureMsg = "Receiving is failed.";
+            approveSuccessMsg = (action == this._appService.updateOperations.approve) ? "Recieved." : "Rejected.";
+            approveFailureMsg = (action == this._appService.updateOperations.approve) ? "Receiving is failed." : "Reject is failed.";
         }
-        else {
-            if(globalConstant.userDetails.isFunctionalHead && this._appService.selectedPendingApprovalRecord.documentType == 'ZHR') {
-                approveSuccessMsg = "Recieved.";
-                approveFailureMsg = "Receiving is failed.";
-            }
-        }
+        // else {
+        //     if(globalConstant.userDetails.isFunctionalHead && this._appService.selectedPendingApprovalRecord.documentType == 'ZHR') {
+        //         approveSuccessMsg = (action == this._appService.updateOperations.approve) ? "Recieved." : "Rejected.";
+        //         approveFailureMsg = (action == this._appService.updateOperations.approve) ? "Receiving is failed." : "Reject is failed.";
+        //     }
+        // }
         
         let isGrnSesValid: boolean = true;
         if(this.isGrnSesRequired && (globalConstant.userDetails.isFunctionalHead || globalConstant.userDetails.isFinance)) {

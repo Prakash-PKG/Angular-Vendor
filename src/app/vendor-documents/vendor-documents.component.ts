@@ -135,6 +135,13 @@ export class VendorDocumentsComponent implements OnInit {
 
     }
 
+    omit_special_char(event)
+    {   
+       var k;  
+       k = event.charCode;
+       return((k > 64 && k < 91) || (k > 96 && k < 123) || k == 8 || k == 32 || (k >= 48 && k <= 57)); 
+    }
+
     onAttachFileClick(documentTypeId: number) {
         let filesReq: VendorDocumentReqModel = {
             fileDetails: this.filesMap[documentTypeId].toAttach,
@@ -373,8 +380,8 @@ export class VendorDocumentsComponent implements OnInit {
 
         this.vendorDocumentForm = this._formBuilder.group({
 
-            panNum: [null, [Validators.required, Validators.minLength(10)]],
-            gstNum: [null],
+            panNum: [null, [Validators.required, Validators.minLength(10),Validators.maxLength(10)]],
+            gstNum: [null,[Validators.minLength(15), Validators.maxLength(15)]],
             pfNum: [null],
             esiNum: [null],
             cinNum: [null],

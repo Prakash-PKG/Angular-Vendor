@@ -1,26 +1,26 @@
 <nav class="header navbar mat-elevation-z8">
     <div class="flex-container full-width">
         <div class="logo flex-item">
-            
+
         </div>
         <div class="signout flex-item">
             <div class="flex-container">
                 <div class="flex-item">
-                  {{ userId }}
+                    {{ userId }}
                 </div>
                 <div class="flex-item">
-                   {{ userName }}
+                    {{ userName }}
                 </div>
                 <div class="flex-item">
                     {{ roleName }}
-                 </div>
+                </div>
             </div>
             <div class="flex-item">
-                <button mat-button matSuffix mat-icon-button  matTooltip="Log Out" (click)=" onLogoutClick()">
-                    <mat-icon>exit_to_app</mat-icon>
+                <button class="logout" mat-button matSuffix mat-icon-button matTooltip="Log Out"
+                    (click)=" onLogoutClick()">
                 </button>
-                <button mat-button matSuffix mat-icon-button matTooltip="Contact_Us" (click)=" onContactClick()">
-                    <mat-icon>contact_support</mat-icon>
+                <button class="contact_me" mat-button matSuffix mat-icon-button matTooltip="Contact_Us"
+                    (click)=" onContactClick()">
                 </button>
             </div>
         </div>

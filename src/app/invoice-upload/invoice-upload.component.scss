@@ -61,7 +61,7 @@
 }
 
 .search-row-element {
-  flex-grow: 0;
+  flex-grow: 1;
 }
 .search-row-element mat-label{
   color:black;
@@ -75,7 +75,7 @@
   margin-right: 2em;
 }
 .search-row .remarks {
-  flex-grow: 1;
+  flex-grow: 30;
 }
 .search-row .date {
   width: 8em;

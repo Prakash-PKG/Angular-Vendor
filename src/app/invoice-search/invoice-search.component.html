@@ -5,24 +5,34 @@
     <div class="search-row">
         <form [formGroup]="invoiceSearchForm" class="search-row-element">
             <mat-form-field class="field search-row-element">
-                <mat-label>PO No.</mat-label>
-                <input type="text" matInput formControlName="poNumber" autocomplete="off">
-            </mat-form-field>
-
-            <mat-form-field class="field search-row-element">
                 <mat-label>Invoice No.</mat-label>
                 <input type="text" matInput formControlName="invoiceNumber" autocomplete="off">
             </mat-form-field>
 
             <mat-form-field class="field search-row-element">
-                <mat-label>Pick Start Date</mat-label>
+                <mat-label>PO No.</mat-label>
+                <input type="text" matInput formControlName="poNumber" autocomplete="off">
+            </mat-form-field>
+
+            <mat-form-field class="field search-row-element">
+                <mat-label>Entity</mat-label>
+                <input type="text" matInput formControlName="entityNo" autocomplete="off">
+            </mat-form-field>
+
+            <mat-form-field class="field search-row-element">
+                <mat-label>Project Id</mat-label>
+                <input type="text" matInput formControlName="projectId" autocomplete="off">
+            </mat-form-field>
+
+            <mat-form-field class="field search-row-element">
+                <mat-label>From Date</mat-label>
                 <input matInput [matDatepicker]="picker" disabled formControlName="startDate" autocomplete="off">
                 <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                 <mat-datepicker #picker disabled="false"></mat-datepicker>
             </mat-form-field>
 
             <mat-form-field class="field search-row-element">
-                <mat-label>Pick End Date</mat-label>
+                <mat-label>To Date</mat-label>
                 <input matInput [matDatepicker]="picker1" disabled formControlName="endDate" autocomplete="off">
                 <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
                 <mat-datepicker #picker1 disabled="false"></mat-datepicker>
@@ -57,6 +67,12 @@
                         <span>Vendor Name</span>
                     </th>
                     <th class="headers" scope="col">
+                        <span>Entity</span>
+                    </th>
+                    <th class="headers" scope="col">
+                        <span>Project Id</span>
+                    </th>
+                    <th class="headers" scope="col">
                         <span>Invoice Date</span>
                     </th>
                     <th class="headers" scope="col">
@@ -85,6 +101,12 @@
                     </td>
                     <td>
                         {{ inv.vendorName }}
+                    </td>
+                     <td>
+                        {{ inv.companyCode ? inv.companyCode : "" }}
+                    </td>
+                     <td>
+                        {{ inv.projectId ? inv.projectId : "" }}
                     </td>
                     <td class="tencharacters">
                         {{ getFormattedDate(inv.invoiceDate) }}

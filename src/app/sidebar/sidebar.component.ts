@@ -103,6 +103,11 @@ export class SidebarComponent implements OnInit {
         this._router.navigate([this._appService.routingConstants.vendorDump]);
     }
 
+    onContactMeClick() {
+        this._router.navigate([this._appService.routingConstants.contact]);
+    }
+
+
     onLogoutClick() {
         // this._loginService.logout().subscribe(
         //     (response) => {

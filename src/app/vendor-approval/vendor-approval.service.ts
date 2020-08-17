@@ -45,6 +45,7 @@ export class VendorApprovalService {
             detailsModel.vendorMasterDocumentVOList = data["vendorMasterDocumentVOList"];
             detailsModel.countriesList = data["countryDataVOList"];
             detailsModel.regionMasterVOList = data["regionMasterVOList"];
+            detailsModel.bankAccountTypeList =data["bankAccountTypeVOList"];
         }
 
         return detailsModel;

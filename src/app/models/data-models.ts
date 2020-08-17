@@ -16,6 +16,11 @@ export class regionMasterVOList {
     regionDesc: string;
     countryCode: string;
 }
+export class BankAccountTypeModel {
+    bankAccountTypeId: number;
+    accountTypeCode: string;
+    accountTypeName: string;
+}
 
 export class EmpanelmentInitDataModel {
     countryDataVOList: CountryDataModel[];
@@ -179,6 +184,7 @@ export class VendorRegistrationInitDataModel {
     countriesList: CountryDataModel[];
     documentDetailsList: VendorMasterDocumentModel[];
     regionMasterVOList: regionMasterVOList[];
+    bankAccountTypeList: BankAccountTypeModel[];
 }
 
 export class InvoiceSearchResultModel {
@@ -215,6 +221,7 @@ export class InvoiceSearchRequestModel {
     approvalLevels: string[];
     departments: string[];
     isForPayments: boolean;
+    projectIds: string[];
 }
 
 export class InvoiceDetailsRequestModel {
@@ -359,6 +366,7 @@ export class VendorApprovalInitResultModel {
     vendorMasterDocumentVOList: VendorMasterDocumentModel[];
     countriesList: CountryDataModel[];
     regionMasterVOList: regionMasterVOList[];
+    bankAccountTypeList: BankAccountTypeModel[];
 }
 
 export class VendorApprovalInitReqModel {

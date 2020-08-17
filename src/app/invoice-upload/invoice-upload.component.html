@@ -11,14 +11,14 @@
         <mat-radio-button class="tp-radio-button" value="non-po" (change)="onInvoiceTypeChange($event)">
             Non PO Invoice
         </mat-radio-button>
-
-        <span *ngIf="selectedInvoiceType == 'po'" style="margin-left: 50px">
-            <b>Project Name: </b> {{ getPOProjectName() }}
-        </span>
     </mat-radio-group>
 
     <form [formGroup]="invoiceUploadForm">
-        <div class="search-row">
+        
+       <div class="search-row">
+        <mat-label *ngIf="selectedInvoiceType == 'po'" class="search-row-element">
+            <b>Project Name: </b> {{ getPOProjectName() }}
+        </mat-label>
             <mat-form-field *ngIf="selectedInvoiceType == 'po'" class="search-row-element">
                 <mat-select matNativeControl formControlName="poList" placeholder="Choose PO No.">
                     <mat-option *ngFor="let p of poList" [value]="p.poNumber">
@@ -26,6 +26,30 @@
                     </mat-option>
                 </mat-select>
                 <mat-error *ngIf="( isSubmitted ) && f?.poList?.errors?.required">PO No. is required</mat-error>
+            </mat-form-field>
+
+            <mat-form-field class="search-row-element" *ngIf="selectedInvoiceType == 'non-po'">
+                <mat-select matNativeControl formControlName="companyCode" placeholder="Choose Company">
+                    <mat-option *ngFor="let c of companiesList" [value]="c.companyCode">
+                        {{ c.companyDesc }}
+                    </mat-option>
+                </mat-select>
+                <mat-error *ngIf="( isSubmitted ) && f?.companyCode?.errors?.required">Company is required</mat-error>
+            </mat-form-field>
+
+            <mat-form-field *ngIf="selectedInvoiceType == 'non-po'">
+                <input matInput placeholder="Select Vendor" aria-label="State" [matAutocomplete]="auto"
+                    formControlName="vendorId" (blur)="onVendorBlur()">
+                <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayVendor"
+                    (optionSelected)="onVendorOptionSelected($event)" (closed)="onVendorPanelClosed()">
+                    <mat-option *ngIf="isLoading" class="is-loading">Loading...</mat-option>
+                    <ng-container *ngIf="!isLoading">
+                        <mat-option *ngFor="let v of filteredVendors" [value]="v">
+                            <span [innerHtml]="getDisplayVendorName(v)"></span>
+                        </mat-option>
+                    </ng-container>
+                </mat-autocomplete>
+                <mat-error *ngIf="( isSubmitted ) && f?.vendorId?.errors?.required">vendor is required</mat-error>
             </mat-form-field>
 
             <mat-form-field class="search-row-element">
@@ -45,29 +69,18 @@
                 </mat-error>
             </mat-form-field>
 
-            <mat-form-field class="search-row-element remarks">
-                <input type="text" matInput placeholder="Remarks" maxlength="50" (blur)="onRemarksBlur()"
-                    formControlName="remarks" autocomplete="off">
-                <mat-error *ngIf="( isSubmitted ) && f?.remarks?.errors?.required">Remarks is required</mat-error>
+            <mat-form-field class="search-row-elemen currency" *ngIf="selectedInvoiceType == 'non-po'">
+
+                <mat-select matNativeControl formControlName="currency" placeholder="Choose Currency">
+                    <mat-option *ngFor="let c of currencyList" [value]="c.currencyCode">
+                        {{ c.currencyDesc }}
+                    </mat-option>
+                </mat-select>
+                <mat-error *ngIf="( isSubmitted ) && f?.currency?.errors?.required">Currency is required</mat-error>
             </mat-form-field>
         </div>
         <div class="search-row">
-            <mat-form-field *ngIf="selectedInvoiceType == 'non-po'">
-                <input matInput placeholder="Select Vendor" aria-label="State" [matAutocomplete]="auto"
-                    formControlName="vendorId" (blur)="onVendorBlur()">
-                <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayVendor"
-                    (optionSelected)="onVendorOptionSelected($event)" (closed)="onVendorPanelClosed()">
-                    <mat-option *ngIf="isLoading" class="is-loading">Loading...</mat-option>
-                    <ng-container *ngIf="!isLoading">
-                        <mat-option *ngFor="let v of filteredVendors" [value]="v">
-                            <span [innerHtml]="getDisplayVendorName(v)"></span>
-                        </mat-option>
-                    </ng-container>
-                </mat-autocomplete>
-                <mat-error *ngIf="( isSubmitted ) && f?.vendorId?.errors?.required">vendor is required</mat-error>
-            </mat-form-field>
-
-            <mat-form-field *ngIf="selectedInvoiceType == 'non-po'">
+            <mat-form-field *ngIf="selectedInvoiceType == 'non-po'" style="width: 500px">
                 <input matInput placeholder="Select Project" aria-label="State" [matAutocomplete]="auto"
                     formControlName="projectId" (blur)="onProjectBlur()">
                 <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayProject"
@@ -82,23 +95,10 @@
                 <mat-error *ngIf="( isSubmitted ) && f?.projectId?.errors?.required">Project is required</mat-error>
             </mat-form-field>
 
-            <mat-form-field class="search-row-element" *ngIf="selectedInvoiceType == 'non-po'">
-                <mat-select matNativeControl formControlName="companyCode" placeholder="Choose Company">
-                    <mat-option *ngFor="let c of companiesList" [value]="c.companyCode">
-                        {{ c.companyDesc }}
-                    </mat-option>
-                </mat-select>
-                <mat-error *ngIf="( isSubmitted ) && f?.companyCode?.errors?.required">Company is required</mat-error>
-            </mat-form-field>
-
-            <mat-form-field class="search-row-elemen currency" *ngIf="selectedInvoiceType == 'non-po'">
-
-                <mat-select matNativeControl formControlName="currency" placeholder="Choose Currency">
-                    <mat-option *ngFor="let c of currencyList" [value]="c.currencyCode">
-                        {{ c.currencyDesc }}
-                    </mat-option>
-                </mat-select>
-                <mat-error *ngIf="( isSubmitted ) && f?.currency?.errors?.required">Currency is required</mat-error>
+            <mat-form-field class="search-row-element remarks">
+                <input type="text" matInput placeholder="Remarks" maxlength="35" (blur)="onRemarksBlur()"
+                    formControlName="remarks" autocomplete="off">
+                <mat-error *ngIf="( isSubmitted ) && f?.remarks?.errors?.required">Remarks is required</mat-error>
             </mat-form-field>
 
             <div class=" search-row-element actions" *ngIf="selectedInvoiceType == 'non-po'">
