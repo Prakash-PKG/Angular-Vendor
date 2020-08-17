@@ -10,6 +10,11 @@
             </mat-form-field>
 
             <mat-form-field class="field search-row-element">
+                <mat-label>Entity</mat-label>
+                <input type="text" matInput formControlName="entityNo" autocomplete="off">
+            </mat-form-field>
+
+            <mat-form-field class="field search-row-element">
                 <mat-label>From Date</mat-label>
                 <input matInput [matDatepicker]="picker" disabled formControlName="startDate" autocomplete="off">
                 <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
