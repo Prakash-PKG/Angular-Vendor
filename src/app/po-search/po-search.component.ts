@@ -188,12 +188,16 @@ export class PoSearchComponent implements OnInit {
         let poNumberVal = this.poSearchForm.get("poNumber").value;
         let lcPoNumberVal = (poNumberVal) ? poNumberVal.toLowerCase() : "";
 
+        let entityNoVal = this.poSearchForm.get("entityNo").value;
+        let lcEntityNo = (entityNoVal) ? entityNoVal.toLowerCase() : "";
+
         let startDateVal = this.poSearchForm.get("startDate").value;
 
         let endDateVal = this.poSearchForm.get("endDate").value;
 
         this.poList = this.totalPoList.filter(function (req) {
                                 if ((req.poNumber && req.poNumber.toString().toLowerCase().indexOf(lcPoNumberVal) > -1) &&
+                                    (req.companyCode && req.companyCode.toString().toLowerCase().indexOf(lcEntityNo) > -1) &&
                                     ((req.poDate && startDateVal) ? new Date(req.poDate) > startDateVal : true) &&
                                     ((req.poDate && endDateVal) ? new Date(req.poDate) < endDateVal : true)) {
                                     return true;
@@ -221,11 +225,16 @@ export class PoSearchComponent implements OnInit {
 
         this.poSearchForm = this._formBuilder.group({
             poNumber: null,
+            entityNo: null,
             startDate: null,
             endDate: null
         });
 
         this.poSearchForm.get("poNumber").valueChanges.subscribe(val => {
+            this.onSearchChange();
+        });
+
+        this.poSearchForm.get("entityNo").valueChanges.subscribe(val => {
             this.onSearchChange();
         });
 
