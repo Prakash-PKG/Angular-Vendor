@@ -11,11 +11,15 @@
             </mat-label>
         </div>
         <div class="col-7 actions">
-            <input style="display: none" [attr.id]="vendorDocCtrl.incCerCtrl.browserId" type="file" multiple accept=".xls,.xlsx,.doc,.docx,.pdf,.png,.jpg,.zip"
+            <input style="display: none" [attr.id]="vendorDocCtrl.incCerCtrl.browserId" type="file" multiple
+                accept=".xls,.xlsx,.doc,.docx,.pdf,.png,.jpg,.zip"
                 (change)="onFileChange($event, vendorDocCtrl.incCerCtrl.documentTypeId)" />
-            <button mat-raised-button class="footer-actions" (click)="onBrowseFileClick($event, vendorDocCtrl.incCerCtrl.browserId)">Attach</button>
-            <div *ngIf="filesMap[vendorDocCtrl.incCerCtrl.documentTypeId]?.isAttached" style="display: flex;    flex-wrap: wrap;">
-                <span class="filename" *ngFor="let f of filesMap[vendorDocCtrl.incCerCtrl.documentTypeId]?.filesList; let fInd = index">
+            <button mat-raised-button class="footer-actions"
+                (click)="onBrowseFileClick($event, vendorDocCtrl.incCerCtrl.browserId)">Attach</button>
+            <div *ngIf="filesMap[vendorDocCtrl.incCerCtrl.documentTypeId]?.isAttached"
+                style="display: flex;    flex-wrap: wrap;">
+                <span class="filename"
+                    *ngFor="let f of filesMap[vendorDocCtrl.incCerCtrl.documentTypeId]?.filesList; let fInd = index">
                     <span>
                         <mat-icon matTooltip="{{ f.actualFileName }}" (click)="downloadFile(f)">description</mat-icon>
 
@@ -35,24 +39,29 @@
     </div>
     <!------------------------------------- GST No---------------------- -->
     <div class="row doc-field">
-        <div class="col-5 doc-form-field">
+        <div class="col-5 doc-form-field form-group">
             <mat-form-field class="full-width">
-                <input type="text" matInput (keypress)="omit_special_char($event)" placeholder="{{vendorDocCtrl.gstCtrl.placeholder}}" formControlName="gstNum" minlength="15" maxlength="15" autocomplete="off"
+                <input type="text" matInput (keypress)="omit_special_char($event)"
+                    placeholder="{{vendorDocCtrl.gstCtrl.placeholder}}" formControlName="gstNum" minlength="15"
+                    maxlength="15" autocomplete="off"
                     (blur)="updateMandatory('gstNum',vendorDocCtrl.gstCtrl.documentTypeId)">
             </mat-form-field>
-            
-            <mat-error *ngIf="isSubmitted == true && vdf?.gstNum?.errors?.required">GST No. is required</mat-error>
-            <mat-error *ngIf="isSubmitted == true && vdf?.gstNum?.errors?.minlength">15 characters are required</mat-error>
+                    <mat-error class="errortxt" *ngIf="( isSubmitted ) && vdf?.gstNum?.errors?.minlength">15 characters are required
+            </mat-error>
         </div>
 
         <div class="col-7 actions">
-            <input style="display: none" [attr.id]="vendorDocCtrl.gstCtrl.browserId" type="file" multiple accept=".xls,.xlsx,.doc,.docx,.pdf,.png,.jpg,.zip"
+            <input style="display: none" [attr.id]="vendorDocCtrl.gstCtrl.browserId" type="file" multiple
+                accept=".xls,.xlsx,.doc,.docx,.pdf,.png,.jpg,.zip"
                 (change)="onFileChange($event, vendorDocCtrl.gstCtrl.documentTypeId)" />
-            <button mat-raised-button class="footer-actions" (click)="onBrowseFileClick($event, vendorDocCtrl.gstCtrl.browserId)" [disabled]="!vendorDocumentForm.get('gstNum').value">Attach</button>
+            <button mat-raised-button class="footer-actions"
+                (click)="onBrowseFileClick($event, vendorDocCtrl.gstCtrl.browserId)"
+                [disabled]="!vendorDocumentForm.get('gstNum').value">Attach</button>
 
             <div *ngIf="filesMap[vendorDocCtrl.gstCtrl.documentTypeId]?.isAttached" style="display: flex;
     flex-wrap: wrap;">
-                <span class="filename" *ngFor="let f of filesMap[vendorDocCtrl.gstCtrl.documentTypeId]?.filesList; let fInd = index">
+                <span class="filename"
+                    *ngFor="let f of filesMap[vendorDocCtrl.gstCtrl.documentTypeId]?.filesList; let fInd = index">
                     <span>
                         <mat-icon matTooltip="{{ f.actualFileName }}" (click)="downloadFile(f)">description</mat-icon>
                         <button mat-button mat-icon-button aria-label="Delete" *ngIf="!disableSubmit"
@@ -73,21 +82,27 @@
     </div>
     <!------------------------------------- Pan No---------------------- -->
     <div class="row doc-field">
-        <div class="col-5 doc-form-field">
+        <div class="col-5 doc-form-field form-group">
             <mat-form-field class="full-width">
-                <input type="text" matInput (keypress)="omit_special_char($event)" placeholder="{{vendorDocCtrl.panCtrl.placeholder}}" formControlName="panNum" minlength="10" maxlength="10" autocomplete="off"
-                    required>
+                <input type="text" matInput (keypress)="omit_special_char($event)"
+                    placeholder="{{vendorDocCtrl.panCtrl.placeholder}}" formControlName="panNum" minlength="10"
+                    maxlength="10" autocomplete="off" required>
             </mat-form-field>
-            <mat-error *ngIf="isSubmitted == true && vdf?.panNum?.errors?.required">PAN No. is required</mat-error>
-            <mat-error *ngIf="isSubmitted == true && vdf?.panNum?.errors?.minlength">10 characters are required</mat-error>
+            <mat-error class="errortxt" *ngIf="( isSubmitted ) && vdf?.panNum?.errors?.required">PAN No. is required
+            </mat-error>
+            <mat-error class="errortxt" *ngIf="( isSubmitted ) && vdf?.panNum?.errors?.minlength">10 characters are required
+            </mat-error>
         </div>
         <div class="col-7 actions">
-            <input style="display: none" [attr.id]="vendorDocCtrl.panCtrl.browserId" type="file" multiple accept=".xls,.xlsx,.doc,.docx,.pdf,.png,.jpg,.zip"
+            <input style="display: none" [attr.id]="vendorDocCtrl.panCtrl.browserId" type="file" multiple
+                accept=".xls,.xlsx,.doc,.docx,.pdf,.png,.jpg,.zip"
                 (change)="onFileChange($event, vendorDocCtrl.panCtrl.documentTypeId)" />
-            <button mat-raised-button class="footer-actions" (click)="onBrowseFileClick($event, vendorDocCtrl.panCtrl.browserId)">Attach</button>
+            <button mat-raised-button class="footer-actions"
+                (click)="onBrowseFileClick($event, vendorDocCtrl.panCtrl.browserId)">Attach</button>
             <div *ngIf="filesMap[vendorDocCtrl.panCtrl.documentTypeId]?.isAttached" style="display: flex;
     flex-wrap: wrap;">
-                <span class="filename" *ngFor="let f of filesMap[vendorDocCtrl.panCtrl.documentTypeId]?.filesList; let fInd = index">
+                <span class="filename"
+                    *ngFor="let f of filesMap[vendorDocCtrl.panCtrl.documentTypeId]?.filesList; let fInd = index">
                     <span>
                         <mat-icon matTooltip="{{ f.actualFileName }}" (click)="downloadFile(f)">description</mat-icon>
                         <button mat-button mat-icon-button aria-label="Delete" *ngIf="!disableSubmit"
@@ -111,12 +126,15 @@
             <mat-label> {{vendorDocCtrl.canChqCtrl.placeholder}} * :</mat-label>
         </div>
         <div class="col-7 actions">
-            <input style="display: none" [attr.id]="vendorDocCtrl.canChqCtrl.browserId" type="file" multiple accept=".xls,.xlsx,.doc,.docx,.pdf,.png,.jpg,.zip"
+            <input style="display: none" [attr.id]="vendorDocCtrl.canChqCtrl.browserId" type="file" multiple
+                accept=".xls,.xlsx,.doc,.docx,.pdf,.png,.jpg,.zip"
                 (change)="onFileChange($event, vendorDocCtrl.canChqCtrl.documentTypeId)" />
-            <button mat-raised-button class="footer-actions" (click)="onBrowseFileClick($event, vendorDocCtrl.canChqCtrl.browserId)">Attach</button>
+            <button mat-raised-button class="footer-actions"
+                (click)="onBrowseFileClick($event, vendorDocCtrl.canChqCtrl.browserId)">Attach</button>
             <div *ngIf="filesMap[vendorDocCtrl.canChqCtrl.documentTypeId]?.isAttached" style="display: flex;
     flex-wrap: wrap;">
-                <span class="filename" *ngFor="let f of filesMap[vendorDocCtrl.canChqCtrl.documentTypeId]?.filesList; let fInd = index">
+                <span class="filename"
+                    *ngFor="let f of filesMap[vendorDocCtrl.canChqCtrl.documentTypeId]?.filesList; let fInd = index">
                     <span>
                         <mat-icon matTooltip="{{ f.actualFileName }}" (click)="downloadFile(f)">description</mat-icon>
                         <button mat-button mat-icon-button aria-label="Delete" *ngIf="!disableSubmit"
@@ -138,7 +156,8 @@
     <div class="row doc-field">
         <div class="col-5 doc-form-field">
             <mat-form-field>
-                <input type="text" matInput placeholder="{{vendorDocCtrl.lutNoCtrl.placeholder}}" formControlName="lutNum" autocomplete="off"
+                <input type="text" matInput placeholder="{{vendorDocCtrl.lutNoCtrl.placeholder}}"
+                    formControlName="lutNum" autocomplete="off"
                     (blur)="updateMandatory('lutNum',vendorDocCtrl.lutNoCtrl.documentTypeId)">
             </mat-form-field>
             <mat-form-field style="width:9em;">
@@ -152,12 +171,15 @@
             </div>
         </div>
         <div class="col-7 actions">
-            <input style="display: none" [attr.id]="vendorDocCtrl.lutNoCtrl.browserId" type="file" multiple accept=".xls,.xlsx,.doc,.docx,.pdf,.png,.jpg,.zip"
+            <input style="display: none" [attr.id]="vendorDocCtrl.lutNoCtrl.browserId" type="file" multiple
+                accept=".xls,.xlsx,.doc,.docx,.pdf,.png,.jpg,.zip"
                 (change)="onFileChange($event, vendorDocCtrl.lutNoCtrl.documentTypeId)" />
-            <button mat-raised-button class="footer-actions" [disabled]="!vendorDocumentForm.get('lutNum').value" (click)="onBrowseFileClick($event, vendorDocCtrl.lutNoCtrl.browserId)">Attach</button>
+            <button mat-raised-button class="footer-actions" [disabled]="!vendorDocumentForm.get('lutNum').value"
+                (click)="onBrowseFileClick($event, vendorDocCtrl.lutNoCtrl.browserId)">Attach</button>
             <div *ngIf="filesMap[vendorDocCtrl.lutNoCtrl.documentTypeId]?.isAttached" style="display: flex;
     flex-wrap: wrap;">
-                <span class="filename" *ngFor="let f of filesMap[vendorDocCtrl.lutNoCtrl.documentTypeId]?.filesList; let fInd = index">
+                <span class="filename"
+                    *ngFor="let f of filesMap[vendorDocCtrl.lutNoCtrl.documentTypeId]?.filesList; let fInd = index">
                     <span>
                         <mat-icon matTooltip="{{ f.actualFileName }}" (click)="downloadFile(f)">description</mat-icon>
                         <button mat-button mat-icon-button aria-label="Delete" *ngIf="!disableSubmit"
@@ -180,18 +202,22 @@
     <div class="row doc-field">
         <div class="col-5 doc-form-field">
             <mat-form-field class="full-width">
-                <input type="text" matInput (keypress)="omit_special_char($event)" placeholder="{{vendorDocCtrl.pfCtrl.placeholder}}" formControlName="pfNum" autocomplete="off" maxlength="30"
-                    (blur)="updateMandatory('pfNum',vendorDocCtrl.pfCtrl.documentTypeId)">
+                <input type="text" matInput (keypress)="omit_special_char($event)"
+                    placeholder="{{vendorDocCtrl.pfCtrl.placeholder}}" formControlName="pfNum" autocomplete="off"
+                    maxlength="30" (blur)="updateMandatory('pfNum',vendorDocCtrl.pfCtrl.documentTypeId)">
             </mat-form-field>
 
         </div>
         <div class="col-7 actions">
-            <input style="display: none" [attr.id]="vendorDocCtrl.pfCtrl.browserId" type="file" multiple accept=".xls,.xlsx,.doc,.docx,.pdf,.png,.jpg,.zip"
+            <input style="display: none" [attr.id]="vendorDocCtrl.pfCtrl.browserId" type="file" multiple
+                accept=".xls,.xlsx,.doc,.docx,.pdf,.png,.jpg,.zip"
                 (change)="onFileChange($event, vendorDocCtrl.pfCtrl.documentTypeId)" />
-            <button mat-raised-button class="footer-actions" [disabled]="!vendorDocumentForm.get('pfNum').value" (click)="onBrowseFileClick($event, vendorDocCtrl.pfCtrl.browserId)">Attach</button>
+            <button mat-raised-button class="footer-actions" [disabled]="!vendorDocumentForm.get('pfNum').value"
+                (click)="onBrowseFileClick($event, vendorDocCtrl.pfCtrl.browserId)">Attach</button>
             <div *ngIf="filesMap[vendorDocCtrl.pfCtrl.documentTypeId]?.isAttached" style="display: flex;
     flex-wrap: wrap;">
-                <span class="filename" *ngFor="let f of filesMap[vendorDocCtrl.pfCtrl.documentTypeId]?.filesList; let fInd = index">
+                <span class="filename"
+                    *ngFor="let f of filesMap[vendorDocCtrl.pfCtrl.documentTypeId]?.filesList; let fInd = index">
                     <span>
                         <mat-icon matTooltip="{{ f.actualFileName }}" (click)="downloadFile(f)">description</mat-icon>
                         <button mat-button mat-icon-button aria-label="Delete" *ngIf="!disableSubmit"
@@ -213,17 +239,21 @@
     <div class="row doc-field">
         <div class="col-5 doc-form-field">
             <mat-form-field class="full-width">
-                <input type="text" matInput placeholder="{{vendorDocCtrl.esiCtrl.placeholder}}" formControlName="esiNum" autocomplete="off"  maxlength="30"
+                <input type="text" matInput placeholder="{{vendorDocCtrl.esiCtrl.placeholder}}" formControlName="esiNum"
+                    autocomplete="off" maxlength="30"
                     (blur)="updateMandatory('esiNum',vendorDocCtrl.esiCtrl.documentTypeId)">
             </mat-form-field>
         </div>
         <div class="col-7 actions">
-            <input style="display: none" [attr.id]="vendorDocCtrl.esiCtrl.browserId" type="file" multiple accept=".xls,.xlsx,.doc,.docx,.pdf,.png,.jpg,.zip"
+            <input style="display: none" [attr.id]="vendorDocCtrl.esiCtrl.browserId" type="file" multiple
+                accept=".xls,.xlsx,.doc,.docx,.pdf,.png,.jpg,.zip"
                 (change)="onFileChange($event, vendorDocCtrl.esiCtrl.documentTypeId)" />
-            <button mat-raised-button class="footer-actions" [disabled]="!vendorDocumentForm.get('esiNum').value" (click)="onBrowseFileClick($event, vendorDocCtrl.esiCtrl.browserId)">Attach</button>
+            <button mat-raised-button class="footer-actions" [disabled]="!vendorDocumentForm.get('esiNum').value"
+                (click)="onBrowseFileClick($event, vendorDocCtrl.esiCtrl.browserId)">Attach</button>
             <div *ngIf="filesMap[vendorDocCtrl.esiCtrl.documentTypeId]?.isAttached" style="display: flex;
                     flex-wrap: wrap;">
-                <span class="filename" *ngFor="let f of filesMap[vendorDocCtrl.esiCtrl.documentTypeId]?.filesList; let fInd = index">
+                <span class="filename"
+                    *ngFor="let f of filesMap[vendorDocCtrl.esiCtrl.documentTypeId]?.filesList; let fInd = index">
                     <span>
                         <mat-icon matTooltip="{{ f.actualFileName }}" (click)="downloadFile(f)">description</mat-icon>
                         <button mat-button mat-icon-button aria-label="Delete" *ngIf="!disableSubmit"
@@ -246,18 +276,23 @@
             <mat-label>{{vendorDocCtrl.msmeCtrl.placeholder}}</mat-label>
         </div>
         <div class="col-2 doc-form-field">
-            <mat-radio-group formControlName="isMsmedRegistered" (change)="updateMandatory('isMsmedRegistered',vendorDocCtrl.msmeCtrl.documentTypeId)">
+            <mat-radio-group formControlName="isMsmedRegistered"
+                (change)="updateMandatory('isMsmedRegistered',vendorDocCtrl.msmeCtrl.documentTypeId)">
                 <mat-radio-button [value]=true>YES</mat-radio-button>
                 <mat-radio-button [value]=false>NO</mat-radio-button>
             </mat-radio-group>
         </div>
         <div class="col-7 actions">
-            <input style="display: none" [attr.id]="vendorDocCtrl.msmeCtrl.browserId" type="file" multiple accept=".xls,.xlsx,.doc,.docx,.pdf,.png,.jpg,.zip"
+            <input style="display: none" [attr.id]="vendorDocCtrl.msmeCtrl.browserId" type="file" multiple
+                accept=".xls,.xlsx,.doc,.docx,.pdf,.png,.jpg,.zip"
                 (change)="onFileChange($event, vendorDocCtrl.msmeCtrl.documentTypeId)" />
-            <button mat-raised-button class="footer-actions" [disabled]="!vendorDocumentForm.get('isMsmedRegistered').value" (click)="onBrowseFileClick($event, vendorDocCtrl.msmeCtrl.browserId)">Attach</button>
+            <button mat-raised-button class="footer-actions"
+                [disabled]="!vendorDocumentForm.get('isMsmedRegistered').value"
+                (click)="onBrowseFileClick($event, vendorDocCtrl.msmeCtrl.browserId)">Attach</button>
             <div *ngIf="filesMap[vendorDocCtrl.msmeCtrl.documentTypeId]?.isAttached" style="display: flex;
     flex-wrap: wrap;">
-                <span class="filename" *ngFor="let f of filesMap[vendorDocCtrl.msmeCtrl.documentTypeId]?.filesList; let fInd = index">
+                <span class="filename"
+                    *ngFor="let f of filesMap[vendorDocCtrl.msmeCtrl.documentTypeId]?.filesList; let fInd = index">
                     <span>
                         <mat-icon matTooltip="{{ f.actualFileName }}" (click)="downloadFile(f)">description</mat-icon>
                         <button mat-button mat-icon-button aria-label="Delete" *ngIf="!disableSubmit"
@@ -280,18 +315,22 @@
             <mat-label>{{vendorDocCtrl.tdsCtrl.placeholder}}</mat-label>
         </div>
         <div class="col-2 doc-form-field">
-            <mat-radio-group formControlName="hasTdsLower" (change)="updateMandatory('hasTdsLower',vendorDocCtrl.tdsCtrl.documentTypeId)">
+            <mat-radio-group formControlName="hasTdsLower"
+                (change)="updateMandatory('hasTdsLower',vendorDocCtrl.tdsCtrl.documentTypeId)">
                 <mat-radio-button [value]=true>YES</mat-radio-button>
                 <mat-radio-button [value]=false>NO</mat-radio-button>
             </mat-radio-group>
         </div>
         <div class="col-7 actions">
-            <input style="display: none" [attr.id]="vendorDocCtrl.tdsCtrl.browserId" type="file" multiple accept=".xls,.xlsx,.doc,.docx,.pdf,.png,.jpg,.zip"
+            <input style="display: none" [attr.id]="vendorDocCtrl.tdsCtrl.browserId" type="file" multiple
+                accept=".xls,.xlsx,.doc,.docx,.pdf,.png,.jpg,.zip"
                 (change)="onFileChange($event, vendorDocCtrl.tdsCtrl.documentTypeId)" />
-            <button mat-raised-button class="footer-actions" [disabled]="!vendorDocumentForm.get('hasTdsLower').value" (click)="onBrowseFileClick($event, vendorDocCtrl.tdsCtrl.browserId)">Attach</button>
+            <button mat-raised-button class="footer-actions" [disabled]="!vendorDocumentForm.get('hasTdsLower').value"
+                (click)="onBrowseFileClick($event, vendorDocCtrl.tdsCtrl.browserId)">Attach</button>
             <div *ngIf="filesMap[vendorDocCtrl.tdsCtrl.documentTypeId]?.isAttached" style="display: flex;
     flex-wrap: wrap;">
-                <span class="filename" *ngFor="let f of filesMap[vendorDocCtrl.tdsCtrl.documentTypeId]?.filesList; let fInd = index">
+                <span class="filename"
+                    *ngFor="let f of filesMap[vendorDocCtrl.tdsCtrl.documentTypeId]?.filesList; let fInd = index">
                     <span>
                         <mat-icon matTooltip="{{ f.actualFileName }}" (click)="downloadFile(f)">description</mat-icon>
                         <button mat-button mat-icon-button aria-label="Delete" *ngIf="!disableSubmit"
@@ -315,18 +354,22 @@
             <mat-label>{{vendorDocCtrl.sezCtrl.placeholder}}</mat-label>
         </div>
         <div class="col-2 doc-form-field">
-            <mat-radio-group formControlName="isSez" (change)="updateMandatory('isSez',vendorDocCtrl.sezCtrl.documentTypeId)">
+            <mat-radio-group formControlName="isSez"
+                (change)="updateMandatory('isSez',vendorDocCtrl.sezCtrl.documentTypeId)">
                 <mat-radio-button [value]=true>YES</mat-radio-button>
                 <mat-radio-button [value]=false>NO</mat-radio-button>
             </mat-radio-group>
         </div>
         <div class="col-7 actions">
-            <input style="display: none" [attr.id]="vendorDocCtrl.sezCtrl.browserId" type="file" multiple accept=".xls,.xlsx,.doc,.docx,.pdf,.png,.jpg,.zip"
+            <input style="display: none" [attr.id]="vendorDocCtrl.sezCtrl.browserId" type="file" multiple
+                accept=".xls,.xlsx,.doc,.docx,.pdf,.png,.jpg,.zip"
                 (change)="onFileChange($event, vendorDocCtrl.sezCtrl.documentTypeId)" />
-            <button mat-raised-button class="footer-actions" [disabled]="!vendorDocumentForm.get('isSez').value" (click)="onBrowseFileClick($event, vendorDocCtrl.sezCtrl.browserId);">Attach</button>
+            <button mat-raised-button class="footer-actions" [disabled]="!vendorDocumentForm.get('isSez').value"
+                (click)="onBrowseFileClick($event, vendorDocCtrl.sezCtrl.browserId);">Attach</button>
             <div *ngIf="filesMap[vendorDocCtrl.sezCtrl.documentTypeId]?.isAttached" style="display: flex;
     flex-wrap: wrap;">
-                <span class="filename" *ngFor="let f of filesMap[vendorDocCtrl.sezCtrl.documentTypeId]?.filesList; let fInd = index">
+                <span class="filename"
+                    *ngFor="let f of filesMap[vendorDocCtrl.sezCtrl.documentTypeId]?.filesList; let fInd = index">
                     <span>
                         <mat-icon matTooltip="{{ f.actualFileName }}" (click)="downloadFile(f)">description</mat-icon>
                         <button mat-button mat-icon-button aria-label="Delete" *ngIf="!disableSubmit"
@@ -337,7 +380,8 @@
                 </span>
 
             </div>
-            <div *ngIf="filesMap[vendorDocCtrl.sezCtrl.documentTypeId] && filesMap[vendorDocCtrl.sezCtrl.documentTypeId]?.isError" class="errortxt">
+            <div *ngIf="filesMap[vendorDocCtrl.sezCtrl.documentTypeId] && filesMap[vendorDocCtrl.sezCtrl.documentTypeId]?.isError"
+                class="errortxt">
                 Please attach the Documents
             </div>
         </div>
@@ -370,18 +414,22 @@
     <div class="row doc-field">
         <div class="col-5 doc-form-field">
             <mat-form-field class="full-width">
-                <input type="text" matInput placeholder="{{vendorDocCtrl.otherCtrl.placeholder}}" formControlName="otherDocDesc" autocomplete="off"
+                <input type="text" matInput placeholder="{{vendorDocCtrl.otherCtrl.placeholder}}"
+                    formControlName="otherDocDesc" autocomplete="off"
                     (blur)="updateMandatory('otherDocDesc',vendorDocCtrl.otherCtrl.documentTypeId)">
             </mat-form-field>
 
         </div>
         <div class="col-7 actions">
-            <input style="display: none" [attr.id]="vendorDocCtrl.otherCtrl.browserId" type="file" multiple accept=".xls,.xlsx,.doc,.docx,.pdf,.png,.jpg,.zip"
+            <input style="display: none" [attr.id]="vendorDocCtrl.otherCtrl.browserId" type="file" multiple
+                accept=".xls,.xlsx,.doc,.docx,.pdf,.png,.jpg,.zip"
                 (change)="onFileChange($event, vendorDocCtrl.otherCtrl.documentTypeId)" />
-            <button mat-raised-button class="footer-actions" [disabled]="!vendorDocumentForm.get('otherDocDesc').value" (click)="onBrowseFileClick($event, vendorDocCtrl.otherCtrl.browserId)">Attach</button>
+            <button mat-raised-button class="footer-actions" [disabled]="!vendorDocumentForm.get('otherDocDesc').value"
+                (click)="onBrowseFileClick($event, vendorDocCtrl.otherCtrl.browserId)">Attach</button>
             <div *ngIf="filesMap[vendorDocCtrl.otherCtrl.documentTypeId]?.isAttached" style="display: flex;
                 flex-wrap: wrap;">
-                <span class="filename" *ngFor="let f of filesMap[vendorDocCtrl.otherCtrl.documentTypeId]?.filesList; let fInd = index">
+                <span class="filename"
+                    *ngFor="let f of filesMap[vendorDocCtrl.otherCtrl.documentTypeId]?.filesList; let fInd = index">
                     <span>
                         <mat-icon matTooltip="{{ f.actualFileName }}" (click)="downloadFile(f)">description</mat-icon>
                         <button mat-button mat-icon-button aria-label="Delete" *ngIf="!disableSubmit"
@@ -405,6 +453,8 @@
         {{ failureMsg }}
     </div>
 
-    <button mat-raised-button class="footer-actions" (click)="onPrevClick()" [disabled]="disableSubmit">Previous</button>
-    <button mat-raised-button class="footer-actions footer-actions-green" [disabled]="disableSubmit" (click)="onSubmitClick()">Submit</button>
+    <button mat-raised-button class="footer-actions" (click)="onPrevClick()"
+        [disabled]="disableSubmit">Previous</button>
+    <button mat-raised-button class="footer-actions footer-actions-green" [disabled]="disableSubmit"
+        (click)="onSubmitClick()">Submit</button>
 </div>

@@ -82,9 +82,9 @@ export class VendorDocumentsComponent implements OnInit {
             this.counterSubject = new BehaviorSubject(0);
             this.counterSubscription = this.counterSubject
                 .pipe(
-                scan((sum, curr) => sum + curr, 0),
-                takeWhile(val => val < event.target.files.length),
-                takeLast(1)
+                    scan((sum, curr) => sum + curr, 0),
+                    takeWhile(val => val < event.target.files.length),
+                    takeLast(1)
                 )
                 .subscribe((val: number) => {
                     this.onAttachFileClick(documentTypeId);
@@ -135,11 +135,10 @@ export class VendorDocumentsComponent implements OnInit {
 
     }
 
-    omit_special_char(event)
-    {   
-       var k;  
-       k = event.charCode;
-       return((k > 64 && k < 91) || (k > 96 && k < 123) || k == 8 || k == 32 || (k >= 48 && k <= 57)); 
+    omit_special_char(event) {
+        var k;
+        k = event.charCode;
+        return ((k > 64 && k < 91) || (k > 96 && k < 123) || k == 8 || k == 32 || (k >= 48 && k <= 57));
     }
 
     onAttachFileClick(documentTypeId: number) {
@@ -164,13 +163,13 @@ export class VendorDocumentsComponent implements OnInit {
 
                 }
             },
-            (error) => {
-                this.filesMap[documentTypeId].isAttached = false;
-                this.filesMap[documentTypeId].toAttach = [];
-                this._vendorRegistrationService.updateBusy(<BusyDataModel>{ isBusy: false, msg: null });
-                this._snackBar.open("Files Attachment Failed");
-                console.log(error);
-            });
+                (error) => {
+                    this.filesMap[documentTypeId].isAttached = false;
+                    this.filesMap[documentTypeId].toAttach = [];
+                    this._vendorRegistrationService.updateBusy(<BusyDataModel>{ isBusy: false, msg: null });
+                    this._snackBar.open("Files Attachment Failed");
+                    console.log(error);
+                });
     }
 
     updateDataForBackup() {
@@ -210,7 +209,7 @@ export class VendorDocumentsComponent implements OnInit {
         if (!this.isValid) { return };
 
         if (this.vendorDocumentForm.valid) {
-            
+
             this.updateDataForBackup();
 
             let req: VendorRegistrationRequestModel = {
@@ -218,7 +217,7 @@ export class VendorDocumentsComponent implements OnInit {
                 vendorMasterDetails: this._appService.vendorRegistrationDetails
             }
 
-           // console.log(req);
+            // console.log(req);
 
             this._vendorRegistrationService.updateBusy(<BusyDataModel>{ isBusy: true, msg: null });
             this._vendorRegistrationService.updateVendorRegistrationDetails(req)
@@ -262,7 +261,7 @@ export class VendorDocumentsComponent implements OnInit {
         });
 
         dialogRef.afterClosed().subscribe(result => {
-            if(globalConstant.userDetails.isEmpanelment) {
+            if (globalConstant.userDetails.isEmpanelment) {
                 this._router.navigate([this._appService.routingConstants.posearch]);
             }
             else {
@@ -283,10 +282,10 @@ export class VendorDocumentsComponent implements OnInit {
                         this._snackBar.open("File deleted Successfully");
                     }
                 },
-                (error) => {
-                    this._vendorRegistrationService.updateBusy(<BusyDataModel>{ isBusy: false, msg: null });
-                    console.log(error);
-                });
+                    (error) => {
+                        this._vendorRegistrationService.updateBusy(<BusyDataModel>{ isBusy: false, msg: null });
+                        console.log(error);
+                    });
         }
         else {
             this.removefileFromList(fileIndex, documentTypeId);
@@ -332,7 +331,7 @@ export class VendorDocumentsComponent implements OnInit {
     }
 
     updateLUTValidations(lutVal: string) {
-        if(lutVal && lutVal.trim()) {
+        if (lutVal && lutVal.trim()) {
             this.vendorDocumentForm.get("lutDate").enable();
             this.vendorDocumentForm.get("lutDate").setValidators([Validators.required]);
         }
@@ -346,7 +345,7 @@ export class VendorDocumentsComponent implements OnInit {
     }
 
     initializeFilesList() {
-        if(this._appService.isEmpty(this._appService.selectedFileMap)) {
+        if (this._appService.isEmpty(this._appService.selectedFileMap)) {
             if (this._appService.vendorRegistrationInitDetails && this._appService.vendorRegistrationInitDetails.documentDetailsList &&
                 this._appService.vendorRegistrationInitDetails.documentDetailsList.length > 0) {
                 this._appService.vendorRegistrationInitDetails.documentDetailsList.forEach(item =>
@@ -366,11 +365,14 @@ export class VendorDocumentsComponent implements OnInit {
         }
         this.vendorDocumentForm.get(selfId).enable();
         this.vendorDocumentForm.get(selfId).setValidators([Validators.required]);
+        if (selfId == 'gstNum') {
+            this.vendorDocumentForm.get(selfId).setValidators([Validators.minLength(15)]);
+        }
         this.vendorDocumentForm.get(selfId).updateValueAndValidity();
         this.filesMap[documentTypeId].isMandatory = true;
         this.filesMap[documentTypeId].isError = true;
     }
-    
+
     get vdf() { return this.vendorDocumentForm.controls; }
 
     ngOnInit() {
@@ -380,8 +382,8 @@ export class VendorDocumentsComponent implements OnInit {
 
         this.vendorDocumentForm = this._formBuilder.group({
 
-            panNum: [null, [Validators.required, Validators.minLength(10),Validators.maxLength(10)]],
-            gstNum: [null,[Validators.minLength(15), Validators.maxLength(15)]],
+            panNum: [null, [Validators.required, Validators.minLength(10), Validators.maxLength(10)]],
+            gstNum: [null, [Validators.minLength(15), Validators.maxLength(15)]],
             pfNum: [null],
             esiNum: [null],
             cinNum: [null],
@@ -390,7 +392,7 @@ export class VendorDocumentsComponent implements OnInit {
             isMsmedRegistered: [false],
             hasTdsLower: [false],
             lutNum: [null],
-            lutDate: [{ value: null, disabled: true}],
+            lutDate: [{ value: null, disabled: true }],
             otherDocDesc: [null]
 
         });
