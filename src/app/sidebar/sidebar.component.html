@@ -101,20 +101,20 @@
             <li *ngIf="isEmpanelmentVisible == true" [ngClass]="{'collapsed': isSidebarCollapsed == true}"
                 (click)="onEmpanelmentClick()">
                 <div class="side-icon">
-                    <mat-icon>person</mat-icon>
+                    <mat-icon  matTooltip="Vendor Empanelment">person</mat-icon>
                 </div>
                 <div class="navtxt">Vendor Empanelment</div>
             </li>
         </ul>
         <li (click)="onContactMeClick()">
             <div class="side-icon">
-                <mat-icon>contact_support</mat-icon>
+                <mat-icon  matTooltip="Contact Us">contact_support</mat-icon>
             </div>
             <div class="navtxt">Contact Us</div>
         </li>
         <li (click)="onLogoutClick()">
             <div class="side-icon">
-                <mat-icon>exit_to_app</mat-icon>
+                <mat-icon  matTooltip="Log Out">exit_to_app</mat-icon>
             </div>
             <div class="navtxt">Log Out</div>
         </li>
