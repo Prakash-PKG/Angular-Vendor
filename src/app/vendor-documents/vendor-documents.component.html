@@ -44,7 +44,7 @@
                 <input type="text" matInput (keypress)="omit_special_char($event)"
                     placeholder="{{vendorDocCtrl.gstCtrl.placeholder}}" formControlName="gstNum" minlength="15"
                     maxlength="15" autocomplete="off"
-                    (blur)="updateMandatory('gstNum',vendorDocCtrl.gstCtrl.documentTypeId)">
+                    (blur)="updateMandatory('gstNum',vendorDocCtrl.gstCtrl.documentTypeId); toUppercase('gstNum')">
                 <mat-error class="errortxt" *ngIf="( isSubmitted ) && vdf?.gstNum?.errors?.minlength">Minimum 15
                     characters are required
                 </mat-error>
@@ -91,7 +91,8 @@
             <mat-form-field class="full-width">
                 <input type="text" matInput (keypress)="omit_special_char($event)"
                     placeholder="{{vendorDocCtrl.panCtrl.placeholder}}" formControlName="panNum" minlength="10"
-                    maxlength="10" autocomplete="off" required>
+                    maxlength="10" autocomplete="off" required
+                    (blur)="toUppercase('gstNum')">
                 <mat-error class="errortxt" *ngIf="( isSubmitted ) && vdf?.panNum?.errors?.required">PAN No. is required
                 </mat-error>
                 <mat-error class="errortxt" *ngIf="( isSubmitted ) && vdf?.panNum?.errors?.minlength">Minimum 10
