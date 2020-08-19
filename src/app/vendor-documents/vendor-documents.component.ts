@@ -36,6 +36,7 @@ export class VendorDocumentsComponent implements OnInit {
     documentsList: VendorMasterDocumentModel[] = [];
     filesMap: FileMap = {};
     disableSubmit: boolean = false;
+    attachWithoutValue: boolean = false;
     private counterSubject: BehaviorSubject<number>;
     private counterSubscription: Subscription;
 
@@ -159,6 +160,7 @@ export class VendorDocumentsComponent implements OnInit {
                         results.fileDetails.forEach(f => this.filesMap[documentTypeId].filesList.push(f));
                         this.filesMap[documentTypeId].isAttached = true;
                         this.filesMap[documentTypeId].toAttach = [];
+                        this.attachWithoutValue = false;
                     }
 
                 }
@@ -207,6 +209,8 @@ export class VendorDocumentsComponent implements OnInit {
             }
         }
         if (!this.isValid) { return };
+
+        if (this.attachWithoutValue) { return };
 
         if (this.vendorDocumentForm.valid) {
 
@@ -353,15 +357,28 @@ export class VendorDocumentsComponent implements OnInit {
             }
 
             this._appService.selectedFileMap = this.filesMap;
+
+            for (let key in this.filesMap) {
+                if (this.filesMap[key].filesList.length) {
+                    this.filesMap[key].isAttached = true;
+                }
+            }
         }
     }
 
     updateMandatory(selfId: string, documentTypeId: number) {
         if (!this.vendorDocumentForm.get(selfId).value) {
-            this.vendorDocumentForm.get(selfId).setValidators([]);
-            this.vendorDocumentForm.get(selfId).updateValueAndValidity();
-            this.filesMap[documentTypeId] = { filesList: [], isMandatory: false, isAttached: false, isError: false, toAttach: [] }
-            return;
+            if (this.filesMap[documentTypeId].filesList.length < 0) {
+                this.vendorDocumentForm.get(selfId).setValidators([]);
+                this.vendorDocumentForm.get(selfId).updateValueAndValidity();
+                this.filesMap[documentTypeId] = { filesList: [], isMandatory: false, isAttached: false, isError: false, toAttach: [] }
+                this.attachWithoutValue = false;
+                return;
+            }
+            else {
+                this.filesMap[documentTypeId].isError = true;
+                this.attachWithoutValue = true;
+            }
         }
         this.vendorDocumentForm.get(selfId).enable();
         this.vendorDocumentForm.get(selfId).setValidators([Validators.required]);

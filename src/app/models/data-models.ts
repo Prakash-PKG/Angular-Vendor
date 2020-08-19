@@ -106,7 +106,7 @@ export class VendorMasterDetailsModel {
     emailId: string;
     password: string;
     contactPerson: string;
-    // contactNum: string;
+    contactNum: string;
     buildingNum: string;
     buildingName: string;
     floorNum: string;
@@ -117,7 +117,7 @@ export class VendorMasterDetailsModel {
     countryCode: string;
     countryName: string;
     pincode: string;
-    // bankAddress: string;
+    bankAddress: string;
     accountNum: string;
     accountType: string;
     accountName: string;
@@ -162,6 +162,7 @@ export class VendorMasterDetailsModel {
     // isGSTReg: boolean;
     otherDocDesc: string;
     vendorId: string;
+    bankAccountTypeId: string
 }
 
 export interface FileMap {

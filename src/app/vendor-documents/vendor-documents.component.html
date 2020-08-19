@@ -45,9 +45,11 @@
                     placeholder="{{vendorDocCtrl.gstCtrl.placeholder}}" formControlName="gstNum" minlength="15"
                     maxlength="15" autocomplete="off"
                     (blur)="updateMandatory('gstNum',vendorDocCtrl.gstCtrl.documentTypeId)">
+                <mat-error class="errortxt" *ngIf="( isSubmitted ) && vdf?.gstNum?.errors?.minlength">Minimum 15
+                    characters are required
+                </mat-error>
             </mat-form-field>
-                    <mat-error class="errortxt" *ngIf="( isSubmitted ) && vdf?.gstNum?.errors?.minlength">15 characters are required
-            </mat-error>
+
         </div>
 
         <div class="col-7 actions">
@@ -77,6 +79,9 @@
             filesMap[vendorDocCtrl.gstCtrl.documentTypeId]?.isError" class="errortxt">
                 Please attach the Documents
             </div>
+            <div *ngIf="attachWithoutValue" class="errortxt">
+               Fill GST No. or delete the attachment.
+            </div>
         </div>
 
     </div>
@@ -87,11 +92,13 @@
                 <input type="text" matInput (keypress)="omit_special_char($event)"
                     placeholder="{{vendorDocCtrl.panCtrl.placeholder}}" formControlName="panNum" minlength="10"
                     maxlength="10" autocomplete="off" required>
+                <mat-error class="errortxt" *ngIf="( isSubmitted ) && vdf?.panNum?.errors?.required">PAN No. is required
+                </mat-error>
+                <mat-error class="errortxt" *ngIf="( isSubmitted ) && vdf?.panNum?.errors?.minlength">Minimum 10
+                    characters are required
+                </mat-error>
             </mat-form-field>
-            <mat-error class="errortxt" *ngIf="( isSubmitted ) && vdf?.panNum?.errors?.required">PAN No. is required
-            </mat-error>
-            <mat-error class="errortxt" *ngIf="( isSubmitted ) && vdf?.panNum?.errors?.minlength">10 characters are required
-            </mat-error>
+
         </div>
         <div class="col-7 actions">
             <input style="display: none" [attr.id]="vendorDocCtrl.panCtrl.browserId" type="file" multiple
