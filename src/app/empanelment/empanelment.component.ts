@@ -13,17 +13,19 @@ export class EmpanelmentComponent implements OnInit {
 
     empanelmentForm: FormGroup;
     message: string = "";
+    loading: boolean = false;
 
     constructor(private _empanelmentService: EmpanelmentService,
-                private _formBuilder: FormBuilder) { }
+        private _formBuilder: FormBuilder) { }
 
     ngOnInit() {
         this.empanelmentForm = this._formBuilder.group({
-            emailId: [null, [Validators.required,Validators.email]],
+            emailId: [null, [Validators.required, Validators.email]],
         });
     }
 
     onEmpanelmentClick() {
+        this.loading = true;
         this.message = "";
         if (this.empanelmentForm.valid) {
             let req: EmpanelmentSubmitReqModel = {
@@ -33,14 +35,15 @@ export class EmpanelmentComponent implements OnInit {
 
             this._empanelmentService.submitEmpanelmentReq(req)
                 .subscribe(response => {
-
-                   this.message = response.body["status"].message;
+                    this.loading = false;
+                    this.message = response.body["status"].message;
                     //this._homeService.updateBusy(<BusyDataModel>{ isBusy: false, msg: null });
                 },
-                (error) => {
-                    //this._homeService.updateBusy(<BusyDataModel>{ isBusy: false, msg: null });
-                    console.log(error);
-                });
+                    (error) => {
+                        //this._homeService.updateBusy(<BusyDataModel>{ isBusy: false, msg: null });
+                        console.log(error);
+                        this.loading = false;
+                    });
         }
     }
 }

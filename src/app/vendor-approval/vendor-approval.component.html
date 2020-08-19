@@ -264,8 +264,9 @@
                     <div class="Rtable-cell Rtable-cell--head">GST No.</div>
                     <div class="Rtable-cell">
                         <mat-form-field class="full-width">
-                            <input type="text" matInput formControlName="gstNum" autocomplete="off" maxlength="15" (blur)="onTextFieldValueChange('gstNum',vendorDocCtrl.gstCtrl.documentTypeId)">
+                            <input type="text" matInput formControlName="gstNum" autocomplete="off" maxlength="15" minlength="15" (blur)="onTextFieldValueChange('gstNum',vendorDocCtrl.gstCtrl.documentTypeId)">
                         </mat-form-field>
+                                                <mat-error class="errortxt" *ngIf="isSubmitted == true && f?.gstNum?.errors?.minlength">Minimum 15 characters are required</mat-error>
                     </div>
 
                     <div class="Rtable-cell Rtable-cell--head">Attachments</div>
@@ -297,11 +298,11 @@
                     <div class="Rtable-cell Rtable-cell--head">PAN No. *</div>
                     <div class="Rtable-cell">
                         <mat-form-field class="full-width">
-                            <input type="text" matInput formControlName="panNum" autocomplete="off" required maxlength="10">
+                            <input type="text" matInput formControlName="panNum" autocomplete="off" required maxlength="10" minlength="15">
                         </mat-form-field>
                         
                         <mat-error class="errortxt" *ngIf="isSubmitted == true && f?.panNum?.errors?.required">PAN No. is required</mat-error>
-                        <mat-error class="errortxt" *ngIf="isSubmitted == true && f?.panNum?.errors?.minlength">10 characters are required</mat-error>
+                        <mat-error class="errortxt" *ngIf="isSubmitted == true && f?.panNum?.errors?.minlength">Minimum 10 characters are required</mat-error>
                     </div>
                     
 
