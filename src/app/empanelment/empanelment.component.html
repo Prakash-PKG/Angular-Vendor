@@ -27,8 +27,10 @@
 
       <!--  login button -->
       <div class="row actions margin-unset">
-        <button mat-raised-button type="submit" class=" footer-actions mat-elevation-z8" (click)="onEmpanelmentClick()">
-          Vendor Empanelment</button>
+        <button mat-raised-button type="submit" class=" footer-actions mat-elevation-z8" (click)="onEmpanelmentClick()"
+          [disabled]="loading">
+         
+          Vendor Empanelment <i *ngIf="loading" class="fa fa-spin fa-spinner pull-right" style="padding:5px" aria-hidden="true"></i></button>
       </div>
     </form>
 

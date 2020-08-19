@@ -39,7 +39,7 @@ export class VendorBankDetailsComponent implements OnInit {
 
     updateControlsData() {
         this._appService.vendorRegistrationDetails.accountNum = this.vendorBankForm.get("accountNum").value;
-        this._appService.vendorRegistrationDetails.accountType = this.vendorBankForm.get("accountType").value;
+        this._appService.vendorRegistrationDetails.bankAccountTypeId = this.vendorBankForm.get("accountType").value;
         this._appService.vendorRegistrationDetails.accountName = this.vendorBankForm.get("accountName").value;
         this._appService.vendorRegistrationDetails.ifscCode = this.vendorBankForm.get("ifscCode").value;
         this._appService.vendorRegistrationDetails.bankName = this.vendorBankForm.get("bankName").value;
@@ -104,8 +104,9 @@ export class VendorBankDetailsComponent implements OnInit {
 
     updateVendorDetails() {
         // this.vendorBankForm.get("bankAddress").setValue(this._appService.vendorRegistrationDetails.bankAddress);
+      
         this.vendorBankForm.get("accountNum").setValue(this._appService.vendorRegistrationDetails.accountNum);
-        this.vendorBankForm.get("accountType").setValue(this._appService.vendorRegistrationDetails.accountType);
+        this.vendorBankForm.get("accountType").setValue(this._appService.vendorRegistrationDetails.bankAccountTypeId);
         this.vendorBankForm.get("accountName").setValue(this._appService.vendorRegistrationDetails.accountName);
         this.vendorBankForm.get("ifscCode").setValue(this._appService.vendorRegistrationDetails.ifscCode);
         this.vendorBankForm.get("bankName").setValue(this._appService.vendorRegistrationDetails.bankName);
@@ -116,7 +117,7 @@ export class VendorBankDetailsComponent implements OnInit {
         this.vendorBankForm.get("swiftIbanCode").setValue(this._appService.vendorRegistrationDetails.swiftIbanCode);
         this.vendorBankForm.get("routingBank").setValue(this._appService.vendorRegistrationDetails.routingBank);
         this.vendorBankForm.get("swiftInterm").setValue(this._appService.vendorRegistrationDetails.swiftInterm);
-
+      
         this.updateRegion();
     }
 
@@ -154,7 +155,7 @@ export class VendorBankDetailsComponent implements OnInit {
             accountNum: [null, [Validators.required]],
             accountType: [null, [Validators.required]],
             accountName: [null, [Validators.required]],
-            ifscCode: [null, [Validators.required, Validators.maxLength(11)]],
+            ifscCode: [null, [Validators.required, Validators.maxLength(11), Validators.minLength(11)]],
             bankName: [null, [Validators.required]],
             bankBranch: [null, [Validators.required]],
             bankCity: [null, [Validators.required]],

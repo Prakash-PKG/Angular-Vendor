@@ -223,6 +223,9 @@ export class VendorApprovalComponent implements OnInit {
                     if (controlVal && this.filesMap[key].filesList.length == 0) {
                         this.filesMap[key].isError = true;
                     }
+                    else if(!controlVal && this.filesMap[key].filesList.length){
+                        this.filesMap[key].isError = true;
+                    }
                 }
             }
         }
@@ -787,12 +790,12 @@ export class VendorApprovalComponent implements OnInit {
             address2: [{ value: null, disabled: true }],
             city: [{ value: null, disabled: true }, [Validators.required]],
             street: [{ value: null, disabled: true }, [Validators.required]],
-            pincode: [{ value: null, disabled: true }, [Validators.required, Validators.minLength(6), Validators.maxLength(6)]],
+            pincode: [{ value: null, disabled: true }, [Validators.required, Validators.minLength(5), Validators.maxLength(6)]],
             stateCode: [{ value: null, disabled: true }, [Validators.required]],
             countryCode: [{ value: null, disabled: true }, [Validators.required]],
 
             panNum: [{ value: null, disabled: true }, [Validators.required, Validators.minLength(10)]],
-            gstNum: [{ value: null, disabled: true }],
+            gstNum: [{ value: null, disabled: true },[Validators.minLength(15)]],
             pfNum: [{ value: null, disabled: true }],
             esiNum: [{ value: null, disabled: true }],
             cinNum: [{ value: null, disabled: true }],
