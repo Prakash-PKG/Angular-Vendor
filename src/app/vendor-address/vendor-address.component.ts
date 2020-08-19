@@ -117,7 +117,7 @@ export class VendorAddressComponent implements OnInit {
     updatePincodeValidation() {
         let countryCodeVal = this.vendorAddressForm.get("countryCode").value;
         if(countryCodeVal == "US") {
-            this.vendorAddressForm.get("pincode").setValidators([Validators.required, Validators.minLength(5), Validators.maxLength(5)]);
+            this.vendorAddressForm.get("pincode").setValidators([Validators.required, Validators.minLength(5), Validators.maxLength(10)]);
         }
         else {
             this.vendorAddressForm.get("pincode").setValidators([Validators.required, Validators.minLength(6),  Validators.maxLength(6)]);
