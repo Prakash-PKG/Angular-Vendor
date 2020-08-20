@@ -399,7 +399,7 @@ export class VendorDocumentsComponent implements OnInit {
                 return;
             }
             else {
-                this.filesMap[documentTypeId] = { filesList: [], isMandatory: false, isAttached: false, isError: false, toAttach: [], isAttachWithoutValue: true };
+                this.filesMap[documentTypeId].isAttachWithoutValue = true;
                 return;
             }
         }
@@ -410,7 +410,8 @@ export class VendorDocumentsComponent implements OnInit {
         }
         this.vendorDocumentForm.get(selfId).updateValueAndValidity();
         this.filesMap[documentTypeId].isMandatory = true;
-        this.filesMap[documentTypeId].isError = true;
+        if (this.filesMap[documentTypeId].filesList.length < 0)
+            this.filesMap[documentTypeId].isError = true;
         this.filesMap[documentTypeId].isAttachWithoutValue = false;
     }
 
