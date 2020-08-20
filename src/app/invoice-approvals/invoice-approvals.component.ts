@@ -1,3 +1,5 @@
+import { InvoiceCommunicationDialogComponent } from './../invoice-communication-dialog/invoice-communication-dialog.component';
+import { transition } from '@angular/animations';
 import { ConfirmDialogComponent } from './../confirm-dialog/confirm-dialog.component';
 import { GrnSesItemsComponent } from './../grn-ses-items/grn-ses-items.component';
 import { MessageDialogModel } from './../models/popup-models';
@@ -7,7 +9,7 @@ import { AppService } from './../app.service';
 import { BusyDataModel, InvoiceApprovalInitResultModel, InvoiceApprovalInitReqModel, 
     ItemModel, ItemDisplayModel, GrnSesModel, FileDetailsModel, 
     StatusModel, UpdateInvoiceApprovalReqModel, GrnSesDisplayModel, GrnSesItemModel,
-    GrnSesItemsDisplayModel } from './../models/data-models';
+    GrnSesItemsDisplayModel, InvoiceApprovalModel, InvoiceCommunicationDisplayModel } from './../models/data-models';
 import { InvoiceApprovalsService } from './invoice-approvals.service';
 import { Component, OnInit } from '@angular/core';
 import { HomeService } from '../home/home.service';
@@ -67,6 +69,13 @@ export class InvoiceApprovalsComponent implements OnInit {
     isFromToMandatory: boolean = false;
 
     approveBtnTxt: string = "Approve";
+    rejectedRemarks: string = "";
+    isOnHold: boolean = false;
+
+    isRejectVisible: boolean = false;
+    isHoldVisible: boolean = false;
+
+    isChatBtnVisible: boolean = false;
 
     constructor(private _homeService: HomeService,
                 private _appService: AppService,
@@ -129,7 +138,22 @@ export class InvoiceApprovalsComponent implements OnInit {
     }
 
     async loadInitData() {
+        this.isRejectVisible = false;
+        this.isHoldVisible = false;
         if(this._appService.selectedPendingApprovalRecord) {
+
+            if(globalConstant.userDetails.isPurchaseOwner || 
+                (globalConstant.userDetails.isFunctionalHead && this._appService.selectedPendingApprovalRecord.documentType == "ZHR")) {
+                
+                this.isRejectVisible = true;
+            }
+
+            if((globalConstant.userDetails.isFunctionalHead && this._appService.selectedPendingApprovalRecord.documentType && this._appService.selectedPendingApprovalRecord.documentType != "ZHR")
+                || globalConstant.userDetails.isFinance) {
+
+                this.isHoldVisible = true;
+            }
+
             this.totalAmount = "0.000";
 
             this.isPOInvoice = false;
@@ -211,7 +235,22 @@ export class InvoiceApprovalsComponent implements OnInit {
                 this.headerArr = this.nonPOHeaderArr.concat();
             }
 
+            this.isOnHold = false;
+            if(globalConstant.userDetails.isPurchaseOwner && this.initDetails.approvalsList && this.initDetails.approvalsList.length > 0) {
+                let onHoldRecs: InvoiceApprovalModel[] = this.initDetails.approvalsList.filter(rec => rec.statusCode == this._appService.updateOperations.onhold);
+                if(onHoldRecs && onHoldRecs.length > 0) {
+                    this.rejectedRemarks =  onHoldRecs[0].remarks;
+                    this.isOnHold = true;
+                }
+            }
+
             this._homeService.updateBusy(<BusyDataModel>{ isBusy: false, msg: null });
+
+            this.isChatBtnVisible = false;
+            if(this.initDetails.communicationMsgsList && this.initDetails.communicationMsgsList.length > 0) {
+                this.isChatBtnVisible = true;
+            }
+            this.onCommunicationClick();
         }
     }
 
@@ -250,6 +289,28 @@ export class InvoiceApprovalsComponent implements OnInit {
         }
     }
 
+    onHoldClick() {
+        const dialogRef = this._dialog.open(ConfirmDialogComponent, {
+            disableClose: true,
+            panelClass: 'dialog-box',
+            width: '550px',
+            data: <MessageDialogModel>{
+                title: "Invoice Action",
+                message: "Are you sure you want to Send back?"
+            }
+        });
+
+        dialogRef.afterClosed().subscribe(result => {
+            if (result) {
+                this.updateInvoiceApprovals(this._appService.updateOperations.onhold);
+            }
+        });
+    }
+
+    onRectifyClick() {
+        this.updateInvoiceApprovals(this._appService.updateOperations.rectified);
+    }
+
     onApproveClick() {
         this.updateInvoiceApprovals(this._appService.updateOperations.approve);
     }
@@ -272,6 +333,30 @@ export class InvoiceApprovalsComponent implements OnInit {
         });
     }
 
+    onCommunicationClick() {
+        const dialogRef = this._dialog.open(InvoiceCommunicationDialogComponent, {
+            disableClose: true,
+            panelClass: 'dialog-box',
+            width: '400px',
+            height: '300px',
+            position: {
+                top: '100px',
+                right: '20px'
+            },
+            data: <InvoiceCommunicationDisplayModel>{
+                purchaseOrderId: this._appService.selectedPendingApprovalRecord.purchaseOrderId,
+                invoiceId: this._appService.selectedPendingApprovalRecord.invoiceId,
+                msgsList: this.initDetails.communicationMsgsList
+            }
+        });
+
+        dialogRef.afterClosed().subscribe(result => {
+            if (result) {
+                
+            }
+        });
+    }
+
     updateInvoiceApprovals(action: string) {
         this.remarksErrMsg = "";
         this.grnSesErrMsg = "";
@@ -281,12 +366,12 @@ export class InvoiceApprovalsComponent implements OnInit {
             isRemarksValid = false;
         }
 
-        let approveSuccessMsg: string = (action == this._appService.updateOperations.approve) ? "Approved." : "Rejected.";
-        let approveFailureMsg: string = (action == this._appService.updateOperations.approve) ? "Approval is failed." : "Reject is failed.";
-        if(globalConstant.userDetails.isPurchaseOwner) {
-            approveSuccessMsg = (action == this._appService.updateOperations.approve) ? "Recieved." : "Rejected.";
-            approveFailureMsg = (action == this._appService.updateOperations.approve) ? "Receiving is failed." : "Reject is failed.";
-        }
+        // let approveSuccessMsg: string = (action == this._appService.updateOperations.approve) ? "Approved." : "Rejected.";
+        // let approveFailureMsg: string = (action == this._appService.updateOperations.approve) ? "Approval is failed." : "Reject is failed.";
+        // if(globalConstant.userDetails.isPurchaseOwner) {
+        //     approveSuccessMsg = (action == this._appService.updateOperations.approve) ? "Recieved." : "Rejected.";
+        //     approveFailureMsg = (action == this._appService.updateOperations.approve) ? "Receiving is failed." : "Reject is failed.";
+        // }
         // else {
         //     if(globalConstant.userDetails.isFunctionalHead && this._appService.selectedPendingApprovalRecord.documentType == 'ZHR') {
         //         approveSuccessMsg = (action == this._appService.updateOperations.approve) ? "Recieved." : "Rejected.";
@@ -295,7 +380,7 @@ export class InvoiceApprovalsComponent implements OnInit {
         // }
         
         let isGrnSesValid: boolean = true;
-        if(this.isGrnSesRequired && (globalConstant.userDetails.isFunctionalHead || globalConstant.userDetails.isFinance)) {
+        if(this.isGrnSesRequired && action == this._appService.updateOperations.approve && (globalConstant.userDetails.isFunctionalHead || globalConstant.userDetails.isFinance)) {
             
             if(this._appService.selectedPendingApprovalRecord.documentType == 'ZHR') {
                 if(globalConstant.userDetails.isFinance) {
@@ -342,6 +427,7 @@ export class InvoiceApprovalsComponent implements OnInit {
         if(isRemarksValid && isGrnSesValid) {
             let req: UpdateInvoiceApprovalReqModel = {
                 action: action,
+                isOnHold: this.isOnHold,
                 departmentHeadId: globalConstant.userDetails.departmentHead,
                 grnSesNumber: (this.selectedGrnSesNumber) ? this.selectedGrnSesNumber : null,
                 approvalDetails: {
@@ -352,7 +438,7 @@ export class InvoiceApprovalsComponent implements OnInit {
                     projectId: this.initDetails.approvalDetails.projectId,
                     statusCode: null,
                     approverId: globalConstant.userDetails.userId,
-                    approvalLevel: this.initDetails.approvalDetails.approvalLevel,
+                    approvalLevel: (this.isOnHold) ? this._appService.approvalLevels.po : this.initDetails.approvalDetails.approvalLevel,
                     remarks: this.remarks,
                     createdBy: this.initDetails.approvalDetails.createdBy,
                     createdDate: this.initDetails.approvalDetails.createdDate,
@@ -371,18 +457,18 @@ export class InvoiceApprovalsComponent implements OnInit {
                         let result: StatusModel = response.body as StatusModel;
                         if (result.status == 200 && result.isSuccess) {
                             //this.msg = "Invoice approval is success";
-                            this.displayInvoiceApprovalStatus(approveSuccessMsg, true);
+                            this.displayInvoiceApprovalStatus(result.message, true);
                         }
                         else {
                             //this.msg = this._appService.messages.vendorApprovalFailure;
-                            this.displayInvoiceApprovalStatus(approveFailureMsg, false);
+                            this.displayInvoiceApprovalStatus(result.message, false);
                         }
                     }
                 },
                 (error) => {
                     this._homeService.updateBusy(<BusyDataModel>{ isBusy: false, msg: null });
                     //this.msg = this._appService.messages.vendorApprovalFailure;
-                    this.displayInvoiceApprovalStatus(approveFailureMsg, false);
+                    this.displayInvoiceApprovalStatus("Failed", false);
                     console.log(error);
                 });
         }

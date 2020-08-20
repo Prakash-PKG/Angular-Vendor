@@ -61,14 +61,16 @@ export class AppService {
         submit: "submit",
         approve: "approve",
         reject: "reject",
-        sendBack: "sendBack"
+        onhold: 'onhold',
+        sendBack: "sendBack",
+        rectified: "rectified"
     };
 
     readonly statusNames: any = {
         new: "In Progress",
         approved: "Approved",
         rejected: "Rejected",
-        received: 'Recieved'
+        received: 'Received'
     };
 
     readonly statusCodes: any = {
