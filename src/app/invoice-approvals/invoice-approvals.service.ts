@@ -35,6 +35,8 @@ export class InvoiceApprovalsService {
             initModel.poDetails = data["poDetails"];
             initModel.grnSesList = data["grnSesList"];
             initModel.grnSesItemsList = data["grnSesItemsList"];
+            initModel.approvalsList = data["approvalsList"];
+            initModel.communicationMsgsList = data["communicationMsgsList"];
             initModel.invoiceFilesList = [];
             initModel.supportFilesList = [];
 

@@ -188,6 +188,12 @@ export class PoSearchComponent implements OnInit {
         let poNumberVal = this.poSearchForm.get("poNumber").value;
         let lcPoNumberVal = (poNumberVal) ? poNumberVal.toLowerCase() : "";
 
+        let vendorIdVal = this.poSearchForm.get("vendorId").value;
+        let lcVendorIdVal = (vendorIdVal) ? vendorIdVal.toLowerCase() : "";
+
+        let projectIdVal = this.poSearchForm.get("projectId").value;
+        let lcProjectIdVal = (projectIdVal) ? projectIdVal.toLowerCase() : "";
+
         let entityNoVal = this.poSearchForm.get("entityNo").value;
         let lcEntityNo = (entityNoVal) ? entityNoVal.toLowerCase() : "";
 
@@ -197,6 +203,8 @@ export class PoSearchComponent implements OnInit {
 
         this.poList = this.totalPoList.filter(function (req) {
                                 if ((req.poNumber && req.poNumber.toString().toLowerCase().indexOf(lcPoNumberVal) > -1) &&
+                                    (req.vendorId && req.vendorId.toString().toLowerCase().indexOf(lcVendorIdVal) > -1) &&
+                                    (req.projectId && req.projectId.toString().toLowerCase().indexOf(lcProjectIdVal) > -1) &&
                                     (req.companyCode && req.companyCode.toString().toLowerCase().indexOf(lcEntityNo) > -1) &&
                                     ((req.poDate && startDateVal) ? new Date(req.poDate) > startDateVal : true) &&
                                     ((req.poDate && endDateVal) ? new Date(req.poDate) < endDateVal : true)) {
@@ -225,12 +233,22 @@ export class PoSearchComponent implements OnInit {
 
         this.poSearchForm = this._formBuilder.group({
             poNumber: null,
+            vendorId: null,
+            projectId: null,
             entityNo: null,
             startDate: null,
             endDate: null
         });
 
         this.poSearchForm.get("poNumber").valueChanges.subscribe(val => {
+            this.onSearchChange();
+        });
+
+        this.poSearchForm.get("vendorId").valueChanges.subscribe(val => {
+            this.onSearchChange();
+        });
+
+        this.poSearchForm.get("projectId").valueChanges.subscribe(val => {
             this.onSearchChange();
         });
 

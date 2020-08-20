@@ -253,7 +253,7 @@ export class InvoiceDetailsComponent implements OnInit {
     }
 
     getStatusDetails(level: ApprovalLevelsModel) {
-        if(level && ( level.status == this._appService.statusNames.approved || level.status == this._appService.statusNames.rejected)) {
+        if(level && ( level.status == this._appService.statusNames.approved || level.status == this._appService.statusNames.received || level.status == this._appService.statusNames.rejected)) {
             return level.status + " on " + level.date;
         }
 
@@ -342,17 +342,17 @@ export class InvoiceDetailsComponent implements OnInit {
                 if(this._initDetails.approvalsList && this._initDetails.approvalsList.length > 0) {
                     this.approvalLevelList = [];
 
-                    if(this.isSesSubContractPO == false) {
-                        let poApprovalModel: InvoiceApprovalModel = this._initDetails.approvalsList.find(a => a.approvalLevel == this._appService.approvalLevels.po);
-                        if(poApprovalModel != null) {
-                            this.uploadLevel = {
-                                levelName: "Upload",
-                                status: "Submitted",
-                                date: this._appService.getFormattedDate(poApprovalModel.createdDate),
-                                remarks: this.invoiceDetails.remarks
-                            };
-                            this.approvalLevelList.push(this.uploadLevel);
+                    let poApprovalModel: InvoiceApprovalModel = this._initDetails.approvalsList.find(a => a.approvalLevel == this._appService.approvalLevels.po);
+                    if(poApprovalModel != null) {
+                        this.uploadLevel = {
+                            levelName: "Upload",
+                            status: "Submitted",
+                            date: this._appService.getFormattedDate(poApprovalModel.createdDate),
+                            remarks: this.invoiceDetails.remarks
+                        };
+                        this.approvalLevelList.push(this.uploadLevel);
 
+                        if(this.isSesSubContractPO == false) {
                             let poStatusCode = (poApprovalModel.statusCode == 'approved') ? 'received' : poApprovalModel.statusCode;
                             this.poLevel = {
                                 levelName: "Buyer",

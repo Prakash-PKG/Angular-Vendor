@@ -104,7 +104,7 @@ export class VendorDetailsComponent implements OnInit {
             vendorName: [null, [Validators.required, Validators.nullValidator]],
             contactPerson: [null],
             mobileNum: [null, [Validators.required,Validators.minLength(10), Validators.maxLength(10),Validators.nullValidator]],
-            telephoneNum: [null, Validators.maxLength(12)],
+            telephoneNum: [null, Validators.maxLength(12),Validators.minLength(11),],
             emailId: [null, [Validators.required, Validators.email,Validators.nullValidator]],
             password: [null, [Validators.required,Validators.nullValidator]],
             confirmPassword: [null, [Validators.required,Validators.nullValidator]]
