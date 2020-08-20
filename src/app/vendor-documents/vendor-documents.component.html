@@ -79,8 +79,8 @@
             filesMap[vendorDocCtrl.gstCtrl.documentTypeId]?.isError" class="errortxt">
                 Please attach the Documents
             </div>
-            <div *ngIf="attachWithoutValue" class="errortxt">
-               Fill GST No. or delete the attachment.
+            <div *ngIf="filesMap[vendorDocCtrl.gstCtrl.documentTypeId]?.isAttachWithoutValue" class="errortxt">
+                Fill GST No. or delete the attachment.
             </div>
         </div>
 
@@ -91,8 +91,7 @@
             <mat-form-field class="full-width">
                 <input type="text" matInput (keypress)="omit_special_char($event)"
                     placeholder="{{vendorDocCtrl.panCtrl.placeholder}}" formControlName="panNum" minlength="10"
-                    maxlength="10" autocomplete="off" required
-                    (blur)="toUppercase('gstNum')">
+                    maxlength="10" autocomplete="off" required (blur)="toUppercase('panNum')">
                 <mat-error class="errortxt" *ngIf="( isSubmitted ) && vdf?.panNum?.errors?.required">PAN No. is required
                 </mat-error>
                 <mat-error class="errortxt" *ngIf="( isSubmitted ) && vdf?.panNum?.errors?.minlength">Minimum 10
@@ -203,6 +202,9 @@
             filesMap[vendorDocCtrl.lutNoCtrl.documentTypeId]?.isError" class="errortxt">
                 Please attach the Documents
             </div>
+            <div  *ngIf="filesMap[vendorDocCtrl.lutNoCtrl.documentTypeId]?.isAttachWithoutValue" class="errortxt">
+                Fill Lut No. or delete the attachment.
+            </div>
         </div>
 
     </div>
@@ -240,6 +242,9 @@
             filesMap[vendorDocCtrl.pfCtrl.documentTypeId]?.isError" class="errortxt">
                 Please attach the Documents
             </div>
+            <div *ngIf="filesMap[vendorDocCtrl.pfCtrl.documentTypeId]?.isAttachWithoutValue" class="errortxt">
+                Fill PF Details or delete the attachment.
+            </div>
         </div>
 
     </div>
@@ -274,6 +279,9 @@
             <div *ngIf="filesMap[vendorDocCtrl.esiCtrl.documentTypeId] && 
             filesMap[vendorDocCtrl.esiCtrl.documentTypeId]?.isError" class="errortxt">
                 Please attach the Documents
+            </div>
+            <div *ngIf="filesMap[vendorDocCtrl.esiCtrl.documentTypeId]?.isAttachWithoutValue" class="errortxt">
+                Fill ESI No. or delete the attachment.
             </div>
         </div>
 
@@ -314,6 +322,10 @@
             filesMap[vendorDocCtrl.msmeCtrl.documentTypeId]?.isError" class="errortxt">
                 Please attach the Documents
             </div>
+            <div *ngIf="filesMap[vendorDocCtrl.msmeCtrl.documentTypeId]?.isAttachWithoutValue"
+                class="errortxt">
+                Fill Lut No. or delete the attachment.
+            </div>
         </div>
 
     </div>
@@ -353,6 +365,9 @@
             filesMap[vendorDocCtrl.tdsCtrl.documentTypeId]?.isError" class="errortxt">
                 Please attach the Documents
             </div>
+            <div *ngIf="filesMap[vendorDocCtrl.tdsCtrl.documentTypeId]?.isAttachWithoutValue" class="errortxt">
+                Fill TDS Details or delete the attachment.
+            </div>
         </div>
 
     </div>
@@ -391,6 +406,9 @@
             <div *ngIf="filesMap[vendorDocCtrl.sezCtrl.documentTypeId] && filesMap[vendorDocCtrl.sezCtrl.documentTypeId]?.isError"
                 class="errortxt">
                 Please attach the Documents
+            </div>
+            <div *ngIf="filesMap[vendorDocCtrl.sezCtrl.documentTypeId]?.isAttachWithoutValue" class="errortxt">
+                Fill TDS Details or delete the attachment.
             </div>
         </div>
 
@@ -450,6 +468,10 @@
             <div *ngIf="filesMap[vendorDocCtrl.otherCtrl.documentTypeId] && 
                 filesMap[vendorDocCtrl.otherCtrl.documentTypeId]?.isError" class="errortxt">
                 Please attach the Documents
+            </div>
+            <div *ngIf="filesMap[vendorDocCtrl.otherCtrl.documentTypeId]?.isAttachWithoutValue"
+                class="errortxt">
+                Fill TDS Details or delete the attachment.
             </div>
         </div>
     </div>

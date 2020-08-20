@@ -33,7 +33,8 @@ interface FileMap {
         toAttach?: FileDetailsModel[],
         isMandatory?: boolean,
         isAttached?: boolean,
-        isError?: boolean
+        isError?: boolean,
+        isAttachWithoutValue?: boolean
     }
 }
 @Component({
@@ -192,7 +193,7 @@ export class VendorApprovalComponent implements OnInit {
         if (this.vendorApprovalInitDetails && this.vendorApprovalInitDetails.vendorMasterDocumentVOList &&
             this.vendorApprovalInitDetails.vendorMasterDocumentVOList.length > 0) {
             this.vendorApprovalInitDetails.vendorMasterDocumentVOList.forEach(item =>
-                this.filesMap[item.vendorMasterDocumentsId] = { filesList: [], isMandatory: item.isMandatory, isAttached: false, isError: false });
+                this.filesMap[item.vendorMasterDocumentsId] = { filesList: [], isMandatory: item.isMandatory, isAttached: false, isError: false, isAttachWithoutValue: false });
         }
 
         this.updateAttachments();
@@ -223,8 +224,8 @@ export class VendorApprovalComponent implements OnInit {
                     if (controlVal && this.filesMap[key].filesList.length == 0) {
                         this.filesMap[key].isError = true;
                     }
-                    else if(!controlVal && this.filesMap[key].filesList.length){
-                        this.filesMap[key].isError = true;
+                    else if (!controlVal && this.filesMap[key].filesList.length) {
+                        this.filesMap[key].isAttachWithoutValue = true;
                     }
                 }
             }
@@ -235,7 +236,7 @@ export class VendorApprovalComponent implements OnInit {
         if (!documentTypeId) return;
         this._homeService.updateBusy(<BusyDataModel>{ isBusy: true, msg: "Attaching..." });
         if (!this.filesMap[documentTypeId]) {
-            this.filesMap[documentTypeId] = { filesList: [], toAttach: [], isMandatory: true, isAttached: false, isError: false };
+            this.filesMap[documentTypeId] = { filesList: [], toAttach: [], isMandatory: true, isAttached: false, isError: false, isAttachWithoutValue: false };
         }
         else {
             this.filesMap[documentTypeId].toAttach = [];
@@ -795,7 +796,7 @@ export class VendorApprovalComponent implements OnInit {
             countryCode: [{ value: null, disabled: true }, [Validators.required]],
 
             panNum: [{ value: null, disabled: true }, [Validators.required, Validators.minLength(10)]],
-            gstNum: [{ value: null, disabled: true },[Validators.minLength(15)]],
+            gstNum: [{ value: null, disabled: true }, [Validators.minLength(15)]],
             pfNum: [{ value: null, disabled: true }],
             esiNum: [{ value: null, disabled: true }],
             cinNum: [{ value: null, disabled: true }],
