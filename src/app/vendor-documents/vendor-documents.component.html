@@ -408,7 +408,7 @@
                 Please attach the Documents
             </div>
             <div *ngIf="filesMap[vendorDocCtrl.sezCtrl.documentTypeId]?.isAttachWithoutValue" class="errortxt">
-                Fill TDS Details or delete the attachment.
+                Select Sez or delete the attachment.
             </div>
         </div>
 
@@ -471,7 +471,7 @@
             </div>
             <div *ngIf="filesMap[vendorDocCtrl.otherCtrl.documentTypeId]?.isAttachWithoutValue"
                 class="errortxt">
-                Fill TDS Details or delete the attachment.
+                Fill Other Details or delete the attachment.
             </div>
         </div>
     </div>
@@ -479,7 +479,7 @@
 </form>
 
 <div class="row actions margin-unset" style="margin-top: 2em;">
-    <div class="errortxt" *ngIf="vendorDocumentForm.invalid || isServerError">
+    <div class="errortxt" *ngIf="vendorDocumentForm.invalid || isServerError || !isValid">
         {{ failureMsg }}
     </div>
 
