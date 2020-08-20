@@ -67,6 +67,14 @@ export class VendorDocumentsComponent implements OnInit {
         private _sidebarService: SidebarService,
         private _dialog: MatDialog) { }
 
+    toUppercase(control: string) {
+        let ControlVal = this.vendorDocumentForm.get(control).value;
+
+        if (ControlVal) {
+            this.vendorDocumentForm.get(control).setValue(ControlVal.toUpperCase());
+        }
+    }
+
     onFileChange(event: any, documentTypeId: number) {
         if (!documentTypeId) return;
         this._vendorRegistrationService.updateBusy(<BusyDataModel>{ isBusy: true, msg: "Attaching..." });
@@ -160,7 +168,6 @@ export class VendorDocumentsComponent implements OnInit {
                         results.fileDetails.forEach(f => this.filesMap[documentTypeId].filesList.push(f));
                         this.filesMap[documentTypeId].isAttached = true;
                         this.filesMap[documentTypeId].toAttach = [];
-                        this.attachWithoutValue = false;
                     }
 
                 }
@@ -388,6 +395,9 @@ export class VendorDocumentsComponent implements OnInit {
         this.vendorDocumentForm.get(selfId).updateValueAndValidity();
         this.filesMap[documentTypeId].isMandatory = true;
         this.filesMap[documentTypeId].isError = true;
+        if (this.filesMap[documentTypeId].filesList.length > 0) {
+            this.filesMap[documentTypeId].isError = false;
+        }
     }
 
     get vdf() { return this.vendorDocumentForm.controls; }
