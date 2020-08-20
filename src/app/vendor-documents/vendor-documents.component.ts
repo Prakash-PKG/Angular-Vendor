@@ -36,24 +36,23 @@ export class VendorDocumentsComponent implements OnInit {
     documentsList: VendorMasterDocumentModel[] = [];
     filesMap: FileMap = {};
     disableSubmit: boolean = false;
-    attachWithoutValue: boolean = false;
     private counterSubject: BehaviorSubject<number>;
     private counterSubscription: Subscription;
 
 
     vendorDocCtrl = {
-        incCerCtrl: { documentTypeId: 1, browserId: 'incCerFileCtrl', placeholder: 'Incorporation Certificate' },
-        gstCtrl: { documentTypeId: 2, browserId: 'gstFileCtrl', placeholder: 'GST No.' },
-        panCtrl: { documentTypeId: 3, browserId: 'panFileCtrl', placeholder: 'PAN No.' },
-        pfCtrl: { documentTypeId: 4, browserId: 'pfFileCtrl', placeholder: 'PF No.' },
-        esiCtrl: { documentTypeId: 5, browserId: 'esiFileCtrl', placeholder: 'ESI No.' },
-        canChqCtrl: { documentTypeId: 6, browserId: 'canChqFileCtrl', placeholder: 'Cancelled Cheque' },
-        msmeCtrl: { documentTypeId: 7, browserId: 'msmeFileCtrl', placeholder: 'Is MSME Certificate applicable?' },
-        tdsCtrl: { documentTypeId: 8, browserId: 'tdsFileCtrl', placeholder: 'Has TDS lower deduction certificate?' },
-        sezCtrl: { documentTypeId: 9, browserId: 'sezFileCtrl', placeholder: 'SEZ / Non-SEZ' },
-        lutNoCtrl: { documentTypeId: 10, browserId: 'lutNoFileCtrl', placeholder: 'LUT No.' },
-        msmeSelfCtrl: { documentTypeId: 11, browserId: 'msmeSelfFileCtrl', placeholder: 'MSME Self Attested Certificate?' },
-        otherCtrl: { documentTypeId: 13, browserId: 'otherFileCtrl', placeholder: 'Document Description' }
+        incCerCtrl: { documentTypeId: 1, browserId: 'incCerFileCtrl', placeholder: 'Incorporation Certificate', controlName: '' },
+        gstCtrl: { documentTypeId: 2, browserId: 'gstFileCtrl', placeholder: 'GST No.', controlName: 'gstNum' },
+        panCtrl: { documentTypeId: 3, browserId: 'panFileCtrl', placeholder: 'PAN No.', controlName: 'panNum' },
+        pfCtrl: { documentTypeId: 4, browserId: 'pfFileCtrl', placeholder: 'PF No.', controlName: 'pfNum' },
+        esiCtrl: { documentTypeId: 5, browserId: 'esiFileCtrl', placeholder: 'ESI No.', controlName: 'esiNum' },
+        canChqCtrl: { documentTypeId: 6, browserId: 'canChqFileCtrl', placeholder: 'Cancelled Cheque', controlName: '' },
+        msmeCtrl: { documentTypeId: 7, browserId: 'msmeFileCtrl', placeholder: 'Is MSME Certificate applicable?', controlName: '' },
+        tdsCtrl: { documentTypeId: 8, browserId: 'tdsFileCtrl', placeholder: 'Has TDS lower deduction certificate?', controlName: 'hasTdsLower' },
+        sezCtrl: { documentTypeId: 9, browserId: 'sezFileCtrl', placeholder: 'SEZ / Non-SEZ', controlName: 'isSez' },
+        lutNoCtrl: { documentTypeId: 10, browserId: 'lutNoFileCtrl', placeholder: 'LUT No.', controlName: 'lutNum' },
+        msmeSelfCtrl: { documentTypeId: 11, browserId: 'msmeSelfFileCtrl', placeholder: 'MSME Self Attested Certificate?', controlName: 'isMsmedRegistered' },
+        otherCtrl: { documentTypeId: 13, browserId: 'otherFileCtrl', placeholder: 'Document Description', controlName: 'otherDocDesc' }
     }
 
     isSubmitted: boolean = false;
@@ -67,25 +66,21 @@ export class VendorDocumentsComponent implements OnInit {
         private _sidebarService: SidebarService,
         private _dialog: MatDialog) { }
 
-    toUppercase(control: string) {
-        let ControlVal = this.vendorDocumentForm.get(control).value;
+    get vdf() { return this.vendorDocumentForm.controls; }
 
-        if (ControlVal) {
-            this.vendorDocumentForm.get(control).setValue(ControlVal.toUpperCase());
-        }
-    }
 
     onFileChange(event: any, documentTypeId: number) {
         if (!documentTypeId) return;
         this._vendorRegistrationService.updateBusy(<BusyDataModel>{ isBusy: true, msg: "Attaching..." });
         if (!this.filesMap[documentTypeId]) {
-            this.filesMap[documentTypeId] = { filesList: [], toAttach: [], isMandatory: true, isAttached: false, isError: false };
+            this.filesMap[documentTypeId] = { filesList: [], toAttach: [], isMandatory: true, isAttached: false, isError: false, isAttachWithoutValue: false };
         }
         else {
             this.filesMap[documentTypeId].toAttach = [];
             this.filesMap[documentTypeId].isMandatory = true;
             this.filesMap[documentTypeId].isAttached = false;
             this.filesMap[documentTypeId].isError = false;
+            this.filesMap[documentTypeId].isAttachWithoutValue = false;
         }
         if (event.target.files && event.target.files.length > 0) {
             this.counterSubject = new BehaviorSubject(0);
@@ -144,12 +139,6 @@ export class VendorDocumentsComponent implements OnInit {
 
     }
 
-    omit_special_char(event) {
-        var k;
-        k = event.charCode;
-        return ((k > 64 && k < 91) || (k > 96 && k < 123) || k == 8 || k == 32 || (k >= 48 && k <= 57));
-    }
-
     onAttachFileClick(documentTypeId: number) {
         let filesReq: VendorDocumentReqModel = {
             fileDetails: this.filesMap[documentTypeId].toAttach,
@@ -181,6 +170,44 @@ export class VendorDocumentsComponent implements OnInit {
                 });
     }
 
+    onDeleteFileClick(fileDetails: FileDetailsModel, fileIndex: number, documentTypeId: number) {
+        if (fileDetails && fileDetails.fileId) {
+            this._vendorRegistrationService.updateBusy(<BusyDataModel>{ isBusy: true, msg: "Deleting..." });
+            this._vendorRegistrationService.deleteVendorFile(fileDetails)
+                .subscribe(response => {
+                    this._vendorRegistrationService.updateBusy(<BusyDataModel>{ isBusy: false, msg: null });
+                    let result = response.body as StatusModel;
+                    if (result.isSuccess) {
+                        this.removefileFromList(fileIndex, documentTypeId);
+                        this._snackBar.open("File deleted Successfully");
+                    }
+                },
+                    (error) => {
+                        this._vendorRegistrationService.updateBusy(<BusyDataModel>{ isBusy: false, msg: null });
+                        console.log(error);
+                    });
+        }
+        else {
+            this.removefileFromList(fileIndex, documentTypeId);
+        }
+    }
+
+    removefileFromList(fileIndex: number, documentTypeId: number) {
+        if (this.filesMap[documentTypeId]
+            && this.filesMap[documentTypeId].filesList
+            && this.filesMap[documentTypeId].filesList.length > 0) {
+            this.filesMap[documentTypeId].filesList.splice(fileIndex, 1);
+            this.filesMap[documentTypeId].isAttached =
+                (this.filesMap[documentTypeId].filesList.length === 0) ? false : true;
+        }
+
+    }
+
+    downloadFile(fileDetails: FileDetailsModel) {
+        this._vendorRegistrationService.downloadFile(fileDetails);
+    }
+
+
     updateDataForBackup() {
         this._appService.vendorRegistrationDetails.panNum = this.vendorDocumentForm.get("panNum").value;
         this._appService.vendorRegistrationDetails.gstNum = this.vendorDocumentForm.get("gstNum").value;
@@ -209,6 +236,8 @@ export class VendorDocumentsComponent implements OnInit {
 
         this.isValid = true;
         for (let key in this.filesMap) {
+            if (this.filesMap[key].isAttachWithoutValue == true)
+                return;
             this.filesMap[key].isError = false;
             if (this.filesMap[key].isMandatory && !this.filesMap[key].isAttached) {
                 this.isValid = false;
@@ -216,8 +245,6 @@ export class VendorDocumentsComponent implements OnInit {
             }
         }
         if (!this.isValid) { return };
-
-        if (this.attachWithoutValue) { return };
 
         if (this.vendorDocumentForm.valid) {
 
@@ -260,6 +287,7 @@ export class VendorDocumentsComponent implements OnInit {
             this.failureMsg = this._appService.messages.vendorRegistrationFormInvalid;
         }
     }
+
     displayRegistrationStatus(msg: string) {
         const dialogRef = this._dialog.open(MessageDialogComponent, {
             disableClose: true,
@@ -281,41 +309,18 @@ export class VendorDocumentsComponent implements OnInit {
         });
     }
 
-    onDeleteFileClick(fileDetails: FileDetailsModel, fileIndex: number, documentTypeId: number) {
-        if (fileDetails && fileDetails.fileId) {
-            this._vendorRegistrationService.updateBusy(<BusyDataModel>{ isBusy: true, msg: "Deleting..." });
-            this._vendorRegistrationService.deleteVendorFile(fileDetails)
-                .subscribe(response => {
-                    this._vendorRegistrationService.updateBusy(<BusyDataModel>{ isBusy: false, msg: null });
-                    let result = response.body as StatusModel;
-                    if (result.isSuccess) {
-                        this.removefileFromList(fileIndex, documentTypeId);
-                        this._snackBar.open("File deleted Successfully");
-                    }
-                },
-                    (error) => {
-                        this._vendorRegistrationService.updateBusy(<BusyDataModel>{ isBusy: false, msg: null });
-                        console.log(error);
-                    });
-        }
-        else {
-            this.removefileFromList(fileIndex, documentTypeId);
-        }
+    omit_special_char(event) {
+        var k;
+        k = event.charCode;
+        return ((k > 64 && k < 91) || (k > 96 && k < 123) || k == 8 || k == 32 || (k >= 48 && k <= 57));
     }
 
-    removefileFromList(fileIndex: number, documentTypeId: number) {
-        if (this.filesMap[documentTypeId]
-            && this.filesMap[documentTypeId].filesList
-            && this.filesMap[documentTypeId].filesList.length > 0) {
-            this.filesMap[documentTypeId].filesList.splice(fileIndex, 1);
-            this.filesMap[documentTypeId].isAttached =
-                (this.filesMap[documentTypeId].filesList.length === 0) ? false : true;
+    toUppercase(control: string) {
+        let ControlVal = this.vendorDocumentForm.get(control).value;
+
+        if (ControlVal) {
+            this.vendorDocumentForm.get(control).setValue(ControlVal.toUpperCase());
         }
-
-    }
-
-    downloadFile(fileDetails: FileDetailsModel) {
-        this._vendorRegistrationService.downloadFile(fileDetails);
     }
 
     updateVendorDetails() {
@@ -360,7 +365,7 @@ export class VendorDocumentsComponent implements OnInit {
             if (this._appService.vendorRegistrationInitDetails && this._appService.vendorRegistrationInitDetails.documentDetailsList &&
                 this._appService.vendorRegistrationInitDetails.documentDetailsList.length > 0) {
                 this._appService.vendorRegistrationInitDetails.documentDetailsList.forEach(item =>
-                    this.filesMap[item.vendorMasterDocumentsId] = { filesList: [], isMandatory: item.isMandatory, isAttached: false, isError: false, toAttach: [] });
+                    this.filesMap[item.vendorMasterDocumentsId] = { filesList: [], isMandatory: item.isMandatory, isAttached: false, isError: false, toAttach: [], isAttachWithoutValue: false });
             }
 
             this._appService.selectedFileMap = this.filesMap;
@@ -369,7 +374,19 @@ export class VendorDocumentsComponent implements OnInit {
                 if (this.filesMap[key].filesList.length) {
                     this.filesMap[key].isAttached = true;
                 }
+                if (this.vendorDocCtrl[key]) {
+                    if (this.vendorDocCtrl[key].controlName != '') {
+                        let controlVal = this.vendorDocumentForm.get(this.vendorDocCtrl[key].controlName).value;
+                        if (controlVal && this.filesMap[key].filesList.length == 0) {
+                            this.filesMap[key].isError = true;
+                        }
+                        else if (!controlVal && this.filesMap[key].filesList.length) {
+                            this.filesMap[key].isAttachWithoutValue = true;
+                        }
+                    }
+                }
             }
+
         }
     }
 
@@ -378,13 +395,12 @@ export class VendorDocumentsComponent implements OnInit {
             if (this.filesMap[documentTypeId].filesList.length < 0) {
                 this.vendorDocumentForm.get(selfId).setValidators([]);
                 this.vendorDocumentForm.get(selfId).updateValueAndValidity();
-                this.filesMap[documentTypeId] = { filesList: [], isMandatory: false, isAttached: false, isError: false, toAttach: [] }
-                this.attachWithoutValue = false;
+                this.filesMap[documentTypeId] = { filesList: [], isMandatory: false, isAttached: false, isError: false, toAttach: [], isAttachWithoutValue: false };
                 return;
             }
             else {
-                this.filesMap[documentTypeId].isError = true;
-                this.attachWithoutValue = true;
+                this.filesMap[documentTypeId].isAttachWithoutValue = true;
+                return;
             }
         }
         this.vendorDocumentForm.get(selfId).enable();
@@ -394,13 +410,10 @@ export class VendorDocumentsComponent implements OnInit {
         }
         this.vendorDocumentForm.get(selfId).updateValueAndValidity();
         this.filesMap[documentTypeId].isMandatory = true;
-        this.filesMap[documentTypeId].isError = true;
-        if (this.filesMap[documentTypeId].filesList.length > 0) {
-            this.filesMap[documentTypeId].isError = false;
-        }
+        if (this.filesMap[documentTypeId].filesList.length < 0)
+            this.filesMap[documentTypeId].isError = true;
+        this.filesMap[documentTypeId].isAttachWithoutValue = false;
     }
-
-    get vdf() { return this.vendorDocumentForm.controls; }
 
     ngOnInit() {
         this.isSubmitted = false;

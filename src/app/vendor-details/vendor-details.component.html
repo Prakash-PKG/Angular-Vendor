@@ -10,7 +10,7 @@
                 <input type="text" matInput placeholder="Supplier Name" formControlName="vendorName" autocomplete="off"
                     required>
             </mat-form-field>
-            <mat-error class="errortxt" *ngIf="( isSubmitted ) && f?.vendorName?.errors?.required">Supplier Name is required</mat-error>
+            <!-- <mat-error class="errortxt" *ngIf="( isSubmitted ) && f?.vendorName?.errors?.required">Supplier Name is required</mat-error> -->
         </div>
 
         <div class="col-6 form-group">
@@ -28,8 +28,8 @@
                 <input type="text" onkeypress='return event.charCode >= 48 && event.charCode <= 57'  matInput placeholder="Mobile No." formControlName="mobileNum" autocomplete="off" maxlength="10" 
                     required>
             </mat-form-field>
-            <mat-error class="errortxt" *ngIf="( isSubmitted ) && f?.mobileNum?.errors?.required">Mobile No. is required</mat-error>
-            <mat-error class="errortxt" *ngIf="( isSubmitted ) && f?.mobileNum?.errors?.minlength">10 Characters are required</mat-error>
+            <!-- <mat-error class="errortxt" *ngIf="( isSubmitted ) && f?.mobileNum?.errors?.required">Mobile No. is required</mat-error>
+            <mat-error class="errortxt" *ngIf="( isSubmitted ) && f?.mobileNum?.errors?.minlength">10 Characters are required</mat-error> -->
         </div>
         <div class="col-6 form-group">
             <mat-form-field class="full-width">
@@ -37,7 +37,7 @@
                     autocomplete="off">
             </mat-form-field>
             
-            <mat-error class="errortxt" *ngIf="( isSubmitted ) && f?.telephoneNum?.errors?.minlength">Minimum 11 Characters are required</mat-error>
+            <!-- <mat-error class="errortxt" *ngIf="( isSubmitted ) && f?.telephoneNum?.errors?.minlength">Minimum 11 Characters are required</mat-error> -->
         </div>
     </div>
 
@@ -47,8 +47,8 @@
                 <input type="email" matInput placeholder="Email Id" formControlName="emailId" autocomplete="off"
                     required>
             </mat-form-field>
-            <mat-error class="errortxt" *ngIf="( isSubmitted ) && f?.emailId?.errors?.required">Email Id is required</mat-error>
-            <mat-error class="errortxt" *ngIf="( isSubmitted ) && f?.emailId?.errors?.email">Email Id is not valid</mat-error>
+            <!-- <mat-error class="errortxt" *ngIf="( isSubmitted ) && f?.emailId?.errors?.required">Email Id is required</mat-error>
+            <mat-error class="errortxt" *ngIf="( isSubmitted ) && f?.emailId?.errors?.email">Email Id is not valid</mat-error> -->
         </div>
     </div>
 
@@ -58,16 +58,16 @@
                 <input  type="password" matInput placeholder="Password" formControlName="password"
                     autocomplete="off" required>
             </mat-form-field>
-            <mat-error class="errortxt" *ngIf="( isSubmitted ) && f?.password?.errors?.required">Password is required</mat-error>
+            <!-- <mat-error class="errortxt" *ngIf="( isSubmitted ) && f?.password?.errors?.required">Password is required</mat-error> -->
         </div>
         <div class="col-6 form-group">
             <mat-form-field class="full-width">
                 <input  type="password" matInput placeholder="Confirm Password"
                     formControlName="confirmPassword" autocomplete="off" required>
             </mat-form-field>
-            <mat-error class="errortxt" *ngIf="( isSubmitted ) && f?.confirmPassword?.errors?.required">Confirm Password is required</mat-error>
+            <!-- <mat-error class="errortxt" *ngIf="( isSubmitted ) && f?.confirmPassword?.errors?.required">Confirm Password is required</mat-error>
             <mat-error class="errortxt" *ngIf="vendorDetailsForm.get('confirmPassword')?.hasError('equalValue')">
-                Confirm Password should be same as Password</mat-error>
+                Confirm Password should be same as Password</mat-error> -->
         </div>
     </div>
 </form>
