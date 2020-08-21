@@ -55,6 +55,7 @@ export class VendorLoginComponent implements OnInit {
     }
 
     onForgotPasswordClick() {
+        this.errorMessage = '';
         const dialogRef = this.dialog.open(ForgotPasswordComponent, {
             width: '400px',
             data: ForgotPasswordData
@@ -65,6 +66,8 @@ export class VendorLoginComponent implements OnInit {
     OnLoginClick() {
         this.isFormSubmitted = true;
         this.loading = true;
+        this.errorMessage = '';
+
         if (this.loginForm.valid) {
             let userId: string = this.loginForm.get("userId").value;
             let password: string = this.loginForm.get("password").value;

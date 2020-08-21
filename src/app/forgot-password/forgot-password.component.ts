@@ -31,15 +31,16 @@ export class ForgotPasswordComponent implements OnInit {
     successfulReset: boolean = false;
 
     constructor(public dialogRef: MatDialogRef<ForgotPasswordComponent>,
-       // @Inject(MAT_DIALOG_DATA) public data: ForgotPasswordData,
+        // @Inject(MAT_DIALOG_DATA) public data: ForgotPasswordData,
         private _homeService: HomeService,
         private _loginService: LoginService,
         private _appService: AppService
-        ) { }
+    ) { }
 
     onGenerateOTPClick() {
+        
+        this.errormsg = '';
         this.invalid = false;
-
         this.isLoading = true;
 
         this._loginService.login(this.emailId, Math.random().toString(36).slice(-8), "venndor_otp").subscribe(
@@ -63,6 +64,7 @@ export class ForgotPasswordComponent implements OnInit {
     }
 
     onResetPasswordClick() {
+        this.errormsg = '';
         if (this.invalidPassword) {
             return;
         }
@@ -99,22 +101,22 @@ export class ForgotPasswordComponent implements OnInit {
                     });
             },
 
-            (error) => {
-                this.isLoading = false;
-                this.invalid = true;
-                this.errormsg = error.json()['error-message'];
-                this.generateOTP = true;
-                this.resetPassword = false;
-                console.log(error);
+                (error) => {
+                    this.isLoading = false;
+                    this.invalid = true;
+                    this.errormsg = error.json()['error-message'];
+                    this.generateOTP = true;
+                    this.resetPassword = false;
+                    console.log(error);
 
-                this._loginService.logout(this._appService.token).subscribe(
-                    (response) => {
-                        this._appService.token = '';
-                    },
-                    (error) => {
-                        this._appService.token = '';
-                    });
-            });
+                    this._loginService.logout(this._appService.token).subscribe(
+                        (response) => {
+                            this._appService.token = '';
+                        },
+                        (error) => {
+                            this._appService.token = '';
+                        });
+                });
     }
 
     validateConfirmPassword() {

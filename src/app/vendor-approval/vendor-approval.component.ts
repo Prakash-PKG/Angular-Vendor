@@ -124,6 +124,20 @@ export class VendorApprovalComponent implements OnInit {
         private _formBuilder: FormBuilder,
         private _router: Router) { }
 
+    omit_special_char(event) {
+        var k;
+        k = event.charCode;
+        return ((k > 64 && k < 91) || (k > 96 && k < 123) || k == 8 || k == 32 || (k >= 48 && k <= 57));
+    }
+
+    toUppercase(control: string) {
+        let ControlVal = this.vendorForm.get(control).value;
+
+        if (ControlVal) {
+            this.vendorForm.get(control).setValue(ControlVal.toUpperCase());
+        }
+    }
+
     onEditClick() {
         this.isEditable = true;
 
@@ -243,6 +257,7 @@ export class VendorApprovalComponent implements OnInit {
             this.filesMap[documentTypeId].isMandatory = true;
             this.filesMap[documentTypeId].isAttached = false;
             this.filesMap[documentTypeId].isError = false;
+            this.filesMap[documentTypeId].isAttachWithoutValue = false;
         }
         if (event.target.files && event.target.files.length > 0) {
             this.counterSubject = new BehaviorSubject(0);
@@ -316,6 +331,12 @@ export class VendorApprovalComponent implements OnInit {
                         results.fileDetails.forEach(f => this.filesMap[documentTypeId].filesList.push(f));
                         this.filesMap[documentTypeId].isAttached = true;
                         this.filesMap[documentTypeId].toAttach = [];
+
+                        if (this.documentControlDetails[documentTypeId]) {
+                            let controlVal = this.vendorForm.get(this.documentControlDetails[documentTypeId].controlName).value;
+                            this.filesMap[documentTypeId].isAttachWithoutValue = controlVal ? false : true;
+
+                        }
                     }
 
                 }
@@ -361,19 +382,13 @@ export class VendorApprovalComponent implements OnInit {
                 (this.filesMap[documentTypeId].filesList.length === 0) ? false : true;
 
             this.filesMap[documentTypeId].isError = false;
-            if (this.filesMap[documentTypeId].isMandatory) {
-                if (!this.filesMap[documentTypeId].isAttached) {
-                    this.filesMap[documentTypeId].isError = true;
-                }
+            if (this.filesMap[documentTypeId].isMandatory && !this.filesMap[documentTypeId].isAttached) {
+                this.filesMap[documentTypeId].isError = true;
             }
             else {
-                if (this.documentControlDetails[documentTypeId]) {
-                    let controlVal = this.vendorForm.get(this.documentControlDetails[documentTypeId].controlName).value;
-                    if (controlVal && this.filesMap[documentTypeId].filesList.length == 0) {
-                        this.filesMap[documentTypeId].isError = true;
-                    }
-                }
+                this.filesMap[documentTypeId].isError = false;
             }
+
         }
     }
 
@@ -396,12 +411,14 @@ export class VendorApprovalComponent implements OnInit {
     }
 
     updateMandatoryDocs(selfValue: any, documentTypeId: number) {
-        if (selfValue) {
-            this.filesMap[documentTypeId].isError = this.filesMap[documentTypeId].filesList.length > 0 ? false : true;
+        if (!selfValue) {
+            this.filesMap[documentTypeId].isMandatory = false;
+            // this.filesMap[documentTypeId].isAttached = this.filesMap[documentTypeId].filesList.length > 0 ? true : false;
+            this.filesMap[documentTypeId].isAttachWithoutValue = this.filesMap[documentTypeId].filesList.length > 0 ? true : false;
         }
         else {
-            this.filesMap[documentTypeId].isAttached = this.filesMap[documentTypeId].filesList.length > 0 ? true : false;
-            this.filesMap[documentTypeId].isError = false;
+            this.filesMap[documentTypeId].isMandatory = true;
+            this.filesMap[documentTypeId].isError = this.filesMap[documentTypeId].filesList.length <= 0 ? true : false;
         }
     }
 
@@ -784,7 +801,7 @@ export class VendorApprovalComponent implements OnInit {
             vendorName: [{ value: null, disabled: true }, [Validators.required, Validators.nullValidator]],
             contactPerson: [{ value: null, disabled: true }],
             mobileNum: [{ value: null, disabled: true }, [Validators.required, Validators.minLength(10), Validators.nullValidator]],
-            telephoneNum: { value: null, disabled: true },
+            telephoneNum: [{ value: null, disabled: true }, [Validators.minLength(11)]],
             emailId: [{ value: null, disabled: true }, [Validators.required, Validators.email, Validators.nullValidator]],
 
             address1: [{ value: null, disabled: true }, [Validators.required]],
