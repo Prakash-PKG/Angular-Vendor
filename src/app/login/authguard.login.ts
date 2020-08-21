@@ -55,6 +55,7 @@ export class AuthGuardLogin implements CanActivate {
 
             globalConstant.userDetails.isVendor = false;
             globalConstant.userDetails.isInvoiceUploader = false;
+            globalConstant.userDetails.isSubContractReceiver = false;
             globalConstant.userDetails.isPurchaseOwner = false;
             globalConstant.userDetails.isFunctionalHead = false;
             globalConstant.userDetails.isProcurement = false;
@@ -83,6 +84,20 @@ export class AuthGuardLogin implements CanActivate {
                  }
                 else {  
                     globalConstant.userDetails.isInvoiceUploader = false;
+                }
+
+                let invSubcontractReceiverRoles = globalConstant.userDetails.userRoles.filter(r => globalConstant.invSubContractReceiverRoles.indexOf(r.roleCode) > -1);
+                if(invSubcontractReceiverRoles && invSubcontractReceiverRoles.length > 0) {
+                    globalConstant.userDetails.isSubContractReceiver = true;
+                    for(let pr = 0; pr < invSubcontractReceiverRoles.length; pr++) {
+                        let curRole: string = invSubcontractReceiverRoles[pr]["roleName"];
+                        if(globalConstant.userDetails.poDepts.indexOf(curRole) < 0) {
+                            globalConstant.userDetails.poDepts.push(curRole);
+                        }
+                    }
+                 }
+                else {  
+                    globalConstant.userDetails.isSubContractReceiver = false;
                 }
 
                 let poRoles = globalConstant.userDetails.userRoles.filter(r => globalConstant.poRoles.indexOf(r.roleCode) > -1);

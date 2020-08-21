@@ -1,3 +1,4 @@
+import { InvoiceUploadService } from './../invoice-upload/invoice-upload.service';
 import { InvoiceCommunicationDialogComponent } from './../invoice-communication-dialog/invoice-communication-dialog.component';
 import { transition } from '@angular/animations';
 import { ConfirmDialogComponent } from './../confirm-dialog/confirm-dialog.component';
@@ -9,7 +10,9 @@ import { AppService } from './../app.service';
 import { BusyDataModel, InvoiceApprovalInitResultModel, InvoiceApprovalInitReqModel, 
     ItemModel, ItemDisplayModel, GrnSesModel, FileDetailsModel, 
     StatusModel, UpdateInvoiceApprovalReqModel, GrnSesDisplayModel, GrnSesItemModel,
-    GrnSesItemsDisplayModel, InvoiceApprovalModel, InvoiceCommunicationDisplayModel } from './../models/data-models';
+    GrnSesItemsDisplayModel, InvoiceApprovalModel, InvoiceCommunicationDisplayModel,
+    UpdateInvoiceResultModel, InvoiceDocumentReqModel, InvoiceDocumentResultModel,
+    InvoiceFileTypwModel } from './../models/data-models';
 import { InvoiceApprovalsService } from './invoice-approvals.service';
 import { Component, OnInit } from '@angular/core';
 import { HomeService } from '../home/home.service';
@@ -54,6 +57,15 @@ export class InvoiceApprovalsComponent implements OnInit {
     invoiceFilesList: FileDetailsModel[] = [];
     supportFilesList: FileDetailsModel[] = [];
 
+    additionalInvoiceFilesList: FileDetailsModel[] = [];
+    invoiceFilesErrMsg: string = "";
+    private _tempInvoiceFilesList: FileDetailsModel[] = [];
+    private _invoicefileCnt: number = 0;
+    invoiceUpdateResults: UpdateInvoiceResultModel = null;
+
+    invoiceFileTypeId: number = null;
+    supportFileTypeId: number = null;
+
     grnSesAccountCategories: string[] = ["1", "3", "5", "2", "4"];
     isGrnSesRequired: boolean = false;
 
@@ -69,8 +81,9 @@ export class InvoiceApprovalsComponent implements OnInit {
     isFromToMandatory: boolean = false;
 
     approveBtnTxt: string = "Approve";
-    rejectedRemarks: string = "";
+    //rejectedRemarks: string = "";
     isOnHold: boolean = false;
+    isOnRectified: boolean = false;
 
     isRejectVisible: boolean = false;
     isHoldVisible: boolean = false;
@@ -81,6 +94,7 @@ export class InvoiceApprovalsComponent implements OnInit {
                 private _appService: AppService,
                 private _router: Router,
                 public _dialog: MatDialog,
+                private _invoiceUploadService: InvoiceUploadService,
                 private _invoiceApprovalsService: InvoiceApprovalsService) { }
     
     // onGrnSesSelectClick() {
@@ -103,6 +117,137 @@ export class InvoiceApprovalsComponent implements OnInit {
     //         }
     //     });
     // }
+
+    onInvoiceBrowseClick(event: any) {
+        event.preventDefault();
+
+        let element: HTMLElement = document.getElementById("invoiceFileCtrl");
+        element.click();
+    }
+
+    onInvoiceFileChange(event: any) {
+        this.invoiceFilesErrMsg = "";
+
+        if(this.additionalInvoiceFilesList.length > 0) {
+            this.invoiceFilesErrMsg = "More than one Invoice files can't be attached.";
+        }
+        else {
+            this._tempInvoiceFilesList = [];
+            this._invoicefileCnt = 0;
+            if (event.target.files && event.target.files.length > 0) {
+                for (let f = 0; f < event.target.files.length; f++) {
+                    let file = event.target.files[f];
+                    if (file) {
+                        let fileDetails: FileDetailsModel = {
+                            actualFileName: file.name,
+                            uniqueFileName: null,
+                            fileData: null,
+                            documentTypeId: this.invoiceFileTypeId,
+                            fileId: null,
+                            createdDate: null,
+                            createdBy: null
+                        };
+                        this._tempInvoiceFilesList.push(fileDetails);
+
+                        let reader = new FileReader();
+                        reader.onload = this._handleInvoiceFileReaderLoaded.bind(this, file.name);
+                        reader.readAsBinaryString(file);
+                    }
+                }
+            }
+        }
+    }
+
+    private _handleInvoiceFileReaderLoaded(actualFileName, readerEvt) {
+        let binaryString = readerEvt.target.result;
+        let base64textString = btoa(binaryString);
+
+        for (let fileItem of this._tempInvoiceFilesList) {
+            if (fileItem.actualFileName == actualFileName) {
+                fileItem.fileData = base64textString;
+                this._invoicefileCnt = this._invoicefileCnt + 1;
+                break;
+            }
+        }
+
+        if(this._tempInvoiceFilesList.length > 0 && this._tempInvoiceFilesList.length == this._invoicefileCnt) {
+            this.onInvoiceAttachFileClick();
+        }
+    }
+
+    onInvoiceAttachFileClick() {
+        let invId = (this.invoiceUpdateResults && this.invoiceUpdateResults.invoiceDetails && this.invoiceUpdateResults.invoiceDetails.invoiceId) ?
+        this.invoiceUpdateResults.invoiceDetails.invoiceId : null;
+        let filesReq: InvoiceDocumentReqModel = {
+            invoiceId: invId,
+            userId: globalConstant.userDetails.isVendor ? globalConstant.userDetails.userEmail : globalConstant.userDetails.userId,
+            fileDetails: this._tempInvoiceFilesList
+        }
+
+        this._homeService.updateBusy(<BusyDataModel>{ isBusy: true, msg: "Attaching..." });
+        this._invoiceUploadService.uploadInvoiceDocuments(filesReq)
+            .subscribe(response => {
+                this._homeService.updateBusy(<BusyDataModel>{ isBusy: false, msg: null });
+                if (response.body) {
+                    let results: InvoiceDocumentResultModel = response.body as InvoiceDocumentResultModel;
+
+                    if (results.status.status == 200 && results.status.isSuccess) {
+                        this.additionalInvoiceFilesList = this.additionalInvoiceFilesList.concat(results.fileDetails);
+                    }
+                }
+            },
+            (error) => {
+                this._homeService.updateBusy(<BusyDataModel>{ isBusy: false, msg: null });
+                console.log(error);
+            });
+    }
+
+    onDeleteFileClick(fileDetails: FileDetailsModel, fileIndex: number, fileType: string) {
+        if(fileDetails.fileId) {
+            this._homeService.updateBusy(<BusyDataModel>{isBusy: true, msg: "Deleting..."});
+            this._invoiceUploadService.deleteInvoiceFile(fileDetails)
+                .subscribe(response => {
+                    this._homeService.updateBusy(<BusyDataModel>{isBusy: false, msg: null});
+                    let result = response.body as StatusModel;
+                    if(result.isSuccess) {
+                        this.removefileFromList(fileIndex, fileType);
+                    }
+                },
+                (error) => {
+                    this._homeService.updateBusy(<BusyDataModel>{isBusy: false, msg: null});
+                    console.log(error);
+                });
+        }
+        else {
+            this.removefileFromList(fileIndex, fileType);
+        }
+    }
+
+    removefileFromList(fileIndex: number, fileType: string) {
+        if(fileType == 'invoice') {
+            if(this.additionalInvoiceFilesList.length > 0) {
+                this.additionalInvoiceFilesList.splice(fileIndex, 1);
+            }
+        } else {
+            // if(this.supportingFilesList.length > 0) {
+            //     this.supportingFilesList.splice(fileIndex, 1);
+            // }
+        }
+    }
+
+    prepareInvoiceFileTypes() {
+        this.invoiceFileTypeId = null;
+        this.supportFileTypeId = null;
+        if(this.initDetails && this.initDetails.invoiceFileTypes && this.initDetails.invoiceFileTypes.length > 0) {
+            let invoiceFileTypeItem: InvoiceFileTypwModel = this.initDetails.invoiceFileTypes.find(ft => ft.fileType == "invoice");
+            if(invoiceFileTypeItem) {
+                this.invoiceFileTypeId = invoiceFileTypeItem.invoiceFileTypesId;
+            }
+
+            let supportFileTypeItem: InvoiceFileTypwModel = this.initDetails.invoiceFileTypes.find(ft => ft.fileType == "support");
+            this.supportFileTypeId = supportFileTypeItem.invoiceFileTypesId;
+        }
+    }
 
     onRemarksBlur() {
         if(this.remarks) {
@@ -142,15 +287,11 @@ export class InvoiceApprovalsComponent implements OnInit {
         this.isHoldVisible = false;
         if(this._appService.selectedPendingApprovalRecord) {
 
-            if(globalConstant.userDetails.isPurchaseOwner || 
-                (globalConstant.userDetails.isFunctionalHead && this._appService.selectedPendingApprovalRecord.documentType == "ZHR")) {
-                
+            if(globalConstant.userDetails.isPurchaseOwner || globalConstant.userDetails.isSubContractReceiver) {
                 this.isRejectVisible = true;
             }
 
-            if((globalConstant.userDetails.isFunctionalHead && this._appService.selectedPendingApprovalRecord.documentType && this._appService.selectedPendingApprovalRecord.documentType != "ZHR")
-                || globalConstant.userDetails.isFinance) {
-
+            if(globalConstant.userDetails.isFunctionalHead || globalConstant.userDetails.isFinance) {
                 this.isHoldVisible = true;
             }
 
@@ -178,6 +319,8 @@ export class InvoiceApprovalsComponent implements OnInit {
             this.initDetails = await this._invoiceApprovalsService.getInvoiceApprovalInitData(req);
             
             if(this.initDetails) {
+                this.prepareInvoiceFileTypes();
+
                 this.itemsList = this.initDetails.itemsList.concat();
                 let totalAmt: number = 0;
                 for(let i = 0; i < this.itemsList.length; i++) {
@@ -236,21 +379,30 @@ export class InvoiceApprovalsComponent implements OnInit {
             }
 
             this.isOnHold = false;
-            if(globalConstant.userDetails.isPurchaseOwner && this.initDetails.approvalsList && this.initDetails.approvalsList.length > 0) {
-                let onHoldRecs: InvoiceApprovalModel[] = this.initDetails.approvalsList.filter(rec => rec.statusCode == this._appService.updateOperations.onhold);
-                if(onHoldRecs && onHoldRecs.length > 0) {
-                    this.rejectedRemarks =  onHoldRecs[0].remarks;
-                    this.isOnHold = true;
+            this.isOnRectified = false;
+            if(this.initDetails.approvalsList && this.initDetails.approvalsList.length > 0) {
+                if(globalConstant.userDetails.isSubContractReceiver || 
+                    (globalConstant.userDetails.isPurchaseOwner && this.initDetails.approvalsList && this.initDetails.approvalsList.length > 0)) {
+                    let onHoldRecs: InvoiceApprovalModel[] = this.initDetails.approvalsList.filter(rec => rec.statusCode == this._appService.updateOperations.onhold);
+                    if(onHoldRecs && onHoldRecs.length > 0) {
+                        //this.rejectedRemarks =  onHoldRecs[0].remarks;
+                        this.isOnHold = true;
+                    }
+                }
+
+                let onRectifiedRecs: InvoiceApprovalModel[] = this.initDetails.approvalsList.filter(rec => rec.statusCode == this._appService.updateOperations.rectified);
+                if(onRectifiedRecs && onRectifiedRecs.length > 0) {
+                    this.isOnRectified = true;
                 }
             }
-
+            
             this._homeService.updateBusy(<BusyDataModel>{ isBusy: false, msg: null });
 
             this.isChatBtnVisible = false;
             if(this.initDetails.communicationMsgsList && this.initDetails.communicationMsgsList.length > 0) {
                 this.isChatBtnVisible = true;
+                this.onCommunicationClick();
             }
-            this.onCommunicationClick();
         }
     }
 
@@ -423,6 +575,16 @@ export class InvoiceApprovalsComponent implements OnInit {
         //         }
         //     }
         // }
+
+        let apprLevel: string = this.initDetails.approvalDetails.approvalLevel;
+        if(this.isOnHold) {
+            if(globalConstant.userDetails.isSubContractReceiver) {
+                apprLevel = this._appService.approvalLevels.subContractReceiver;
+            }
+            else {
+                apprLevel = this._appService.approvalLevels.po;
+            }
+        }
         
         if(isRemarksValid && isGrnSesValid) {
             let req: UpdateInvoiceApprovalReqModel = {
@@ -438,7 +600,7 @@ export class InvoiceApprovalsComponent implements OnInit {
                     projectId: this.initDetails.approvalDetails.projectId,
                     statusCode: null,
                     approverId: globalConstant.userDetails.userId,
-                    approvalLevel: (this.isOnHold) ? this._appService.approvalLevels.po : this.initDetails.approvalDetails.approvalLevel,
+                    approvalLevel: apprLevel,
                     remarks: this.remarks,
                     createdBy: this.initDetails.approvalDetails.createdBy,
                     createdDate: this.initDetails.approvalDetails.createdDate,

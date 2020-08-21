@@ -83,7 +83,8 @@ export class AppService {
         po: "po",
         functionalHead: "functional_head",
         finance: "finance",
-        procurement: "procurement"
+        procurement: "procurement",
+        subContractReceiver: "subContractReceiver"
     };
 
     readonly approvalTypes: any = {

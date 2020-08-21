@@ -2,6 +2,7 @@
 export const globalConstant : any = {
     poRoles: ["adp", "hrp", "isp", "itp", "lgp", "mkp", 'fip'],
     invUploadRoles: ["adp-upload", "hrp-upload", "isp-upload", "itp-upload", "lgp-upload", "mkp-upload", "fip-upload"],
+    invSubContractReceiverRoles: ["hrp-receiver"],
     functionalHeadRoles: ["functional_head"],
     financeRoles: ["finance"],
     empanelmentRoles: ["empanelment"],
@@ -16,6 +17,7 @@ export const globalConstant : any = {
         userRoles: [],
         isVendor: false,
         isInvoiceUploader: false,
+        isSubContractReceiver: false,
         isPurchaseOwner: false,
         isFunctionalHead: false,
         isProcurement: false,
