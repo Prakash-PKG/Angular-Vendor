@@ -26,14 +26,14 @@ export class LoginComponent implements OnInit {
     isSessionExpireVisible: boolean = false;
 
     constructor(private _router: Router,
-            private _formBuilder: FormBuilder,
-            private _appService: AppService,
-            private _homeService: HomeService,
-            private _loginService: LoginService,
-            private _cryptoService: CryptoService,
-            public dialog: MatDialog,
-            private _adalService: MsAdalAngular6Service
-        ) {
+        private _formBuilder: FormBuilder,
+        private _appService: AppService,
+        private _homeService: HomeService,
+        private _loginService: LoginService,
+        private _cryptoService: CryptoService,
+        public dialog: MatDialog,
+        private _adalService: MsAdalAngular6Service
+    ) {
     }
 
     get f() { return this.loginForm.controls; }
@@ -75,15 +75,17 @@ export class LoginComponent implements OnInit {
     }
 
     onForgotPasswordClick() {
-            const dialogRef = this.dialog.open(ForgotPasswordComponent, {
-              width: '400px',
-              data: ForgotPasswordData
-            });
-        
+        this.errorMessage = '';
+        const dialogRef = this.dialog.open(ForgotPasswordComponent, {
+            width: '400px',
+            data: ForgotPasswordData
+        });
+
     }
 
     OnLoginClick() {
-        if(this._appService.isSSORequired) {
+        this.errorMessage = '';
+        if (this._appService.isSSORequired) {
             return false;
         }
         else {
@@ -115,22 +117,22 @@ export class LoginComponent implements OnInit {
         this.isFormSubmitted = false;
         this.loading = false;
         this.loginForm = this._formBuilder.group({
-            userId: [null, [Validators.required,Validators.email]],
+            userId: [null, [Validators.required, Validators.email]],
             password: [null, [Validators.required, Validators.minLength(4)]]
         });
 
-        if(this._appService.isSSORequired) {
+        if (this._appService.isSSORequired) {
             if (!this._adalService.userInfo) {
                 this._adalService.login();
             } else {
                 let user_name = this._adalService.userInfo.userName;
-                let user_passwd = "dghvcgd"; 
+                let user_passwd = "dghvcgd";
                 this.checkServerAuthentication(user_name, user_passwd);
             }
         }
 
         this._isSessionExpiredSubscription = this._homeService.isSessionExpired.subscribe(data => {
-            if(data) {
+            if (data) {
                 this.isSessionExpireVisible = true;
             }
         });
