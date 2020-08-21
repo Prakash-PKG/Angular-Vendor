@@ -35,6 +35,7 @@ export class LoginVendorComponent implements OnInit {
     get f() { return this.loginForm.controls; }
 
     OnLoginClick() {
+        this.errorMessage = "";
         this.isFormSubmitted = true;
         this.isSignIn = true;
         if (this.loginForm.valid) {
@@ -60,6 +61,7 @@ export class LoginVendorComponent implements OnInit {
     }
     async onGenerateOTPClick() {
         this.otpMessage = '';
+        this.errorMessage = "";
         this.isloading = true;
         let userId = this.loginForm.get("userId").value;
         if (userId) {

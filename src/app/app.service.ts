@@ -14,8 +14,8 @@ import { UserIdleService } from 'angular-user-idle';
 })
 export class AppService {
 
-    // readonly domain = "http://localhost:8080";
-    readonly domain = "https://mvendor-dev.marlabs.com";     
+    readonly domain = "http://localhost:8080";
+    // readonly domain = "https://mvendor-dev.marlabs.com";     
     readonly baseUrl = this.domain + "/mvendor/";
     readonly customerAuthUrl = this.domain + "/customerAuth/oauth/token";
     readonly isForProduction: boolean = false;

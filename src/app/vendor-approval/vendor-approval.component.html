@@ -36,7 +36,7 @@
                     <div class="Rtable-cell">
                         <mat-form-field class="full-width">
                             <input type="text" matInput onkeypress='return event.charCode >= 48 && event.charCode <= 57'
-                                formControlName="mobileNum" autocomplete="off" required>
+                                formControlName="mobileNum" autocomplete="off" maxlength="10" required>
                         </mat-form-field>
                         <mat-error class="errortxt" *ngIf="( isSubmitted ) && f?.mobileNum?.errors?.required">Mobile No.
                             is required</mat-error>
@@ -50,6 +50,8 @@
                             <input type="text" matInput onkeypress='return event.charCode >= 48 && event.charCode <= 57'
                                 formControlName="telephoneNum" autocomplete="off" maxlength="12">
                         </mat-form-field>
+                        <mat-error class="errortxt" *ngIf="( isSubmitted ) && f?.telephoneNum?.errors?.minlength">11
+                            Characters are required</mat-error>
                     </div>
 
                     <div class="Rtable-cell Rtable-cell--head">Email Id *</div>
@@ -80,7 +82,8 @@
                     <div class="Rtable-cell Rtable-cell--head">Address Line 1</div>
                     <div class="Rtable-cell">
                         <mat-form-field class="full-width">
-                            <input type="text" matInput formControlName="address1" autocomplete="off" required>
+                            <input type="text" matInput formControlName="address1" autocomplete="off" maxlength="35"
+                                required>
                         </mat-form-field>
                         <mat-error class="errortxt" *ngIf="( isSubmitted ) && f?.address1?.errors?.required">Address
                             Line 1 is required</mat-error>
@@ -89,14 +92,15 @@
                     <div class="Rtable-cell Rtable-cell--head">Address Line 2</div>
                     <div class="Rtable-cell">
                         <mat-form-field class="full-width">
-                            <input type="text" matInput formControlName="address2" autocomplete="off">
+                            <input type="text" matInput formControlName="address2" maxlength="35" autocomplete="off">
                         </mat-form-field>
                     </div>
 
                     <div class="Rtable-cell Rtable-cell--head">Street</div>
                     <div class="Rtable-cell">
                         <mat-form-field class="full-width">
-                            <input type="text" matInput formControlName="street" autocomplete="off" required>
+                            <input type="text" matInput formControlName="street" maxlength="35" autocomplete="off"
+                                required>
                         </mat-form-field>
                         <mat-error class="errortxt" *ngIf="( isSubmitted ) && f?.street?.errors?.required">Street is
                             required</mat-error>
@@ -296,7 +300,8 @@
                         <mat-form-field class="full-width">
                             <input type="text" matInput formControlName="gstNum" autocomplete="off" maxlength="15"
                                 minlength="15"
-                                (blur)="onTextFieldValueChange('gstNum',vendorDocCtrl.gstCtrl.documentTypeId)">
+                                (blur)="onTextFieldValueChange('gstNum',vendorDocCtrl.gstCtrl.documentTypeId);toUppercase('gstNum')"
+                                (keypress)="omit_special_char($event)">
                         </mat-form-field>
                         <mat-error class="errortxt" *ngIf="isSubmitted == true && f?.gstNum?.errors?.minlength">Minimum
                             15 characters are required</mat-error>
@@ -325,7 +330,7 @@
                                         multiple accept=".xls,.xlsx,.doc,.docx,.pdf,.png,.jpg,.zip"
                                         (change)="onFileChange($event, vendorDocCtrl.gstCtrl.documentTypeId)" />
                                     <button mat-button mat-icon-button aria-label="Attach" class="attach-btn"
-                                        (click)="onBrowseFileClick($event, vendorDocCtrl.gstCtrl.browserId)">
+                                        (click)="onBrowseFileClick($event, vendorDocCtrl.gstCtrl.browserId)" [disabled]="!this.vendorForm.get('gstNum').value">
                                         <mat-icon>attachment</mat-icon>
                                     </button>
                                 </div>
@@ -334,13 +339,18 @@
                         <div class="error-txt"
                             *ngIf="isSubmitted && filesMap[vendorDocCtrl.gstCtrl.documentTypeId]?.isError">This
                             attachment is mandatory if GST Registered</div>
+                        <div *ngIf="filesMap[vendorDocCtrl.gstCtrl.documentTypeId]?.isAttachWithoutValue"
+                            class="errortxt">
+                            Fill GST Details or delete the attachment.
+                        </div>
                     </div>
 
                     <div class="Rtable-cell Rtable-cell--head">PAN No. *</div>
                     <div class="Rtable-cell">
                         <mat-form-field class="full-width">
                             <input type="text" matInput formControlName="panNum" autocomplete="off" required
-                                maxlength="10" minlength="10">
+                                maxlength="10" minlength="10" (blur)="toUppercase('panNum')"
+                                (keypress)="omit_special_char($event)">
                         </mat-form-field>
 
                         <mat-error class="errortxt" *ngIf="isSubmitted == true && f?.panNum?.errors?.required">PAN No.
@@ -415,7 +425,7 @@
                                     <input style="display: none" [attr.id]="vendorDocCtrl.lutNoCtrl.browserId"
                                         type="file" multiple accept=".xls,.xlsx,.doc,.docx,.pdf,.png,.jpg,.zip"
                                         (change)="onFileChange($event, vendorDocCtrl.lutNoCtrl.documentTypeId)" />
-                                    <button mat-button mat-icon-button aria-label="Attach" class="attach-btn"
+                                    <button mat-button mat-icon-button aria-label="Attach" class="attach-btn" [disabled]="!this.vendorForm.get('lutNum').value"
                                         (click)="onBrowseFileClick($event, vendorDocCtrl.lutNoCtrl.browserId)">
                                         <mat-icon>attachment</mat-icon>
                                     </button>
@@ -425,6 +435,10 @@
                         <div class="error-txt"
                             *ngIf="isSubmitted && filesMap[vendorDocCtrl.lutNoCtrl.documentTypeId]?.isError">This
                             attachment is mandatory.
+                        </div>
+                        <div *ngIf="filesMap[vendorDocCtrl.lutNoCtrl.documentTypeId]?.isAttachWithoutValue"
+                            class="errortxt">
+                            Fill LUT No. or delete the attachment.
                         </div>
 
                     </div>
@@ -452,7 +466,8 @@
                     <div class="Rtable-cell">
                         <mat-form-field class="full-width">
                             <input type="text" matInput formControlName="pfNum" autocomplete="off"
-                                (blur)="onTextFieldValueChange('pfNum',vendorDocCtrl.pfCtrl.documentTypeId)">
+                                (blur)="onTextFieldValueChange('pfNum',vendorDocCtrl.pfCtrl.documentTypeId)"
+                                (keypress)="omit_special_char($event)" maxlength="30">
                         </mat-form-field>
                     </div>
 
@@ -478,7 +493,7 @@
                                     <input style="display: none" [attr.id]="vendorDocCtrl.pfCtrl.browserId" type="file"
                                         multiple accept=".xls,.xlsx,.doc,.docx,.pdf,.png,.jpg,.zip"
                                         (change)="onFileChange($event, vendorDocCtrl.pfCtrl.documentTypeId)" />
-                                    <button mat-button mat-icon-button aria-label="Attach" class="attach-btn"
+                                    <button mat-button mat-icon-button aria-label="Attach" class="attach-btn"  [disabled]="!this.vendorForm.get('pfNum').value"
                                         (click)="onBrowseFileClick($event, vendorDocCtrl.pfCtrl.browserId)">
                                         <mat-icon>attachment</mat-icon>
                                     </button>
@@ -488,12 +503,16 @@
                         <div class="error-txt"
                             *ngIf="isSubmitted && filesMap[vendorDocCtrl.pfCtrl.documentTypeId]?.isError">This
                             attachment is mandatory if PF exists.</div>
+                        <div *ngIf="filesMap[vendorDocCtrl.pfCtrl.documentTypeId]?.isAttachWithoutValue"
+                            class="errortxt">
+                            Fill PF Details or delete the attachment.
+                        </div>
                     </div>
 
                     <div class="Rtable-cell Rtable-cell--head">ESI No.</div>
                     <div class="Rtable-cell">
                         <mat-form-field class="full-width">
-                            <input type="text" matInput formControlName="esiNum" autocomplete="off"
+                            <input type="text" matInput formControlName="esiNum" autocomplete="off" maxlength="30"
                                 (blur)="onTextFieldValueChange('esiNum',vendorDocCtrl.esiCtrl.documentTypeId)">
                         </mat-form-field>
                     </div>
@@ -520,7 +539,7 @@
                                     <input style="display: none" [attr.id]="vendorDocCtrl.esiCtrl.browserId" type="file"
                                         multiple accept=".xls,.xlsx,.doc,.docx,.pdf,.png,.jpg,.zip"
                                         (change)="onFileChange($event, vendorDocCtrl.esiCtrl.documentTypeId)" />
-                                    <button mat-button mat-icon-button aria-label="Attach" class="attach-btn"
+                                    <button mat-button mat-icon-button aria-label="Attach" class="attach-btn" [disabled]="!this.vendorForm.get('esiNum').value"
                                         (click)="onBrowseFileClick($event, vendorDocCtrl.esiCtrl.browserId)">
                                         <mat-icon>attachment</mat-icon>
                                     </button>
@@ -530,6 +549,10 @@
                         <div class="error-txt"
                             *ngIf="isSubmitted && filesMap[vendorDocCtrl.esiCtrl.documentTypeId]?.isError">This
                             attachment is mandatory if ESI exists.</div>
+                        <div *ngIf="filesMap[vendorDocCtrl.esiCtrl.documentTypeId]?.isAttachWithoutValue"
+                            class="errortxt">
+                            Fill ESI No. or delete the attachment.
+                        </div>
                     </div>
 
 
@@ -570,7 +593,7 @@
                                     <input style="display: none" [attr.id]="vendorDocCtrl.msmeCtrl.browserId"
                                         type="file" multiple accept=".xls,.xlsx,.doc,.docx,.pdf,.png,.jpg,.zip"
                                         (change)="onFileChange($event, vendorDocCtrl.msmeCtrl.documentTypeId)" />
-                                    <button mat-button mat-icon-button aria-label="Attach" class="attach-btn"
+                                    <button mat-button mat-icon-button aria-label="Attach" class="attach-btn"  [disabled]="!this.vendorForm.get('isMsmedRegistered').value"
                                         (click)="onBrowseFileClick($event, vendorDocCtrl.msmeCtrl.browserId)">
                                         <mat-icon>attachment</mat-icon>
                                     </button>
@@ -580,6 +603,10 @@
                         <div class="error-txt"
                             *ngIf="isSubmitted && filesMap[vendorDocCtrl.msmeCtrl.documentTypeId]?.isError"> This
                             attachment is mandatory if MSME.</div>
+                        <div *ngIf="filesMap[vendorDocCtrl.msmeCtrl.documentTypeId]?.isAttachWithoutValue"
+                            class="errortxt">
+                            Select MSME or delete the attachment.
+                        </div>
                     </div>
 
                     <div class="Rtable-cell Rtable-cell--head">Have any TDS lower deduction certificate? </div>
@@ -618,7 +645,7 @@
                                     <input style="display: none" [attr.id]="vendorDocCtrl.tdsCtrl.browserId" type="file"
                                         multiple accept=".xls,.xlsx,.doc,.docx,.pdf,.png,.jpg,.zip"
                                         (change)="onFileChange($event, vendorDocCtrl.tdsCtrl.documentTypeId)" />
-                                    <button mat-button mat-icon-button aria-label="Attach" class="attach-btn"
+                                    <button mat-button mat-icon-button aria-label="Attach" class="attach-btn" [disabled]="!this.vendorForm.get('hasTdsLower').value"
                                         (click)="onBrowseFileClick($event, vendorDocCtrl.tdsCtrl.browserId)">
                                         <mat-icon>attachment</mat-icon>
                                     </button>
@@ -628,6 +655,10 @@
                         <div class="error-txt"
                             *ngIf="isSubmitted && filesMap[vendorDocCtrl.tdsCtrl.documentTypeId]?.isError">This
                             attachment is mandatory if TDS available</div>
+                        <div *ngIf="filesMap[vendorDocCtrl.tdsCtrl.documentTypeId]?.isAttachWithoutValue"
+                            class="errortxt">
+                            Select MSME or delete the attachment.
+                        </div>
 
                     </div>
 
@@ -666,7 +697,7 @@
                                     <input style="display: none" [attr.id]="vendorDocCtrl.sezCtrl.browserId" type="file"
                                         multiple accept=".xls,.xlsx,.doc,.docx,.pdf,.png,.jpg,.zip"
                                         (change)="onFileChange($event, vendorDocCtrl.sezCtrl.documentTypeId)" />
-                                    <button mat-button mat-icon-button aria-label="Attach" class="attach-btn"
+                                    <button mat-button mat-icon-button aria-label="Attach" class="attach-btn" [disabled]="!this.vendorForm.get('isSez').value"
                                         (click)="onBrowseFileClick($event, vendorDocCtrl.sezCtrl.browserId)">
                                         <mat-icon>attachment</mat-icon>
                                     </button>
@@ -676,6 +707,10 @@
                         <div class="error-txt"
                             *ngIf="isSubmitted && filesMap[vendorDocCtrl.sezCtrl.documentTypeId]?.isError">This
                             attachment is mandatory if SEZ is available</div>
+                        <div *ngIf="filesMap[vendorDocCtrl.sezCtrl.documentTypeId]?.isAttachWithoutValue"
+                            class="errortxt">
+                            Select SEZ or delete the attachment.
+                        </div>
                     </div>
 
                     <div class="Rtable-cell Rtable-cell--head">Is RCM applicable? </div>
@@ -723,7 +758,7 @@
                                     <input style="display: none" [attr.id]="vendorDocCtrl.otherCtrl.browserId"
                                         type="file" multiple accept=".xls,.xlsx,.doc,.docx,.pdf,.png,.jpg,.zip"
                                         (change)="onFileChange($event, vendorDocCtrl.otherCtrl.documentTypeId)" />
-                                    <button mat-button mat-icon-button aria-label="Attach" class="attach-btn"
+                                    <button mat-button mat-icon-button aria-label="Attach" class="attach-btn"  [disabled]="!this.vendorForm.get('otherDocDesc').value"
                                         (click)="onBrowseFileClick($event, vendorDocCtrl.otherCtrl.browserId)">
                                         <mat-icon>attachment</mat-icon>
                                     </button>
