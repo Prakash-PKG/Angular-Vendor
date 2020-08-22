@@ -115,7 +115,8 @@ export class PoSearchComponent implements OnInit {
             employeeId: null,
             approvalLevels: [],
             departments: [],
-            projectIds: []
+            projectIds: [],
+            isSubContractReceiver: false
         };
 
         if(globalConstant.userDetails.isVendor) {

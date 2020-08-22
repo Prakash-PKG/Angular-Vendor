@@ -97,6 +97,28 @@
                             description
                         </mat-icon>
                     </div>
+                    <!--<div *ngIf = "isOnRectified == true">
+                        <input class="attachment-elements" style="display: none" [attr.id]="'invoiceFileCtrl'" type="file"
+                            accept=".xls,.xlsx,.doc,.docx,.pdf,.png,.jpg,.zip" (change)="onInvoiceFileChange($event)" />
+                        <button mat-raised-button class="footer-actions attachment-elements"
+                            (click)="onInvoiceBrowseClick($event)">Browse & Attach</button>
+                        <div class="filename attachment-elements" *ngFor="let f of additionalInvoiceFilesList; let fInd = index">
+                            <span>
+                                {{ f.actualFileName }}
+                                <button mat-button mat-icon-button aria-label="Delete"
+                                    (click)="onDeleteFileClick(f, fInd, 'invoice')">
+                                    <mat-icon>delete_outline</mat-icon>
+                                </button>
+                                <button *ngIf="f.fileId != null" mat-button mat-icon-button aria-label="Download"
+                                    (click)="downloadFile(f)">
+                                    <mat-icon>save_alt</mat-icon>
+                                </button>
+                            </span>
+                        </div>
+                        <div class="errortxt">
+                            {{ invoiceFilesErrMsg }}
+                        </div>
+                    </div>-->
                 </div>
 
             </div>
@@ -227,9 +249,9 @@
         </div>
     </div>
 
-    <div *ngIf = "isOnHold == true">
+    <!--<div *ngIf = "isOnHold == true">
         Reason for rejected: {{ rejectedRemarks }}
-    </div>
+    </div>-->
     <!-- table details [dataSource]="POData"-->
     <div class="container my-container margin-unset full-width">
         <table class="dataTable full-width">
