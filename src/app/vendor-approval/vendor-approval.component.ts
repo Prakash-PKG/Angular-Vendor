@@ -234,13 +234,9 @@ export class VendorApprovalComponent implements OnInit {
             }
             else {
                 if (this.documentControlDetails[key]) {
-                    let controlVal = this.vendorForm.get(this.documentControlDetails[key].controlName).value;
-                    if (controlVal && this.filesMap[key].filesList.length == 0) {
-                        this.filesMap[key].isError = true;
-                    }
-                    else if (!controlVal && this.filesMap[key].filesList.length) {
-                        this.filesMap[key].isAttachWithoutValue = true;
-                    }
+                    let controlVal = this.vendorForm.get(this.documentControlDetails[key].controlName).value
+                    this.filesMap[key].isError = (controlVal && this.filesMap[key].filesList.length == 0) ? true : false;
+                    this.filesMap[key].isAttachWithoutValue = (!controlVal && this.filesMap[key].filesList.length) ? true : false;
                 }
             }
         }
@@ -378,15 +374,19 @@ export class VendorApprovalComponent implements OnInit {
             && this.filesMap[documentTypeId].filesList.length > 0) {
 
             this.filesMap[documentTypeId].filesList.splice(fileIndex, 1);
-            this.filesMap[documentTypeId].isAttached =
-                (this.filesMap[documentTypeId].filesList.length === 0) ? false : true;
+
+            this.filesMap[documentTypeId].isAttached = (this.filesMap[documentTypeId].filesList.length === 0) ? false : true;
 
             this.filesMap[documentTypeId].isError = false;
             if (this.filesMap[documentTypeId].isMandatory && !this.filesMap[documentTypeId].isAttached) {
                 this.filesMap[documentTypeId].isError = true;
             }
             else {
-                this.filesMap[documentTypeId].isError = false;
+                if (this.documentControlDetails[documentTypeId] && this.documentControlDetails[documentTypeId].controlName) {
+                    let controlVal = this.vendorForm.get(this.documentControlDetails[documentTypeId].controlName).value;
+                    this.filesMap[documentTypeId].isError = (controlVal && this.filesMap[documentTypeId].filesList.length == 0) ? true : false;
+                    this.filesMap[documentTypeId].isAttachWithoutValue = (!controlVal && this.filesMap[documentTypeId].filesList.length > 0) ? true : false;
+                }
             }
 
         }
@@ -411,14 +411,16 @@ export class VendorApprovalComponent implements OnInit {
     }
 
     updateMandatoryDocs(selfValue: any, documentTypeId: number) {
-        if (!selfValue) {
-            this.filesMap[documentTypeId].isMandatory = false;
-            // this.filesMap[documentTypeId].isAttached = this.filesMap[documentTypeId].filesList.length > 0 ? true : false;
-            this.filesMap[documentTypeId].isAttachWithoutValue = this.filesMap[documentTypeId].filesList.length > 0 ? true : false;
+        if (selfValue) {
+            this.filesMap[documentTypeId].isMandatory = true;
+            this.filesMap[documentTypeId].isError = this.filesMap[documentTypeId].filesList.length > 0 ? false : true;
+            this.filesMap[documentTypeId].isAttachWithoutValue = false;
         }
         else {
-            this.filesMap[documentTypeId].isMandatory = true;
-            this.filesMap[documentTypeId].isError = this.filesMap[documentTypeId].filesList.length <= 0 ? true : false;
+            this.filesMap[documentTypeId].isMandatory = false;
+            this.filesMap[documentTypeId].isAttached = this.filesMap[documentTypeId].filesList.length > 0 ? true : false;
+            this.filesMap[documentTypeId].isError = false;
+            this.filesMap[documentTypeId].isAttachWithoutValue = this.filesMap[documentTypeId].filesList.length ? true : false;
         }
     }
 
@@ -434,7 +436,8 @@ export class VendorApprovalComponent implements OnInit {
     isFilesValid() {
         this.isValid = true;
         for (let key in this.filesMap) {
-            if (this.filesMap[key].isError) {
+            if (this.filesMap[key].isError || this.filesMap[key].isAttachWithoutValue) {
+                this.msg = "Your form contains error.Please check.";
                 this.isValid = false;
                 break;
             }
@@ -569,7 +572,6 @@ export class VendorApprovalComponent implements OnInit {
             this.vendorDetails = this.vendorApprovalInitDetails.vendorMasterDetails;
             // this.vendorDetails = this.originalVendorDetails;
         }
-
         this.loadDropDown();
         this.updateVendorFields();
         this.updateFileDetails();
@@ -605,37 +607,38 @@ export class VendorApprovalComponent implements OnInit {
     }
 
     updateVendorFields() {
-        this.vendorForm.get("vendorName").setValue(this.vendorDetails.vendorName);
-        this.vendorForm.get("contactPerson").setValue(this.vendorDetails.contactPerson);
-        this.vendorForm.get("mobileNum").setValue(this.vendorDetails.mobileNum);
-        this.vendorForm.get("telephoneNum").setValue(this.vendorDetails.telephoneNum);
-        this.vendorForm.get("emailId").setValue(this.vendorDetails.emailId);
+        if (this.vendorDetails) {
+            this.vendorForm.get("vendorName").setValue(this.vendorDetails.vendorName);
+            this.vendorForm.get("contactPerson").setValue(this.vendorDetails.contactPerson);
+            this.vendorForm.get("mobileNum").setValue(this.vendorDetails.mobileNum);
+            this.vendorForm.get("telephoneNum").setValue(this.vendorDetails.telephoneNum);
+            this.vendorForm.get("emailId").setValue(this.vendorDetails.emailId);
 
-        this.vendorForm.get("address1").setValue(this.vendorDetails.address1);
-        this.vendorForm.get("address2").setValue(this.vendorDetails.address2);
-        this.vendorForm.get("city").setValue(this.vendorDetails.city);
-        this.vendorForm.get("street").setValue(this.vendorDetails.street);
-        this.vendorForm.get("pincode").setValue(this.vendorDetails.pincode);
-        this.vendorForm.get("countryCode").setValue(this.vendorDetails.countryCode);
-        this.vendorForm.get("stateCode").setValue(this.vendorDetails.stateCode);
+            this.vendorForm.get("address1").setValue(this.vendorDetails.address1);
+            this.vendorForm.get("address2").setValue(this.vendorDetails.address2);
+            this.vendorForm.get("city").setValue(this.vendorDetails.city);
+            this.vendorForm.get("street").setValue(this.vendorDetails.street);
+            this.vendorForm.get("pincode").setValue(this.vendorDetails.pincode);
+            this.vendorForm.get("countryCode").setValue(this.vendorDetails.countryCode);
+            this.vendorForm.get("stateCode").setValue(this.vendorDetails.stateCode);
 
-        this.vendorForm.get("panNum").setValue(this.vendorDetails.panNum);
-        this.vendorForm.get("gstNum").setValue(this.vendorDetails.gstNum);
-        this.vendorForm.get("pfNum").setValue(this.vendorDetails.pfNum);
-        this.vendorForm.get("esiNum").setValue(this.vendorDetails.esiNum);
-        this.vendorForm.get("cinNum").setValue(this.vendorDetails.cinNum);
-        this.vendorForm.get("isSez").setValue(this.vendorDetails.isSez);
-        this.vendorForm.get("isRcmApplicable").setValue(this.vendorDetails.isRcmApplicable);
-        this.vendorForm.get("isMsmedRegistered").setValue(this.vendorDetails.isMsmedRegistered);
-        this.vendorForm.get("hasTdsLower").setValue(this.vendorDetails.hasTdsLower);
-        this.vendorForm.get("lutNum").setValue(this.vendorDetails.lutNum);
-        this.vendorForm.get("lutDate").setValue(this.vendorDetails.lutDate ? new Date(this.vendorDetails.lutDate) : null);
-        this.vendorForm.get("otherDocDesc").setValue(this.vendorDetails.otherDocDesc);
+            this.vendorForm.get("panNum").setValue(this.vendorDetails.panNum);
+            this.vendorForm.get("gstNum").setValue(this.vendorDetails.gstNum);
+            this.vendorForm.get("pfNum").setValue(this.vendorDetails.pfNum);
+            this.vendorForm.get("esiNum").setValue(this.vendorDetails.esiNum);
+            this.vendorForm.get("cinNum").setValue(this.vendorDetails.cinNum);
+            this.vendorForm.get("isSez").setValue(this.vendorDetails.isSez);
+            this.vendorForm.get("isRcmApplicable").setValue(this.vendorDetails.isRcmApplicable);
+            this.vendorForm.get("isMsmedRegistered").setValue(this.vendorDetails.isMsmedRegistered);
+            this.vendorForm.get("hasTdsLower").setValue(this.vendorDetails.hasTdsLower);
+            this.vendorForm.get("lutNum").setValue(this.vendorDetails.lutNum);
+            this.vendorForm.get("lutDate").setValue(this.vendorDetails.lutDate ? new Date(this.vendorDetails.lutDate) : null);
+            this.vendorForm.get("otherDocDesc").setValue(this.vendorDetails.otherDocDesc);
 
-        this.vendorForm.get("selectedVendorGroup").setValue(this.vendorDetails.groupCode ? this.vendorDetails.groupCode : null);
-        this.vendorForm.get("selectedCompanyCode").setValue(this.vendorDetails.companyCode ? this.vendorDetails.companyCode : null);
-        this.vendorForm.get("selectedCurrency").setValue(this.vendorDetails.currencyCode ? this.vendorDetails.currencyCode : null);
-
+            this.vendorForm.get("selectedVendorGroup").setValue(this.vendorDetails.groupCode ? this.vendorDetails.groupCode : null);
+            this.vendorForm.get("selectedCompanyCode").setValue(this.vendorDetails.companyCode ? this.vendorDetails.companyCode : null);
+            this.vendorForm.get("selectedCurrency").setValue(this.vendorDetails.currencyCode ? this.vendorDetails.currencyCode : null);
+        }
 
         if (globalConstant.userDetails.isFinance) {
             this.vendorForm.get("selectedVendorGroup").setValidators([Validators.required]);

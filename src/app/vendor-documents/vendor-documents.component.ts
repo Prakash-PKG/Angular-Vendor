@@ -404,7 +404,7 @@ export class VendorDocumentsComponent implements OnInit {
         else {
             this.filesMap[documentTypeId].isMandatory = false;
             this.filesMap[documentTypeId].isAttachWithoutValue = this.filesMap[documentTypeId].filesList.length ? true : false;
-            // this.filesMap[documentTypeId].isAttached = this.filesMap[documentTypeId].filesList.length > 0 ? true : false;
+            this.filesMap[documentTypeId].isAttached = this.filesMap[documentTypeId].filesList.length > 0 ? true : false;
             this.filesMap[documentTypeId].isError = false;
         }
 
