@@ -47,11 +47,11 @@ export class VendorDocumentsComponent implements OnInit {
         pfCtrl: { documentTypeId: 4, browserId: 'pfFileCtrl', placeholder: 'PF No.', controlName: 'pfNum' },
         esiCtrl: { documentTypeId: 5, browserId: 'esiFileCtrl', placeholder: 'ESI No.', controlName: 'esiNum' },
         canChqCtrl: { documentTypeId: 6, browserId: 'canChqFileCtrl', placeholder: 'Cancelled Cheque', controlName: '' },
-        msmeCtrl: { documentTypeId: 7, browserId: 'msmeFileCtrl', placeholder: 'Is MSME Certificate applicable?', controlName: '' },
+        msmeCtrl: { documentTypeId: 7, browserId: 'msmeFileCtrl', placeholder: 'Is MSME Certificate applicable?', controlName: 'isMsmedRegistered' },
         tdsCtrl: { documentTypeId: 8, browserId: 'tdsFileCtrl', placeholder: 'Has TDS lower deduction certificate?', controlName: 'hasTdsLower' },
         sezCtrl: { documentTypeId: 9, browserId: 'sezFileCtrl', placeholder: 'SEZ / Non-SEZ', controlName: 'isSez' },
         lutNoCtrl: { documentTypeId: 10, browserId: 'lutNoFileCtrl', placeholder: 'LUT No.', controlName: 'lutNum' },
-        msmeSelfCtrl: { documentTypeId: 11, browserId: 'msmeSelfFileCtrl', placeholder: 'MSME Self Attested Certificate?', controlName: 'isMsmedRegistered' },
+        msmeSelfCtrl: { documentTypeId: 11, browserId: 'msmeSelfFileCtrl', placeholder: 'MSME Self Attested Certificate?', controlName: '' },
         otherCtrl: { documentTypeId: 13, browserId: 'otherFileCtrl', placeholder: 'Document Description', controlName: 'otherDocDesc' }
     }
 
@@ -421,14 +421,10 @@ export class VendorDocumentsComponent implements OnInit {
         let ctrlName = this.vendorDocCtrl[ctrl].controlName;
         if (ctrlName != '') {
             let controlVal = this.vendorDocumentForm.get(ctrlName).value;
-
-            if (this.filesMap[documentTypeId].filesList.length) {
-                this.filesMap[documentTypeId].isAttachWithoutValue = controlVal ? false : true;
-            }
-            else {
-                this.filesMap[documentTypeId].isAttachWithoutValue = false;
-            }
+            this.filesMap[documentTypeId].isAttachWithoutValue = (!controlVal && this.filesMap[documentTypeId].filesList.length) ? true : false;
+            this.filesMap[documentTypeId].isError = (controlVal && !this.filesMap[documentTypeId].filesList.length) ? true : false;
         }
+
     }
 
     ngOnInit() {
