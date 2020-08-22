@@ -377,12 +377,15 @@ export class VendorDocumentsComponent implements OnInit {
                 if (this.vendorDocCtrl[key]) {
                     if (this.vendorDocCtrl[key].controlName != '') {
                         let controlVal = this.vendorDocumentForm.get(this.vendorDocCtrl[key].controlName).value;
-                        if (controlVal && this.filesMap[key].filesList.length == 0) {
-                            this.filesMap[key].isError = true;
+                        if (controlVal) {
+                            this.filesMap[key].isError = this.filesMap[key].filesList.length ? false : true;
+                            this.filesMap[key].isAttachWithoutValue = false;
                         }
-                        else if (!controlVal && this.filesMap[key].filesList.length) {
-                            this.filesMap[key].isAttachWithoutValue = true;
+                        else {
+                            this.filesMap[key].isError = false;
+                            this.filesMap[key].isAttachWithoutValue = this.filesMap[key].filesList.length ? true : false;
                         }
+
                     }
                 }
             }
@@ -391,26 +394,21 @@ export class VendorDocumentsComponent implements OnInit {
     }
 
     updateMandatory(selfId: string, documentTypeId: number) {
-        if (!this.vendorDocumentForm.get(selfId).value) {
-            if (this.filesMap[documentTypeId].filesList.length < 0) {
-                this.vendorDocumentForm.get(selfId).setValidators([]);
-                this.vendorDocumentForm.get(selfId).updateValueAndValidity();
-                this.filesMap[documentTypeId] = { filesList: [], isMandatory: false, isAttached: false, isError: false, toAttach: [], isAttachWithoutValue: false };
-                return;
-            }
+
+        if (this.vendorDocumentForm.get(selfId).value) {
+            this.filesMap[documentTypeId].isMandatory = true;
+            this.filesMap[documentTypeId].isError = this.filesMap[documentTypeId].filesList.length ? false : true;
+            this.filesMap[documentTypeId].isAttachWithoutValue = false;
         }
 
-        this.vendorDocumentForm.get(selfId).enable();
-        this.vendorDocumentForm.get(selfId).setValidators([Validators.required]);
-        if (selfId == 'gstNum') {
-            this.vendorDocumentForm.get(selfId).setValidators([Validators.minLength(15)]);
+        else {
+            this.filesMap[documentTypeId].isMandatory = false;
+            this.filesMap[documentTypeId].isAttachWithoutValue = this.filesMap[documentTypeId].filesList.length ? true : false;
+            // this.filesMap[documentTypeId].isAttached = this.filesMap[documentTypeId].filesList.length > 0 ? true : false;
+            this.filesMap[documentTypeId].isError = false;
         }
-        this.vendorDocumentForm.get(selfId).updateValueAndValidity();
-        this.filesMap[documentTypeId].isMandatory = true;
 
-        this.filesMap[documentTypeId].isError = (this.vendorDocumentForm.get(selfId).value && this.filesMap[documentTypeId].filesList.length <= 0) ? true : false;
-
-        this.updateFileWithoutValue(documentTypeId);
+        // this.updateFileWithoutValue(documentTypeId);
     }
 
 
@@ -421,15 +419,16 @@ export class VendorDocumentsComponent implements OnInit {
         });
 
         let ctrlName = this.vendorDocCtrl[ctrl].controlName;
-        let controlVal = this.vendorDocumentForm.get(ctrlName).value;
+        if (ctrlName != '') {
+            let controlVal = this.vendorDocumentForm.get(ctrlName).value;
 
-        if (this.filesMap[documentTypeId].filesList.length) {
-            this.filesMap[documentTypeId].isAttachWithoutValue = controlVal ? false : true;
+            if (this.filesMap[documentTypeId].filesList.length) {
+                this.filesMap[documentTypeId].isAttachWithoutValue = controlVal ? false : true;
+            }
+            else {
+                this.filesMap[documentTypeId].isAttachWithoutValue = false;
+            }
         }
-        else {
-            this.filesMap[documentTypeId].isAttachWithoutValue = false;
-        }
-
     }
 
     ngOnInit() {
