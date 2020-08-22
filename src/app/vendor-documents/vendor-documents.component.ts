@@ -77,7 +77,7 @@ export class VendorDocumentsComponent implements OnInit {
         }
         else {
             this.filesMap[documentTypeId].toAttach = [];
-            this.filesMap[documentTypeId].isMandatory = true;
+            // this.filesMap[documentTypeId].isMandatory = true;
             this.filesMap[documentTypeId].isAttached = false;
             this.filesMap[documentTypeId].isError = false;
             this.filesMap[documentTypeId].isAttachWithoutValue = false;

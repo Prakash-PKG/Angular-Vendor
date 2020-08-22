@@ -398,6 +398,7 @@ export class VendorApprovalComponent implements OnInit {
 
     onApproveClick() {
         this.isSubmitted = true;
+        this.msg='';
         this.updateVendorApprovals(this._appService.updateOperations.approve);
     }
 
