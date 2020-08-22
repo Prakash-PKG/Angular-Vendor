@@ -10,6 +10,16 @@
             </mat-form-field>
 
             <mat-form-field class="field search-row-element">
+                <mat-label>Vendor Id</mat-label>
+                <input type="text" matInput formControlName="vendorId" autocomplete="off">
+            </mat-form-field>
+
+            <mat-form-field class="field search-row-element">
+                <mat-label>Project Id</mat-label>
+                <input type="text" matInput formControlName="projectId" autocomplete="off">
+            </mat-form-field>
+
+            <mat-form-field class="field search-row-element">
                 <mat-label>Entity</mat-label>
                 <input type="text" matInput formControlName="entityNo" autocomplete="off">
             </mat-form-field>
@@ -55,6 +65,9 @@
                         <span>Vendor Name</span>
                     </th>
                     <th class="headers" scope="col">
+                        <span>Project Id</span>
+                    </th>
+                    <th class="headers" scope="col">
                         <span>Entity</span>
                     </th>
                     <th class="headers" scope="col">
@@ -81,6 +94,9 @@
                     </td>
                     <td *ngIf = "isVendor == false">
                         {{ po.vendorName }}
+                    </td>
+                    <td>
+                        {{ po.projectId }}
                     </td>
                     <td>
                         {{ po.companyCode }}

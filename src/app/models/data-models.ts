@@ -106,7 +106,7 @@ export class VendorMasterDetailsModel {
     emailId: string;
     password: string;
     contactPerson: string;
-    contactNum: string;
+    // contactNum: string;
     buildingNum: string;
     buildingName: string;
     floorNum: string;
@@ -117,7 +117,7 @@ export class VendorMasterDetailsModel {
     countryCode: string;
     countryName: string;
     pincode: string;
-    bankAddress: string;
+    // bankAddress: string;
     accountNum: string;
     accountType: string;
     accountName: string;
@@ -172,6 +172,7 @@ export interface FileMap {
         isAttached: boolean,
         isError: boolean,
         toAttach: FileDetailsModel[],
+        isAttachWithoutValue:boolean
     }
 }
 
@@ -500,6 +501,30 @@ export class InvoiceApprovalInitReqModel {
     approvalLevel: string;
 }
 
+export class CommunicationMsgReqModel {
+    invoiceCommunicationId: number;
+    purchaseOrderId: number;
+    invoiceId: number;
+	userId: string;
+	message: string;
+	createdDate: string;
+	createdBy: string;
+}
+
+export class CommunicationMsgModel extends CommunicationMsgReqModel {
+    firstName: string;
+    middleName: string;
+    lastName: string;
+    updatedDate: string;
+    updatedBy: string;
+}
+
+export class InvoiceCommunicationDisplayModel {
+    purchaseOrderId: number;
+    invoiceId: number;
+    msgsList: CommunicationMsgModel[] = [];
+}
+
 export class InvoiceApprovalInitResultModel {
     invoiceDetails: InvoiceDetailsModel;
     itemsList: ItemDisplayModel[];
@@ -509,6 +534,8 @@ export class InvoiceApprovalInitResultModel {
     invoiceFilesList: FileDetailsModel[];
     supportFilesList: FileDetailsModel[];
     grnSesItemsList: GrnSesItemModel[];
+    approvalsList: InvoiceApprovalModel[];
+    communicationMsgsList: CommunicationMsgModel[];
 }
 
 export class GrnSesModel {
@@ -549,6 +576,7 @@ export class InvoiceApprovalModel {
 
 export class UpdateInvoiceApprovalReqModel {
     action: string;
+    isOnHold: boolean;
     grnSesNumber: string;
     departmentHeadId: string;
     approvalDetails: InvoiceApprovalModel;

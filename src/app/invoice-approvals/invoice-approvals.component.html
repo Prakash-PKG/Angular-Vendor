@@ -226,6 +226,10 @@
             </div>
         </div>
     </div>
+
+    <div *ngIf = "isOnHold == true">
+        Reason for rejected: {{ rejectedRemarks }}
+    </div>
     <!-- table details [dataSource]="POData"-->
     <div class="container my-container margin-unset full-width">
         <table class="dataTable full-width">
@@ -294,9 +298,14 @@
                 {{ msg }}
             </div>-->
             <button mat-raised-button class="footer-actions" (click)="onBackBtnClick()">Back</button>
-            <button mat-raised-button class="footer-actions" (click)="onRejectClick()">Reject</button>
-            <button mat-raised-button class="footer-actions footer-actions-green"
+            <button *ngIf = "isRejectVisible == true" mat-raised-button class="footer-actions" (click)="onRejectClick()">Reject</button>
+            <button *ngIf = "isHoldVisible == true" mat-raised-button class="footer-actions" (click)="onHoldClick()">Send Back</button>
+            <button *ngIf = "isOnHold == true" mat-raised-button class="footer-actions footer-actions-green"
+                (click)="onRectifyClick()">Rectified</button>
+            <button *ngIf = "isOnHold == false" mat-raised-button class="footer-actions footer-actions-green"
                 (click)="onApproveClick()">{{ approveBtnTxt }}</button>
+
+            <button *ngIf = "isChatBtnVisible == true" mat-raised-button class="footer-actions" (click)="onCommunicationClick()">Chat</button>
         </div>
     </div>
 </div>

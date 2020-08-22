@@ -83,6 +83,7 @@ import { MsAdalAngular6Module, AuthenticationGuard } from 'microsoft-adal-angula
 import { GrnSesItemsComponent } from './grn-ses-items/grn-ses-items.component';
 import { UserIdleModule } from 'angular-user-idle';
 import { ContactComponent } from './contact/contact.component';
+import { InvoiceCommunicationDialogComponent } from './invoice-communication-dialog/invoice-communication-dialog.component';
 
 @NgModule({
     declarations: [
@@ -116,7 +117,8 @@ import { ContactComponent } from './contact/contact.component';
         VendorDumpComponent,
         VendorLoginComponent,
         GrnSesItemsComponent,
-        ContactComponent
+        ContactComponent,
+        InvoiceCommunicationDialogComponent
     ],
     imports: [
         BrowserModule,
@@ -178,6 +180,7 @@ import { ContactComponent } from './contact/contact.component';
         ConfirmDialogComponent,
         MessageDialogComponent,
         ForgotPasswordComponent,
+        InvoiceCommunicationDialogComponent,
         GrnSesItemsComponent
     ],
     providers: [

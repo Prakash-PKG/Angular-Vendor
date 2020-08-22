@@ -12,7 +12,7 @@
             </span>
         </li>
 
-        <li class="step" *ngIf = "isSesSubContractPO == false" [ngClass]="{ 'completed': poLevel?.status == 'Approved', 'notcompleted': poLevel?.status == 'Rejected' }">
+        <li class="step" *ngIf = "isSesSubContractPO == false" [ngClass]="{ 'completed': poLevel?.status == 'Received', 'notcompleted': poLevel?.status == 'Rejected' }">
             <span class="upper-text">{{ getStatusDetails(poLevel) }}</span>
             <span class="dot"></span>
             <span class="lower-text">

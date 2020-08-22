@@ -225,6 +225,9 @@ export class InvoiceSearchComponent implements OnInit {
         let poNumberVal = this.invoiceSearchForm.get("poNumber").value;
         let lcPoNumberVal = (poNumberVal) ? poNumberVal.toLowerCase() : "";
 
+        let vendorIdVal = this.invoiceSearchForm.get("vendorId").value;
+        let lcVendorIdVal = (vendorIdVal) ? vendorIdVal.toLowerCase() : "";
+
         let entityNoVal = this.invoiceSearchForm.get("entityNo").value;
         let lcEntityNoVal = (entityNoVal) ? entityNoVal.toLowerCase() : "";
 
@@ -238,6 +241,7 @@ export class InvoiceSearchComponent implements OnInit {
         this.invoiceList = this.totalInvoiceList.filter(function (req) {
             if ((req.poNumber && req.poNumber.toString().toLowerCase().indexOf(lcPoNumberVal) > -1) &&
                 (req.invoiceNumber && req.invoiceNumber.toString().toLowerCase().indexOf(lcInvoiceNumberVal) > -1) &&
+                (req.vendorId && req.vendorId.toString().toLowerCase().indexOf(lcVendorIdVal) > -1) &&
                 (req.companyCode && req.companyCode.toString().toLowerCase().indexOf(lcEntityNoVal) > -1) &&
                 (req.projectId && req.projectId.toString().toLowerCase().indexOf(lcProjectIdVal) > -1) &&
                 ((req.invoiceDate && startDateVal) ? new Date(req.invoiceDate) > startDateVal : true) &&
@@ -268,6 +272,7 @@ export class InvoiceSearchComponent implements OnInit {
         this.invoiceSearchForm = this._formBuilder.group({
             invoiceNumber: null,
             poNumber: null,
+            vendorId: null,
             entityNo: null,
             projectId: null,
             startDate: null,
@@ -279,6 +284,10 @@ export class InvoiceSearchComponent implements OnInit {
         });
 
         this.invoiceSearchForm.get("poNumber").valueChanges.subscribe(val => {
+            this.onSearchChange();
+        });
+
+        this.invoiceSearchForm.get("vendorId").valueChanges.subscribe(val => {
             this.onSearchChange();
         });
 

@@ -14,8 +14,11 @@ import { UserIdleService } from 'angular-user-idle';
 })
 export class AppService {
 
-    // readonly domain = "http://localhost:8080";
-    readonly domain = "https://mvendor-dev.marlabs.com"; 
+
+    //readonly domain = "http://localhost:8080";
+	readonly domain = "https://mvendor-dev.marlabs.com"; 
+   // readonly domain = "https://mvendor-stg.marlabs.com"; 
+
     readonly baseUrl = this.domain + "/mvendor/";
     readonly customerAuthUrl = this.domain + "/customerAuth/oauth/token";
     readonly isForProduction: boolean = false;
@@ -61,14 +64,16 @@ export class AppService {
         submit: "submit",
         approve: "approve",
         reject: "reject",
-        sendBack: "sendBack"
+        onhold: 'onhold',
+        sendBack: "sendBack",
+        rectified: "rectified"
     };
 
     readonly statusNames: any = {
         new: "In Progress",
         approved: "Approved",
         rejected: "Rejected",
-        received: 'Recieved'
+        received: 'Received'
     };
 
     readonly statusCodes: any = {
@@ -137,7 +142,7 @@ export class AppService {
         emailId: null,
         password: null,
         contactPerson: null,
-        contactNum: null,
+        // contactNum: null,
         buildingNum: null,
         buildingName: null,
         floorNum: null,
@@ -147,7 +152,7 @@ export class AppService {
         countryCode: null,
         countryName: null,
         pincode: null,
-        bankAddress: null,
+        // bankAddress: null,
         accountNum: null,
         accountType: null,
         accountName: null,
@@ -205,7 +210,7 @@ export class AppService {
             emailId: null,
             password: null,
             contactPerson: null,
-            contactNum: null,
+            // contactNum: null,
             buildingNum: null,
             buildingName: null,
             floorNum: null,
@@ -215,7 +220,7 @@ export class AppService {
             countryCode: null,
             countryName: null,
             pincode: null,
-            bankAddress: null,
+            // bankAddress: null,
             accountNum: null,
             accountType: null,
             accountName: null,
