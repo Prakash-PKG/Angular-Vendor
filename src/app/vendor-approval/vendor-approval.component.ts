@@ -779,10 +779,10 @@ export class VendorApprovalComponent implements OnInit {
             this.vendorDetails.pfNum = this.vendorForm.get("pfNum").value;
             this.vendorDetails.esiNum = this.vendorForm.get("esiNum").value;
 
-            this.vendorDetails.panNum = this.vendorForm.get("isMsmedRegistered").value;
-            this.vendorDetails.gstNum = this.vendorForm.get("hasTdsLower").value;
-            this.vendorDetails.pfNum = this.vendorForm.get("isSez").value;
-            this.vendorDetails.esiNum = this.vendorForm.get("isRcmApplicable").value;
+            this.vendorDetails.isMsmedRegistered = this.vendorForm.get("isMsmedRegistered").value;
+            this.vendorDetails.hasTdsLower = this.vendorForm.get("hasTdsLower").value;
+            this.vendorDetails.isSez = this.vendorForm.get("isSez").value;
+            this.vendorDetails.isRcmApplicable = this.vendorForm.get("isRcmApplicable").value;
 
             this.vendorDetails.cinNum = this.vendorForm.get("cinNum").value;
             this.vendorDetails.lutNum = this.vendorForm.get("lutNum").value;

@@ -91,7 +91,7 @@
             <mat-form-field class="full-width">
                 <input type="text" matInput (keypress)="omit_special_char($event)"
                     placeholder="{{vendorDocCtrl.panCtrl.placeholder}}" formControlName="panNum" minlength="10"
-                    maxlength="10" autocomplete="off" required (blur)="toUppercase('panNum')">
+                    maxlength="10" autocomplete="off" required (blur)="updateFileWithoutValue(vendorDocCtrl.panCtrl.documentTypeId); toUppercase('panNum')">
                 <mat-error class="errortxt" *ngIf="( isSubmitted ) && vdf?.panNum?.errors?.required">PAN No. is required
                 </mat-error>
                 <mat-error class="errortxt" *ngIf="( isSubmitted ) && vdf?.panNum?.errors?.minlength">Minimum 10
@@ -123,6 +123,9 @@
             <div *ngIf="filesMap[vendorDocCtrl.panCtrl.documentTypeId] && 
             filesMap[vendorDocCtrl.panCtrl.documentTypeId]?.isError" class="errortxt">
                 Please attach the Documents
+            </div>
+            <div *ngIf="filesMap[vendorDocCtrl.panCtrl.documentTypeId]?.isAttachWithoutValue" class="errortxt">
+                PAN No. and attachment both are required.
             </div>
         </div>
 
