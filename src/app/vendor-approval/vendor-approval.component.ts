@@ -158,6 +158,10 @@ export class VendorApprovalComponent implements OnInit {
         this.vendorForm.get("panNum").enable();
         this.vendorForm.get("gstNum").enable();
         this.vendorForm.get("pfNum").enable();
+        this.vendorForm.get("isMsmedRegistered").enable();
+        this.vendorForm.get("hasTdsLower").enable();
+        this.vendorForm.get("isSez").enable();
+        this.vendorForm.get("isRcmApplicable").enable();
         this.vendorForm.get("esiNum").enable();
         this.vendorForm.get("cinNum").enable();
 
@@ -457,14 +461,27 @@ export class VendorApprovalComponent implements OnInit {
         this.isFilesValid();
         if (!this.isValid) return;
 
-        // this.isMandatoryFieldsEmpty();
-        // if (!this.isValid) return;
+        this.isMandatoryFieldsEmpty();
+        if (!this.isValid) return;
 
         if (this.isFinance) {
             let withholdTaxVal = this.vendorForm.get("withholdTax").value;
             let withholdTypeVal = this.vendorForm.get("withholdType").value;
 
-            if (!withholdTypeVal || !withholdTaxVal) {
+            if (withholdTypeVal) {
+                this.vendorForm.get("withholdTax").setValidators([Validators.required]);
+                this.vendorForm.get("withholdTax").updateValueAndValidity();
+
+            }
+            else {
+                this.vendorForm.get("withholdTax").setValidators([]);
+                this.vendorForm.get("withholdTax").updateValueAndValidity();
+            }
+
+            this.isMandatoryFieldsEmpty();
+            if (!this.isValid) return;
+
+            if (!withholdTypeVal && !withholdTaxVal) {
                 const dialogRef = this._dialog.open(ConfirmDialogComponent, {
                     disableClose: true,
                     panelClass: 'dialog-box',
@@ -477,27 +494,17 @@ export class VendorApprovalComponent implements OnInit {
 
                 dialogRef.afterClosed().subscribe(result => {
                     if (result) {
-                        if (withholdTypeVal) {
-                            this.vendorForm.get("withholdTax").setValidators([Validators.required]);
-                            this.vendorForm.get("withholdTax").updateValueAndValidity();
-                        }
-                        else{
-                            this.vendorForm.get("withholdTax").setValidators([]);
-                            this.vendorForm.get("withholdTax").updateValueAndValidity();  
-                        }
-                    }
-                    else {
-                        return;
+                        this.updateVendorApprovalDetails(action);
                     }
                 });
             }
+            else {
+                this.updateVendorApprovalDetails(action);
+            }
         }
-
-        this.isMandatoryFieldsEmpty();
-        if (!this.isValid) return;
-
-        this.updateVendorApprovalDetails(action);
-
+        else {
+            this.updateVendorApprovalDetails(action);
+        }
     }
 
     updateVendorApprovalDetails(action: string) {
@@ -771,6 +778,12 @@ export class VendorApprovalComponent implements OnInit {
             this.vendorDetails.gstNum = this.vendorForm.get("gstNum").value;
             this.vendorDetails.pfNum = this.vendorForm.get("pfNum").value;
             this.vendorDetails.esiNum = this.vendorForm.get("esiNum").value;
+
+            this.vendorDetails.panNum = this.vendorForm.get("isMsmedRegistered").value;
+            this.vendorDetails.gstNum = this.vendorForm.get("hasTdsLower").value;
+            this.vendorDetails.pfNum = this.vendorForm.get("isSez").value;
+            this.vendorDetails.esiNum = this.vendorForm.get("isRcmApplicable").value;
+
             this.vendorDetails.cinNum = this.vendorForm.get("cinNum").value;
             this.vendorDetails.lutNum = this.vendorForm.get("lutNum").value;
             this.vendorDetails.lutDate = this.vendorForm.get("lutDate").value ? this._datePipe.transform(this.vendorForm.get("lutDate").value, this._appService.dbDateFormat) : null;
