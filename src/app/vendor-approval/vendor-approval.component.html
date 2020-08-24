@@ -832,6 +832,8 @@
                                 </mat-option>
                             </mat-select>
                         </mat-form-field>
+                        <mat-error class="errortxt" *ngIf="( isSubmitted ) && f?.withholdTax?.errors?.required">
+                            WithHold Tax is required if tax type selected</mat-error>
                     </div>
                     <div class=" search-row-element" *ngIf="isProcurement">
                         <div class="actions attachments">

@@ -15,6 +15,11 @@
             </mat-form-field>
 
             <mat-form-field class="field search-row-element">
+                <mat-label>Company Code</mat-label>
+                <input type="text" matInput formControlName="coCode" autocomplete="off">
+            </mat-form-field>
+
+            <mat-form-field class="field search-row-element">
                 <mat-label>Mobile No.</mat-label>
                 <input type="text" matInput formControlName="mobileNum" autocomplete="off">
             </mat-form-field>
@@ -38,6 +43,10 @@
                     <th class="headers" scope="col">
                         <span>Vendor Name</span>
                     </th>
+
+                    <th class="headers" scope="col">
+                        <span>Company Code</span>
+                    </th>
              
                     <th class="headers" scope="col">
                         <span>Vendor EmailId</span>
@@ -57,6 +66,10 @@
                         {{ vendor.vendorName }}
                     </td>
                              
+                    <td>
+                        {{ vendor.companyCode }}
+                    </td>
+
                     <td >
                         {{ vendor.emailId }}
                     </td>

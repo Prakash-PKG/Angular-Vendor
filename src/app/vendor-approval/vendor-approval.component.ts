@@ -398,7 +398,7 @@ export class VendorApprovalComponent implements OnInit {
 
     onApproveClick() {
         this.isSubmitted = true;
-        this.msg='';
+        this.msg = '';
         this.updateVendorApprovals(this._appService.updateOperations.approve);
     }
 
@@ -457,36 +457,47 @@ export class VendorApprovalComponent implements OnInit {
         this.isFilesValid();
         if (!this.isValid) return;
 
-        this.isMandatoryFieldsEmpty();
-        if (!this.isValid) return;
+        // this.isMandatoryFieldsEmpty();
+        // if (!this.isValid) return;
 
         if (this.isFinance) {
             let withholdTaxVal = this.vendorForm.get("withholdTax").value;
             let withholdTypeVal = this.vendorForm.get("withholdType").value;
-            if (!withholdTaxVal || !withholdTaxVal) {
+
+            if (!withholdTypeVal || !withholdTaxVal) {
                 const dialogRef = this._dialog.open(ConfirmDialogComponent, {
                     disableClose: true,
                     panelClass: 'dialog-box',
                     width: '550px',
                     data: <MessageDialogModel>{
                         title: "Warning",
-                        message: "You are trying to submit without with Hold Tax and Type. Do you wish to Continue?"
+                        message: "You are trying to submit without with Hold Tax or/and Type. Do you wish to Continue?"
                     }
                 });
 
                 dialogRef.afterClosed().subscribe(result => {
                     if (result) {
-                        this.updateVendorApprovalDetails(action);
+                        if (withholdTypeVal) {
+                            this.vendorForm.get("withholdTax").setValidators([Validators.required]);
+                            this.vendorForm.get("withholdTax").updateValueAndValidity();
+                        }
+                        else{
+                            this.vendorForm.get("withholdTax").setValidators([]);
+                            this.vendorForm.get("withholdTax").updateValueAndValidity();  
+                        }
+                    }
+                    else {
+                        return;
                     }
                 });
             }
-            else {
-                this.updateVendorApprovalDetails(action);
-            }
         }
-        else {
-            this.updateVendorApprovalDetails(action);
-        }
+
+        this.isMandatoryFieldsEmpty();
+        if (!this.isValid) return;
+
+        this.updateVendorApprovalDetails(action);
+
     }
 
     updateVendorApprovalDetails(action: string) {
@@ -718,19 +729,6 @@ export class VendorApprovalComponent implements OnInit {
                 this.regionMasterVOList = this.vendorApprovalInitDetails.regionMasterVOList.filter(r => r.countryCode == cntryCode);
             }
         }
-
-
-        // this.selectedCompanyCode = this.vendorApprovalInitDetails.vendorMasterDetails &&
-        //     this.vendorApprovalInitDetails.vendorMasterDetails.companyCode ?
-        //     this.vendorApprovalInitDetails.vendorMasterDetails.companyCode : undefined;
-
-        // this.selectedCurrency = this.vendorApprovalInitDetails.vendorMasterDetails &&
-        //     this.vendorApprovalInitDetails.vendorMasterDetails.currencyCode ?
-        //     this.vendorApprovalInitDetails.vendorMasterDetails.currencyCode : undefined;
-
-        // this.selectedVendorGroup = this.vendorApprovalInitDetails.vendorMasterDetails &&
-        //     this.vendorApprovalInitDetails.vendorMasterDetails.groupCode ?
-        //     this.vendorApprovalInitDetails.vendorMasterDetails.groupCode : undefined;
     }
 
     onHoldTypeSelected(holdType) {
@@ -739,7 +737,7 @@ export class VendorApprovalComponent implements OnInit {
             this.vendorApprovalInitDetails.withholdTaxVOList.length > 0) {
             this.withholdTaxList = this.vendorApprovalInitDetails.withholdTaxVOList.filter(e => e.withholdTypeCode == holdType.value);
         }
-        console.log(this.withholdTaxList);
+
     }
 
     ngOnDestroy() {
