@@ -285,7 +285,7 @@ export class AppService {
         vendorApprovalFailure: "Vendor approval/receiving is failed",
         vendorSendBackSuccess: "Vendor Details are send back for correction",
         vendorSendBackFailure: "Vendor details sent back for correction failed",
-        vendorRegistrationFormInvalid: "Your Form Contains Error. Please Check",
+        vendorRegistrationFormInvalid: "Form Contains Error. Please Check",
         paymentStatusUpdateFailureMsg: "Payment Status update is failed."
     };
 

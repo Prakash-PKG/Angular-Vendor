@@ -442,7 +442,7 @@ export class VendorApprovalComponent implements OnInit {
         this.isValid = true;
         for (let key in this.filesMap) {
             if (this.filesMap[key].isError || this.filesMap[key].isAttachWithoutValue) {
-                this.msg = "Your form contains error.Please check.";
+                this.msg = "Form contains error.Please check.";
                 this.isValid = false;
                 break;
             }
@@ -451,7 +451,7 @@ export class VendorApprovalComponent implements OnInit {
 
     isMandatoryFieldsEmpty() {
         if (!this.vendorForm.valid) {
-            this.msg = "Your form contains error.Please check.";
+            this.msg = "Form contains error.Please check.";
             this.isValid = false;
         }
     }

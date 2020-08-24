@@ -70,10 +70,10 @@ export class VendorDetailsComponent implements OnInit {
                         }
                     }
                 },
-                (error) => {
-                    this._vendorRegistrationService.updateBusy(<BusyDataModel>{ isBusy: false, msg: null });
-                    console.log(error);
-                });
+                    (error) => {
+                        this._vendorRegistrationService.updateBusy(<BusyDataModel>{ isBusy: false, msg: null });
+                        console.log(error);
+                    });
         }
         else {
             this.failureMsg = this._appService.messages.vendorRegistrationFormInvalid;
@@ -81,7 +81,7 @@ export class VendorDetailsComponent implements OnInit {
     }
 
     updateVendorDetails() {
-        
+
         this.vendorDetailsForm.get("vendorName").setValue(this._appService.vendorRegistrationDetails.vendorName);
         this.vendorDetailsForm.get("contactPerson").setValue(this._appService.vendorRegistrationDetails.contactPerson);
         this.vendorDetailsForm.get("mobileNum").setValue(this._appService.vendorRegistrationDetails.mobileNum);
@@ -104,11 +104,11 @@ export class VendorDetailsComponent implements OnInit {
         this.vendorDetailsForm = this._formBuilder.group({
             vendorName: [null, [Validators.required, Validators.nullValidator]],
             contactPerson: [null],
-            mobileNum: [null, [Validators.required,Validators.minLength(10), Validators.maxLength(10),Validators.nullValidator]],
-            telephoneNum: [null,[ Validators.maxLength(12),Validators.minLength(11)]],
-            emailId: [null, [Validators.required, Validators.email,Validators.nullValidator]],
-            password: [null, [Validators.required,Validators.nullValidator]],
-            confirmPassword: [null, [Validators.required,Validators.nullValidator]]
+            mobileNum: [null, [Validators.required, Validators.minLength(10), Validators.maxLength(10), Validators.nullValidator]],
+            telephoneNum: [null, [Validators.maxLength(12), Validators.minLength(11)]],
+            emailId: [null, [Validators.required, Validators.email, Validators.nullValidator]],
+            password: [null, [Validators.required, Validators.nullValidator,Validators.pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/)]],
+            confirmPassword: [null, [Validators.required, Validators.nullValidator]]
         },
             { validator: equalValueValidator('password', 'confirmPassword') }
         );
