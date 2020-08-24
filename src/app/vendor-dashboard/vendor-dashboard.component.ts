@@ -116,7 +116,8 @@ export class VendorDashboardComponent implements OnInit {
         this.vendorSearchForm = this._formBuilder.group({
             vendorId: null,
             vendorName: null,
-            mobileNum: null
+            mobileNum: null,
+            coCode:null
         });
 
         this.vendorSearchForm.get("vendorId").valueChanges.subscribe(val => {

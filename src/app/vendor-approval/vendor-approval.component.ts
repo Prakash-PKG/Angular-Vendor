@@ -571,7 +571,7 @@ export class VendorApprovalComponent implements OnInit {
         if (this._appService.isExistingVendor) {
             this.vendorDetails = this._appService.selectedVendor;
             this.canApprove = false;
-            this.isEditable = true;
+            this.isEditable = false;
         }
 
         else if (this._appService.selectedPendingApprovalRecord) {

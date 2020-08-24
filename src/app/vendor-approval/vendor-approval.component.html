@@ -539,7 +539,7 @@
                                     <input style="display: none" [attr.id]="vendorDocCtrl.esiCtrl.browserId" type="file"
                                         multiple accept=".xls,.xlsx,.doc,.docx,.pdf,.png,.jpg,.zip"
                                         (change)="onFileChange($event, vendorDocCtrl.esiCtrl.documentTypeId)" />
-                                    <button mat-button mat-icon-button aria-label="Attach" class="attach-btn" [disabled]="this.vendorForm.get('esiNum').value"
+                                    <button mat-button mat-icon-button aria-label="Attach" class="attach-btn" [disabled]="!vendorForm.get('esiNum').value"
                                         (click)="onBrowseFileClick($event, vendorDocCtrl.esiCtrl.browserId)">
                                         <mat-icon>attachment</mat-icon>
                                     </button>
