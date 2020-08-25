@@ -434,8 +434,8 @@ export class VendorDocumentsComponent implements OnInit {
 
         this.vendorDocumentForm = this._formBuilder.group({
 
-            panNum: [null, [Validators.required, Validators.minLength(10), Validators.maxLength(10),Validators.pattern(/^[a-zA-Z0-9_]*$/)]],
-            gstNum: [null, [Validators.minLength(15), Validators.maxLength(15),Validators.pattern(/^[a-zA-Z0-9_]*$/)]],
+            panNum: [null, [Validators.required, Validators.minLength(10), Validators.maxLength(10),Validators.pattern(/^[a-zA-Z0-9]*([a-zA-Z]+[0-9]+|[0-9]+[a-zA-Z]+)[a-zA-Z0-9]*$/)]],
+            gstNum: [null, [Validators.minLength(15), Validators.maxLength(15),Validators.pattern(/^[a-zA-Z0-9]*([a-zA-Z]+[0-9]+|[0-9]+[a-zA-Z]+)[a-zA-Z0-9]*$/)]],
             pfNum: [null],
             esiNum: [null],
             cinNum: [null],

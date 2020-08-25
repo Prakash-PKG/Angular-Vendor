@@ -59,13 +59,13 @@
 
         <div class="col-6 form-group">
             <mat-form-field class="full-width">
-                <mat-select formControlName="stateCode" placeholder="State" required>
+                <mat-select formControlName="stateCode" placeholder="Region" required>
                     <mat-option *ngFor="let region of regionMasterVOList" [value]="region.regionCode">
                         {{ region.regionDesc }}
                     </mat-option>
                 </mat-select>
             </mat-form-field>
-            <mat-error class="errortxt" *ngIf="( isSubmitted ) && f?.stateCode?.errors?.required">State is required</mat-error>
+            <mat-error class="errortxt" *ngIf="( isSubmitted ) && f?.stateCode?.errors?.required">Region is required</mat-error>
         </div>
     </div>
 </form>
