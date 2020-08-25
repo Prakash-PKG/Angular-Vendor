@@ -889,7 +889,7 @@
             </div>
             <button mat-raised-button class="footer-actions" (click)="onBackClick()">Back</button>
             <button mat-raised-button class="footer-actions" [disabled]="isEditable" (click)="onEditClick()"
-                *ngIf="isProcurement">Edit</button>
+                *ngIf="isProcurement || canEdit">Edit</button>
             <!-- <button mat-raised-button class="footer-actions" (click)="onSendForCorrClick()">Send For Correction</button> -->
 
             <button mat-raised-button class="footer-actions" (click)="onRejectClick()"

@@ -66,6 +66,7 @@ export class VendorApprovalComponent implements OnInit {
 
     isFinance: boolean = false;
     isProcurement: boolean = false;
+    canEdit: boolean = false;
 
     msg: string = "";
 
@@ -579,6 +580,7 @@ export class VendorApprovalComponent implements OnInit {
             this.vendorDetails = this._appService.selectedVendor;
             this.canApprove = false;
             this.isEditable = false;
+            this.canEdit = true;
         }
 
         else if (this._appService.selectedPendingApprovalRecord) {
@@ -805,11 +807,14 @@ export class VendorApprovalComponent implements OnInit {
         if (globalConstant.userDetails.isFinance) {
             this.isFinance = true;
             this.canApprove = true;
+            this.canEdit = false;
+
         }
 
         if (globalConstant.userDetails.isProcurement) {
             this.isProcurement = true;
             this.canApprove = true;
+            this.canEdit = true;
         }
 
         this.vendorForm = this._formBuilder.group({
