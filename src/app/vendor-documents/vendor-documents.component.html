@@ -48,6 +48,8 @@
                 <mat-error class="errortxt" *ngIf="( isSubmitted ) && vdf?.gstNum?.errors?.minlength">Minimum 15
                     characters are required
                 </mat-error>
+                <mat-error class="errortxt" *ngIf="( isSubmitted ) && vdf?.gstNum?.errors?.pattern">GST No. accepts
+                    combination of alphanumeric</mat-error>
             </mat-form-field>
 
         </div>
@@ -91,12 +93,15 @@
             <mat-form-field class="full-width">
                 <input type="text" matInput (keypress)="omit_special_char($event)"
                     placeholder="{{vendorDocCtrl.panCtrl.placeholder}}" formControlName="panNum" minlength="10"
-                    maxlength="10" autocomplete="off" required (blur)="updateFileWithoutValue(vendorDocCtrl.panCtrl.documentTypeId); toUppercase('panNum')">
+                    maxlength="10" autocomplete="off" required
+                    (blur)="updateFileWithoutValue(vendorDocCtrl.panCtrl.documentTypeId); toUppercase('panNum')">
                 <mat-error class="errortxt" *ngIf="( isSubmitted ) && vdf?.panNum?.errors?.required">PAN No. is required
                 </mat-error>
                 <mat-error class="errortxt" *ngIf="( isSubmitted ) && vdf?.panNum?.errors?.minlength">Minimum 10
                     characters are required
                 </mat-error>
+                <mat-error class="errortxt" *ngIf="( isSubmitted ) && vdf?.panNum?.errors?.pattern">PAN No. accepts
+                    combination of alphanumeric</mat-error>
             </mat-form-field>
 
         </div>
@@ -205,7 +210,7 @@
             filesMap[vendorDocCtrl.lutNoCtrl.documentTypeId]?.isError" class="errortxt">
                 Please attach the Document(s)
             </div>
-            <div  *ngIf="filesMap[vendorDocCtrl.lutNoCtrl.documentTypeId]?.isAttachWithoutValue" class="errortxt">
+            <div *ngIf="filesMap[vendorDocCtrl.lutNoCtrl.documentTypeId]?.isAttachWithoutValue" class="errortxt">
                 LUT no. is missing for this attached document
             </div>
         </div>
@@ -325,8 +330,7 @@
             filesMap[vendorDocCtrl.msmeCtrl.documentTypeId]?.isError" class="errortxt">
                 Please attach the Document(s)
             </div>
-            <div *ngIf="filesMap[vendorDocCtrl.msmeCtrl.documentTypeId]?.isAttachWithoutValue"
-                class="errortxt">
+            <div *ngIf="filesMap[vendorDocCtrl.msmeCtrl.documentTypeId]?.isAttachWithoutValue" class="errortxt">
                 MSME is not selected for this attached document
             </div>
         </div>
@@ -472,8 +476,7 @@
                 filesMap[vendorDocCtrl.otherCtrl.documentTypeId]?.isError" class="errortxt">
                 Please attach the Document(s)
             </div>
-            <div *ngIf="filesMap[vendorDocCtrl.otherCtrl.documentTypeId]?.isAttachWithoutValue"
-                class="errortxt">
+            <div *ngIf="filesMap[vendorDocCtrl.otherCtrl.documentTypeId]?.isAttachWithoutValue" class="errortxt">
                 Other details are missing for this attached document
             </div>
         </div>
