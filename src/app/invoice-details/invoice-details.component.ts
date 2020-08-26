@@ -1,9 +1,10 @@
+import { InvoiceSearchService } from './../invoice-search/invoice-search.service';
 import { MessageDialogModel } from './../models/popup-models';
 import { MessageDialogComponent } from './../message-dialog/message-dialog.component';
 import { globalConstant } from './../common/global-constant';
 import { InvoiceModel, BusyDataModel, InvoiceDetailsRequestModel, InvoiceDetailsResultModel, 
     ItemDisplayModel, FileDetailsModel, InvoiceApprovalModel, ApprovalLevelsModel, paymentStatusModel, 
-    PaymentStatusDetailsModel, PaymentReqModel, StatusModel, PaymentDetailsModel } from './../models/data-models';
+    PaymentStatusDetailsModel, PaymentReqModel, StatusModel, PaymentDetailsModel, VoucherReqModel } from './../models/data-models';
 import { AppService } from './../app.service';
 import { InvoiceDetailsService } from './invoice-details.service';
 import { Component, OnInit } from '@angular/core';
@@ -69,12 +70,44 @@ export class InvoiceDetailsComponent implements OnInit {
 
     isSesSubContractPO: boolean = false;
 
+    isPrintVoucherVisible: boolean = false;
+
     constructor(private _homeService: HomeService,
                 private _router: Router,
                 public _dialog: MatDialog,
                 private _invoiceDetailsService: InvoiceDetailsService,
+                private _invoiceSearchService: InvoiceSearchService,
                 private _appService: AppService) { }
 
+    onPrintVoucherClick() {
+        let req: VoucherReqModel = {
+            invoiceId: this.invoiceDetails.invoiceId
+        };
+
+        let fileName: string = this.invoiceDetails.invoiceNumber + ".pdf";
+        this.downloadVoucher(req, fileName);
+    }
+
+    downloadVoucher(req: VoucherReqModel, fileName: string) {
+        this._homeService.updateBusy(<BusyDataModel>{ isBusy: true, msg: "Loading..." });
+        this._invoiceSearchService.getVoucherData(req).subscribe(
+            (data) => {
+                this._homeService.updateBusy(<BusyDataModel>{ isBusy: false, msg: null });
+                const blob = new Blob([data.body], { type: 'application/pdf' });
+                const url = window.URL.createObjectURL(blob);
+
+                const iframe = document.createElement('iframe');
+                iframe.style.display = 'none';
+                iframe.src = url;
+                document.body.appendChild(iframe);
+                iframe.contentWindow.print();
+            },
+            error => {
+                console.log(error);
+                this._homeService.updateBusy(<BusyDataModel>{ isBusy: false, msg: null });
+            });
+    }
+    
     getPOProjectName() {
         let projectName: string = "";
         if(this.invoiceDetails && this.invoiceDetails.projectName && this.invoiceDetails.projectId) {
@@ -284,7 +317,14 @@ export class InvoiceDetailsComponent implements OnInit {
         this.fhLevel = null;
         this.financeLevel = null;
 
+        this.isPrintVoucherVisible = false;
+
         if(this.invoiceDetails && this.invoiceDetails.invoiceId) {
+
+            if(this.invoiceDetails.statusCode == 'approved-finance' && globalConstant.userDetails.isFinance) {
+                this.isPrintVoucherVisible = true;
+            }
+
             this.isSesSubContractPO = this.invoiceDetails.documentType == 'ZHR' ? true : false;
 
             this.currency = this.invoiceDetails.currencyType;

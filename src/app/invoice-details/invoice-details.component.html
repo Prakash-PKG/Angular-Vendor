@@ -1,6 +1,9 @@
 <div class="main">
     <div class="title">
         <h3>Invoice Details</h3>
+        <div *ngIf = "isPrintVoucherVisible == true">
+            <button mat-raised-button class="clsPrintVoucher" (click) = "onPrintVoucherClick()">Print Voucher</button>
+        </div>
     </div>
     <!-- -----------------------------------stepper---------------------------------------------- -->
     <ul class="stepper">

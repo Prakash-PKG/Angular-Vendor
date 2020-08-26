@@ -80,10 +80,14 @@ export class VendorDashboardComponent implements OnInit {
         let mobileNumVal = this.vendorSearchForm.get("mobileNum").value;
         let lcmobileNumVal = (mobileNumVal) ? mobileNumVal.toLowerCase() : "";
 
+        let coCodeVal = this.vendorSearchForm.get("coCode").value;
+        let lcCoCodeVal = (coCodeVal) ? coCodeVal.toLowerCase() : "";
+
         this.vendorList = this.totalVendorList.filter(function (req) {
             if ((req.vendorId && req.vendorId.toString().toLowerCase().indexOf(lcvendorIdVal) > -1) &&
                 (req.vendorName && req.vendorName.toString().toLowerCase().indexOf(lcvendorNameVal) > -1) &&
-                (req.mobileNum && req.mobileNum.toString().toLowerCase().indexOf(lcmobileNumVal) > -1)) {
+                (req.mobileNum && req.mobileNum.toString().toLowerCase().indexOf(lcmobileNumVal) > -1) &&
+                (req.companyCode && req.companyCode.toString().toLowerCase().indexOf(lcCoCodeVal) > -1)) {
                 return true;
             }
         });
@@ -112,10 +116,15 @@ export class VendorDashboardComponent implements OnInit {
         this.vendorSearchForm = this._formBuilder.group({
             vendorId: null,
             vendorName: null,
-            mobileNum: null
+            mobileNum: null,
+            coCode:null
         });
 
         this.vendorSearchForm.get("vendorId").valueChanges.subscribe(val => {
+            this.onSearchChange();
+        });
+
+        this.vendorSearchForm.get("coCode").valueChanges.subscribe(val => {
             this.onSearchChange();
         });
 

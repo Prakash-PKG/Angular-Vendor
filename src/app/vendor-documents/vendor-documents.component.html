@@ -32,7 +32,7 @@
             </div>
             <!--<div *ngIf="filesMap[vendorDocCtrl.incCerCtrl.documentTypeId] && 
             filesMap[vendorDocCtrl.incCerCtrl.documentTypeId]?.isError" class="errortxt">
-                Please attach the Documents
+                Please attach the Document(s)
             </div>-->
         </div>
 
@@ -48,6 +48,8 @@
                 <mat-error class="errortxt" *ngIf="( isSubmitted ) && vdf?.gstNum?.errors?.minlength">Minimum 15
                     characters are required
                 </mat-error>
+                <mat-error class="errortxt" *ngIf="( isSubmitted ) && vdf?.gstNum?.errors?.pattern">GST No. accepts
+                    combination of alphanumeric</mat-error>
             </mat-form-field>
 
         </div>
@@ -77,10 +79,10 @@
             </div>
             <div *ngIf="filesMap[vendorDocCtrl.gstCtrl.documentTypeId] && 
             filesMap[vendorDocCtrl.gstCtrl.documentTypeId]?.isError" class="errortxt">
-                Please attach the Documents
+                Please attach the Document(s)
             </div>
             <div *ngIf="filesMap[vendorDocCtrl.gstCtrl.documentTypeId]?.isAttachWithoutValue" class="errortxt">
-                Fill GST No. or delete the attachment.
+                GST no. is missing for this attached document
             </div>
         </div>
 
@@ -91,12 +93,15 @@
             <mat-form-field class="full-width">
                 <input type="text" matInput (keypress)="omit_special_char($event)"
                     placeholder="{{vendorDocCtrl.panCtrl.placeholder}}" formControlName="panNum" minlength="10"
-                    maxlength="10" autocomplete="off" required (blur)="toUppercase('panNum')">
+                    maxlength="10" autocomplete="off" required
+                    (blur)="updateFileWithoutValue(vendorDocCtrl.panCtrl.documentTypeId); toUppercase('panNum')">
                 <mat-error class="errortxt" *ngIf="( isSubmitted ) && vdf?.panNum?.errors?.required">PAN No. is required
                 </mat-error>
                 <mat-error class="errortxt" *ngIf="( isSubmitted ) && vdf?.panNum?.errors?.minlength">Minimum 10
                     characters are required
                 </mat-error>
+                <mat-error class="errortxt" *ngIf="( isSubmitted ) && vdf?.panNum?.errors?.pattern">PAN No. accepts
+                    combination of alphanumeric</mat-error>
             </mat-form-field>
 
         </div>
@@ -122,7 +127,10 @@
             </div>
             <div *ngIf="filesMap[vendorDocCtrl.panCtrl.documentTypeId] && 
             filesMap[vendorDocCtrl.panCtrl.documentTypeId]?.isError" class="errortxt">
-                Please attach the Documents
+                Please attach the Document(s)
+            </div>
+            <div *ngIf="filesMap[vendorDocCtrl.panCtrl.documentTypeId]?.isAttachWithoutValue" class="errortxt">
+                PAN no. is missing for this attached document
             </div>
         </div>
 
@@ -154,7 +162,7 @@
             </div>
             <div *ngIf="filesMap[vendorDocCtrl.canChqCtrl.documentTypeId] && 
             filesMap[vendorDocCtrl.canChqCtrl.documentTypeId]?.isError" class="errortxt">
-                Please attach the Documents
+                Please attach the Document
             </div>
         </div>
 
@@ -200,10 +208,10 @@
             </div>
             <div *ngIf="filesMap[vendorDocCtrl.lutNoCtrl.documentTypeId] && 
             filesMap[vendorDocCtrl.lutNoCtrl.documentTypeId]?.isError" class="errortxt">
-                Please attach the Documents
+                Please attach the Document(s)
             </div>
-            <div  *ngIf="filesMap[vendorDocCtrl.lutNoCtrl.documentTypeId]?.isAttachWithoutValue" class="errortxt">
-                Fill Lut No. or delete the attachment.
+            <div *ngIf="filesMap[vendorDocCtrl.lutNoCtrl.documentTypeId]?.isAttachWithoutValue" class="errortxt">
+                LUT no. is missing for this attached document
             </div>
         </div>
 
@@ -240,10 +248,10 @@
             </div>
             <div *ngIf="filesMap[vendorDocCtrl.pfCtrl.documentTypeId] && 
             filesMap[vendorDocCtrl.pfCtrl.documentTypeId]?.isError" class="errortxt">
-                Please attach the Documents
+                Please attach the Document(s)
             </div>
             <div *ngIf="filesMap[vendorDocCtrl.pfCtrl.documentTypeId]?.isAttachWithoutValue" class="errortxt">
-                Fill PF Details or delete the attachment.
+                PF Details is missing for this attached document
             </div>
         </div>
 
@@ -278,10 +286,10 @@
             </div>
             <div *ngIf="filesMap[vendorDocCtrl.esiCtrl.documentTypeId] && 
             filesMap[vendorDocCtrl.esiCtrl.documentTypeId]?.isError" class="errortxt">
-                Please attach the Documents
+                Please attach the Document(s)
             </div>
             <div *ngIf="filesMap[vendorDocCtrl.esiCtrl.documentTypeId]?.isAttachWithoutValue" class="errortxt">
-                Fill ESI No. or delete the attachment.
+                ESI no. is missing for this attached document
             </div>
         </div>
 
@@ -320,11 +328,10 @@
             </div>
             <div *ngIf="filesMap[vendorDocCtrl.msmeCtrl.documentTypeId] && 
             filesMap[vendorDocCtrl.msmeCtrl.documentTypeId]?.isError" class="errortxt">
-                Please attach the Documents
+                Please attach the Document(s)
             </div>
-            <div *ngIf="filesMap[vendorDocCtrl.msmeCtrl.documentTypeId]?.isAttachWithoutValue"
-                class="errortxt">
-                Select MSME or delete the attachment.
+            <div *ngIf="filesMap[vendorDocCtrl.msmeCtrl.documentTypeId]?.isAttachWithoutValue" class="errortxt">
+                MSME is not selected for this attached document
             </div>
         </div>
 
@@ -363,10 +370,10 @@
             </div>
             <div *ngIf="filesMap[vendorDocCtrl.tdsCtrl.documentTypeId] && 
             filesMap[vendorDocCtrl.tdsCtrl.documentTypeId]?.isError" class="errortxt">
-                Please attach the Documents
+                Please attach the Document(s)
             </div>
             <div *ngIf="filesMap[vendorDocCtrl.tdsCtrl.documentTypeId]?.isAttachWithoutValue" class="errortxt">
-                Select TDS Details or delete the attachment.
+                TDS is not selected for this attached document
             </div>
         </div>
 
@@ -405,10 +412,10 @@
             </div>
             <div *ngIf="filesMap[vendorDocCtrl.sezCtrl.documentTypeId] && filesMap[vendorDocCtrl.sezCtrl.documentTypeId]?.isError"
                 class="errortxt">
-                Please attach the Documents
+                Please attach the Document(s)
             </div>
             <div *ngIf="filesMap[vendorDocCtrl.sezCtrl.documentTypeId]?.isAttachWithoutValue" class="errortxt">
-                Select Sez or delete the attachment.
+                SEZ is not selected for this attached document
             </div>
         </div>
 
@@ -467,11 +474,10 @@
             </div>
             <div *ngIf="filesMap[vendorDocCtrl.otherCtrl.documentTypeId] && 
                 filesMap[vendorDocCtrl.otherCtrl.documentTypeId]?.isError" class="errortxt">
-                Please attach the Documents
+                Please attach the Document(s)
             </div>
-            <div *ngIf="filesMap[vendorDocCtrl.otherCtrl.documentTypeId]?.isAttachWithoutValue"
-                class="errortxt">
-                Fill Other Details or delete the attachment.
+            <div *ngIf="filesMap[vendorDocCtrl.otherCtrl.documentTypeId]?.isAttachWithoutValue" class="errortxt">
+                Other details are missing for this attached document
             </div>
         </div>
     </div>
@@ -479,7 +485,9 @@
 </form>
 
 <div class="row actions margin-unset" style="margin-top: 2em;">
-    <div class="errortxt" *ngIf="vendorDocumentForm.invalid || isServerError || !isValid">
+
+    <!-- || !isValid vendorDocumentForm.invalid ||  -->
+    <div class="errortxt" *ngIf="isServerError ">
         {{ failureMsg }}
     </div>
 

@@ -149,9 +149,17 @@ export class SidebarComponent implements OnInit {
             this.isInvoiceCreateVisible = true;
         }
 
-        this.isApprovalsVisible = true;
-        if (globalConstant.userDetails.isVendor || globalConstant.userDetails.isEmpanelment || globalConstant.userDetails.isInvoiceUploader) {
-            this.isApprovalsVisible = false;
+        // this.isApprovalsVisible = true;
+        // if (globalConstant.userDetails.isVendor || globalConstant.userDetails.isEmpanelment || globalConstant.userDetails.isInvoiceUploader) {
+        //     this.isApprovalsVisible = false;
+        // }
+
+        
+        this.isApprovalsVisible = false;
+        if (globalConstant.userDetails.isSubContractReceiver || globalConstant.userDetails.isPurchaseOwner 
+            || globalConstant.userDetails.isFunctionalHead || globalConstant.userDetails.isProcurement 
+            || globalConstant.userDetails.isFinance ) {
+            this.isApprovalsVisible = true;
         }
 
         this.isPOInvoiceDumpVisible = false;

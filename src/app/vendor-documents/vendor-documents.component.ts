@@ -47,11 +47,11 @@ export class VendorDocumentsComponent implements OnInit {
         pfCtrl: { documentTypeId: 4, browserId: 'pfFileCtrl', placeholder: 'PF No.', controlName: 'pfNum' },
         esiCtrl: { documentTypeId: 5, browserId: 'esiFileCtrl', placeholder: 'ESI No.', controlName: 'esiNum' },
         canChqCtrl: { documentTypeId: 6, browserId: 'canChqFileCtrl', placeholder: 'Cancelled Cheque', controlName: '' },
-        msmeCtrl: { documentTypeId: 7, browserId: 'msmeFileCtrl', placeholder: 'Is MSME Certificate applicable?', controlName: '' },
+        msmeCtrl: { documentTypeId: 7, browserId: 'msmeFileCtrl', placeholder: 'Is MSME Certificate applicable?', controlName: 'isMsmedRegistered' },
         tdsCtrl: { documentTypeId: 8, browserId: 'tdsFileCtrl', placeholder: 'Has TDS lower deduction certificate?', controlName: 'hasTdsLower' },
         sezCtrl: { documentTypeId: 9, browserId: 'sezFileCtrl', placeholder: 'SEZ / Non-SEZ', controlName: 'isSez' },
         lutNoCtrl: { documentTypeId: 10, browserId: 'lutNoFileCtrl', placeholder: 'LUT No.', controlName: 'lutNum' },
-        msmeSelfCtrl: { documentTypeId: 11, browserId: 'msmeSelfFileCtrl', placeholder: 'MSME Self Attested Certificate?', controlName: 'isMsmedRegistered' },
+        msmeSelfCtrl: { documentTypeId: 11, browserId: 'msmeSelfFileCtrl', placeholder: 'MSME Self Attested Certificate?', controlName: '' },
         otherCtrl: { documentTypeId: 13, browserId: 'otherFileCtrl', placeholder: 'Document Description', controlName: 'otherDocDesc' }
     }
 
@@ -77,7 +77,7 @@ export class VendorDocumentsComponent implements OnInit {
         }
         else {
             this.filesMap[documentTypeId].toAttach = [];
-            this.filesMap[documentTypeId].isMandatory = true;
+            // this.filesMap[documentTypeId].isMandatory = true;
             this.filesMap[documentTypeId].isAttached = false;
             this.filesMap[documentTypeId].isError = false;
             this.filesMap[documentTypeId].isAttachWithoutValue = false;
@@ -377,12 +377,15 @@ export class VendorDocumentsComponent implements OnInit {
                 if (this.vendorDocCtrl[key]) {
                     if (this.vendorDocCtrl[key].controlName != '') {
                         let controlVal = this.vendorDocumentForm.get(this.vendorDocCtrl[key].controlName).value;
-                        if (controlVal && this.filesMap[key].filesList.length == 0) {
-                            this.filesMap[key].isError = true;
+                        if (controlVal) {
+                            this.filesMap[key].isError = this.filesMap[key].filesList.length ? false : true;
+                            this.filesMap[key].isAttachWithoutValue = false;
                         }
-                        else if (!controlVal && this.filesMap[key].filesList.length) {
-                            this.filesMap[key].isAttachWithoutValue = true;
+                        else {
+                            this.filesMap[key].isError = false;
+                            this.filesMap[key].isAttachWithoutValue = this.filesMap[key].filesList.length ? true : false;
                         }
+
                     }
                 }
             }
@@ -391,26 +394,21 @@ export class VendorDocumentsComponent implements OnInit {
     }
 
     updateMandatory(selfId: string, documentTypeId: number) {
-        if (!this.vendorDocumentForm.get(selfId).value) {
-            if (this.filesMap[documentTypeId].filesList.length < 0) {
-                this.vendorDocumentForm.get(selfId).setValidators([]);
-                this.vendorDocumentForm.get(selfId).updateValueAndValidity();
-                this.filesMap[documentTypeId] = { filesList: [], isMandatory: false, isAttached: false, isError: false, toAttach: [], isAttachWithoutValue: false };
-                return;
-            }
+
+        if (this.vendorDocumentForm.get(selfId).value) {
+            this.filesMap[documentTypeId].isMandatory = true;
+            this.filesMap[documentTypeId].isError = this.filesMap[documentTypeId].filesList.length ? false : true;
+            this.filesMap[documentTypeId].isAttachWithoutValue = false;
         }
 
-        this.vendorDocumentForm.get(selfId).enable();
-        this.vendorDocumentForm.get(selfId).setValidators([Validators.required]);
-        if (selfId == 'gstNum') {
-            this.vendorDocumentForm.get(selfId).setValidators([Validators.minLength(15)]);
+        else {
+            this.filesMap[documentTypeId].isMandatory = false;
+            this.filesMap[documentTypeId].isAttachWithoutValue = this.filesMap[documentTypeId].filesList.length ? true : false;
+            this.filesMap[documentTypeId].isAttached = this.filesMap[documentTypeId].filesList.length > 0 ? true : false;
+            this.filesMap[documentTypeId].isError = false;
         }
-        this.vendorDocumentForm.get(selfId).updateValueAndValidity();
-        this.filesMap[documentTypeId].isMandatory = true;
 
-        this.filesMap[documentTypeId].isError = (this.vendorDocumentForm.get(selfId).value && this.filesMap[documentTypeId].filesList.length <= 0) ? true : false;
-
-        this.updateFileWithoutValue(documentTypeId);
+        // this.updateFileWithoutValue(documentTypeId);
     }
 
 
@@ -421,13 +419,10 @@ export class VendorDocumentsComponent implements OnInit {
         });
 
         let ctrlName = this.vendorDocCtrl[ctrl].controlName;
-        let controlVal = this.vendorDocumentForm.get(ctrlName).value;
-
-        if (this.filesMap[documentTypeId].filesList.length) {
-            this.filesMap[documentTypeId].isAttachWithoutValue = controlVal ? false : true;
-        }
-        else {
-            this.filesMap[documentTypeId].isAttachWithoutValue = false;
+        if (ctrlName != '') {
+            let controlVal = this.vendorDocumentForm.get(ctrlName).value;
+            this.filesMap[documentTypeId].isAttachWithoutValue = (!controlVal && this.filesMap[documentTypeId].filesList.length) ? true : false;
+            this.filesMap[documentTypeId].isError = (controlVal && !this.filesMap[documentTypeId].filesList.length) ? true : false;
         }
 
     }
@@ -439,8 +434,8 @@ export class VendorDocumentsComponent implements OnInit {
 
         this.vendorDocumentForm = this._formBuilder.group({
 
-            panNum: [null, [Validators.required, Validators.minLength(10), Validators.maxLength(10)]],
-            gstNum: [null, [Validators.minLength(15), Validators.maxLength(15)]],
+            panNum: [null, [Validators.required, Validators.minLength(10), Validators.maxLength(10),Validators.pattern(/^[a-zA-Z0-9]*([a-zA-Z]+[0-9]+|[0-9]+[a-zA-Z]+)[a-zA-Z0-9]*$/)]],
+            gstNum: [null, [Validators.minLength(15), Validators.maxLength(15),Validators.pattern(/^[a-zA-Z0-9]*([a-zA-Z]+[0-9]+|[0-9]+[a-zA-Z]+)[a-zA-Z0-9]*$/)]],
             pfNum: [null],
             esiNum: [null],
             cinNum: [null],

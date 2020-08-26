@@ -1,4 +1,4 @@
-import { InvoiceSearchResultModel, InvoiceSearchRequestModel } from './../models/data-models';
+import { InvoiceSearchResultModel, InvoiceSearchRequestModel, VoucherReqModel } from './../models/data-models';
 import { Injectable } from '@angular/core';
 import { AppService } from './../app.service';
 import { HttpClient } from '@angular/common/http';
@@ -34,6 +34,11 @@ export class InvoiceSearchService {
 
     getFileData(req: InvoiceSearchRequestModel) {
         let url = this._appService.baseUrl + 'invoiceDump';
+        return this._http.post(url, req, {responseType: 'arraybuffer', observe: 'response'});
+    }
+
+    getVoucherData(req: VoucherReqModel) {
+        let url = this._appService.baseUrl + 'downloadInvVoucher';
         return this._http.post(url, req, {responseType: 'arraybuffer', observe: 'response'});
     }
 }

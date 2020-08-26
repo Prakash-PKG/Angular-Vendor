@@ -66,8 +66,14 @@ export class PendingApprovalsComponent implements OnInit {
             employeeId: null,
             approvalLevels: [],
             departments: [],
-            projectIds: []
+            projectIds: [],
+            isSubContractReceiver: false
         };
+
+        if(globalConstant.userDetails.isSubContractReceiver) {
+            req.isSubContractReceiver = true;
+            req.departments = req.departments.concat(globalConstant.userDetails.poDepts);
+        }
 
         if(globalConstant.userDetails.isPurchaseOwner) {
             req.approvalLevels.push(this._appService.approvalLevels.po);

@@ -1,7 +1,7 @@
 import { InvoiceSearchService } from './invoice-search.service';
 import {
     InvoiceSearchRequestModel, BusyDataModel,
-    InvoiceSearchResultModel, InvoiceModel
+    InvoiceSearchResultModel, InvoiceModel, VoucherReqModel 
 } from './../models/data-models';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatSort, MatTableDataSource } from '@angular/material';
@@ -71,12 +71,43 @@ export class InvoiceSearchComponent implements OnInit {
 
     isForPayments: boolean = false;
 
+    isFinanceMember: boolean = false;
+
     constructor(private _homeService: HomeService,
         private _appService: AppService,
         private _router: Router,
         private _formBuilder: FormBuilder,
         private _datePipe: DatePipe,
         private _invoiceSearchService: InvoiceSearchService) { }
+
+    onPrintVoucherClick(inv: InvoiceModel) {
+        let req: VoucherReqModel = {
+            invoiceId: inv.invoiceId
+        };
+
+        let fileName: string = inv.invoiceNumber + ".pdf";
+        this.downloadVoucher(req, fileName);
+    }
+
+    downloadVoucher(req: VoucherReqModel, fileName: string) {
+        this._homeService.updateBusy(<BusyDataModel>{ isBusy: true, msg: "Loading..." });
+        this._invoiceSearchService.getVoucherData(req).subscribe(
+            (data) => {
+                this._homeService.updateBusy(<BusyDataModel>{ isBusy: false, msg: null });
+                const blob = new Blob([data.body], { type: 'application/pdf' });
+                const url = window.URL.createObjectURL(blob);
+
+                const iframe = document.createElement('iframe');
+                iframe.style.display = 'none';
+                iframe.src = url;
+                document.body.appendChild(iframe);
+                iframe.contentWindow.print();
+            },
+            error => {
+                console.log(error);
+                this._homeService.updateBusy(<BusyDataModel>{ isBusy: false, msg: null });
+            });
+    }
 
     onUpdatePaymentStatusClick(inv: InvoiceModel) {
         this._appService.selectedInvoice = inv;
@@ -264,6 +295,8 @@ export class InvoiceSearchComponent implements OnInit {
         this._appService.isInvoiceSearchForPayments = false;
 
         this.isDashboardCollapsed = true;
+
+        this.isFinanceMember = globalConstant.userDetails.isFinance;
 
         this._sidebarExpansionSubscription = this._homeService.isSidebarCollapsed.subscribe(data => {
             this.isDashboardCollapsed = !data;

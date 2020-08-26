@@ -15,6 +15,11 @@
             </mat-form-field>
 
             <mat-form-field class="field search-row-element">
+                <mat-label>Company Code</mat-label>
+                <input type="text" matInput formControlName="coCode" autocomplete="off">
+            </mat-form-field>
+
+            <mat-form-field class="field search-row-element">
                 <mat-label>Mobile No.</mat-label>
                 <input type="text" matInput formControlName="mobileNum" autocomplete="off">
             </mat-form-field>
@@ -32,13 +37,22 @@
         <table class="dataTable full-width">
             <thead>
                 <tr>
-                    <th class="headers" scope="col" style="cursor:pointer;" >
+                    <th class="headers" scope="col" style="cursor:pointer;">
                         <span>Vendor Id</span>
                     </th>
+
+                    <th class="headers" scope="col">
+                        <span>Internal Id</span>
+                    </th>
+
                     <th class="headers" scope="col">
                         <span>Vendor Name</span>
                     </th>
-             
+
+                    <th class="headers" scope="col">
+                        <span>Company Code</span>
+                    </th>
+
                     <th class="headers" scope="col">
                         <span>Vendor EmailId</span>
                     </th>
@@ -49,18 +63,26 @@
             </thead>
             <tbody>
                 <tr *ngFor="let vendor of vendorList; let poInd = index">
-               
-                    <td class="eightcharacters" (click)="onVendorClick(vendor)" style="cursor:pointer;" >
+
+                    <td class="eightcharacters" (click)="onVendorClick(vendor)" style="cursor:pointer;">
                         {{ vendor.vendorId }}
+                    </td>
+                    
+                    <td class="eightcharacters" >
+                        {{ vendor.vendorMasterId }}
                     </td>
                     <td>
                         {{ vendor.vendorName }}
                     </td>
-                             
-                    <td >
+
+                    <td class="eightcharacters" >
+                        {{ vendor.companyCode }}
+                    </td>
+
+                    <td>
                         {{ vendor.emailId }}
                     </td>
-                    <td >
+                    <td>
                         {{ vendor.mobileNum }}
                     </td>
                 </tr>

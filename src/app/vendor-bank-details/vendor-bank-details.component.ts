@@ -155,7 +155,7 @@ export class VendorBankDetailsComponent implements OnInit {
             accountNum: [null, [Validators.required]],
             accountType: [null, [Validators.required]],
             accountName: [null, [Validators.required]],
-            ifscCode: [null, [Validators.required, Validators.maxLength(11), Validators.minLength(11)]],
+            ifscCode: [null, [Validators.required, Validators.maxLength(11), Validators.minLength(11),Validators.pattern(/^[a-zA-Z0-9]*([a-zA-Z]+[0-9]+|[0-9]+[a-zA-Z]+)[a-zA-Z0-9]*$/)]],
             bankName: [null, [Validators.required]],
             bankBranch: [null, [Validators.required]],
             bankCity: [null, [Validators.required]],

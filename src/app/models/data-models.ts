@@ -299,6 +299,7 @@ export class PendingApprovalRequestModel {
     approvalLevels: string[];
     departments: string[];
     projectIds: string[];
+    isSubContractReceiver: boolean;
 }
 
 export class POSearchReqModel extends PendingApprovalRequestModel {
@@ -536,6 +537,7 @@ export class InvoiceApprovalInitResultModel {
     grnSesItemsList: GrnSesItemModel[];
     approvalsList: InvoiceApprovalModel[];
     communicationMsgsList: CommunicationMsgModel[];
+    invoiceFileTypes: InvoiceFileTypwModel[];
 }
 
 export class GrnSesModel {
@@ -669,4 +671,8 @@ export class ResetPasswordData {
     userName: string;
     password: string;
     oTP: string;
+}
+
+export class VoucherReqModel {
+    invoiceId: number;
 }

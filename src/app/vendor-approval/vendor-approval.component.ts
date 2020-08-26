@@ -66,6 +66,7 @@ export class VendorApprovalComponent implements OnInit {
 
     isFinance: boolean = false;
     isProcurement: boolean = false;
+    canEdit: boolean = false;
 
     msg: string = "";
 
@@ -158,6 +159,10 @@ export class VendorApprovalComponent implements OnInit {
         this.vendorForm.get("panNum").enable();
         this.vendorForm.get("gstNum").enable();
         this.vendorForm.get("pfNum").enable();
+        this.vendorForm.get("isMsmedRegistered").enable();
+        this.vendorForm.get("hasTdsLower").enable();
+        this.vendorForm.get("isSez").enable();
+        this.vendorForm.get("isRcmApplicable").enable();
         this.vendorForm.get("esiNum").enable();
         this.vendorForm.get("cinNum").enable();
 
@@ -234,13 +239,9 @@ export class VendorApprovalComponent implements OnInit {
             }
             else {
                 if (this.documentControlDetails[key]) {
-                    let controlVal = this.vendorForm.get(this.documentControlDetails[key].controlName).value;
-                    if (controlVal && this.filesMap[key].filesList.length == 0) {
-                        this.filesMap[key].isError = true;
-                    }
-                    else if (!controlVal && this.filesMap[key].filesList.length) {
-                        this.filesMap[key].isAttachWithoutValue = true;
-                    }
+                    let controlVal = this.vendorForm.get(this.documentControlDetails[key].controlName).value
+                    this.filesMap[key].isError = (controlVal && this.filesMap[key].filesList.length == 0) ? true : false;
+                    this.filesMap[key].isAttachWithoutValue = (!controlVal && this.filesMap[key].filesList.length) ? true : false;
                 }
             }
         }
@@ -378,15 +379,19 @@ export class VendorApprovalComponent implements OnInit {
             && this.filesMap[documentTypeId].filesList.length > 0) {
 
             this.filesMap[documentTypeId].filesList.splice(fileIndex, 1);
-            this.filesMap[documentTypeId].isAttached =
-                (this.filesMap[documentTypeId].filesList.length === 0) ? false : true;
+
+            this.filesMap[documentTypeId].isAttached = (this.filesMap[documentTypeId].filesList.length === 0) ? false : true;
 
             this.filesMap[documentTypeId].isError = false;
             if (this.filesMap[documentTypeId].isMandatory && !this.filesMap[documentTypeId].isAttached) {
                 this.filesMap[documentTypeId].isError = true;
             }
             else {
-                this.filesMap[documentTypeId].isError = false;
+                if (this.documentControlDetails[documentTypeId] && this.documentControlDetails[documentTypeId].controlName) {
+                    let controlVal = this.vendorForm.get(this.documentControlDetails[documentTypeId].controlName).value;
+                    this.filesMap[documentTypeId].isError = (controlVal && this.filesMap[documentTypeId].filesList.length == 0) ? true : false;
+                    this.filesMap[documentTypeId].isAttachWithoutValue = (!controlVal && this.filesMap[documentTypeId].filesList.length > 0) ? true : false;
+                }
             }
 
         }
@@ -398,6 +403,7 @@ export class VendorApprovalComponent implements OnInit {
 
     onApproveClick() {
         this.isSubmitted = true;
+        this.msg = '';
         this.updateVendorApprovals(this._appService.updateOperations.approve);
     }
 
@@ -411,14 +417,16 @@ export class VendorApprovalComponent implements OnInit {
     }
 
     updateMandatoryDocs(selfValue: any, documentTypeId: number) {
-        if (!selfValue) {
-            this.filesMap[documentTypeId].isMandatory = false;
-            // this.filesMap[documentTypeId].isAttached = this.filesMap[documentTypeId].filesList.length > 0 ? true : false;
-            this.filesMap[documentTypeId].isAttachWithoutValue = this.filesMap[documentTypeId].filesList.length > 0 ? true : false;
+        if (selfValue) {
+            this.filesMap[documentTypeId].isMandatory = true;
+            this.filesMap[documentTypeId].isError = this.filesMap[documentTypeId].filesList.length > 0 ? false : true;
+            this.filesMap[documentTypeId].isAttachWithoutValue = false;
         }
         else {
-            this.filesMap[documentTypeId].isMandatory = true;
-            this.filesMap[documentTypeId].isError = this.filesMap[documentTypeId].filesList.length <= 0 ? true : false;
+            this.filesMap[documentTypeId].isMandatory = false;
+            this.filesMap[documentTypeId].isAttached = this.filesMap[documentTypeId].filesList.length > 0 ? true : false;
+            this.filesMap[documentTypeId].isError = false;
+            this.filesMap[documentTypeId].isAttachWithoutValue = this.filesMap[documentTypeId].filesList.length ? true : false;
         }
     }
 
@@ -434,7 +442,8 @@ export class VendorApprovalComponent implements OnInit {
     isFilesValid() {
         this.isValid = true;
         for (let key in this.filesMap) {
-            if (this.filesMap[key].isError) {
+            if (this.filesMap[key].isError || this.filesMap[key].isAttachWithoutValue) {
+                this.msg = "Form contains error.Please check.";
                 this.isValid = false;
                 break;
             }
@@ -443,7 +452,7 @@ export class VendorApprovalComponent implements OnInit {
 
     isMandatoryFieldsEmpty() {
         if (!this.vendorForm.valid) {
-            this.msg = "Your form contains error.Please check.";
+            this.msg = "Form contains error.Please check.";
             this.isValid = false;
         }
     }
@@ -459,14 +468,28 @@ export class VendorApprovalComponent implements OnInit {
         if (this.isFinance) {
             let withholdTaxVal = this.vendorForm.get("withholdTax").value;
             let withholdTypeVal = this.vendorForm.get("withholdType").value;
-            if (!withholdTaxVal || !withholdTaxVal) {
+
+            if (withholdTypeVal) {
+                this.vendorForm.get("withholdTax").setValidators([Validators.required]);
+                this.vendorForm.get("withholdTax").updateValueAndValidity();
+
+            }
+            else {
+                this.vendorForm.get("withholdTax").setValidators([]);
+                this.vendorForm.get("withholdTax").updateValueAndValidity();
+            }
+
+            this.isMandatoryFieldsEmpty();
+            if (!this.isValid) return;
+
+            if (!withholdTypeVal && !withholdTaxVal) {
                 const dialogRef = this._dialog.open(ConfirmDialogComponent, {
                     disableClose: true,
                     panelClass: 'dialog-box',
                     width: '550px',
                     data: <MessageDialogModel>{
                         title: "Warning",
-                        message: "You are trying to submit without with Hold Tax and Type. Do you wish to Continue?"
+                        message: "You are trying to submit without with Hold Tax or/and Type. Do you wish to Continue?"
                     }
                 });
 
@@ -556,7 +579,8 @@ export class VendorApprovalComponent implements OnInit {
         if (this._appService.isExistingVendor) {
             this.vendorDetails = this._appService.selectedVendor;
             this.canApprove = false;
-            this.isEditable = true;
+            this.isEditable = false;
+            this.canEdit = true;
         }
 
         else if (this._appService.selectedPendingApprovalRecord) {
@@ -569,7 +593,6 @@ export class VendorApprovalComponent implements OnInit {
             this.vendorDetails = this.vendorApprovalInitDetails.vendorMasterDetails;
             // this.vendorDetails = this.originalVendorDetails;
         }
-
         this.loadDropDown();
         this.updateVendorFields();
         this.updateFileDetails();
@@ -605,37 +628,38 @@ export class VendorApprovalComponent implements OnInit {
     }
 
     updateVendorFields() {
-        this.vendorForm.get("vendorName").setValue(this.vendorDetails.vendorName);
-        this.vendorForm.get("contactPerson").setValue(this.vendorDetails.contactPerson);
-        this.vendorForm.get("mobileNum").setValue(this.vendorDetails.mobileNum);
-        this.vendorForm.get("telephoneNum").setValue(this.vendorDetails.telephoneNum);
-        this.vendorForm.get("emailId").setValue(this.vendorDetails.emailId);
+        if (this.vendorDetails) {
+            this.vendorForm.get("vendorName").setValue(this.vendorDetails.vendorName);
+            this.vendorForm.get("contactPerson").setValue(this.vendorDetails.contactPerson);
+            this.vendorForm.get("mobileNum").setValue(this.vendorDetails.mobileNum);
+            this.vendorForm.get("telephoneNum").setValue(this.vendorDetails.telephoneNum);
+            this.vendorForm.get("emailId").setValue(this.vendorDetails.emailId);
 
-        this.vendorForm.get("address1").setValue(this.vendorDetails.address1);
-        this.vendorForm.get("address2").setValue(this.vendorDetails.address2);
-        this.vendorForm.get("city").setValue(this.vendorDetails.city);
-        this.vendorForm.get("street").setValue(this.vendorDetails.street);
-        this.vendorForm.get("pincode").setValue(this.vendorDetails.pincode);
-        this.vendorForm.get("countryCode").setValue(this.vendorDetails.countryCode);
-        this.vendorForm.get("stateCode").setValue(this.vendorDetails.stateCode);
+            this.vendorForm.get("address1").setValue(this.vendorDetails.address1);
+            this.vendorForm.get("address2").setValue(this.vendorDetails.address2);
+            this.vendorForm.get("city").setValue(this.vendorDetails.city);
+            this.vendorForm.get("street").setValue(this.vendorDetails.street);
+            this.vendorForm.get("pincode").setValue(this.vendorDetails.pincode);
+            this.vendorForm.get("countryCode").setValue(this.vendorDetails.countryCode);
+            this.vendorForm.get("stateCode").setValue(this.vendorDetails.stateCode);
 
-        this.vendorForm.get("panNum").setValue(this.vendorDetails.panNum);
-        this.vendorForm.get("gstNum").setValue(this.vendorDetails.gstNum);
-        this.vendorForm.get("pfNum").setValue(this.vendorDetails.pfNum);
-        this.vendorForm.get("esiNum").setValue(this.vendorDetails.esiNum);
-        this.vendorForm.get("cinNum").setValue(this.vendorDetails.cinNum);
-        this.vendorForm.get("isSez").setValue(this.vendorDetails.isSez);
-        this.vendorForm.get("isRcmApplicable").setValue(this.vendorDetails.isRcmApplicable);
-        this.vendorForm.get("isMsmedRegistered").setValue(this.vendorDetails.isMsmedRegistered);
-        this.vendorForm.get("hasTdsLower").setValue(this.vendorDetails.hasTdsLower);
-        this.vendorForm.get("lutNum").setValue(this.vendorDetails.lutNum);
-        this.vendorForm.get("lutDate").setValue(this.vendorDetails.lutDate ? new Date(this.vendorDetails.lutDate) : null);
-        this.vendorForm.get("otherDocDesc").setValue(this.vendorDetails.otherDocDesc);
+            this.vendorForm.get("panNum").setValue(this.vendorDetails.panNum);
+            this.vendorForm.get("gstNum").setValue(this.vendorDetails.gstNum);
+            this.vendorForm.get("pfNum").setValue(this.vendorDetails.pfNum);
+            this.vendorForm.get("esiNum").setValue(this.vendorDetails.esiNum);
+            this.vendorForm.get("cinNum").setValue(this.vendorDetails.cinNum);
+            this.vendorForm.get("isSez").setValue(this.vendorDetails.isSez);
+            this.vendorForm.get("isRcmApplicable").setValue(this.vendorDetails.isRcmApplicable);
+            this.vendorForm.get("isMsmedRegistered").setValue(this.vendorDetails.isMsmedRegistered);
+            this.vendorForm.get("hasTdsLower").setValue(this.vendorDetails.hasTdsLower);
+            this.vendorForm.get("lutNum").setValue(this.vendorDetails.lutNum);
+            this.vendorForm.get("lutDate").setValue(this.vendorDetails.lutDate ? new Date(this.vendorDetails.lutDate) : null);
+            this.vendorForm.get("otherDocDesc").setValue(this.vendorDetails.otherDocDesc);
 
-        this.vendorForm.get("selectedVendorGroup").setValue(this.vendorDetails.groupCode ? this.vendorDetails.groupCode : null);
-        this.vendorForm.get("selectedCompanyCode").setValue(this.vendorDetails.companyCode ? this.vendorDetails.companyCode : null);
-        this.vendorForm.get("selectedCurrency").setValue(this.vendorDetails.currencyCode ? this.vendorDetails.currencyCode : null);
-
+            this.vendorForm.get("selectedVendorGroup").setValue(this.vendorDetails.groupCode ? this.vendorDetails.groupCode : null);
+            this.vendorForm.get("selectedCompanyCode").setValue(this.vendorDetails.companyCode ? this.vendorDetails.companyCode : null);
+            this.vendorForm.get("selectedCurrency").setValue(this.vendorDetails.currencyCode ? this.vendorDetails.currencyCode : null);
+        }
 
         if (globalConstant.userDetails.isFinance) {
             this.vendorForm.get("selectedVendorGroup").setValidators([Validators.required]);
@@ -714,19 +738,6 @@ export class VendorApprovalComponent implements OnInit {
                 this.regionMasterVOList = this.vendorApprovalInitDetails.regionMasterVOList.filter(r => r.countryCode == cntryCode);
             }
         }
-
-
-        // this.selectedCompanyCode = this.vendorApprovalInitDetails.vendorMasterDetails &&
-        //     this.vendorApprovalInitDetails.vendorMasterDetails.companyCode ?
-        //     this.vendorApprovalInitDetails.vendorMasterDetails.companyCode : undefined;
-
-        // this.selectedCurrency = this.vendorApprovalInitDetails.vendorMasterDetails &&
-        //     this.vendorApprovalInitDetails.vendorMasterDetails.currencyCode ?
-        //     this.vendorApprovalInitDetails.vendorMasterDetails.currencyCode : undefined;
-
-        // this.selectedVendorGroup = this.vendorApprovalInitDetails.vendorMasterDetails &&
-        //     this.vendorApprovalInitDetails.vendorMasterDetails.groupCode ?
-        //     this.vendorApprovalInitDetails.vendorMasterDetails.groupCode : undefined;
     }
 
     onHoldTypeSelected(holdType) {
@@ -735,7 +746,7 @@ export class VendorApprovalComponent implements OnInit {
             this.vendorApprovalInitDetails.withholdTaxVOList.length > 0) {
             this.withholdTaxList = this.vendorApprovalInitDetails.withholdTaxVOList.filter(e => e.withholdTypeCode == holdType.value);
         }
-        console.log(this.withholdTaxList);
+
     }
 
     ngOnDestroy() {
@@ -769,6 +780,12 @@ export class VendorApprovalComponent implements OnInit {
             this.vendorDetails.gstNum = this.vendorForm.get("gstNum").value;
             this.vendorDetails.pfNum = this.vendorForm.get("pfNum").value;
             this.vendorDetails.esiNum = this.vendorForm.get("esiNum").value;
+
+            this.vendorDetails.isMsmedRegistered = this.vendorForm.get("isMsmedRegistered").value;
+            this.vendorDetails.hasTdsLower = this.vendorForm.get("hasTdsLower").value;
+            this.vendorDetails.isSez = this.vendorForm.get("isSez").value;
+            this.vendorDetails.isRcmApplicable = this.vendorForm.get("isRcmApplicable").value;
+
             this.vendorDetails.cinNum = this.vendorForm.get("cinNum").value;
             this.vendorDetails.lutNum = this.vendorForm.get("lutNum").value;
             this.vendorDetails.lutDate = this.vendorForm.get("lutDate").value ? this._datePipe.transform(this.vendorForm.get("lutDate").value, this._appService.dbDateFormat) : null;
@@ -790,25 +807,28 @@ export class VendorApprovalComponent implements OnInit {
         if (globalConstant.userDetails.isFinance) {
             this.isFinance = true;
             this.canApprove = true;
+            this.canEdit = false;
+
         }
 
         if (globalConstant.userDetails.isProcurement) {
             this.isProcurement = true;
             this.canApprove = true;
+            this.canEdit = true;
         }
 
         this.vendorForm = this._formBuilder.group({
             vendorName: [{ value: null, disabled: true }, [Validators.required, Validators.nullValidator]],
             contactPerson: [{ value: null, disabled: true }],
-            mobileNum: [{ value: null, disabled: true }, [Validators.required, Validators.minLength(10), Validators.nullValidator]],
-            telephoneNum: [{ value: null, disabled: true }, [Validators.minLength(11)]],
+            mobileNum: [{ value: null, disabled: true }, [Validators.required, Validators.minLength(10), Validators.nullValidator,Validators.pattern("^[0-9]*$")]],
+            telephoneNum: [{ value: null, disabled: true }, [Validators.minLength(11),Validators.pattern("^[0-9]*$")]],
             emailId: [{ value: null, disabled: true }, [Validators.required, Validators.email, Validators.nullValidator]],
 
             address1: [{ value: null, disabled: true }, [Validators.required]],
             address2: [{ value: null, disabled: true }],
             city: [{ value: null, disabled: true }, [Validators.required]],
             street: [{ value: null, disabled: true }, [Validators.required]],
-            pincode: [{ value: null, disabled: true }, [Validators.required, Validators.minLength(5), Validators.maxLength(6)]],
+            pincode: [{ value: null, disabled: true }, [Validators.required, Validators.minLength(5), Validators.maxLength(6),Validators.pattern("^[0-9]*$")]],
             stateCode: [{ value: null, disabled: true }, [Validators.required]],
             countryCode: [{ value: null, disabled: true }, [Validators.required]],
 
