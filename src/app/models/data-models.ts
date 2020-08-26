@@ -672,3 +672,7 @@ export class ResetPasswordData {
     password: string;
     oTP: string;
 }
+
+export class VoucherReqModel {
+    invoiceId: number;
+}

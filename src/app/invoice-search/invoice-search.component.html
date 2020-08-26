@@ -89,6 +89,9 @@
                     <th class="headers " scope="col" style="width: 9em;">
                         <span>Total Amt <small>(inc. tax)</small></span>
                     </th>
+                    <th class="headers" scope="col" *ngIf = "isFinanceMember == true">
+                        <span>Voucher Print</span>
+                    </th>
                     <th *ngIf = "isForPayments == true">
                     </th>
                 </tr>
@@ -124,6 +127,11 @@
                     </td>
                     <td class="amount tencharacters">
                         {{ inv.totalAmt }}
+                    </td>
+                    <td *ngIf = "isFinanceMember == true">
+                        <div class="actions search-row-element" *ngIf = "inv?.statusCode == 'approved-finance'">
+                            <button mat-raised-button class="footer-actions" (click) = "onPrintVoucherClick(inv)">Print Voucher</button>
+                        </div>
                     </td>
                     <td *ngIf = "isForPayments == true">
                         <div class="actions search-row-element">
