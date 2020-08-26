@@ -66,6 +66,7 @@ export class VendorApprovalComponent implements OnInit {
 
     isFinance: boolean = false;
     isProcurement: boolean = false;
+    isExistingVendor: boolean = false;
     canEdit: boolean = false;
 
     msg: string = "";
@@ -209,6 +210,10 @@ export class VendorApprovalComponent implements OnInit {
     //for document attachments
 
     updateFileDetails() {
+        // if(this.isExistingVendor && this.vendorDetails && this.vendorDetails.fileDetails && this.vendorDetails.fileDetails.length>0){
+        //     this.vendorApprovalInitDetails.vendorMasterDocumentVOList.forEach(item =>
+        //         this.filesMap[item.vendorMasterDocumentsId] = { filesList: [], isMandatory: item.isMandatory, isAttached: false, isError: false, isAttachWithoutValue: false });
+        //    }
         if (this.vendorApprovalInitDetails && this.vendorApprovalInitDetails.vendorMasterDocumentVOList &&
             this.vendorApprovalInitDetails.vendorMasterDocumentVOList.length > 0) {
             this.vendorApprovalInitDetails.vendorMasterDocumentVOList.forEach(item =>
@@ -578,11 +583,12 @@ export class VendorApprovalComponent implements OnInit {
 
         if (this._appService.isExistingVendor) {
             this.vendorDetails = this._appService.selectedVendor;
+            console.log(this.vendorDetails);
             this.canApprove = false;
             this.isEditable = false;
-            this.canEdit = true;
+            this.canEdit = false;
+           
         }
-
         else if (this._appService.selectedPendingApprovalRecord) {
             let req: VendorApprovalInitReqModel = {
                 vendorMasterId: this._appService.selectedPendingApprovalRecord.vendorMasterId,
@@ -598,6 +604,11 @@ export class VendorApprovalComponent implements OnInit {
         this.updateFileDetails();
         this._homeService.updateBusy(<BusyDataModel>{ isBusy: false, msg: null });
 
+    }
+
+    setDropDownValues(){
+        let viewStateCode = this.vendorDetails.stateCode;
+        this.regionMasterVOList = this.vendorApprovalInitDetails.regionMasterVOList.filter(r => r.regionCode == viewStateCode);
     }
 
     updateStates() {
@@ -804,6 +815,8 @@ export class VendorApprovalComponent implements OnInit {
             this.isDashboardCollapsed = !data;
         });
 
+        this.isExistingVendor = this._appService.isExistingVendor;
+
         if (globalConstant.userDetails.isFinance) {
             this.isFinance = true;
             this.canApprove = true;
@@ -820,15 +833,15 @@ export class VendorApprovalComponent implements OnInit {
         this.vendorForm = this._formBuilder.group({
             vendorName: [{ value: null, disabled: true }, [Validators.required, Validators.nullValidator]],
             contactPerson: [{ value: null, disabled: true }],
-            mobileNum: [{ value: null, disabled: true }, [Validators.required, Validators.minLength(10), Validators.nullValidator,Validators.pattern("^[0-9]*$")]],
-            telephoneNum: [{ value: null, disabled: true }, [Validators.minLength(11),Validators.pattern("^[0-9]*$")]],
+            mobileNum: [{ value: null, disabled: true }, [Validators.required, Validators.minLength(10), Validators.nullValidator, Validators.pattern("^[0-9]*$")]],
+            telephoneNum: [{ value: null, disabled: true }, [Validators.minLength(11), Validators.pattern("^[0-9]*$")]],
             emailId: [{ value: null, disabled: true }, [Validators.required, Validators.email, Validators.nullValidator]],
 
             address1: [{ value: null, disabled: true }, [Validators.required]],
             address2: [{ value: null, disabled: true }],
             city: [{ value: null, disabled: true }, [Validators.required]],
             street: [{ value: null, disabled: true }, [Validators.required]],
-            pincode: [{ value: null, disabled: true }, [Validators.required, Validators.minLength(5), Validators.maxLength(6),Validators.pattern("^[0-9]*$")]],
+            pincode: [{ value: null, disabled: true }, [Validators.required, Validators.minLength(5), Validators.maxLength(6), Validators.pattern("^[0-9]*$")]],
             stateCode: [{ value: null, disabled: true }, [Validators.required]],
             countryCode: [{ value: null, disabled: true }, [Validators.required]],
 

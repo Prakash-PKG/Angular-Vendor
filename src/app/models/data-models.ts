@@ -106,7 +106,7 @@ export class VendorMasterDetailsModel {
     emailId: string;
     password: string;
     contactPerson: string;
-    // contactNum: string;
+    contactNum: string;
     buildingNum: string;
     buildingName: string;
     floorNum: string;
@@ -117,7 +117,7 @@ export class VendorMasterDetailsModel {
     countryCode: string;
     countryName: string;
     pincode: string;
-    // bankAddress: string;
+    bankAddress: string;
     accountNum: string;
     accountType: string;
     accountName: string;
@@ -131,7 +131,7 @@ export class VendorMasterDetailsModel {
     isRcmApplicable: boolean = false;
     lutNum: string;
     lutDate: string;
-    // paymentTerms: string;
+    paymentTerms: string;
     cinNum: string;
     isMsmedRegistered: boolean = false;
     pfNum: string;
@@ -162,7 +162,14 @@ export class VendorMasterDetailsModel {
     // isGSTReg: boolean;
     otherDocDesc: string;
     vendorId: string;
-    bankAccountTypeId: string
+    bankAccountTypeId: string;
+    statusCode: string;
+    groupCodeDesc: string;
+    companyCodeDesc: string;
+    currencyCodeDesc: string;
+    withHoldTypeCode: string;
+    withholdTaxCode: string;
+    fileDetails: FileDetailsModel[];
 }
 
 export interface FileMap {
@@ -172,7 +179,7 @@ export interface FileMap {
         isAttached: boolean,
         isError: boolean,
         toAttach: FileDetailsModel[],
-        isAttachWithoutValue:boolean
+        isAttachWithoutValue: boolean
     }
 }
 
@@ -506,10 +513,10 @@ export class CommunicationMsgReqModel {
     invoiceCommunicationId: number;
     purchaseOrderId: number;
     invoiceId: number;
-	userId: string;
-	message: string;
-	createdDate: string;
-	createdBy: string;
+    userId: string;
+    message: string;
+    createdDate: string;
+    createdBy: string;
 }
 
 export class CommunicationMsgModel extends CommunicationMsgReqModel {

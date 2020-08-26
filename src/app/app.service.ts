@@ -141,7 +141,7 @@ export class AppService {
         emailId: null,
         password: null,
         contactPerson: null,
-        // contactNum: null,
+        contactNum: null,
         buildingNum: null,
         buildingName: null,
         floorNum: null,
@@ -151,7 +151,7 @@ export class AppService {
         countryCode: null,
         countryName: null,
         pincode: null,
-        // bankAddress: null,
+        bankAddress: null,
         accountNum: null,
         accountType: null,
         accountName: null,
@@ -165,7 +165,7 @@ export class AppService {
         isRcmApplicable: false,
         lutNum: null,
         lutDate: null,
-        // paymentTerms: null,
+        paymentTerms: null,
         cinNum: null,
         isMsmedRegistered: false,
         pfNum: null,
@@ -196,7 +196,14 @@ export class AppService {
         finRemark: null,
         // isGSTReg:null,
         otherDocDesc: null,
-        bankAccountTypeId:null
+        bankAccountTypeId:null,
+        statusCode: null,
+        groupCodeDesc: null,
+        companyCodeDesc: null,
+        currencyCodeDesc: null,
+        withHoldTypeCode: null,
+        withholdTaxCode: null,
+        fileDetails: []
 
     };
 
@@ -209,7 +216,7 @@ export class AppService {
             emailId: null,
             password: null,
             contactPerson: null,
-            // contactNum: null,
+            contactNum: null,
             buildingNum: null,
             buildingName: null,
             floorNum: null,
@@ -219,7 +226,7 @@ export class AppService {
             countryCode: null,
             countryName: null,
             pincode: null,
-            // bankAddress: null,
+            bankAddress: null,
             accountNum: null,
             accountType: null,
             accountName: null,
@@ -233,7 +240,7 @@ export class AppService {
             isRcmApplicable: false,
             lutNum: null,
             lutDate: null,
-            // paymentTerms: null,
+            paymentTerms: null,
             cinNum: null,
             isMsmedRegistered: false,
             pfNum: null,
@@ -265,7 +272,14 @@ export class AppService {
             // isGSTReg:null,
             otherDocDesc: null,
             vendorId: null,
-            bankAccountTypeId:null
+            bankAccountTypeId:null,
+            statusCode: null,
+            groupCodeDesc: null,
+            companyCodeDesc: null,
+            currencyCodeDesc: null,
+            withHoldTypeCode: null,
+            withholdTaxCode: null,
+            fileDetails: []
         };
 
         return regDetails;
