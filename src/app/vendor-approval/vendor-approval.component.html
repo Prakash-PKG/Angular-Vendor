@@ -40,6 +40,8 @@
                         </mat-form-field>
                         <mat-error class="errortxt" *ngIf="( isSubmitted ) && f?.mobileNum?.errors?.required">Mobile No.
                             is required</mat-error>
+                        <mat-error class="errortxt" *ngIf="( isSubmitted ) && f?.mobileNum?.errors?.pattern">
+                            Mobile No. only accepts numeric values</mat-error>
                         <mat-error class="errortxt" *ngIf="( isSubmitted ) && f?.mobileNum?.errors?.minlength">10
                             Characters are required</mat-error>
                     </div>
@@ -52,6 +54,8 @@
                         </mat-form-field>
                         <mat-error class="errortxt" *ngIf="( isSubmitted ) && f?.telephoneNum?.errors?.minlength">11
                             Characters are required</mat-error>
+                        <mat-error class="errortxt" *ngIf="( isSubmitted ) && f?.telephoneNum?.errors?.pattern">
+                            Mobile No. only accepts numeric values</mat-error>
                     </div>
 
                     <div class="Rtable-cell Rtable-cell--head">Email Id *</div>
@@ -115,6 +119,9 @@
                             <input type="text" matInput onkeypress='return event.charCode >= 48 && event.charCode <= 57'
                                 formControlName="pincode" autocomplete="off" maxlength="6" required>
                         </mat-form-field>
+
+                        <mat-error class="errortxt" *ngIf="( isSubmitted ) && f?.pincode?.errors?.pattern">
+                            Pincode only accepts numeric values</mat-error>
                         <mat-error class="errortxt" *ngIf="( isSubmitted ) && f?.city?.errors?.required">Town / City is
                             required</mat-error>
                         <mat-error class="errortxt" *ngIf="( isSubmitted ) && f?.pincode?.errors?.required">Pincode is
@@ -330,7 +337,8 @@
                                         multiple accept=".xls,.xlsx,.doc,.docx,.pdf,.png,.jpg,.zip"
                                         (change)="onFileChange($event, vendorDocCtrl.gstCtrl.documentTypeId)" />
                                     <button mat-button mat-icon-button aria-label="Attach" class="attach-btn"
-                                        (click)="onBrowseFileClick($event, vendorDocCtrl.gstCtrl.browserId)" [disabled]="!this.vendorForm.get('gstNum').value">
+                                        (click)="onBrowseFileClick($event, vendorDocCtrl.gstCtrl.browserId)"
+                                        [disabled]="!this.vendorForm.get('gstNum').value">
                                         <mat-icon>attachment</mat-icon>
                                     </button>
                                 </div>
@@ -425,7 +433,8 @@
                                     <input style="display: none" [attr.id]="vendorDocCtrl.lutNoCtrl.browserId"
                                         type="file" multiple accept=".xls,.xlsx,.doc,.docx,.pdf,.png,.jpg,.zip"
                                         (change)="onFileChange($event, vendorDocCtrl.lutNoCtrl.documentTypeId)" />
-                                    <button mat-button mat-icon-button aria-label="Attach" class="attach-btn" [disabled]="!this.vendorForm.get('lutNum').value"
+                                    <button mat-button mat-icon-button aria-label="Attach" class="attach-btn"
+                                        [disabled]="!this.vendorForm.get('lutNum').value"
                                         (click)="onBrowseFileClick($event, vendorDocCtrl.lutNoCtrl.browserId)">
                                         <mat-icon>attachment</mat-icon>
                                     </button>
@@ -493,7 +502,8 @@
                                     <input style="display: none" [attr.id]="vendorDocCtrl.pfCtrl.browserId" type="file"
                                         multiple accept=".xls,.xlsx,.doc,.docx,.pdf,.png,.jpg,.zip"
                                         (change)="onFileChange($event, vendorDocCtrl.pfCtrl.documentTypeId)" />
-                                    <button mat-button mat-icon-button aria-label="Attach" class="attach-btn"  [disabled]="!this.vendorForm.get('pfNum').value"
+                                    <button mat-button mat-icon-button aria-label="Attach" class="attach-btn"
+                                        [disabled]="!this.vendorForm.get('pfNum').value"
                                         (click)="onBrowseFileClick($event, vendorDocCtrl.pfCtrl.browserId)">
                                         <mat-icon>attachment</mat-icon>
                                     </button>
@@ -539,7 +549,8 @@
                                     <input style="display: none" [attr.id]="vendorDocCtrl.esiCtrl.browserId" type="file"
                                         multiple accept=".xls,.xlsx,.doc,.docx,.pdf,.png,.jpg,.zip"
                                         (change)="onFileChange($event, vendorDocCtrl.esiCtrl.documentTypeId)" />
-                                    <button mat-button mat-icon-button aria-label="Attach" class="attach-btn" [disabled]="!vendorForm.get('esiNum').value"
+                                    <button mat-button mat-icon-button aria-label="Attach" class="attach-btn"
+                                        [disabled]="!vendorForm.get('esiNum').value"
                                         (click)="onBrowseFileClick($event, vendorDocCtrl.esiCtrl.browserId)">
                                         <mat-icon>attachment</mat-icon>
                                     </button>
@@ -593,7 +604,8 @@
                                     <input style="display: none" [attr.id]="vendorDocCtrl.msmeCtrl.browserId"
                                         type="file" multiple accept=".xls,.xlsx,.doc,.docx,.pdf,.png,.jpg,.zip"
                                         (change)="onFileChange($event, vendorDocCtrl.msmeCtrl.documentTypeId)" />
-                                    <button mat-button mat-icon-button aria-label="Attach" class="attach-btn"  [disabled]="!this.vendorForm.get('isMsmedRegistered').value"
+                                    <button mat-button mat-icon-button aria-label="Attach" class="attach-btn"
+                                        [disabled]="!this.vendorForm.get('isMsmedRegistered').value"
                                         (click)="onBrowseFileClick($event, vendorDocCtrl.msmeCtrl.browserId)">
                                         <mat-icon>attachment</mat-icon>
                                     </button>
@@ -645,7 +657,8 @@
                                     <input style="display: none" [attr.id]="vendorDocCtrl.tdsCtrl.browserId" type="file"
                                         multiple accept=".xls,.xlsx,.doc,.docx,.pdf,.png,.jpg,.zip"
                                         (change)="onFileChange($event, vendorDocCtrl.tdsCtrl.documentTypeId)" />
-                                    <button mat-button mat-icon-button aria-label="Attach" class="attach-btn" [disabled]="!this.vendorForm.get('hasTdsLower').value"
+                                    <button mat-button mat-icon-button aria-label="Attach" class="attach-btn"
+                                        [disabled]="!this.vendorForm.get('hasTdsLower').value"
                                         (click)="onBrowseFileClick($event, vendorDocCtrl.tdsCtrl.browserId)">
                                         <mat-icon>attachment</mat-icon>
                                     </button>
@@ -663,7 +676,8 @@
                     </div>
 
                     <div class="Rtable-cell Rtable-cell--head">SEZ</div>
-                    <div class="Rtable-cell" *ngIf="!isEditable"> {{ vendorDetails?.isSez == true ? 'Yes' : 'No' }}</div>
+                    <div class="Rtable-cell" *ngIf="!isEditable"> {{ vendorDetails?.isSez == true ? 'Yes' : 'No' }}
+                    </div>
                     <div class="Rtable-cell" *ngIf="isEditable">
                         <mat-radio-group formControlName="isSez">
                             <mat-radio-button
@@ -697,7 +711,8 @@
                                     <input style="display: none" [attr.id]="vendorDocCtrl.sezCtrl.browserId" type="file"
                                         multiple accept=".xls,.xlsx,.doc,.docx,.pdf,.png,.jpg,.zip"
                                         (change)="onFileChange($event, vendorDocCtrl.sezCtrl.documentTypeId)" />
-                                    <button mat-button mat-icon-button aria-label="Attach" class="attach-btn" [disabled]="!this.vendorForm.get('isSez').value"
+                                    <button mat-button mat-icon-button aria-label="Attach" class="attach-btn"
+                                        [disabled]="!this.vendorForm.get('isSez').value"
                                         (click)="onBrowseFileClick($event, vendorDocCtrl.sezCtrl.browserId)">
                                         <mat-icon>attachment</mat-icon>
                                     </button>
@@ -758,7 +773,8 @@
                                     <input style="display: none" [attr.id]="vendorDocCtrl.otherCtrl.browserId"
                                         type="file" multiple accept=".xls,.xlsx,.doc,.docx,.pdf,.png,.jpg,.zip"
                                         (change)="onFileChange($event, vendorDocCtrl.otherCtrl.documentTypeId)" />
-                                    <button mat-button mat-icon-button aria-label="Attach" class="attach-btn"  [disabled]="!this.vendorForm.get('otherDocDesc').value"
+                                    <button mat-button mat-icon-button aria-label="Attach" class="attach-btn"
+                                        [disabled]="!this.vendorForm.get('otherDocDesc').value"
                                         (click)="onBrowseFileClick($event, vendorDocCtrl.otherCtrl.browserId)">
                                         <mat-icon>attachment</mat-icon>
                                     </button>

@@ -820,15 +820,15 @@ export class VendorApprovalComponent implements OnInit {
         this.vendorForm = this._formBuilder.group({
             vendorName: [{ value: null, disabled: true }, [Validators.required, Validators.nullValidator]],
             contactPerson: [{ value: null, disabled: true }],
-            mobileNum: [{ value: null, disabled: true }, [Validators.required, Validators.minLength(10), Validators.nullValidator]],
-            telephoneNum: [{ value: null, disabled: true }, [Validators.minLength(11)]],
+            mobileNum: [{ value: null, disabled: true }, [Validators.required, Validators.minLength(10), Validators.nullValidator,Validators.pattern("^[0-9]*$")]],
+            telephoneNum: [{ value: null, disabled: true }, [Validators.minLength(11),Validators.pattern("^[0-9]*$")]],
             emailId: [{ value: null, disabled: true }, [Validators.required, Validators.email, Validators.nullValidator]],
 
             address1: [{ value: null, disabled: true }, [Validators.required]],
             address2: [{ value: null, disabled: true }],
             city: [{ value: null, disabled: true }, [Validators.required]],
             street: [{ value: null, disabled: true }, [Validators.required]],
-            pincode: [{ value: null, disabled: true }, [Validators.required, Validators.minLength(5), Validators.maxLength(6)]],
+            pincode: [{ value: null, disabled: true }, [Validators.required, Validators.minLength(5), Validators.maxLength(6),Validators.pattern("^[0-9]*$")]],
             stateCode: [{ value: null, disabled: true }, [Validators.required]],
             countryCode: [{ value: null, disabled: true }, [Validators.required]],
 

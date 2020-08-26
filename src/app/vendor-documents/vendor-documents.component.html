@@ -485,7 +485,9 @@
 </form>
 
 <div class="row actions margin-unset" style="margin-top: 2em;">
-    <div class="errortxt" *ngIf="vendorDocumentForm.invalid || isServerError || !isValid">
+
+    <!-- || !isValid vendorDocumentForm.invalid ||  -->
+    <div class="errortxt" *ngIf="isServerError ">
         {{ failureMsg }}
     </div>
 

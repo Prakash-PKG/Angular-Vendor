@@ -33,6 +33,8 @@
             </mat-error>
             <mat-error class="errortxt" *ngIf="( isSubmitted ) && f?.mobileNum?.errors?.minlength">10 Characters are
                 required</mat-error>
+                
+            <mat-error class="errortxt" *ngIf="( isSubmitted ) && f?.mobileNum?.errors?.pattern">Mobile no. only accepts numeric values</mat-error>
         </div>
         <div class="col-6 form-group">
             <mat-form-field class="full-width">
@@ -40,7 +42,7 @@
                     placeholder="Telephone No." formControlName="telephoneNum" maxlength="12" minlength="11"
                     autocomplete="off">
             </mat-form-field>
-
+            <mat-error class="errortxt" *ngIf="( isSubmitted ) && f?.telephoneNum?.errors?.pattern">Telephone no. only accepts numeric values</mat-error>
             <mat-error class="errortxt" *ngIf="( isSubmitted ) && f?.telephoneNum?.errors?.minlength">Minimum 11
                 Characters are required</mat-error>
         </div>
@@ -73,7 +75,7 @@
                     <li>At least one lowercase character</li>
                     <li>At least one uppercase character</li>
                     <li>At least one special character</li>
-                    <li>At least 8 characters in length</li>
+                    <li>At least 8 characters in length and maximum 32 characers</li>
                 </ul>
             </mat-error>
         </div>
@@ -91,8 +93,8 @@
 </form>
 
 <div class="row actions margin-unset">
-    <div class="errortxt">
+    <!-- <div class="errortxt">
         {{ failureMsg }}
-    </div>
+    </div> -->
     <button mat-raised-button class="footer-actions" (click)="onNextClick()">Next</button>
 </div>

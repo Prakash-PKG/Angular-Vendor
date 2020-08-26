@@ -39,6 +39,7 @@
                 <input type="text" placeholder="Pincode " required  onkeypress='return event.charCode >= 48 && event.charCode <= 57' matInput formControlName="pincode" autocomplete="off"  maxlength="10" required>
             </mat-form-field>
             <mat-error class="errortxt" *ngIf="( isSubmitted ) && f?.pincode?.errors?.required">Pincode is required</mat-error>
+            <mat-error class="errortxt" *ngIf="( isSubmitted ) && f?.pincode?.errors?.pattern">Pincode accepts only numeric values</mat-error>
             <mat-error class="errortxt" *ngIf="( isSubmitted ) && f?.pincode?.errors?.minlength">Minimum {{ f?.pincode?.errors?.minlength?.requiredLength }} characters are required</mat-error>
             <mat-error class="errortxt" *ngIf="( isSubmitted ) && f?.pincode?.errors?.maxlength">Maximum {{ f?.pincode?.errors?.maxlength?.requiredLength }} characters are required</mat-error>
         </div>
@@ -71,9 +72,9 @@
 </form>
 
 <div class="row actions margin-unset">
-    <div class="errortxt" *ngIf="vendorAddressForm.invalid">
+    <!-- <div class="errortxt" *ngIf="vendorAddressForm.invalid">
         {{ failureMsg }}
-    </div>
+    </div> -->
     <button mat-raised-button class="footer-actions" (click)="onPrevClick()">Previous</button>
     <button mat-raised-button class="footer-actions" (click)="onNextClick()">Next</button>
 </div>

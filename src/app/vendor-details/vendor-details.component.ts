@@ -104,10 +104,10 @@ export class VendorDetailsComponent implements OnInit {
         this.vendorDetailsForm = this._formBuilder.group({
             vendorName: [null, [Validators.required, Validators.nullValidator]],
             contactPerson: [null],
-            mobileNum: [null, [Validators.required, Validators.minLength(10), Validators.maxLength(10), Validators.nullValidator]],
-            telephoneNum: [null, [Validators.maxLength(12), Validators.minLength(11)]],
+            mobileNum: [null, [Validators.required, Validators.minLength(10), Validators.maxLength(10), Validators.nullValidator,Validators.pattern("^[0-9]*$")]],
+            telephoneNum: [null, [Validators.maxLength(12), Validators.minLength(11),Validators.pattern("^[0-9]*$")]],
             emailId: [null, [Validators.required, Validators.email, Validators.nullValidator]],
-            password: [null, [Validators.required, Validators.nullValidator,Validators.pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/)]],
+            password: [null, [Validators.required, Validators.nullValidator,Validators.pattern(/^(?:(?:(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z]))|(?:(?=.*[a-z])(?=.*[A-Z])(?=.*[*.!@$%^&(){}[]:;<>,.?~_+-=|\]))|(?:(?=.*[0-9])(?=.*[A-Z])(?=.*[*.!@$%^&(){}[]:;<>,.?~_+-=|\]))|(?:(?=.*[0-9])(?=.*[a-z])(?=.*[*.!@$%^&(){}[]:;<>,.?~_+-=|\]))).{8,}$/)]],
             confirmPassword: [null, [Validators.required, Validators.nullValidator]]
         },
             { validator: equalValueValidator('password', 'confirmPassword') }
