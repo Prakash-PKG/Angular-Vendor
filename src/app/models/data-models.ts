@@ -288,6 +288,7 @@ export class PaymentStatusDetailsModel {
     paymentDate: string;
     status: string;
     remarks: string;
+    tdsAmt: string;
 }
 
 export class ApprovalLevelsModel {

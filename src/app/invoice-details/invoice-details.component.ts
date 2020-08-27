@@ -247,6 +247,14 @@ export class InvoiceDetailsComponent implements OnInit {
         return "";
     }
 
+    getTDSAmount() {
+        if(this.invoicePaymentStatusDetails && this.invoicePaymentStatusDetails.tdsAmt) {
+            return this.invoicePaymentStatusDetails.tdsAmt + " " + this.currency;
+        }
+
+        return "";
+    }
+
     getPaidAmount() {
         if(this.invoicePaymentStatusDetails && this.invoicePaymentStatusDetails.invoiceAmountPaid) {
             return this.invoicePaymentStatusDetails.invoiceAmountPaid + " " + this.currency;
