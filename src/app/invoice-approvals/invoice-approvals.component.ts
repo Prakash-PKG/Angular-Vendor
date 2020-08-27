@@ -434,47 +434,19 @@ export class InvoiceApprovalsComponent implements OnInit {
     }
 
     onHoldClick() {
-        const dialogRef = this._dialog.open(ConfirmDialogComponent, {
-            disableClose: true,
-            panelClass: 'dialog-box',
-            width: '550px',
-            data: <MessageDialogModel>{
-                title: "Invoice Action",
-                message: "Are you sure you want to Send back?"
-            }
-        });
-
-        dialogRef.afterClosed().subscribe(result => {
-            if (result) {
-                this.updateInvoiceApprovals(this._appService.updateOperations.onhold);
-            }
-        });
+        this.updateInvoiceApprovals(this._appService.updateOperations.onhold, "Are you sure you want to Send back?");
     }
 
     onRectifyClick() {
-        this.updateInvoiceApprovals(this._appService.updateOperations.rectified);
+        this.updateInvoiceApprovals(this._appService.updateOperations.rectified, "");
     }
 
     onApproveClick() {
-        this.updateInvoiceApprovals(this._appService.updateOperations.approve);
+        this.updateInvoiceApprovals(this._appService.updateOperations.approve, "");
     }
 
     onRejectClick() {
-        const dialogRef = this._dialog.open(ConfirmDialogComponent, {
-            disableClose: true,
-            panelClass: 'dialog-box',
-            width: '550px',
-            data: <MessageDialogModel>{
-                title: "Invoice Action",
-                message: "Are you sure you want to Reject?"
-            }
-        });
-
-        dialogRef.afterClosed().subscribe(result => {
-            if (result) {
-                this.updateInvoiceApprovals(this._appService.updateOperations.reject);
-            }
-        });
+         this.updateInvoiceApprovals(this._appService.updateOperations.reject, "Are you sure you want to Reject?");
     }
 
     onCommunicationClick() {
@@ -501,7 +473,7 @@ export class InvoiceApprovalsComponent implements OnInit {
         });
     }
 
-    updateInvoiceApprovals(action: string) {
+    updateInvoiceApprovals(action: string, msg: string) {
         this.remarksErrMsg = "";
         this.grnSesErrMsg = "";
         let isRemarksValid: boolean = true;
@@ -568,6 +540,33 @@ export class InvoiceApprovalsComponent implements OnInit {
         //     }
         // }
 
+        
+        
+        if(isRemarksValid && isGrnSesValid) {
+            if(action == this._appService.updateOperations.reject || action == this._appService.updateOperations.onhold) {
+                const dialogRef = this._dialog.open(ConfirmDialogComponent, {
+                    disableClose: true,
+                    panelClass: 'dialog-box',
+                    width: '550px',
+                    data: <MessageDialogModel>{
+                        title: "Invoice Action",
+                        message: msg
+                    }
+                });
+
+                dialogRef.afterClosed().subscribe(result => {
+                    if (result) {
+                        this.updateInvoiceApprovalDetails(action);
+                    }
+                });
+            }
+            else {
+                this.updateInvoiceApprovalDetails(action);
+            }
+        }
+    }
+
+    updateInvoiceApprovalDetails(action: string) {
         let apprLevel: string = this.initDetails.approvalDetails.approvalLevel;
         if(this.isOnHold) {
             if(globalConstant.userDetails.isSubContractReceiver) {
@@ -577,9 +576,8 @@ export class InvoiceApprovalsComponent implements OnInit {
                 apprLevel = this._appService.approvalLevels.po;
             }
         }
-        
-        if(isRemarksValid && isGrnSesValid) {
-            let req: UpdateInvoiceApprovalReqModel = {
+
+        let req: UpdateInvoiceApprovalReqModel = {
                 action: action,
                 isOnHold: this.isOnHold,
                 departmentHeadId: globalConstant.userDetails.departmentHead,
@@ -625,7 +623,6 @@ export class InvoiceApprovalsComponent implements OnInit {
                     this.displayInvoiceApprovalStatus("Failed", false);
                     console.log(error);
                 });
-        }
     }
 
     displayInvoiceApprovalStatus(msg: string, status: boolean) {
