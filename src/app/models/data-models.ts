@@ -247,6 +247,7 @@ export class InvoiceDetailsResultModel {
     itemsList: ItemDisplayModel[];
     invoiceFilesList: FileDetailsModel[];
     supportFilesList: FileDetailsModel[];
+    rectifiedFilesList: FileDetailsModel[];
     approvalsList: InvoiceApprovalModel[];
     paymentStatusDetails: PaymentStatusDetailsModel;
     paymentStatusList: paymentStatusModel[];
@@ -539,8 +540,9 @@ export class InvoiceApprovalInitResultModel {
     approvalDetails: InvoiceApprovalModel;
     poDetails: PODetailsModel;
     grnSesList: GrnSesModel[];
-    invoiceFilesList: FileDetailsModel[];
-    supportFilesList: FileDetailsModel[];
+    invoiceFilesList: FileDetailsModel[] = [];
+    supportFilesList: FileDetailsModel[] = [];
+    rectifiedFilesList: FileDetailsModel[] = [];
     grnSesItemsList: GrnSesItemModel[];
     approvalsList: InvoiceApprovalModel[];
     communicationMsgsList: CommunicationMsgModel[];

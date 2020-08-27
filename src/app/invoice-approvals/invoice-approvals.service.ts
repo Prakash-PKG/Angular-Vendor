@@ -54,6 +54,11 @@ export class InvoiceApprovalsService {
             if(supportFiles && supportFiles.length > 0) {
                 initModel.supportFilesList = supportFiles.concat();
             }
+
+            let rectifiedFiles: FileDetailsModel[] = filesList.filter(f => f.documentTypeId == 3);
+            if(rectifiedFiles && rectifiedFiles.length > 0) {
+                initModel.rectifiedFilesList = rectifiedFiles.concat();
+            }
         }
 
         // let invoiceFile: FileDetailsModel = {

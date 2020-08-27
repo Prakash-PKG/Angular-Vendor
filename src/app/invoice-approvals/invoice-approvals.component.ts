@@ -57,14 +57,16 @@ export class InvoiceApprovalsComponent implements OnInit {
     invoiceFilesList: FileDetailsModel[] = [];
     supportFilesList: FileDetailsModel[] = [];
 
-    additionalInvoiceFilesList: FileDetailsModel[] = [];
-    invoiceFilesErrMsg: string = "";
-    private _tempInvoiceFilesList: FileDetailsModel[] = [];
-    private _invoicefileCnt: number = 0;
-    invoiceUpdateResults: UpdateInvoiceResultModel = null;
+    rectifiedFilesList: FileDetailsModel[] = [];
+    newRectifiedFilesList: FileDetailsModel[] = [];
+    newRectifiedFilesErrMsg: string = "";
+    private _tempNewRectifiedFilesList: FileDetailsModel[] = [];
+    private _newRectifiedFileCnt: number = 0;
+    newRectifiedFilesUpdateResults: UpdateInvoiceResultModel = null;
 
     invoiceFileTypeId: number = null;
     supportFileTypeId: number = null;
+    rectifiedFileTypeId: number = null;
 
     grnSesAccountCategories: string[] = ["1", "3", "5", "2", "4"];
     isGrnSesRequired: boolean = false;
@@ -118,70 +120,62 @@ export class InvoiceApprovalsComponent implements OnInit {
     //     });
     // }
 
-    onInvoiceBrowseClick(event: any) {
+    onRectifiedFileBrowseClick(event: any) {
         event.preventDefault();
 
-        let element: HTMLElement = document.getElementById("invoiceFileCtrl");
+        let element: HTMLElement = document.getElementById("rectifiedFileCtrl");
         element.click();
     }
 
-    onInvoiceFileChange(event: any) {
-        this.invoiceFilesErrMsg = "";
+    onRectifiedFileChange(event: any) {
+        this._tempNewRectifiedFilesList = [];
+        this._newRectifiedFileCnt = 0;
+        if (event.target.files && event.target.files.length > 0) {
+            for (let f = 0; f < event.target.files.length; f++) {
+                let file = event.target.files[f];
+                if (file) {
+                    let fileDetails: FileDetailsModel = {
+                        actualFileName: file.name,
+                        uniqueFileName: null,
+                        fileData: null,
+                        documentTypeId: this.rectifiedFileTypeId,
+                        fileId: null,
+                        createdDate: null,
+                        createdBy: null
+                    };
+                    this._tempNewRectifiedFilesList.push(fileDetails);
 
-        if(this.additionalInvoiceFilesList.length > 0) {
-            this.invoiceFilesErrMsg = "More than one Invoice files can't be attached.";
-        }
-        else {
-            this._tempInvoiceFilesList = [];
-            this._invoicefileCnt = 0;
-            if (event.target.files && event.target.files.length > 0) {
-                for (let f = 0; f < event.target.files.length; f++) {
-                    let file = event.target.files[f];
-                    if (file) {
-                        let fileDetails: FileDetailsModel = {
-                            actualFileName: file.name,
-                            uniqueFileName: null,
-                            fileData: null,
-                            documentTypeId: this.invoiceFileTypeId,
-                            fileId: null,
-                            createdDate: null,
-                            createdBy: null
-                        };
-                        this._tempInvoiceFilesList.push(fileDetails);
-
-                        let reader = new FileReader();
-                        reader.onload = this._handleInvoiceFileReaderLoaded.bind(this, file.name);
-                        reader.readAsBinaryString(file);
-                    }
+                    let reader = new FileReader();
+                    reader.onload = this._handleRectifiedFileReaderLoaded.bind(this, file.name);
+                    reader.readAsBinaryString(file);
                 }
             }
         }
     }
 
-    private _handleInvoiceFileReaderLoaded(actualFileName, readerEvt) {
+    private _handleRectifiedFileReaderLoaded(actualFileName, readerEvt) {
         let binaryString = readerEvt.target.result;
         let base64textString = btoa(binaryString);
 
-        for (let fileItem of this._tempInvoiceFilesList) {
+        for (let fileItem of this._tempNewRectifiedFilesList) {
             if (fileItem.actualFileName == actualFileName) {
                 fileItem.fileData = base64textString;
-                this._invoicefileCnt = this._invoicefileCnt + 1;
+                this._newRectifiedFileCnt = this._newRectifiedFileCnt + 1;
                 break;
             }
         }
 
-        if(this._tempInvoiceFilesList.length > 0 && this._tempInvoiceFilesList.length == this._invoicefileCnt) {
-            this.onInvoiceAttachFileClick();
+        if(this._tempNewRectifiedFilesList.length > 0 && this._tempNewRectifiedFilesList.length == this._newRectifiedFileCnt) {
+            this.onRectifiedFileAttachClick();
         }
     }
 
-    onInvoiceAttachFileClick() {
-        let invId = (this.invoiceUpdateResults && this.invoiceUpdateResults.invoiceDetails && this.invoiceUpdateResults.invoiceDetails.invoiceId) ?
-        this.invoiceUpdateResults.invoiceDetails.invoiceId : null;
+    onRectifiedFileAttachClick() {
+        let invId = this._appService.selectedPendingApprovalRecord.invoiceId;
         let filesReq: InvoiceDocumentReqModel = {
             invoiceId: invId,
-            userId: globalConstant.userDetails.isVendor ? globalConstant.userDetails.userEmail : globalConstant.userDetails.userId,
-            fileDetails: this._tempInvoiceFilesList
+            userId: globalConstant.userDetails.userId,
+            fileDetails: this._tempNewRectifiedFilesList
         }
 
         this._homeService.updateBusy(<BusyDataModel>{ isBusy: true, msg: "Attaching..." });
@@ -192,7 +186,7 @@ export class InvoiceApprovalsComponent implements OnInit {
                     let results: InvoiceDocumentResultModel = response.body as InvoiceDocumentResultModel;
 
                     if (results.status.status == 200 && results.status.isSuccess) {
-                        this.additionalInvoiceFilesList = this.additionalInvoiceFilesList.concat(results.fileDetails);
+                        this.newRectifiedFilesList = this.newRectifiedFilesList.concat(results.fileDetails);
                     }
                 }
             },
@@ -224,14 +218,8 @@ export class InvoiceApprovalsComponent implements OnInit {
     }
 
     removefileFromList(fileIndex: number, fileType: string) {
-        if(fileType == 'invoice') {
-            if(this.additionalInvoiceFilesList.length > 0) {
-                this.additionalInvoiceFilesList.splice(fileIndex, 1);
-            }
-        } else {
-            // if(this.supportingFilesList.length > 0) {
-            //     this.supportingFilesList.splice(fileIndex, 1);
-            // }
+        if(this.newRectifiedFilesList.length > 0) {
+            this.newRectifiedFilesList.splice(fileIndex, 1);
         }
     }
 
@@ -246,6 +234,9 @@ export class InvoiceApprovalsComponent implements OnInit {
 
             let supportFileTypeItem: InvoiceFileTypwModel = this.initDetails.invoiceFileTypes.find(ft => ft.fileType == "support");
             this.supportFileTypeId = supportFileTypeItem.invoiceFileTypesId;
+
+            let rectifiedFileTypeItem: InvoiceFileTypwModel = this.initDetails.invoiceFileTypes.find(ft => ft.fileType == "rectified");
+            this.rectifiedFileTypeId = rectifiedFileTypeItem.invoiceFileTypesId;
         }
     }
 
@@ -358,6 +349,7 @@ export class InvoiceApprovalsComponent implements OnInit {
 
                 this.invoiceFilesList = this.initDetails.invoiceFilesList;
                 this.supportFilesList = this.initDetails.supportFilesList;
+                this.rectifiedFilesList = this.initDetails.rectifiedFilesList;
 
                 this.updateGrnSesItemsDisplayData();
             }

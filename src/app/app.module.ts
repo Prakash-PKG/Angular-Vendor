@@ -85,6 +85,9 @@ import { UserIdleModule } from 'angular-user-idle';
 import { ContactComponent } from './contact/contact.component';
 import { InvoiceCommunicationDialogComponent } from './invoice-communication-dialog/invoice-communication-dialog.component';
 
+import { BotDetectCaptchaModule } from 'angular-captcha';
+import { AppCaptchaComponent } from './app-captcha/app-captcha.component';
+
 @NgModule({
     declarations: [
         AppComponent,
@@ -118,7 +121,8 @@ import { InvoiceCommunicationDialogComponent } from './invoice-communication-dia
         VendorLoginComponent,
         GrnSesItemsComponent,
         ContactComponent,
-        InvoiceCommunicationDialogComponent
+        InvoiceCommunicationDialogComponent,
+        AppCaptchaComponent
     ],
     imports: [
         BrowserModule,
@@ -168,6 +172,7 @@ import { InvoiceCommunicationDialogComponent } from './invoice-communication-dia
         MatToolbarModule,
         MatTooltipModule,
         NativeDateModule,
+        BotDetectCaptchaModule,
         MsAdalAngular6Module.forRoot(getDevAdalConfig),
         // Optionally you can set time for `idle`, `timeout` and `ping` in seconds.
         // Default values: `idle` is 600 (10 minutes), `timeout` is 300 (5 minutes) 
