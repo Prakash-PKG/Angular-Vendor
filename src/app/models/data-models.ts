@@ -222,6 +222,7 @@ export class InvoiceModel {
     projectName: string;
     accountAssignmenCategory: string;
     documentType: string;
+    paymentStatus: string;
 }
 
 export class InvoiceSearchRequestModel {

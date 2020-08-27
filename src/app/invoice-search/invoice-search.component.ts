@@ -80,6 +80,20 @@ export class InvoiceSearchComponent implements OnInit {
         private _datePipe: DatePipe,
         private _invoiceSearchService: InvoiceSearchService) { }
 
+    getPaymentStatus(inv: InvoiceModel) {
+        let paymentStatus: string = "";
+        if(inv && inv.statusCode == "approved-finance") {
+            if(inv.paymentStatus) {
+                paymentStatus = inv.paymentStatus;
+            }
+            else {
+                paymentStatus = "in progress";
+            }
+        }
+
+        return paymentStatus;
+    }
+
     onPrintVoucherClick(inv: InvoiceModel) {
         let req: VoucherReqModel = {
             invoiceId: inv.invoiceId
