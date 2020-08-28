@@ -113,7 +113,7 @@ export class LoginComponent implements OnInit {
 
     ngOnInit() {
         this.isSessionExpireVisible = false;
-        this._homeService.updateSessionExpireDetails(false);
+        //this._homeService.updateSessionExpireDetails(false);
         this.isFormSubmitted = false;
         this.loading = false;
         this.loginForm = this._formBuilder.group({

@@ -28,5 +28,10 @@ export const globalConstant : any = {
         functionalHeadDepts: [],
         functionalHeadProjects: [],
         invDepts: []
+    },
+    sessionTimeout: {
+        idle: 1200,
+        timeout: 300,
+        ping: 120
     }
 }
