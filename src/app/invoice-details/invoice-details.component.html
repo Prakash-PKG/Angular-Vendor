@@ -167,6 +167,20 @@
                         </td>
                     </tr>
                     <tr>
+                        <th>
+                            Additional Documents:
+                        </th>
+                        <td>
+                            <div class="filename value" *ngFor="let sf of rectifiedFilesList; let sfInd = index">
+                                <mat-icon matTooltip=" {{ sf.actualFileName }}" (click)="downloadFile(sf)">description
+                                </mat-icon>
+                                <!-- <button mat-button mat-icon-button aria-label="Download" (click)="downloadFile(sf)">
+                            <mat-icon>save_alt</mat-icon>
+                        </button> *ngIf="isForPayments = true"-->
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
                         <td *ngIf = "isForPayments == true">
                             <div>
                                 <mat-form-field  class="search-row-element">

@@ -39,6 +39,7 @@ export class InvoiceDetailsComponent implements OnInit {
 
     invoiceFilesList: FileDetailsModel[] = [];
     supportFilesList: FileDetailsModel[] = [];
+    rectifiedFilesList: FileDetailsModel[] = [];
 
     approvalLevelList: ApprovalLevelsModel[] = [];
 
@@ -378,6 +379,7 @@ export class InvoiceDetailsComponent implements OnInit {
 
                 this.invoiceFilesList = this._initDetails.invoiceFilesList;
                 this.supportFilesList = this._initDetails.supportFilesList;
+                this.rectifiedFilesList = this._initDetails.rectifiedFilesList;
 
                 if(this._initDetails.approvalsList && this._initDetails.approvalsList.length > 0) {
                     this.approvalLevelList = [];
