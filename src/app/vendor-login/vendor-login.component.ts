@@ -1,6 +1,6 @@
 import { LoginService } from './../login/login.service';
 import { HomeService } from './../home/home.service';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { CryptoService } from './../common/crypto.service';
@@ -8,6 +8,7 @@ import { AppService } from './../app.service';
 import { MatDialog } from '@angular/material';
 import { ForgotPasswordComponent } from '../forgot-password/forgot-password.component';
 import { ForgotPasswordData } from '../models/data-models';
+import { CaptchaComponent } from 'angular-captcha';
 
 @Component({
     selector: 'app-vendor-login',
@@ -16,6 +17,8 @@ import { ForgotPasswordData } from '../models/data-models';
 })
 export class VendorLoginComponent implements OnInit {
 
+    @ViewChild(CaptchaComponent) captchaComponent: CaptchaComponent;
+
     loginForm: FormGroup;
 
     isFormSubmitted: boolean = false;
@@ -23,6 +26,8 @@ export class VendorLoginComponent implements OnInit {
     loading: boolean = false;
     private _isSessionExpiredSubscription: any = null;
     isSessionExpireVisible: boolean = false;
+
+    capchaVal: string = "";
 
     constructor(private _router: Router,
         private _formBuilder: FormBuilder,
@@ -72,13 +77,52 @@ export class VendorLoginComponent implements OnInit {
         this.loading = true;
         this.errorMessage = '';
 
-        if (this.loginForm.valid) {
-            let userId: string = this.loginForm.get("userId").value;
-            let password: string = this.loginForm.get("password").value;
-            let loginType: string = "vendor";
+        if (this.loginForm.valid && this.captchaComponent.userEnteredCaptchaCode) {
 
-            this.checkVendorAuthentication(userId, password, loginType);
+            // get the user-entered captcha code value to be validated at the backend side        
+            let userEnteredCaptchaCode = this.captchaComponent.userEnteredCaptchaCode;
+
+            // get the id of a captcha instance that the user tried to solve
+            let captchaId = this.captchaComponent.captchaId;
+
+            const postData = {
+                userEnteredCaptchaCode: userEnteredCaptchaCode,
+                captchaId: captchaId
+            };
+
+            // post the captcha data to the backend
+            this._appService.validateCapcha(postData)
+                .subscribe(
+                response => {
+                    this.loading = false;
+                    if (response.success == false) {
+                        this.capchaVal = "";
+
+                        // captcha validation failed; reload image
+                        this.captchaComponent.reloadImage();
+                        // TODO: maybe display an error message, too
+                    } else {
+                        this.loading = true;
+
+                        let userId: string = this.loginForm.get("userId").value;
+                        let password: string = this.loginForm.get("password").value;
+                        let loginType: string = "vendor";
+
+                        this.checkVendorAuthentication(userId, password, loginType);
+                    }
+                },
+                (error) => {
+                    this.loading = false;
+                });
         }
+    }
+
+    isFormValid() {
+        if (this.loginForm.get("userId").invalid || this.loginForm.get("password").invalid || this.loading || !this.captchaComponent.userEnteredCaptchaCode) {
+            return true;
+        }
+
+        return false;
     }
 
     ngOnDestroy() {
@@ -88,6 +132,8 @@ export class VendorLoginComponent implements OnInit {
     }
 
     ngOnInit() {
+        this.captchaComponent.captchaEndpoint =
+            this._appService.baseUrl + 'simple-captcha-endpoint';
         this.isSessionExpireVisible = false;
 
         this.isFormSubmitted = false;
