@@ -921,7 +921,7 @@
                     </div>
                 </div>
 
-                <div class="form-group" *ngIf="isFinance && !isExistingVendor">
+                <div class="form-group" *ngIf="!isExistingVendor">
                     <mat-form-field class="full-width">
                         <textarea matInput placeholder="Remarks" formControlName="remarks"
                             autocomplete="off"></textarea>
