@@ -8,27 +8,21 @@ import { AppService } from './../app.service';
 import { MatDialog } from '@angular/material';
 import { ForgotPasswordComponent } from '../forgot-password/forgot-password.component';
 import { ForgotPasswordData } from '../models/data-models';
-import { CaptchaComponent, CaptchaService } from 'angular-captcha';
+import { CaptchaComponent } from 'angular-captcha';
 
 import {
     HttpRequest, HttpHandler, HttpEvent, HttpXsrfTokenExtractor, HttpInterceptor,
     HttpErrorResponse
 } from "@angular/common/http";
 
-
-
 @Component({
     selector: 'app-vendor-login',
     templateUrl: './vendor-login.component.html',
     styleUrls: ['./vendor-login.component.scss']
 })
-
 export class VendorLoginComponent implements OnInit {
 
     @ViewChild(CaptchaComponent) captchaComponent: CaptchaComponent;
-
-    @ViewChild(CaptchaService) captchaService: CaptchaService;
-
 
     loginForm: FormGroup;
 
