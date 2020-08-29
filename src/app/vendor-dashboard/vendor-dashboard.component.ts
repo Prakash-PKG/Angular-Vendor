@@ -51,11 +51,15 @@ export class VendorDashboardComponent implements OnInit {
 
         this._homeService.updateBusy(<BusyDataModel>{ isBusy: true, msg: "Loading..." });
         this._vendorDashService.getVendorList().subscribe(response => {
-            
+
             this._homeService.updateBusy(<BusyDataModel>{ isBusy: false, msg: null });
             if (response.body) {
                 let results: VendorMasterDetailsModel[] = response.body as VendorMasterDetailsModel[];
                 this.vendorList = results;
+                console.log(results.length);
+                console.log(this.vendorList.length);
+                this.vendorList = [].concat.apply([], results);
+                console.log(this.vendorList);
                 this.totalVendorList = this.vendorList.concat();
             }
         });
@@ -71,6 +75,8 @@ export class VendorDashboardComponent implements OnInit {
     }
 
     onSearchChange() {
+        
+        this.vendorList = this.totalVendorList;
 
         let vendorIdVal = this.vendorSearchForm.get("vendorId").value;
         let lcvendorIdVal = (vendorIdVal) ? vendorIdVal.toLowerCase() : "";
@@ -118,7 +124,7 @@ export class VendorDashboardComponent implements OnInit {
             vendorId: null,
             vendorName: null,
             mobileNum: null,
-            coCode:null
+            coCode: null
         });
 
         this.vendorSearchForm.get("vendorId").valueChanges.subscribe(val => {
