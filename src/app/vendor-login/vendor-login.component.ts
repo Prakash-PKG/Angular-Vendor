@@ -8,21 +8,27 @@ import { AppService } from './../app.service';
 import { MatDialog } from '@angular/material';
 import { ForgotPasswordComponent } from '../forgot-password/forgot-password.component';
 import { ForgotPasswordData } from '../models/data-models';
-import { CaptchaComponent } from 'angular-captcha';
+import { CaptchaComponent, CaptchaService } from 'angular-captcha';
 
 import {
     HttpRequest, HttpHandler, HttpEvent, HttpXsrfTokenExtractor, HttpInterceptor,
     HttpErrorResponse
 } from "@angular/common/http";
 
+
+
 @Component({
     selector: 'app-vendor-login',
     templateUrl: './vendor-login.component.html',
     styleUrls: ['./vendor-login.component.scss']
 })
+
 export class VendorLoginComponent implements OnInit {
 
     @ViewChild(CaptchaComponent) captchaComponent: CaptchaComponent;
+
+    @ViewChild(CaptchaService) captchaService: CaptchaService;
+
 
     loginForm: FormGroup;
 
@@ -138,15 +144,18 @@ export class VendorLoginComponent implements OnInit {
     }
 
     ngOnInit() {
-        let csrfToken = this._tokenExtractor.getToken() as string;
-        if(csrfToken) {
-            this.captchaComponent.captchaEndpoint =
-            this._appService.baseUrl + 'simple-captcha-endpoint?_csrf=' + csrfToken;
-        }
-        else {
-            this.captchaComponent.captchaEndpoint =
+        // let csrfToken = this._tokenExtractor.getToken() as string;
+        // if(csrfToken) {
+        //     this.captchaComponent.captchaEndpoint =
+        //     this._appService.baseUrl + 'simple-captcha-endpoint?_csrf=' + csrfToken;
+        // }
+        // else {
+        //     this.captchaComponent.captchaEndpoint =
+        //     this._appService.baseUrl + 'simple-captcha-endpoint';
+        // }
+
+        this.captchaComponent.captchaEndpoint =
             this._appService.baseUrl + 'simple-captcha-endpoint';
-        }
 
         this.isSessionExpireVisible = false;
 
