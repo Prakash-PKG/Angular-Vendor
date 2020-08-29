@@ -10,6 +10,11 @@ import { ForgotPasswordComponent } from '../forgot-password/forgot-password.comp
 import { ForgotPasswordData } from '../models/data-models';
 import { CaptchaComponent } from 'angular-captcha';
 
+import {
+    HttpRequest, HttpHandler, HttpEvent, HttpXsrfTokenExtractor, HttpInterceptor,
+    HttpErrorResponse
+} from "@angular/common/http";
+
 @Component({
     selector: 'app-vendor-login',
     templateUrl: './vendor-login.component.html',
@@ -35,7 +40,8 @@ export class VendorLoginComponent implements OnInit {
         private _homeService: HomeService,
         private _loginService: LoginService,
         private _cryptoService: CryptoService,
-        public dialog: MatDialog
+        public dialog: MatDialog,
+        private _tokenExtractor: HttpXsrfTokenExtractor
     ) {
     }
 
@@ -132,8 +138,16 @@ export class VendorLoginComponent implements OnInit {
     }
 
     ngOnInit() {
-        // this.captchaComponent.captchaEndpoint =
-        //     this._appService.baseUrl + 'simple-captcha-endpoint';
+        let csrfToken = this._tokenExtractor.getToken() as string;
+        if(csrfToken) {
+            this.captchaComponent.captchaEndpoint =
+            this._appService.baseUrl + 'simple-captcha-endpoint?_csrf=' + csrfToken;
+        }
+        else {
+            this.captchaComponent.captchaEndpoint =
+            this._appService.baseUrl + 'simple-captcha-endpoint';
+        }
+
         this.isSessionExpireVisible = false;
 
         this.isFormSubmitted = false;

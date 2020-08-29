@@ -175,9 +175,10 @@ import { globalConstant } from './common/global-constant';
         MatToolbarModule,
         MatTooltipModule,
         NativeDateModule,
-        BotDetectCaptchaModule.forRoot({
-            captchaEndpoint: 'https://mvendor-dev.marlabs.com/mvendor/simple-captcha-endpoint'
-        }),
+        BotDetectCaptchaModule,
+        // .forRoot({
+        //     captchaEndpoint: 'https://mvendor-dev.marlabs.com/mvendor/simple-captcha-endpoint'
+        // }),
         MsAdalAngular6Module.forRoot(getDevAdalConfig),
         // Optionally you can set time for `idle`, `timeout` and `ping` in seconds.
         // Default values: `idle` is 600 (10 minutes), `timeout` is 300 (5 minutes) 
