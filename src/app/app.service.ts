@@ -354,15 +354,4 @@ export class AppService {
     setSessionTimeCount(count: number) {
         this.sessionTimeCount.next(count);
     }
-
-    validateCapcha(data: Object): Observable<any> {
-        const options = {
-            headers: new HttpHeaders({ 'Content-Type': 'application/json; charset=utf-8' })
-        };
-
-        return this._http.post(
-            this.baseUrl + 'validateCapcha',
-            data, options);
-    }
-
 }

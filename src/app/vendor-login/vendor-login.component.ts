@@ -91,7 +91,7 @@ export class VendorLoginComponent implements OnInit {
             };
 
             // post the captcha data to the backend
-            this._appService.validateCapcha(postData)
+            this._loginService.validateCapcha(postData)
                 .subscribe(
                 response => {
                     this.loading = false;
