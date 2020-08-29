@@ -132,8 +132,8 @@ export class VendorLoginComponent implements OnInit {
     }
 
     ngOnInit() {
-        this.captchaComponent.captchaEndpoint =
-            this._appService.baseUrl + 'simple-captcha-endpoint';
+        // this.captchaComponent.captchaEndpoint =
+        //     this._appService.baseUrl + 'simple-captcha-endpoint';
         this.isSessionExpireVisible = false;
 
         this.isFormSubmitted = false;
