@@ -148,8 +148,8 @@ export class VendorLoginComponent implements OnInit {
         //     this._appService.baseUrl + 'simple-captcha-endpoint';
         // }
 
-        this.captchaComponent.captchaEndpoint =
-            this._appService.baseUrl + 'simple-captcha-endpoint';
+        // this.captchaComponent.captchaEndpoint =
+        //     this._appService.baseUrl + 'simple-captcha-endpoint';
 
         this.isSessionExpireVisible = false;
 
