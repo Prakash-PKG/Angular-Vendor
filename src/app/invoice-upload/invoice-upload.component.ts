@@ -3,19 +3,21 @@ import { MessageDialogComponent } from './../message-dialog/message-dialog.compo
 import { globalConstant } from './../common/global-constant';
 import { AppService } from './../app.service';
 import { InvoiceUploadService } from './invoice-upload.service';
-import { BusyDataModel, InvoiceUploadResultModel, InvoiceUploadReqModel, InvoiceDocumentReqModel, currencyMasterList, 
-        PODetailsModel, POItemsRequestModel, POItemsResultModel, ItemModel, FileDetailsModel, InvoiceFileTypwModel, 
-        UpdateInvoiceRequestModel, UpdateInvoiceResultModel, InvoiceDocumentResultModel, StatusModel,
-        VendorAutoCompleteModel, ProjectAutoCompleteModel, CompanyCodeMasterList, InvoiceExistReqModel,
-        NotRejectedItemsModel } from './../models/data-models';
-import { Component, OnInit } from '@angular/core';
+import {
+    BusyDataModel, InvoiceUploadResultModel, InvoiceUploadReqModel, InvoiceDocumentReqModel, currencyMasterList,
+    PODetailsModel, POItemsRequestModel, POItemsResultModel, ItemModel, FileDetailsModel, InvoiceFileTypwModel,
+    UpdateInvoiceRequestModel, UpdateInvoiceResultModel, InvoiceDocumentResultModel, StatusModel,
+    VendorAutoCompleteModel, ProjectAutoCompleteModel, CompanyCodeMasterList, InvoiceExistReqModel,
+    NotRejectedItemsModel
+} from './../models/data-models';
+import { Component, OnInit, HostListener } from '@angular/core';
 import { HomeService } from '../home/home.service';
 import { FormBuilder, FormGroup, FormArray, Validators, FormControl, AbstractControl } from '@angular/forms';
 import { debounceTime, tap, switchMap, finalize } from 'rxjs/operators';
 import { Router } from '@angular/router';
 import { MatSort, MatPaginator, MatTableDataSource, MatDialogRef, MAT_DIALOG_DATA, MatDialog } from '@angular/material';
-import {MomentDateAdapter, MAT_MOMENT_DATE_ADAPTER_OPTIONS} from '@angular/material-moment-adapter';
-import {DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE} from '@angular/material/core';
+import { MomentDateAdapter, MAT_MOMENT_DATE_ADAPTER_OPTIONS } from '@angular/material-moment-adapter';
+import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
 
 // Depending on whether rollup is used, moment needs to be imported differently.
 // Since Moment.js doesn't have a default export, we normally need to import using the `* as`
@@ -23,22 +25,22 @@ import {DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE} from '@angular/material/
 // the `default as` syntax.
 import * as _moment from 'moment';
 // tslint:disable-next-line:no-duplicate-imports
-import {default as _rollupMoment} from 'moment';
+import { default as _rollupMoment } from 'moment';
 
 const moment = _rollupMoment || _moment;
 
 // See the Moment.js docs for the meaning of these formats:
 // https://momentjs.com/docs/#/displaying/format/
 export const MY_FORMATS = {
-  parse: {
-    dateInput: 'LL',
-  },
-  display: {
-    dateInput: 'DD MMM YYYY',
-    monthYearLabel: 'MMM YYYY',
-    dateA11yLabel: 'LL',
-    monthYearA11yLabel: 'MMMM YYYY',
-  },
+    parse: {
+        dateInput: 'LL',
+    },
+    display: {
+        dateInput: 'DD MMM YYYY',
+        monthYearLabel: 'MMM YYYY',
+        dateA11yLabel: 'LL',
+        monthYearA11yLabel: 'MMMM YYYY',
+    },
 };
 
 @Component({
@@ -46,17 +48,17 @@ export const MY_FORMATS = {
     templateUrl: './invoice-upload.component.html',
     styleUrls: ['./invoice-upload.component.scss'],
     providers: [
-    // `MomentDateAdapter` can be automatically provided by importing `MomentDateModule` in your
-    // application's root module. We provide it at the component level here, due to limitations of
-    // our example generation script.
-    {
-      provide: DateAdapter,
-      useClass: MomentDateAdapter,
-      deps: [MAT_DATE_LOCALE, MAT_MOMENT_DATE_ADAPTER_OPTIONS]
-    },
+        // `MomentDateAdapter` can be automatically provided by importing `MomentDateModule` in your
+        // application's root module. We provide it at the component level here, due to limitations of
+        // our example generation script.
+        {
+            provide: DateAdapter,
+            useClass: MomentDateAdapter,
+            deps: [MAT_DATE_LOCALE, MAT_MOMENT_DATE_ADAPTER_OPTIONS]
+        },
 
-    {provide: MAT_DATE_FORMATS, useValue: MY_FORMATS},
-  ]
+        { provide: MAT_DATE_FORMATS, useValue: MY_FORMATS },
+    ]
 })
 export class InvoiceUploadComponent implements OnInit {
 
@@ -64,11 +66,11 @@ export class InvoiceUploadComponent implements OnInit {
     _sidebarExpansionSubscription: any = null;
 
     headerArr: string[] = [];
-    nonPOHeaderArr: string [] = ['Item No.', 'Item Desc', "HSN/SAC", 'Invoice Units', 'Rate', 'Amount'];
-    poHeaderArr: string[] = ['Item No.', 'Item Desc', "HSN/SAC", "From Date", "To Date", "Personnel Number", 'Order Units', 'Balance Units', "UOM", 
-                            'Invoice Units', 'Currency', 'Rate', 'Amount'];
-    poHeaderArrWithoutDates: string[] = ['Item No.', 'Item Desc', "HSN/SAC", 'Order Units', 'Balance Units', "UOM", 
-                            'Invoice Units', 'Currency', 'Rate', 'Amount'];
+    nonPOHeaderArr: string[] = ['Item No.', 'Item Desc', "HSN/SAC", 'Invoice Units', 'Rate', 'Amount'];
+    poHeaderArr: string[] = ['Item No.', 'Item Desc', "HSN/SAC", "From Date", "To Date", "Personnel Number", 'Order Units', 'Balance Units', "UOM",
+        'Invoice Units', 'Currency', 'Rate', 'Amount'];
+    poHeaderArrWithoutDates: string[] = ['Item No.', 'Item Desc', "HSN/SAC", 'Order Units', 'Balance Units', "UOM",
+        'Invoice Units', 'Currency', 'Rate', 'Amount'];
 
     _initDetails: InvoiceUploadResultModel = null;
     _poItemsResultDetails: POItemsResultModel = null;
@@ -125,12 +127,18 @@ export class InvoiceUploadComponent implements OnInit {
 
     //totalItemsAmtValid: boolean = false;
 
-    constructor(private _homeService: HomeService, 
-                private _appService: AppService,
-                private _formBuilder: FormBuilder,
-                private _router: Router,
-                public _dialog: MatDialog,
-                private _invoiceUploadService: InvoiceUploadService) { }
+    @HostListener('document:keydown.enter', ['$event'])
+    onKeydownHandler(event: KeyboardEvent) {
+        event.preventDefault();
+        this.onSubmitClick();
+    }
+
+    constructor(private _homeService: HomeService,
+        private _appService: AppService,
+        private _formBuilder: FormBuilder,
+        private _router: Router,
+        public _dialog: MatDialog,
+        private _invoiceUploadService: InvoiceUploadService) { }
 
     get f() { return this.invoiceUploadForm.controls; }
 
@@ -138,7 +146,7 @@ export class InvoiceUploadComponent implements OnInit {
 
     getPOProjectName() {
         let projectName: string = "";
-        if(this.selectedPOItem && this.selectedPOItem.projectName && this.selectedPOItem.projectId) {
+        if (this.selectedPOItem && this.selectedPOItem.projectName && this.selectedPOItem.projectId) {
             projectName = this.selectedPOItem.projectName + "( " + this.selectedPOItem.projectId + " )";
         }
 
@@ -159,26 +167,26 @@ export class InvoiceUploadComponent implements OnInit {
         this.isInvoiceValid = false;
 
         let venId: string = null;
-        if(this.selectedInvoiceType == 'po') {
+        if (this.selectedInvoiceType == 'po') {
             venId = (this.selectedPOItem && this.selectedPOItem.vendorId) ? this.selectedPOItem.vendorId : "";
         }
         else {
             let selVendor = this.invoiceUploadForm.get("vendorId").value;
-            if(selVendor && typeof(selVendor) == "object") {
+            if (selVendor && typeof (selVendor) == "object") {
                 venId = (selVendor as VendorAutoCompleteModel).vendorId;
             }
         }
-        
+
         let innvoiceNumber = this.invoiceUploadForm.get("invoiceNumber").value;
-        if(innvoiceNumber && venId) {
+        if (innvoiceNumber && venId) {
             let req: InvoiceExistReqModel = {
                 vendorId: venId,
                 innvoiceNumber: innvoiceNumber
             };
             this._homeService.updateBusy(<BusyDataModel>{ isBusy: true, msg: "Loading..." });
             let results = await this._invoiceUploadService.isInvoiceExist(req);
-            if(results) {
-                if(results.isSuccess) {
+            if (results) {
+                if (results.isSuccess) {
                     this.isInvoiceValid = true;
                 }
                 else {
@@ -188,7 +196,7 @@ export class InvoiceUploadComponent implements OnInit {
             else {
                 this.invoiceNumberErrMsg = "Invoice number is not valid."
             }
-            
+
             this._homeService.updateBusy(<BusyDataModel>{ isBusy: false, msg: null });
         }
     }
@@ -196,27 +204,27 @@ export class InvoiceUploadComponent implements OnInit {
     // vendor auto complete start
     registerVendorAutoComplete() {
         this.invoiceUploadForm.get("vendorId").valueChanges
-                    .pipe(debounceTime(300),
-                        tap( () =>  { this.isLoading = true; } ),
-                        switchMap( term => {
-                                            if(term && typeof term === 'string' ) {
-                                                let sText: string = term as string;
+            .pipe(debounceTime(300),
+            tap(() => { this.isLoading = true; }),
+            switchMap(term => {
+                if (term && typeof term === 'string') {
+                    let sText: string = term as string;
 
-                                                if(sText && sText.length > 1) {
-                                                    return this._invoiceUploadService.getVendorsData({ searchText: term });
-                                                }
-                                            }
-                                            
-                                            this.isLoading = false;
-                                            this.filteredVendors = [];
-                                            return [];
-                                            
-                                        } ),
-                        tap( () => { this.isLoading = false; } )
-                    )
-                    .subscribe(results => {
-                        this.filteredVendors = results as VendorAutoCompleteModel[];
-                    });
+                    if (sText && sText.length > 1) {
+                        return this._invoiceUploadService.getVendorsData({ searchText: term });
+                    }
+                }
+
+                this.isLoading = false;
+                this.filteredVendors = [];
+                return [];
+
+            }),
+            tap(() => { this.isLoading = false; })
+            )
+            .subscribe(results => {
+                this.filteredVendors = results as VendorAutoCompleteModel[];
+            });
     }
 
     displayVendor(v: VendorAutoCompleteModel) {
@@ -229,7 +237,7 @@ export class InvoiceUploadComponent implements OnInit {
     }
 
     getDisplayVendorName(v: VendorAutoCompleteModel) {
-        if(v) {
+        if (v) {
             return "<b>" + v.vendorName + "</b> (" + v.vendorId + ")";
         }
 
@@ -249,33 +257,33 @@ export class InvoiceUploadComponent implements OnInit {
         }, 500);
     }
 
-    
+
     // vendor auto complete end
 
     // projects auto complete start
     registerProjectAutoComplete() {
         this.invoiceUploadForm.get("projectId").valueChanges
-                    .pipe(debounceTime(300),
-                        tap( () =>  { this.isLoading = true; } ),
-                        switchMap( term => {
-                                            if(term && typeof term === 'string' ) {
-                                                let sText: string = term as string;
+            .pipe(debounceTime(300),
+            tap(() => { this.isLoading = true; }),
+            switchMap(term => {
+                if (term && typeof term === 'string') {
+                    let sText: string = term as string;
 
-                                                if(sText && sText.length > 1) {
-                                                    return this._invoiceUploadService.getProjectsData({ searchText: term });
-                                                }
-                                            }
-                                            
-                                            this.isLoading = false;
-                                            this.filteredProjects = [];
-                                            return [];
-                                            
-                                        } ),
-                        tap( () => { this.isLoading = false; } )
-                    )
-                    .subscribe(results => {
-                        this.filteredProjects = results as ProjectAutoCompleteModel[];
-                    });
+                    if (sText && sText.length > 1) {
+                        return this._invoiceUploadService.getProjectsData({ searchText: term });
+                    }
+                }
+
+                this.isLoading = false;
+                this.filteredProjects = [];
+                return [];
+
+            }),
+            tap(() => { this.isLoading = false; })
+            )
+            .subscribe(results => {
+                this.filteredProjects = results as ProjectAutoCompleteModel[];
+            });
     }
 
     displayProject(p: ProjectAutoCompleteModel) {
@@ -287,7 +295,7 @@ export class InvoiceUploadComponent implements OnInit {
     }
 
     getDisplayProjectName(p: ProjectAutoCompleteModel) {
-        if(p) {
+        if (p) {
             return "<b>" + p.projectId + "</b> (" + p.projectName + ")";
         }
 
@@ -306,7 +314,7 @@ export class InvoiceUploadComponent implements OnInit {
             }
         }, 500);
     }
-    
+
     //projects auto complete end
 
     onDeleteItemClick(rowInd: number) {
@@ -314,15 +322,15 @@ export class InvoiceUploadComponent implements OnInit {
         formsList.removeAt(rowInd);
         this.updateAmountDetails();
 
-        if(this.selectedInvoiceType == "non-po") {
+        if (this.selectedInvoiceType == "non-po") {
             this.updateNonPOItemNumbers();
         }
     }
 
     onInvoiceTypeChange(evtData) {
         this.resetAllFields();
-        
-        if(evtData.value == "po") {
+
+        if (evtData.value == "po") {
             this.headerArr = this.poHeaderArr.concat();
             this.invoiceUploadForm.get("poList").setValidators([Validators.required]);
 
@@ -364,7 +372,7 @@ export class InvoiceUploadComponent implements OnInit {
     updateNonPOItemNumbers() {
         const itemsFa: FormArray = <FormArray>this.invoiceUploadForm.controls['itemsList'];
         let itemNoVal: number = 0;
-        for(let i = 0; i < itemsFa.length; i++) {
+        for (let i = 0; i < itemsFa.length; i++) {
             itemNoVal = itemNoVal + 10;
             itemsFa.controls[i].get("itemNumber").setValue(itemNoVal);
         }
@@ -380,17 +388,17 @@ export class InvoiceUploadComponent implements OnInit {
     createNonPOItem() {
         let fg: FormGroup = this._formBuilder.group({
             itemId: null,
-            itemNumber: [ { value: null, disabled: true }, [Validators.required, Validators.pattern("^[0-9]*$")] ],
-            itemDescription: [ null, Validators.required ],
+            itemNumber: [{ value: null, disabled: true }, [Validators.required, Validators.pattern("^[0-9]*$")]],
+            itemDescription: [null, Validators.required],
             uom: null,
             orderedUnits: null,
             suppliedUnits: null,
             consumedUnits: null,
             balanceUnits: null,
-            invoiceUnits: [ null, Validators.required ],
-            unitPrice: [ null, Validators.required ],
+            invoiceUnits: [null, Validators.required],
+            unitPrice: [null, Validators.required],
             unitsAmt: null,
-            hsn: [ null, [Validators.required, Validators.maxLength(8), Validators.pattern("^[0-9]*$")] ],
+            hsn: [null, [Validators.required, Validators.maxLength(8), Validators.pattern("^[0-9]*$")]],
             createdBy: null,
             createdDate: null
         });
@@ -408,7 +416,7 @@ export class InvoiceUploadComponent implements OnInit {
     onInvoiceFileChange(event: any) {
         this.invoiceFilesErrMsg = "";
 
-        if(this.invoiceFilesList.length > 0) {
+        if (this.invoiceFilesList.length > 0) {
             this.invoiceFilesErrMsg = "More than one Invoice files can't be attached.";
         }
         else {
@@ -450,14 +458,14 @@ export class InvoiceUploadComponent implements OnInit {
             }
         }
 
-        if(this._tempInvoiceFilesList.length > 0 && this._tempInvoiceFilesList.length == this._invoicefileCnt) {
+        if (this._tempInvoiceFilesList.length > 0 && this._tempInvoiceFilesList.length == this._invoicefileCnt) {
             this.onInvoiceAttachFileClick();
         }
     }
 
     onInvoiceAttachFileClick() {
         let invId = (this.invoiceUpdateResults && this.invoiceUpdateResults.invoiceDetails && this.invoiceUpdateResults.invoiceDetails.invoiceId) ?
-        this.invoiceUpdateResults.invoiceDetails.invoiceId : null;
+            this.invoiceUpdateResults.invoiceDetails.invoiceId : null;
         let filesReq: InvoiceDocumentReqModel = {
             invoiceId: invId,
             userId: globalConstant.userDetails.isVendor ? globalConstant.userDetails.userEmail : globalConstant.userDetails.userId,
@@ -501,7 +509,7 @@ export class InvoiceUploadComponent implements OnInit {
             }
         }
 
-        if(this._tempSupportingFilesList.length > 0 && this._tempSupportingFilesList.length == this._supportingfileCnt) {
+        if (this._tempSupportingFilesList.length > 0 && this._tempSupportingFilesList.length == this._supportingfileCnt) {
             this.onSupportingAttachFileClick();
         }
     }
@@ -534,7 +542,7 @@ export class InvoiceUploadComponent implements OnInit {
 
     onSupportingAttachFileClick() {
         let invId = (this.invoiceUpdateResults && this.invoiceUpdateResults.invoiceDetails && this.invoiceUpdateResults.invoiceDetails.invoiceId) ?
-        this.invoiceUpdateResults.invoiceDetails.invoiceId : null;
+            this.invoiceUpdateResults.invoiceDetails.invoiceId : null;
         let filesReq: InvoiceDocumentReqModel = {
             userId: globalConstant.userDetails.isVendor ? globalConstant.userDetails.userEmail : globalConstant.userDetails.userId,
             invoiceId: invId,
@@ -545,7 +553,7 @@ export class InvoiceUploadComponent implements OnInit {
         this._invoiceUploadService.uploadInvoiceDocuments(filesReq)
             .subscribe(response => {
                 this._homeService.updateBusy(<BusyDataModel>{ isBusy: false, msg: null });
-                
+
                 if (response.body) {
                     let results: InvoiceDocumentResultModel = response.body as InvoiceDocumentResultModel;
 
@@ -557,16 +565,16 @@ export class InvoiceUploadComponent implements OnInit {
                     // }
                 }
             },
-                (error) => {
-                    this._homeService.updateBusy(<BusyDataModel>{ isBusy: false, msg: null });
-                    console.log(error);
-                });
+            (error) => {
+                this._homeService.updateBusy(<BusyDataModel>{ isBusy: false, msg: null });
+                console.log(error);
+            });
     }
 
     onInvoiceUnitsBlur(itemInd: number) {
         const itemsFa: FormArray = <FormArray>this.invoiceUploadForm.controls['itemsList'];
         let invoiceUnitsVal = itemsFa.controls[itemInd].get("invoiceUnits").value;
-        if(invoiceUnitsVal && !isNaN(invoiceUnitsVal) && Number(invoiceUnitsVal) > 0) {
+        if (invoiceUnitsVal && !isNaN(invoiceUnitsVal) && Number(invoiceUnitsVal) > 0) {
             let invoiceUnits = Number(invoiceUnitsVal).toFixed(3);
             itemsFa.controls[itemInd].get("invoiceUnits").setValue(invoiceUnits);
         }
@@ -580,7 +588,7 @@ export class InvoiceUploadComponent implements OnInit {
     onUnitPriceBlur(itemInd: number) {
         const itemsFa: FormArray = <FormArray>this.invoiceUploadForm.controls['itemsList'];
         let UnitPriceVal = itemsFa.controls[itemInd].get("unitPrice").value;
-        if(UnitPriceVal && !isNaN(UnitPriceVal)) {
+        if (UnitPriceVal && !isNaN(UnitPriceVal)) {
             let unitPrice = Number(UnitPriceVal).toFixed(3);
             itemsFa.controls[itemInd].get("unitPrice").setValue(unitPrice);
         }
@@ -607,7 +615,7 @@ export class InvoiceUploadComponent implements OnInit {
 
         let totalItemsAmt = 0;
         const itemsFa: FormArray = <FormArray>this.invoiceUploadForm.controls['itemsList'];
-        for(let i = 0; i < itemsFa.length; i++) {
+        for (let i = 0; i < itemsFa.length; i++) {
             let unitsAmtVal = itemsFa.controls[i].get("unitsAmt").value;
             let unitsAmt = (unitsAmtVal) ? +unitsAmtVal : 0;
             totalItemsAmt = totalItemsAmt + unitsAmt;
@@ -619,7 +627,7 @@ export class InvoiceUploadComponent implements OnInit {
 
     onFreightChargesBlur() {
         let freightChargesVal = this.invoiceUploadForm.get("freightCharges").value;
-        if(freightChargesVal && !isNaN(freightChargesVal)) {
+        if (freightChargesVal && !isNaN(freightChargesVal)) {
             let freightCharges = Number(freightChargesVal).toFixed(3);
             this.invoiceUploadForm.get("freightCharges").setValue(freightCharges);
         }
@@ -632,7 +640,7 @@ export class InvoiceUploadComponent implements OnInit {
 
     onTotalTaxBlur() {
         let totalTaxVal = this.invoiceUploadForm.get("totalTax").value;
-        if(totalTaxVal && !isNaN(totalTaxVal)) {
+        if (totalTaxVal && !isNaN(totalTaxVal)) {
             let totalTax = Number(totalTaxVal).toFixed(3);
             this.invoiceUploadForm.get("totalTax").setValue(totalTax);
         }
@@ -660,9 +668,9 @@ export class InvoiceUploadComponent implements OnInit {
     prepareInvoiceFileTypes() {
         this.invoiceFileTypeId = null;
         this.supportFileTypeId = null;
-        if(this._initDetails && this._initDetails.invoiceFileTypes && this._initDetails.invoiceFileTypes.length > 0) {
+        if (this._initDetails && this._initDetails.invoiceFileTypes && this._initDetails.invoiceFileTypes.length > 0) {
             let invoiceFileTypeItem: InvoiceFileTypwModel = this._initDetails.invoiceFileTypes.find(ft => ft.fileType == "invoice");
-            if(invoiceFileTypeItem) {
+            if (invoiceFileTypeItem) {
                 this.invoiceFileTypeId = invoiceFileTypeItem.invoiceFileTypesId;
             }
 
@@ -682,7 +690,7 @@ export class InvoiceUploadComponent implements OnInit {
         }
         this._homeService.updateBusy(<BusyDataModel>{ isBusy: true, msg: "Loading..." });
         this._initDetails = await this._invoiceUploadService.getInvoiceUploadInitData(req);
-        if(this._initDetails) {
+        if (this._initDetails) {
             this.prepareInvoiceFileTypes();
             this.poList = (this._initDetails.poList && this._initDetails.poList.length > 0) ? this._initDetails.poList.concat() : [];
             this.currencyList = (this._initDetails.currencyList && this._initDetails.currencyList.length > 0) ? this._initDetails.currencyList.concat() : [];
@@ -693,9 +701,9 @@ export class InvoiceUploadComponent implements OnInit {
         this.invoiceUploadForm.get("poList").valueChanges.subscribe(val => {
             this.isFromToMandatory = false;
             this.selectedPOItem = null;
-            if(val) {
-                this.selectedPOItem = this.poList.find( p => p.poNumber == val);
-                if(this.selectedPOItem.poDate) {
+            if (val) {
+                this.selectedPOItem = this.poList.find(p => p.poNumber == val);
+                if (this.selectedPOItem.poDate) {
                     this.minInvoiceDate = new Date(this.selectedPOItem.poDate);
                 }
                 else {
@@ -703,9 +711,9 @@ export class InvoiceUploadComponent implements OnInit {
                 }
                 this.currency = this.selectedPOItem.currencyType;
 
-                if(this.selectedPOItem.accountAssignmenCategory == '4' && 
+                if (this.selectedPOItem.accountAssignmenCategory == '4' &&
                     (this.selectedPOItem.documentType == 'ZFO' || this.selectedPOItem.documentType == 'ZHR')) {
-                    
+
                     this.isFromToMandatory = true;
                     this.headerArr = this.poHeaderArr.concat();
                 }
@@ -717,7 +725,7 @@ export class InvoiceUploadComponent implements OnInit {
         });
 
         this.invoiceUploadForm.get("currency").valueChanges.subscribe(val => {
-            if(val) {
+            if (val) {
                 this.currency = val;
             }
         });
@@ -728,7 +736,7 @@ export class InvoiceUploadComponent implements OnInit {
 
     onRemarksBlur() {
         let val: string = this.invoiceUploadForm.get("remarks").value;
-        if(val) {
+        if (val) {
             this.invoiceUploadForm.get("remarks").setValue(val.trim());
         }
     }
@@ -743,9 +751,9 @@ export class InvoiceUploadComponent implements OnInit {
         this._homeService.updateBusy(<BusyDataModel>{ isBusy: false, msg: null });
 
         let itemsList: ItemModel[] = this._poItemsResultDetails.itemsList.concat();
-        if(itemsList && itemsList.length > 0) {
+        if (itemsList && itemsList.length > 0) {
             const formsList = <FormArray>this.invoiceUploadForm.controls['itemsList'];
-            for(let i = 0; i < itemsList.length; i++) {
+            for (let i = 0; i < itemsList.length; i++) {
                 formsList.insert(formsList.length, this.createItem(itemsList[i]));
             }
         }
@@ -754,18 +762,18 @@ export class InvoiceUploadComponent implements OnInit {
     }
 
     onDeleteFileClick(fileDetails: FileDetailsModel, fileIndex: number, fileType: string) {
-        if(fileDetails.fileId) {
-            this._homeService.updateBusy(<BusyDataModel>{isBusy: true, msg: "Deleting..."});
+        if (fileDetails.fileId) {
+            this._homeService.updateBusy(<BusyDataModel>{ isBusy: true, msg: "Deleting..." });
             this._invoiceUploadService.deleteInvoiceFile(fileDetails)
                 .subscribe(response => {
-                    this._homeService.updateBusy(<BusyDataModel>{isBusy: false, msg: null});
+                    this._homeService.updateBusy(<BusyDataModel>{ isBusy: false, msg: null });
                     let result = response.body as StatusModel;
-                    if(result.isSuccess) {
+                    if (result.isSuccess) {
                         this.removefileFromList(fileIndex, fileType);
                     }
                 },
                 (error) => {
-                    this._homeService.updateBusy(<BusyDataModel>{isBusy: false, msg: null});
+                    this._homeService.updateBusy(<BusyDataModel>{ isBusy: false, msg: null });
                     console.log(error);
                 });
         }
@@ -775,12 +783,12 @@ export class InvoiceUploadComponent implements OnInit {
     }
 
     removefileFromList(fileIndex: number, fileType: string) {
-        if(fileType == 'invoice') {
-            if(this.invoiceFilesList.length > 0) {
+        if (fileType == 'invoice') {
+            if (this.invoiceFilesList.length > 0) {
                 this.invoiceFilesList.splice(fileIndex, 1);
             }
         } else {
-            if(this.supportingFilesList.length > 0) {
+            if (this.supportingFilesList.length > 0) {
                 this.supportingFilesList.splice(fileIndex, 1);
             }
         }
@@ -816,17 +824,17 @@ export class InvoiceUploadComponent implements OnInit {
             suppliedUnits: item.suppliedUnits,
             consumedUnits: item.consumedUnits,
             balanceUnits: balanceUnits.toFixed(3),
-            invoiceUnits: [ item.invoiceUnits, Validators.required ],
+            invoiceUnits: [item.invoiceUnits, Validators.required],
             unitPrice: item.unitPrice,
             unitsAmt: unitsAmt,
-            hsn: [ item.hsn, [Validators.required, Validators.maxLength(8), Validators.pattern("^[0-9]*$")] ],
+            hsn: [item.hsn, [Validators.required, Validators.maxLength(8), Validators.pattern("^[0-9]*$")]],
             fromDate: [null, validatorRequiredArr],
             toDate: [null, validatorRequiredArr],
             personnelNumber: item.personnelNumber ? item.personnelNumber : "",
             createdBy: item.createdBy,
             createdDate: item.createdDate
         },
-        { validator: [ this.invoiceGreaterThanBalance('invoiceUnits', 'balanceUnits', "itemNumber", "orderedUnits", "Invoice units shouldn't greater than Balance units.") ] });
+            { validator: [this.invoiceGreaterThanBalance('invoiceUnits', 'balanceUnits', "itemNumber", "orderedUnits", "Invoice units shouldn't greater than Balance units.")] });
 
         return fg;
     }
@@ -836,7 +844,7 @@ export class InvoiceUploadComponent implements OnInit {
             let invCtrl = group.controls[invoiceUnits];
             let balCtrl = group.controls[balanceUnits];
 
-            if(this.selectedInvoiceType == 'po') {
+            if (this.selectedInvoiceType == 'po') {
                 if (invCtrl.value && balCtrl.value) {
                     let invUnits: number = +invCtrl.value;
                     let balUnits: number = +balCtrl.value;
@@ -887,7 +895,7 @@ export class InvoiceUploadComponent implements OnInit {
                         };
                     }
                 }
-            }    
+            }
 
             return {};
         }
@@ -906,29 +914,29 @@ export class InvoiceUploadComponent implements OnInit {
         this.supportFilesErrMsg = "";
 
         let isInvFilesValid: boolean = true;
-        if(this.invoiceFilesList && this.invoiceFilesList.length == 0) {
+        if (this.invoiceFilesList && this.invoiceFilesList.length == 0) {
             this.invoiceFilesErrMsg = "Please select invoice file.";
             isInvFilesValid = false;
         }
         else {
             let nonAttachInvFiles: FileDetailsModel[] = this.invoiceFilesList.filter(f => f.fileId == null);
-            if(nonAttachInvFiles && nonAttachInvFiles.length > 0) {
+            if (nonAttachInvFiles && nonAttachInvFiles.length > 0) {
                 this.invoiceFilesErrMsg = "Please attach invoice file.";
                 isInvFilesValid = false;
             }
         }
 
         let isSupportingFilesValid: boolean = true;
-        if(this.supportingFilesList && this.supportingFilesList.length > 0) {
+        if (this.supportingFilesList && this.supportingFilesList.length > 0) {
             let nonAttachSupportFiles: FileDetailsModel[] = this.supportingFilesList.filter(f => f.fileId == null);
-            if(nonAttachSupportFiles && nonAttachSupportFiles.length > 0) {
+            if (nonAttachSupportFiles && nonAttachSupportFiles.length > 0) {
                 this.supportFilesErrMsg = "Please attach or remove selected support files.";
                 isSupportingFilesValid = false;
             }
         }
 
         let isCntrlsValid: boolean = false;
-        if((this.invoiceUploadForm.controls['itemsList'] as FormArray).length > 0 && this.invoiceUploadForm.valid) {
+        if ((this.invoiceUploadForm.controls['itemsList'] as FormArray).length > 0 && this.invoiceUploadForm.valid) {
             isCntrlsValid = true;
         }
 
@@ -938,7 +946,7 @@ export class InvoiceUploadComponent implements OnInit {
         //     this.totalItemsAmtValid = true;
         // }
 
-        if(isInvFilesValid && isSupportingFilesValid && isCntrlsValid && this.isInvoiceValid) {
+        if (isInvFilesValid && isSupportingFilesValid && isCntrlsValid && this.isInvoiceValid) {
             return true;
         }
 
@@ -948,14 +956,14 @@ export class InvoiceUploadComponent implements OnInit {
     updateInvoiceDetails(action: string) {
         this.isSubmitted = true;
 
-        if(!this.isUploadFormValid()) {
+        if (!this.isUploadFormValid()) {
             return false;
         }
 
 
         let poNumber = null;
-        if(this.selectedInvoiceType == 'po') {
-            if(!this.selectedPOItem) {
+        if (this.selectedInvoiceType == 'po') {
+            if (!this.selectedPOItem) {
                 return false;
             }
 
@@ -968,7 +976,7 @@ export class InvoiceUploadComponent implements OnInit {
 
         let itemsList: ItemModel[] = [];
         const itemsFa: FormArray = <FormArray>this.invoiceUploadForm.controls['itemsList'];
-        for(let i = 0; i < itemsFa.length; i++) {
+        for (let i = 0; i < itemsFa.length; i++) {
             let item: ItemModel = {
                 poNumber: poNumber,
                 itemNumber: itemsFa.controls[i].get("itemNumber").value,
@@ -995,14 +1003,14 @@ export class InvoiceUploadComponent implements OnInit {
         }
 
         let filesList: FileDetailsModel[] = [];
-        for(let invCnt = 0; invCnt < this.invoiceFilesList.length; invCnt++) {
-            if(this.invoiceFilesList[invCnt] && this.invoiceFilesList[invCnt].fileId) {
+        for (let invCnt = 0; invCnt < this.invoiceFilesList.length; invCnt++) {
+            if (this.invoiceFilesList[invCnt] && this.invoiceFilesList[invCnt].fileId) {
                 filesList.push(this.invoiceFilesList[invCnt]);
             }
         }
 
-        for(let sCnt = 0; sCnt < this.supportingFilesList.length; sCnt++) {
-            if(this.supportingFilesList[sCnt] && this.supportingFilesList[sCnt].fileId) {
+        for (let sCnt = 0; sCnt < this.supportingFilesList.length; sCnt++) {
+            if (this.supportingFilesList[sCnt] && this.supportingFilesList[sCnt].fileId) {
                 filesList.push(this.supportingFilesList[sCnt]);
             }
         }
@@ -1013,7 +1021,7 @@ export class InvoiceUploadComponent implements OnInit {
         let projName: string = null;
         let companyCode: string = null;
         let companyName: string = null;
-        if(this.selectedInvoiceType == 'po') {
+        if (this.selectedInvoiceType == 'po') {
             venId = this.selectedPOItem.vendorId;
             venName = this.selectedPOItem.vendorName;
             companyCode = this.selectedPOItem.companyCode;
@@ -1021,20 +1029,20 @@ export class InvoiceUploadComponent implements OnInit {
         }
         else {
             let selVendor = this.invoiceUploadForm.get("vendorId").value;
-            if(typeof(selVendor) == "object") {
+            if (typeof (selVendor) == "object") {
                 venId = (selVendor as VendorAutoCompleteModel).vendorId;
                 venName = (selVendor as VendorAutoCompleteModel).vendorName;
             }
 
             let selProject = this.invoiceUploadForm.get("projectId").value;
-            if(typeof(selProject) == "object") {
+            if (typeof (selProject) == "object") {
                 projId = (selProject as ProjectAutoCompleteModel).projectId;
                 projName = (selProject as ProjectAutoCompleteModel).projectName;
             }
 
             let selCompanyCode = this.invoiceUploadForm.get("companyCode").value;
             let selCompanyCodeObj: CompanyCodeMasterList = this.companiesList.find(c => c.companyCode == selCompanyCode);
-            if(selCompanyCodeObj) {
+            if (selCompanyCodeObj) {
                 companyCode = selCompanyCodeObj.companyCode;
                 companyName = selCompanyCodeObj.companyDesc;
             }
@@ -1110,9 +1118,9 @@ export class InvoiceUploadComponent implements OnInit {
     }
 
     totalItemsAmtValidator(control: AbstractControl) {
-        if(this.invoiceUploadForm) {
+        if (this.invoiceUploadForm) {
             let totalItemsAmtVal = this.invoiceUploadForm.get("totalItemsAmt").value;
-            if(totalItemsAmtVal && (Number(totalItemsAmtVal) > 0)) {
+            if (totalItemsAmtVal && (Number(totalItemsAmtVal) > 0)) {
                 return {};
             }
             else {
@@ -1121,7 +1129,7 @@ export class InvoiceUploadComponent implements OnInit {
                 }
             }
         }
-        
+
         return {};
     }
 
@@ -1143,14 +1151,14 @@ export class InvoiceUploadComponent implements OnInit {
         });
 
         this.invoiceUploadForm = this._formBuilder.group({
-            poList: [ null, Validators.required ],
-            invoiceNumber: [ null, Validators.required ],
-            invoiceDate: [ null, Validators.required ],
-            remarks: [ null, Validators.required ],
+            poList: [null, Validators.required],
+            invoiceNumber: [null, Validators.required],
+            invoiceDate: [null, Validators.required],
+            remarks: [null, Validators.required],
             freightCharges: null,
-            totalTax: [ null, Validators.required ],
-            totalItemsAmt: [ "", [this.totalItemsAmtValidator.bind(this)] ],
-            totalInvAmt: [ "" ],
+            totalTax: [null, Validators.required],
+            totalItemsAmt: ["", [this.totalItemsAmtValidator.bind(this)]],
+            totalInvAmt: [""],
             currency: null,
             vendorId: null,
             projectId: null,
@@ -1161,7 +1169,7 @@ export class InvoiceUploadComponent implements OnInit {
         });
 
         setTimeout(() => {
-           this.loadInitData();
+            this.loadInitData();
         }, 100);
     }
 
