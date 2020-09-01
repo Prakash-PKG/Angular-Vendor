@@ -83,48 +83,58 @@ export class VendorLoginComponent implements OnInit {
         this.loading = true;
         this.errorMessage = '';
 
-        if (this.loginForm.valid && this.captchaComponent.userEnteredCaptchaCode) {
+        let userId: string = this.loginForm.get("userId").value;
+        let password: string = this.loginForm.get("password").value;
+        let loginType: string = "vendor";
 
-            // get the user-entered captcha code value to be validated at the backend side        
-            let userEnteredCaptchaCode = this.captchaComponent.userEnteredCaptchaCode;
+        this.checkVendorAuthentication(userId, password, loginType);
 
-            // get the id of a captcha instance that the user tried to solve
-            let captchaId = this.captchaComponent.captchaId;
+        // if (this.loginForm.valid && this.captchaComponent.userEnteredCaptchaCode) {
 
-            const postData = {
-                userEnteredCaptchaCode: userEnteredCaptchaCode,
-                captchaId: captchaId
-            };
+        //     // get the user-entered captcha code value to be validated at the backend side        
+        //     let userEnteredCaptchaCode = this.captchaComponent.userEnteredCaptchaCode;
 
-            // post the captcha data to the backend
-            this._loginService.validateCapcha(postData)
-                .subscribe(
-                response => {
-                    this.loading = false;
-                    if (response.success == false) {
-                        this.capchaVal = "";
+        //     // get the id of a captcha instance that the user tried to solve
+        //     let captchaId = this.captchaComponent.captchaId;
 
-                        // captcha validation failed; reload image
-                        this.captchaComponent.reloadImage();
-                        // TODO: maybe display an error message, too
-                    } else {
-                        this.loading = true;
+        //     const postData = {
+        //         userEnteredCaptchaCode: userEnteredCaptchaCode,
+        //         captchaId: captchaId
+        //     };
 
-                        let userId: string = this.loginForm.get("userId").value;
-                        let password: string = this.loginForm.get("password").value;
-                        let loginType: string = "vendor";
+        //     // post the captcha data to the backend
+        //     this._loginService.validateCapcha(postData)
+        //         .subscribe(
+        //         response => {
+        //             this.loading = false;
+        //             if (response.success == false) {
+        //                 this.capchaVal = "";
 
-                        this.checkVendorAuthentication(userId, password, loginType);
-                    }
-                },
-                (error) => {
-                    this.loading = false;
-                });
-        }
+        //                 // captcha validation failed; reload image
+        //                 this.captchaComponent.reloadImage();
+        //                 // TODO: maybe display an error message, too
+        //             } else {
+        //                 this.loading = true;
+
+        //                 let userId: string = this.loginForm.get("userId").value;
+        //                 let password: string = this.loginForm.get("password").value;
+        //                 let loginType: string = "vendor";
+
+        //                 this.checkVendorAuthentication(userId, password, loginType);
+        //             }
+        //         },
+        //         (error) => {
+        //             this.loading = false;
+        //         });
+        // }
     }
 
     isFormValid() {
-        if (this.loginForm.get("userId").invalid || this.loginForm.get("password").invalid || this.loading || !this.captchaComponent.userEnteredCaptchaCode) {
+        // if (this.loginForm.get("userId").invalid || this.loginForm.get("password").invalid || this.loading || !this.captchaComponent.userEnteredCaptchaCode) {
+        //     return true;
+        // }
+    
+        if (this.loginForm.get("userId").invalid || this.loginForm.get("password").invalid || this.loading) {
             return true;
         }
 
