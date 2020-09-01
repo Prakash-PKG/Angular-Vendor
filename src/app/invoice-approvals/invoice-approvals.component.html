@@ -1,6 +1,6 @@
 <div class="main">
     <div class="title">
-        <h3>Pending Approvals - Invoice Approvals</h3>
+        <h3>Invoice Approval</h3>
     </div>
     <!-- -----------------------------------stepper---------------------------------------------- -->
     <ul class="stepper">
@@ -183,7 +183,7 @@
             </div>
         </div>
     </div>
-    <div class="flex-item" *ngIf = "rectifiedFilesList?.length > 0" >
+    <div class="flex-item" *ngIf = "rectifiedFilesList?.length > 0 || isOnRectified == true" >
         <div class="header">
             Additinal Documents
         </div>
@@ -331,7 +331,7 @@
             <button *ngIf = "isRejectVisible == true" mat-raised-button class="footer-actions" (click)="onRejectClick()">Reject</button>
             <button *ngIf = "isHoldVisible == true" mat-raised-button class="footer-actions" (click)="onHoldClick()">Send Back</button>
             <button *ngIf = "isOnHold == true" mat-raised-button class="footer-actions footer-actions-green"
-                (click)="onRectifyClick()">Rectified</button>
+                (click)="onRectifyClick()">Respond</button>
             <button *ngIf = "isOnHold == false" mat-raised-button class="footer-actions footer-actions-green"
                 (click)="onApproveClick()">{{ approveBtnTxt }}</button>
 

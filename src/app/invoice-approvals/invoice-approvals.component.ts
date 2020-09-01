@@ -151,6 +151,8 @@ export class InvoiceApprovalsComponent implements OnInit {
                 }
             }
         }
+
+        event.target.value = null;
     }
 
     private _handleRectifiedFileReaderLoaded(actualFileName, readerEvt) {
