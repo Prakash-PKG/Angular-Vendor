@@ -119,4 +119,14 @@ export class LoginService {
         return this.userId;
     }
 
+    validateCapcha(data: Object): Observable<any> {
+        let options = new RequestOptions({
+            headers: new Headers({ 'Content-Type': 'application/json; charset=utf-8' })
+        });
+
+        let url = this._appService.baseUrl + 'validateCapcha';
+
+        return this._http.post(url, data, options );
+    }
+
 }

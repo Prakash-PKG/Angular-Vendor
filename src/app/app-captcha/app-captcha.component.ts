@@ -31,6 +31,8 @@ export class AppCaptchaComponent implements OnInit {
             captchaId: captchaId
         };
 
+        console.log(postData);
+
         // post the captcha data to the backend
         this._appCaptchaService.send(postData)
             .subscribe(

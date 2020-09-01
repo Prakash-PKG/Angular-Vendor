@@ -1,61 +1,71 @@
+<div class="clsSessionExpiredMsg" *ngIf="isSessionExpireVisible == true">
+    Session Expired.
+</div>
 <div class="main">
-  <div class="container my-container">
+    <div class="container my-container">
 
-    <div class="row">
-      <div class="col-6">
-        <div class="backdrop"></div>
-      </div>
-      <div class="col-6">
-        <div class="logo"></div>
-      
-        <form [formGroup]="loginForm" class="login-form" (ngSubmit)="OnLoginClick()">
-          <div class="form-group">
-            <mat-form-field class="example-full-width">
-              <mat-label>Enter Email </mat-label>
-              <input matInput type="email" placeholder="Enter Email" formControlName="userId">
-              <mat-hint>(Enter valid Email ID)</mat-hint>
-              <mat-error *ngIf="(isFormSubmitted || f.userId.touched ) && f.userId.errors?.required" class="errortxt">
-                Employee Email is required</mat-error>
-                <mat-error *ngIf="(isFormSubmitted || f.userId.touched ) && f.userId.errors?.email" class="errortxt">
-                  Enter valid Email ID</mat-error>
-            </mat-form-field>
-          </div>
-
-          <!-- password Column -->
-
-          <div class="form-group">
-            <mat-form-field class="example-full-width">
-              <mat-label>Enter Password </mat-label>
-              <input matInput type="password" placeholder="Enter Password" formControlName="password">
-              <mat-hint>(Enter valid Password)</mat-hint>
-              <mat-error *ngIf="(isFormSubmitted || f.password.touched ) && f.password.errors?.required">Password is
-                required</mat-error>
-
-              <mat-error *ngIf="(isFormSubmitted || f.password.touched ) && f.password.errors?.minlength">Password must
-                contains at least 4 characters</mat-error>
-            </mat-form-field>
-
-          </div>
-          <!-- errors -->
-          <div class="errortxt loginerror">{{ errorMessage }}</div>
+        <div class="row">
+            <div class="col-6">
+                <div class="backdrop"></div>
+            </div>
+            <div class="col-6">
+                <div class="logo"></div>
 
 
-          <!--  login button -->
-          <div class="row actions margin-unset">
 
-            <a style="color: blueviolet; cursor: pointer;" (click)="onForgotPasswordClick()">
-              Forgot Password?
-            </a>
-            <button mat-raised-button type="submit" class=" footer-actions mat-elevation-z8"
-              [disabled]="f.userId.invalid || f.password.invalid || loading">
-              <i *ngIf="loading" class="fa fa-spin fa-spinner pull-right" style="padding:5px"
-                aria-hidden="true"></i>Sign
-              In</button>
-          </div>
-          
-        </form>
-        
-      </div>
+                <form [formGroup]="loginForm" class="login-form" >
+                    <div class="form-group">
+                        <mat-form-field class="example-full-width">
+                            <mat-label>Enter Email </mat-label>
+                            <input matInput type="email" placeholder="Enter Email" formControlName="userId">
+                            <mat-hint>(Enter valid Email ID)</mat-hint>
+                            <mat-error *ngIf="(isFormSubmitted || f.userId.touched ) && f.userId.errors?.required" class="errortxt">
+                                Employee Email is required</mat-error>
+                            <mat-error *ngIf="(isFormSubmitted || f.userId.touched ) && f.userId.errors?.email" class="errortxt">
+                                Enter valid Email ID</mat-error>
+                        </mat-form-field>
+                    </div>
+
+                    <!-- password Column -->
+
+                    <div class="form-group">
+                        <mat-form-field class="example-full-width">
+                            <mat-label>Enter Password </mat-label>
+                            <input matInput type="password" placeholder="Enter Password" formControlName="password">
+                            <mat-hint>(Enter valid Password)</mat-hint>
+                            <mat-error *ngIf="(isFormSubmitted || f.password.touched ) && f.password.errors?.required">Password is required
+                            </mat-error>
+
+                            <mat-error *ngIf="(isFormSubmitted || f.password.touched ) && f.password.errors?.minlength">Password must contains at least 4 characters</mat-error>
+                        </mat-form-field>
+
+                    </div>
+                     </form>
+
+                    <!-- errors -->
+                    <div class="errortxt loginerror">{{ errorMessage }}</div>
+                    <!--<div>
+                        <botdetect-captcha captchaStyleName="yourFirstCaptchaStyle"></botdetect-captcha>  
+                            <input id="captchaUserInput"
+                                name="captchaUserInput"
+                                ngModel
+                                [(ngModel)] = "capchaVal"
+                                #captchaUserInput="ngModel"  
+                                type="text" >
+                    </div>-->
+
+                    <!--  login button -->
+                    <div class="row actions margin-unset">
+
+                        <a style="color: blueviolet; cursor: pointer;" (click)="onForgotPasswordClick()">
+                        Forgot Password?
+                        </a>
+                        <button (click)="OnLoginClick()" mat-raised-button type="submit" class=" footer-actions mat-elevation-z8" [disabled]="isFormValid()">
+                            <i *ngIf="loading" class="fa fa-spin fa-spinner pull-right" style="padding:5px"
+                                aria-hidden="true"></i>Sign
+                            In</button>
+                    </div>
+            </div>
+        </div>
     </div>
-  </div>
 </div>

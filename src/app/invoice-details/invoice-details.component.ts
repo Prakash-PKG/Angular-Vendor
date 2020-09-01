@@ -247,6 +247,14 @@ export class InvoiceDetailsComponent implements OnInit {
         return "";
     }
 
+    getTDSAmount() {
+        if(this.invoicePaymentStatusDetails && this.invoicePaymentStatusDetails.tdsAmt) {
+            return this.invoicePaymentStatusDetails.tdsAmt + " " + this.currency;
+        }
+
+        return "";
+    }
+
     getPaidAmount() {
         if(this.invoicePaymentStatusDetails && this.invoicePaymentStatusDetails.invoiceAmountPaid) {
             return this.invoicePaymentStatusDetails.invoiceAmountPaid + " " + this.currency;
@@ -397,7 +405,7 @@ export class InvoiceDetailsComponent implements OnInit {
                         if(this.isSesSubContractPO == false) {
                             let poStatusCode = (poApprovalModel.statusCode == 'approved') ? 'received' : poApprovalModel.statusCode;
                             this.poLevel = {
-                                levelName: "Buyer",
+                                levelName: "Receiver",
                                 status: this._appService.statusNames[poStatusCode],
                                 date: (poApprovalModel.statusCode == this._appService.statusCodes.approved || poApprovalModel.statusCode == this._appService.statusCodes.rejected) ? this._appService.getFormattedDate(poApprovalModel.updatedDate) : "",
                                 remarks: poApprovalModel.remarks
@@ -409,7 +417,7 @@ export class InvoiceDetailsComponent implements OnInit {
                     let functionalHeadApprovalModel: InvoiceApprovalModel = this._initDetails.approvalsList.find(a => a.approvalLevel == this._appService.approvalLevels.functionalHead);
                     if(functionalHeadApprovalModel != null) {
                         this.fhLevel = {
-                            levelName: "Business Head",
+                            levelName: "Delivery Manager",
                             status: this._appService.statusNames[functionalHeadApprovalModel.statusCode],
                             date: (functionalHeadApprovalModel.statusCode == this._appService.statusCodes.approved || functionalHeadApprovalModel.statusCode == this._appService.statusCodes.rejected) ? this._appService.getFormattedDate(functionalHeadApprovalModel.updatedDate) : "",
                             remarks: functionalHeadApprovalModel.remarks

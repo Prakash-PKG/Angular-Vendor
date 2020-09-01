@@ -210,10 +210,7 @@ export class VendorApprovalComponent implements OnInit {
     //for document attachments
 
     updateFileDetails() {
-        // if(this.isExistingVendor && this.vendorDetails && this.vendorDetails.fileDetails && this.vendorDetails.fileDetails.length>0){
-        //     this.vendorApprovalInitDetails.vendorMasterDocumentVOList.forEach(item =>
-        //         this.filesMap[item.vendorMasterDocumentsId] = { filesList: [], isMandatory: item.isMandatory, isAttached: false, isError: false, isAttachWithoutValue: false });
-        //    }
+
         if (this.vendorApprovalInitDetails && this.vendorApprovalInitDetails.vendorMasterDocumentVOList &&
             this.vendorApprovalInitDetails.vendorMasterDocumentVOList.length > 0) {
             this.vendorApprovalInitDetails.vendorMasterDocumentVOList.forEach(item =>
@@ -604,11 +601,6 @@ export class VendorApprovalComponent implements OnInit {
         this.updateFileDetails();
         this._homeService.updateBusy(<BusyDataModel>{ isBusy: false, msg: null });
 
-    }
-
-    setDropDownValues(){
-        let viewStateCode = this.vendorDetails.stateCode;
-        this.regionMasterVOList = this.vendorApprovalInitDetails.regionMasterVOList.filter(r => r.regionCode == viewStateCode);
     }
 
     updateStates() {

@@ -87,6 +87,8 @@ import { InvoiceCommunicationDialogComponent } from './invoice-communication-dia
 
 import { BotDetectCaptchaModule } from 'angular-captcha';
 import { AppCaptchaComponent } from './app-captcha/app-captcha.component';
+import { SessionTimeoutDialogComponent } from './session-timeout-dialog/session-timeout-dialog.component';
+import { globalConstant } from './common/global-constant';
 
 @NgModule({
     declarations: [
@@ -122,7 +124,8 @@ import { AppCaptchaComponent } from './app-captcha/app-captcha.component';
         GrnSesItemsComponent,
         ContactComponent,
         InvoiceCommunicationDialogComponent,
-        AppCaptchaComponent
+        AppCaptchaComponent,
+        SessionTimeoutDialogComponent
     ],
     imports: [
         BrowserModule,
@@ -173,20 +176,25 @@ import { AppCaptchaComponent } from './app-captcha/app-captcha.component';
         MatTooltipModule,
         NativeDateModule,
         BotDetectCaptchaModule,
+        // .forRoot({
+        //     captchaEndpoint: 'https://mvendor-dev.marlabs.com/mvendor/simple-captcha-endpoint'
+        // }),
         MsAdalAngular6Module.forRoot(getDevAdalConfig),
         // Optionally you can set time for `idle`, `timeout` and `ping` in seconds.
         // Default values: `idle` is 600 (10 minutes), `timeout` is 300 (5 minutes) 
         // and `ping` is 120 (2 minutes).
         //UserIdleModule.forRoot({idle: 600, timeout: 300, ping: 120})
         //UserIdleModule.forRoot({idle: 10, timeout: 5, ping: 5})
-        UserIdleModule.forRoot({idle: 1200, timeout: 300, ping: 120})
+        //UserIdleModule.forRoot({idle: 1200, timeout: 300, ping: 120})
+        UserIdleModule.forRoot({ idle: globalConstant.sessionTimeout.idle, timeout: globalConstant.sessionTimeout.timeout, ping: globalConstant.sessionTimeout.ping })
     ],
      entryComponents: [
         ConfirmDialogComponent,
         MessageDialogComponent,
         ForgotPasswordComponent,
         InvoiceCommunicationDialogComponent,
-        GrnSesItemsComponent
+        GrnSesItemsComponent,
+        SessionTimeoutDialogComponent
     ],
     providers: [
         { provide: LocationStrategy, useClass: HashLocationStrategy },

@@ -16,7 +16,7 @@
             <span class="upper-text"></span>
             <span class="dot"></span>
             <span class="lower-text">
-                Buyer
+                Receiver
             </span>
         </li>
 
@@ -315,7 +315,7 @@
                         {{ item.totalAmt }}
                     </td>
                     <td>
-                        <mat-form-field class="full-width">
+                        <mat-form-field class="full-width" style="text-align: left;">
                             <input matInput placeholder="Remarks" [(ngModel)]="item.remarks" maxlength="35" (blur) = "onItemRemarksBlur(item)" autocomplete="off">
                         </mat-form-field>
                          

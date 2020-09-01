@@ -6,8 +6,9 @@ import {
 
 import { Injectable } from '@angular/core';
 import { DatePipe } from '@angular/common';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { UserIdleService } from 'angular-user-idle';
+import { Subject, Observable, BehaviorSubject } from 'rxjs';
 
 @Injectable({
     providedIn: 'root'
@@ -22,6 +23,9 @@ export class AppService {
     readonly customerAuthUrl = this.domain + "/customerAuth/oauth/token";
     readonly isForProduction: boolean = false;
     readonly isSSORequired: boolean = false;
+
+    private sessionTimeCount: Subject<number> = new BehaviorSubject<number>(0);
+    public sessionTimeCount$: Observable<number> = this.sessionTimeCount.asObservable();
 
     constructor(private _datePipe: DatePipe,
         private _http: HttpClient,
@@ -343,4 +347,12 @@ export class AppService {
         this._userIdleService.resetTimer();
     }
 
+    refreshSession() {
+        let url = this.baseUrl + "refreshSession/";
+        return this._http.get(url, { responseType: 'text', observe: 'response' });
+    }
+
+    setSessionTimeCount(count: number) {
+        this.sessionTimeCount.next(count);
+    }
 }

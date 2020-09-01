@@ -89,6 +89,9 @@
                     <th class="headers " scope="col" style="width: 9em;">
                         <span>Total Amt <small>(inc. tax)</small></span>
                     </th>
+                    <th class="headers" scope="col">
+                        <span>Payment Status</span>
+                    </th>
                     <th class="headers" scope="col" *ngIf = "isFinanceMember == true">
                         <span>Voucher Print</span>
                     </th>
@@ -127,6 +130,9 @@
                     </td>
                     <td class="amount tencharacters">
                         {{ inv.totalAmt }}
+                    </td>
+                    <td class="amount tencharacters">
+                        {{ getPaymentStatus(inv) }}
                     </td>
                     <td *ngIf = "isFinanceMember == true">
                         <div class="actions search-row-element" *ngIf = "inv?.statusCode == 'approved-finance'">

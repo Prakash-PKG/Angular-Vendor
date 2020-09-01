@@ -1,0 +1,12 @@
+<h1 mat-dialog-title>
+  {{title}}
+</h1>
+
+<div mat-dialog-content>
+  <p>Time remaining for session expire: {{time}} </p>
+  Click 
+    <button mat-button class="footer-actions" (click)="onCancel()">Cancel</button>
+ 
+  to avoid session expiration.
+
+</div>

@@ -222,6 +222,7 @@ export class InvoiceModel {
     projectName: string;
     accountAssignmenCategory: string;
     documentType: string;
+    paymentStatus: string;
 }
 
 export class InvoiceSearchRequestModel {
@@ -288,6 +289,7 @@ export class PaymentStatusDetailsModel {
     paymentDate: string;
     status: string;
     remarks: string;
+    tdsAmt: string;
 }
 
 export class ApprovalLevelsModel {
