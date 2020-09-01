@@ -444,6 +444,8 @@ export class InvoiceUploadComponent implements OnInit {
                 }
             }
         }
+
+        event.target.value = null;
     }
 
     private _handleInvoiceFileReaderLoaded(actualFileName, readerEvt) {
@@ -538,6 +540,8 @@ export class InvoiceUploadComponent implements OnInit {
                 }
             }
         }
+
+        event.target.value = null;
     }
 
     onSupportingAttachFileClick() {
