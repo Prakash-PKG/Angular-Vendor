@@ -190,12 +190,32 @@ export class InvoiceApprovalsComponent implements OnInit {
                     if (results.status.status == 200 && results.status.isSuccess) {
                         this.newRectifiedFilesList = this.newRectifiedFilesList.concat(results.fileDetails);
                     }
+                    else {
+                        this.displayFileUploadStatus(results.status.message);
+                    }
                 }
             },
             (error) => {
                 this._homeService.updateBusy(<BusyDataModel>{ isBusy: false, msg: null });
                 console.log(error);
+                this.displayFileUploadStatus("Files upload failed.");
             });
+    }
+
+    displayFileUploadStatus(msg: string) {
+        const dialogRef = this._dialog.open(MessageDialogComponent, {
+            disableClose: true,
+            panelClass: 'dialog-box',
+            width: '550px',
+            data: <MessageDialogModel>{
+                title: "Invoice Approval Action",
+                message: msg
+            }
+        });
+
+        dialogRef.afterClosed().subscribe(result => {
+            
+        });
     }
 
     onDeleteFileClick(fileDetails: FileDetailsModel, fileIndex: number, fileType: string) {
