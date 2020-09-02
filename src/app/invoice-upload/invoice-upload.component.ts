@@ -18,6 +18,7 @@ import { Router } from '@angular/router';
 import { MatSort, MatPaginator, MatTableDataSource, MatDialogRef, MAT_DIALOG_DATA, MatDialog } from '@angular/material';
 import { MomentDateAdapter, MAT_MOMENT_DATE_ADAPTER_OPTIONS } from '@angular/material-moment-adapter';
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 // Depending on whether rollup is used, moment needs to be imported differently.
 // Since Moment.js doesn't have a default export, we normally need to import using the `* as`
@@ -138,7 +139,25 @@ export class InvoiceUploadComponent implements OnInit {
         private _formBuilder: FormBuilder,
         private _router: Router,
         public _dialog: MatDialog,
+        private _http: HttpClient,
         private _invoiceUploadService: InvoiceUploadService) { }
+
+    onDownloadTemplateClick() {
+        this._invoiceUploadService.getNonPOTemplateFileData().subscribe(
+            (data) => {
+                const blob = new Blob([data.body], { type: 'application/octet-stream' });
+                const url = window.URL.createObjectURL(blob);
+
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = "NonPOInvoiceUploadTemplate.csv";
+                document.body.appendChild(a);
+                a.click();
+            },
+            error => {
+                console.log(error);
+            });
+    }
 
     get f() { return this.invoiceUploadForm.controls; }
 

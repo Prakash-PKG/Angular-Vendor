@@ -11,6 +11,8 @@
         <mat-radio-button class="tp-radio-button" value="non-po" (change)="onInvoiceTypeChange($event)">
             Non PO Invoice
         </mat-radio-button>
+
+        <button *ngIf="selectedInvoiceType == 'non-po'" mat-raised-button class="clsDownloadTemplate" (click)="onDownloadTemplateClick()">Download Template</button>
     </mat-radio-group>
 
     <form [formGroup]="invoiceUploadForm">
