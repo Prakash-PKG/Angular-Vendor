@@ -92,6 +92,8 @@ export class InvoiceApprovalsComponent implements OnInit {
 
     isChatBtnVisible: boolean = false;
 
+    documentType: string = null;
+
     constructor(private _homeService: HomeService,
                 private _appService: AppService,
                 private _router: Router,
@@ -299,6 +301,8 @@ export class InvoiceApprovalsComponent implements OnInit {
         this.isRejectVisible = false;
         this.isHoldVisible = false;
         if(this._appService.selectedPendingApprovalRecord) {
+
+            this.documentType = this._appService.selectedPendingApprovalRecord.documentType;
 
             if(globalConstant.userDetails.isPurchaseOwner || globalConstant.userDetails.isSubContractReceiver) {
                 this.isRejectVisible = true;
