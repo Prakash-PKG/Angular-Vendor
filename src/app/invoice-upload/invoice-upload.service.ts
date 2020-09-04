@@ -107,4 +107,9 @@ export class InvoiceUploadService {
         return this._http.get(url, { responseType: 'json'}).pipe(
                             tap((projectsList: any) => (projectsList as ProjectAutoCompleteModel[]) ));
     }
+
+    getNonPOTemplateFileData() {
+        let url = this._appService.baseUrl + 'downloadNonPOTemplate';
+        return this._http.get(url, { responseType: 'arraybuffer', observe: 'response' });
+    }
 }
