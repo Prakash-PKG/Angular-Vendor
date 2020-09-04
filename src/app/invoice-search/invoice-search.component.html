@@ -147,6 +147,7 @@
                 </tr>
             </tbody>
         </table>
-
+        <mat-paginator [length]="totalInvoiceList.length" [pageSize]="pageSize" [pageSizeOptions]="pageSizeOptions"
+        (page)="onPageChanged($event)"></mat-paginator>
     </div>
 </div>

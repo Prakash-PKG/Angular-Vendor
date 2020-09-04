@@ -37,6 +37,10 @@ export class VendorDashboardComponent implements OnInit {
     totalVendorList: VendorMasterDetailsModel[] = [];
     vendorSearchForm: FormGroup;
 
+    
+    pageSize = 25;
+    pageSizeOptions: number[] = [10, 25, 50, 100];
+
     headerArr: string[] = [];
 
     constructor(private _homeService: HomeService,
@@ -44,6 +48,16 @@ export class VendorDashboardComponent implements OnInit {
         private _router: Router,
         private _formBuilder: FormBuilder,
         private _vendorDashService: VendorDashboardService) { }
+
+        setPageSizeOptions(setPageSizeOptionsInput: string) {
+            this.pageSizeOptions = setPageSizeOptionsInput.split(',').map(str => +str);
+        }
+    
+        onPageChanged(e) {
+            let firstCut = e.pageIndex * e.pageSize;
+            let secondCut = firstCut + e.pageSize;
+            this.vendorList = this.totalVendorList.slice(firstCut, secondCut);
+        }
 
     loadInitData() {
         this.vendorList = [];
@@ -61,6 +75,8 @@ export class VendorDashboardComponent implements OnInit {
                 this.vendorList = [].concat.apply([], results);
                 console.log(this.vendorList);
                 this.totalVendorList = this.vendorList.concat();
+                this.vendorList = this.totalVendorList.slice(0, this.pageSize);
+ 
             }
         });
         (error) => {
