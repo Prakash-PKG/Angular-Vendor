@@ -12,7 +12,7 @@
             </span>
         </li>
 
-        <li class="step" [ngClass]="(isPOCompleted == true && documentType && documentType != 'ZHR' ) ? 'completed' : ''">
+        <li class="step" *ngIf = "documentType && documentType != 'ZHR'" [ngClass]="(isPOCompleted == true) ? 'completed' : ''">
             <span class="upper-text"></span>
             <span class="dot"></span>
             <span class="lower-text">
@@ -93,7 +93,8 @@
                         Invoice Documents
                     </div>
                     <div class="filename value" *ngFor="let ifile of invoiceFilesList; let ifileInd = index">
-                        <mat-icon style="cursor: pointer" matTooltip="{{ifile.actualFileName}}" (click)="downloadFile(ifile)">
+                        <mat-icon style="cursor: pointer" matTooltip="{{ifile.actualFileName}}"
+                            (click)="downloadFile(ifile)">
                             description
                         </mat-icon>
                     </div>
@@ -139,7 +140,8 @@
                         Supporting Documents
                     </div>
                     <div class="filename value" *ngFor="let sf of supportFilesList; let sfInd = index">
-                        <mat-icon style="cursor: pointer" matTooltip=" {{ sf.actualFileName }}" (click)="downloadFile(sf)">
+                        <mat-icon style="cursor: pointer" matTooltip=" {{ sf.actualFileName }}"
+                            (click)="downloadFile(sf)">
                             description
                         </mat-icon>
                     </div>
@@ -180,10 +182,42 @@
                         {{ initDetails?.invoiceDetails?.totalAmt }}
                     </div>
                 </div>
+                <div class="flex-item" *ngIf="rectifiedFilesList?.length > 0 || isOnRectified == true">
+                    <div class="header">
+                        Additinal Documents
+                    </div>
+                    <div class="filename value" *ngFor="let ifile of rectifiedFilesList; let ifileInd = index">
+                        <mat-icon style="cursor: pointer" matTooltip="{{ifile.actualFileName}}"
+                            (click)="downloadFile(ifile)">
+                            description
+                        </mat-icon>
+                    </div>
+                    <div *ngIf="isOnRectified == true">
+                        <input class="attachment-elements" style="display: none" [attr.id]="'rectifiedFileCtrl'"
+                            type="file" multiple accept=".xls,.xlsx,.doc,.docx,.pdf,.png,.jpg,.zip"
+                            (change)="onRectifiedFileChange($event)" />
+                        <button mat-raised-button class="clsBrowseAttach"
+                            (click)="onRectifiedFileBrowseClick($event)">Browse & Attach</button>
+                        <div class="filename attachment-elements"
+                            *ngFor="let f of newRectifiedFilesList; let fInd = index">
+                            <span>
+                                {{ f.actualFileName }}
+                                <button mat-button mat-icon-button aria-label="Delete"
+                                    (click)="onDeleteFileClick(f, fInd, 'invoice')">
+                                    <mat-icon>delete_outline</mat-icon>
+                                </button>
+                                <button *ngIf="f.fileId != null" mat-button mat-icon-button aria-label="Download"
+                                    (click)="downloadFile(f)">
+                                    <mat-icon>save_alt</mat-icon>
+                                </button>
+                            </span>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
-    <div class="flex-item" *ngIf = "rectifiedFilesList?.length > 0 || isOnRectified == true" >
+    <!-- <div class="flex-item" *ngIf = "rectifiedFilesList?.length > 0 || isOnRectified == true" >
         <div class="header">
             Additinal Documents
         </div>
@@ -211,9 +245,9 @@
                 </span>
             </div>
         </div>
-    </div>
+    </div> -->
     <div class="flex-container details">
-        <div class="flex-item" style=" flex-grow: 0;width: 38%;">
+        <div class="flex-item" style=" flex-grow: 0;width: 16%;">
             <div class="flex-container">
                 <div class="flex-item">
                     <div *ngIf="isGrnSesRequired == true && isGrnSesVisible == true">
@@ -247,7 +281,9 @@
         </div>
         <div class="flex-item">
             <mat-form-field class="full-width" style="margin-left: 20px">
-                <input matInput placeholder="Remarks" [(ngModel)]="remarks" maxlength="35" (blur) = "onRemarksBlur()" autocomplete="off">
+                <input matInput placeholder="Remarks" [(ngModel)]="remarks" maxlength="35" (blur)="onRemarksBlur()"
+                    autocomplete="off">
+                    <mat-error class="error-txt"> {{ remarksErrMsg }}</mat-error>
             </mat-form-field>
             <div class="error-txt">
                 {{ remarksErrMsg }}
@@ -255,7 +291,7 @@
         </div>
     </div>
 
-    
+
 
     <!--<div *ngIf = "isOnHold == true">
         Reason for rejected: {{ rejectedRemarks }}
@@ -281,13 +317,13 @@
                     <td class="eightcharacters">
                         {{ item.hsn }}
                     </td>
-                    <td *ngIf = "isFromToMandatory == true">
+                    <td *ngIf="isFromToMandatory == true">
                         {{ getFormattedDate(item.fromDate) }}
                     </td>
-                    <td *ngIf = "isFromToMandatory == true">
+                    <td *ngIf="isFromToMandatory == true">
                         {{ getFormattedDate(item.toDate) }}
                     </td>
-                    <td class="eightcharacters" *ngIf = "isFromToMandatory == true">
+                    <td class="eightcharacters" *ngIf="isFromToMandatory == true">
                         {{ item.personnelNumber }}
                     </td>
                     <td *ngIf="isPOInvoice == true" class="tencharacters">
@@ -316,9 +352,10 @@
                     </td>
                     <td>
                         <mat-form-field class="full-width" style="text-align: left;">
-                            <input matInput placeholder="Remarks" [(ngModel)]="item.remarks" maxlength="35" (blur) = "onItemRemarksBlur(item)" autocomplete="off">
+                            <input matInput placeholder="Remarks" [(ngModel)]="item.remarks" maxlength="35"
+                                (blur)="onItemRemarksBlur(item)" autocomplete="off">
                         </mat-form-field>
-                         
+
                     </td>
                 </tr>
             </tbody>
@@ -328,14 +365,17 @@
                 {{ msg }}
             </div>-->
             <button mat-raised-button class="footer-actions" (click)="onBackBtnClick()">Back</button>
-            <button *ngIf = "isRejectVisible == true" mat-raised-button class="footer-actions" (click)="onRejectClick()">Reject</button>
-            <button *ngIf = "isHoldVisible == true" mat-raised-button class="footer-actions" (click)="onHoldClick()">Send Back</button>
-            <button *ngIf = "isOnHold == true" mat-raised-button class="footer-actions footer-actions-green"
+            <button *ngIf="isRejectVisible == true" mat-raised-button class="footer-actions"
+                (click)="onRejectClick()">Reject</button>
+            <button *ngIf="isHoldVisible == true" mat-raised-button class="footer-actions" (click)="onHoldClick()">Send
+                Back</button>
+            <button *ngIf="isOnHold == true" mat-raised-button class="footer-actions footer-actions-green"
                 (click)="onRectifyClick()">Respond</button>
-            <button *ngIf = "isOnHold == false" mat-raised-button class="footer-actions footer-actions-green"
+            <button *ngIf="isOnHold == false" mat-raised-button class="footer-actions footer-actions-green"
                 (click)="onApproveClick()">{{ approveBtnTxt }}</button>
 
-            <button *ngIf = "isChatBtnVisible == true" mat-raised-button class="footer-actions" (click)="onCommunicationClick()">Chat</button>
+            <button *ngIf="isChatBtnVisible == true" mat-raised-button class="footer-actions"
+                (click)="onCommunicationClick()">Chat</button>
         </div>
     </div>
 </div>

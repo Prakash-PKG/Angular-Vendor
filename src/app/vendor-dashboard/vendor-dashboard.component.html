@@ -67,15 +67,15 @@
                     <td class="eightcharacters" (click)="onVendorClick(vendor)" style="cursor:pointer;">
                         {{ vendor.vendorId }}
                     </td>
-                    
-                    <td class="eightcharacters" >
+
+                    <td class="eightcharacters">
                         {{ vendor.vendorMasterId }}
                     </td>
                     <td>
                         {{ vendor.vendorName }}
                     </td>
 
-                    <td class="eightcharacters" >
+                    <td class="eightcharacters">
                         {{ vendor.companyCode }}
                     </td>
 
@@ -88,6 +88,7 @@
                 </tr>
             </tbody>
         </table>
-
+        <mat-paginator [length]="totalVendorList.length" [pageSize]="pageSize" [pageSizeOptions]="pageSizeOptions"
+        (page)="onPageChanged($event)"></mat-paginator>
     </div>
 </div>
