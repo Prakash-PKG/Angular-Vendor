@@ -73,12 +73,26 @@ export class InvoiceSearchComponent implements OnInit {
 
     isFinanceMember: boolean = false;
 
+    pageSize = 25;
+    pageSizeOptions: number[] = [10, 25, 50, 100];
+
+
     constructor(private _homeService: HomeService,
         private _appService: AppService,
         private _router: Router,
         private _formBuilder: FormBuilder,
         private _datePipe: DatePipe,
         private _invoiceSearchService: InvoiceSearchService) { }
+
+        setPageSizeOptions(setPageSizeOptionsInput: string) {
+            this.pageSizeOptions = setPageSizeOptionsInput.split(',').map(str => +str);
+        }
+    
+        onPageChanged(e) {
+            let firstCut = e.pageIndex * e.pageSize;
+            let secondCut = firstCut + e.pageSize;
+            this.invoiceList = this.totalInvoiceList.slice(firstCut, secondCut);
+        }
 
     getPaymentStatus(inv: InvoiceModel) {
         let paymentStatus: string = "";
@@ -254,6 +268,8 @@ export class InvoiceSearchComponent implements OnInit {
         if (this._initDetails && this._initDetails.invoiceList && this._initDetails.invoiceList.length > 0) {
             this.invoiceList = this._initDetails.invoiceList.concat();
             this.totalInvoiceList = this.invoiceList.concat();
+
+            this.invoiceList = this.totalInvoiceList.slice(0, this.pageSize);
         }
         this._homeService.updateBusy(<BusyDataModel>{ isBusy: false, msg: null });
     }

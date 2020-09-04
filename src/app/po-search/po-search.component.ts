@@ -69,12 +69,28 @@ export class PoSearchComponent implements OnInit {
 
     isVendor: boolean = false;
 
+    pageSize = 25;
+    pageSizeOptions: number[] = [10, 25, 50, 100];
+
+
     constructor(private _homeService: HomeService,
-                private _appService: AppService,
-                private _router: Router,
-                private _formBuilder: FormBuilder,
-                private _datePipe: DatePipe,
-                private _poSearchService: PoSearchService) { }
+        private _appService: AppService,
+        private _router: Router,
+        private _formBuilder: FormBuilder,
+        private _datePipe: DatePipe,
+        private _poSearchService: PoSearchService) {
+    }
+
+
+    setPageSizeOptions(setPageSizeOptionsInput: string) {
+        this.pageSizeOptions = setPageSizeOptionsInput.split(',').map(str => +str);
+    }
+
+    onPageChanged(e) {
+        let firstCut = e.pageIndex * e.pageSize;
+        let secondCut = firstCut + e.pageSize;
+        this.poList = this.totalPoList.slice(firstCut, secondCut);
+    }
 
     onPODownloadClick() {
         let req: POSearchReqModel = this.getPOSearchRequestData();
@@ -119,7 +135,7 @@ export class PoSearchComponent implements OnInit {
             isSubContractReceiver: false
         };
 
-        if(globalConstant.userDetails.isVendor) {
+        if (globalConstant.userDetails.isVendor) {
             req.vendorId = globalConstant.userDetails.userId;
         }
         else {
@@ -133,22 +149,22 @@ export class PoSearchComponent implements OnInit {
             //     req.approvalLevels.push(this._appService.approvalLevels.finance);
             // }
 
-            if(globalConstant.userDetails.isPurchaseOwner || globalConstant.userDetails.isInvoiceUploader) {
+            if (globalConstant.userDetails.isPurchaseOwner || globalConstant.userDetails.isInvoiceUploader) {
                 req.approvalLevels.push(this._appService.approvalLevels.po);
                 req.departments = req.departments.concat(globalConstant.userDetails.poDepts);
             }
 
-            if(globalConstant.userDetails.isFunctionalHead) {
+            if (globalConstant.userDetails.isFunctionalHead) {
                 req.approvalLevels.push(this._appService.approvalLevels.functionalHead);
                 req.departments = req.departments.concat(globalConstant.userDetails.functionalHeadDepts);
                 req.projectIds = req.projectIds.concat(globalConstant.userDetails.functionalHeadProjects);
             }
 
-            if(globalConstant.userDetails.isFinance) {
+            if (globalConstant.userDetails.isFinance) {
                 req.approvalLevels.push(this._appService.approvalLevels.finance);
             }
 
-            if(req.departments && req.departments.length > 0) {
+            if (req.departments && req.departments.length > 0) {
                 req.departments = _.uniq(req.departments);
             }
         }
@@ -159,23 +175,27 @@ export class PoSearchComponent implements OnInit {
     async loadInitData() {
         this.poList = [];
         this.totalPoList = [];
-
         let req: POSearchReqModel = this.getPOSearchRequestData();
-
+       
         this._homeService.updateBusy(<BusyDataModel>{ isBusy: true, msg: "Loading..." });
         this._initDetails = await this._poSearchService.getPOList(req);
-        if(this._initDetails && this._initDetails.poList && this._initDetails.poList.length > 0) {
+        console.log(this._initDetails);
+        if (this._initDetails && this._initDetails.poList && this._initDetails.poList.length > 0) {
+
             this.poList = this._initDetails.poList.concat();
             this.totalPoList = this.poList.concat();
+          
+            this.poList = this.totalPoList.slice(0, this.pageSize);
+ 
         }
         this._homeService.updateBusy(<BusyDataModel>{ isBusy: false, msg: null });
     }
 
     getFormattedDate(dtStr: string) {
-        if(dtStr) {
+        if (dtStr) {
             return this._appService.getFormattedDate(dtStr);
         }
-        
+
         return "";
     }
 
@@ -185,6 +205,7 @@ export class PoSearchComponent implements OnInit {
     }
 
     onSearchChange() {
+        this.poList = this.totalPoList;
 
         let poNumberVal = this.poSearchForm.get("poNumber").value;
         let lcPoNumberVal = (poNumberVal) ? poNumberVal.toLowerCase() : "";
@@ -203,15 +224,15 @@ export class PoSearchComponent implements OnInit {
         let endDateVal = this.poSearchForm.get("endDate").value;
 
         this.poList = this.totalPoList.filter(function (req) {
-                                if ((req.poNumber && req.poNumber.toString().toLowerCase().indexOf(lcPoNumberVal) > -1) &&
-                                    (req.vendorId && req.vendorId.toString().toLowerCase().indexOf(lcVendorIdVal) > -1) &&
-                                    (req.projectId && req.projectId.toString().toLowerCase().indexOf(lcProjectIdVal) > -1) &&
-                                    (req.companyCode && req.companyCode.toString().toLowerCase().indexOf(lcEntityNo) > -1) &&
-                                    ((req.poDate && startDateVal) ? new Date(req.poDate) > startDateVal : true) &&
-                                    ((req.poDate && endDateVal) ? new Date(req.poDate) < endDateVal : true)) {
-                                    return true;
-                                }
-                            });
+            if ((req.poNumber && req.poNumber.toString().toLowerCase().indexOf(lcPoNumberVal) > -1) &&
+                (req.vendorId && req.vendorId.toString().toLowerCase().indexOf(lcVendorIdVal) > -1) &&
+                (req.projectId && req.projectId.toString().toLowerCase().indexOf(lcProjectIdVal) > -1) &&
+                (req.companyCode && req.companyCode.toString().toLowerCase().indexOf(lcEntityNo) > -1) &&
+                ((req.poDate && startDateVal) ? new Date(req.poDate) > startDateVal : true) &&
+                ((req.poDate && endDateVal) ? new Date(req.poDate) < endDateVal : true)) {
+                return true;
+            }
+        });
 
     }
 
@@ -266,7 +287,7 @@ export class PoSearchComponent implements OnInit {
         });
 
         setTimeout(() => {
-           this.loadInitData();
+            this.loadInitData();
         }, 100);
     }
 }
