@@ -442,25 +442,43 @@ export class InvoiceUploadComponent implements OnInit {
             this._tempInvoiceFilesList = [];
             this._invoicefileCnt = 0;
             if (event.target.files && event.target.files.length > 0) {
-                for (let f = 0; f < event.target.files.length; f++) {
-                    let file = event.target.files[f];
-                    if (file) {
-                        let fileDetails: FileDetailsModel = {
-                            actualFileName: file.name,
-                            uniqueFileName: null,
-                            fileData: null,
-                            documentTypeId: this.invoiceFileTypeId,
-                            fileId: null,
-                            createdDate: null,
-                            createdBy: null
-                        };
-                        this._tempInvoiceFilesList.push(fileDetails);
-
-                        let reader = new FileReader();
-                        reader.onload = this._handleInvoiceFileReaderLoaded.bind(this, file.name);
-                        reader.readAsBinaryString(file);
+                
+                let isExeFileExist: boolean = false;
+                for (let i = 0; i < event.target.files.length; i++) {
+                    let file = event.target.files[i];
+                    let ext = file.name.split('.').pop().toLowerCase();
+                    if(ext == 'exe') {
+                        isExeFileExist = true;
+                        break;
                     }
                 }
+
+                if(isExeFileExist) {
+                    this.displayFileUploadStatus("Can't attach exe file.");
+                }
+                else {
+                    for (let f = 0; f < event.target.files.length; f++) {
+                        let file = event.target.files[f];
+                        if (file) {
+                            let fileDetails: FileDetailsModel = {
+                                actualFileName: file.name,
+                                uniqueFileName: null,
+                                fileData: null,
+                                documentTypeId: this.invoiceFileTypeId,
+                                fileId: null,
+                                createdDate: null,
+                                createdBy: null
+                            };
+                            this._tempInvoiceFilesList.push(fileDetails);
+
+                            let reader = new FileReader();
+                            reader.onload = this._handleInvoiceFileReaderLoaded.bind(this, file.name);
+                            reader.readAsBinaryString(file);
+                        }
+                    }
+                }
+                
+                
             }
         }
 
@@ -543,23 +561,39 @@ export class InvoiceUploadComponent implements OnInit {
         this._tempSupportingFilesList = [];
         this._supportingfileCnt = 0;
         if (event.target.files && event.target.files.length > 0) {
-            for (let f = 0; f < event.target.files.length; f++) {
-                let file = event.target.files[f];
-                if (file) {
-                    let fileDetails: FileDetailsModel = {
-                        actualFileName: file.name,
-                        uniqueFileName: null,
-                        fileData: null,
-                        documentTypeId: this.supportFileTypeId,
-                        fileId: null,
-                        createdDate: null,
-                        createdBy: null
-                    };
-                    this._tempSupportingFilesList.push(fileDetails);
 
-                    let reader = new FileReader();
-                    reader.onload = this._handleSuportingReaderLoaded.bind(this, file.name);
-                    reader.readAsBinaryString(file);
+            let isExeFileExist: boolean = false;
+            for (let i = 0; i < event.target.files.length; i++) {
+                let file = event.target.files[i];
+                let ext = file.name.split('.').pop().toLowerCase();
+                if(ext == 'exe') {
+                    isExeFileExist = true;
+                    break;
+                }
+            }
+
+            if(isExeFileExist) {
+                this.displayFileUploadStatus("Can't attach exe file.");
+            }
+            else {
+                for (let f = 0; f < event.target.files.length; f++) {
+                    let file = event.target.files[f];
+                    if (file) {
+                        let fileDetails: FileDetailsModel = {
+                            actualFileName: file.name,
+                            uniqueFileName: null,
+                            fileData: null,
+                            documentTypeId: this.supportFileTypeId,
+                            fileId: null,
+                            createdDate: null,
+                            createdBy: null
+                        };
+                        this._tempSupportingFilesList.push(fileDetails);
+
+                        let reader = new FileReader();
+                        reader.onload = this._handleSuportingReaderLoaded.bind(this, file.name);
+                        reader.readAsBinaryString(file);
+                    }
                 }
             }
         }
