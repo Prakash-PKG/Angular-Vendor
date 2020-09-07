@@ -16,13 +16,13 @@
                 <form [formGroup]="loginForm" class="login-form" >
                     <div class="form-group">
                         <mat-form-field class="example-full-width">
-                            <mat-label>Enter Email </mat-label>
-                            <input matInput type="email" placeholder="Enter Email" formControlName="userId">
-                            <mat-hint>(Enter valid Email ID)</mat-hint>
+                            <mat-label>User Name</mat-label>
+                            <input matInput type="text" placeholder="User Name" formControlName="userId">
+                            <mat-hint>(Enter valid User Name)</mat-hint>
                             <mat-error *ngIf="(isFormSubmitted || f.userId.touched ) && f.userId.errors?.required" class="errortxt">
-                                Employee Email is required</mat-error>
-                            <mat-error *ngIf="(isFormSubmitted || f.userId.touched ) && f.userId.errors?.email" class="errortxt">
-                                Enter valid Email ID</mat-error>
+                                User Name is required</mat-error>
+                            <!--<mat-error *ngIf="(isFormSubmitted || f.userId.touched ) && f.userId.errors?.email" class="errortxt">
+                                Enter valid Email ID</mat-error>-->
                         </mat-form-field>
                     </div>
 
@@ -30,8 +30,8 @@
 
                     <div class="form-group">
                         <mat-form-field class="example-full-width">
-                            <mat-label>Enter Password </mat-label>
-                            <input matInput type="password" placeholder="Enter Password" formControlName="password">
+                            <mat-label>Password </mat-label>
+                            <input matInput type="password" placeholder="Password" formControlName="password">
                             <mat-hint>(Enter valid Password)</mat-hint>
                             <mat-error *ngIf="(isFormSubmitted || f.password.touched ) && f.password.errors?.required">Password is required
                             </mat-error>

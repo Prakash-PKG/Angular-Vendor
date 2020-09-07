@@ -166,7 +166,7 @@ export class VendorLoginComponent implements OnInit {
         this.isFormSubmitted = false;
         this.loading = false;
         this.loginForm = this._formBuilder.group({
-            userId: [null, [Validators.required, Validators.email]],
+            userId: [null, [Validators.required]],
             password: [null, [Validators.required, Validators.minLength(4)]]
         });
 
