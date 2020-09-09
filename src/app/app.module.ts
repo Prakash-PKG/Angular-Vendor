@@ -90,6 +90,8 @@ import { AppCaptchaComponent } from './app-captcha/app-captcha.component';
 import { SessionTimeoutDialogComponent } from './session-timeout-dialog/session-timeout-dialog.component';
 import { globalConstant } from './common/global-constant';
 
+import { RecaptchaModule, RECAPTCHA_SETTINGS, RecaptchaSettings, RecaptchaFormsModule } from 'ng-recaptcha';
+
 @NgModule({
     declarations: [
         AppComponent,
@@ -176,6 +178,10 @@ import { globalConstant } from './common/global-constant';
         MatTooltipModule,
         NativeDateModule,
         BotDetectCaptchaModule,
+
+        RecaptchaModule,
+        RecaptchaFormsModule,
+
         // .forRoot({
         //     captchaEndpoint: 'https://mvendor-dev.marlabs.com/mvendor/simple-captcha-endpoint'
         // }),
@@ -202,7 +208,13 @@ import { globalConstant } from './common/global-constant';
         { provide: MAT_DATE_FORMATS, useValue: MAT_NATIVE_DATE_FORMATS },
         {provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: {duration: 2500}},
         DatePipe,
-        AuthenticationGuard
+        AuthenticationGuard,
+        {
+            provide: RECAPTCHA_SETTINGS,
+            useValue: {
+            siteKey: '6LegE8oZAAAAAJ3sX2P7sav-lf30GFNXzVnaKGYg',
+            } as RecaptchaSettings,
+        }
     ],
     bootstrap: [AppComponent]
 })
