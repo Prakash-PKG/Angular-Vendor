@@ -581,6 +581,9 @@ export class InvoiceApprovalModel {
     approverId: string;
     approvalLevel: string;
     remarks: string;
+    approvedDate: string;
+    onholdDate: string;
+    rectifiedDate: string;
     createdBy: string;
     createdDate: string;
     updatedBy: string;

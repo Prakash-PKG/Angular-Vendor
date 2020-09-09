@@ -24,6 +24,8 @@ export class XsrfInterceptor implements HttpInterceptor {
         let authToken = localStorage.getItem("x-auth-token");
         let csrfToken = this._tokenExtractor.getToken() as string;
 
+        console.log("csrf token: " + csrfToken);
+
         // let requestToForward = req.clone({
         //     headers: req.headers.set('Content-Type', 'application/json')
         //    // headers: req.headers.set('Content-Type', "multipart/form-data")
@@ -32,9 +34,9 @@ export class XsrfInterceptor implements HttpInterceptor {
         let requestToForward = req.clone();
 
         if (csrfToken !== null) {
-            requestToForward = requestToForward.clone({
-                headers: requestToForward.headers.set('X-XSRF-TOKEN', csrfToken)
-            });
+            // requestToForward = requestToForward.clone({
+            //     headers: requestToForward.headers.set('X-XSRF-TOKEN', csrfToken)
+            // });
         }
 
         if (authToken !== null) {
