@@ -40,19 +40,23 @@
                         </mat-form-field>
 
                     </div>
-                     </form>
+                     
 
                     <!-- errors -->
                     <div class="errortxt loginerror">{{ errorMessage }}</div>
                     <div>
-                        <botdetect-captcha captchaStyleName="yourFirstCaptchaStyle"></botdetect-captcha>  
+                        <!--<botdetect-captcha captchaStyleName="yourFirstCaptchaStyle"></botdetect-captcha>  
                             <input id="captchaUserInput"
                                 name="captchaUserInput"
                                 ngModel
                                 [(ngModel)] = "capchaVal"
                                 #captchaUserInput="ngModel"  
-                                type="text" >
+                                type="text" >-->
+                                
+                        <re-captcha formControlName="recaptchaReactive"></re-captcha>
                     </div>
+
+                    </form>
 
                     <!--  login button -->
                     <div class="row actions margin-unset">

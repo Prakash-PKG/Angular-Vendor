@@ -24,8 +24,6 @@ export class XsrfInterceptor implements HttpInterceptor {
         let authToken = localStorage.getItem("x-auth-token");
         let csrfToken = this._tokenExtractor.getToken() as string;
 
-        console.log("csrf token: " + csrfToken);
-
         // let requestToForward = req.clone({
         //     headers: req.headers.set('Content-Type', 'application/json')
         //    // headers: req.headers.set('Content-Type', "multipart/form-data")
