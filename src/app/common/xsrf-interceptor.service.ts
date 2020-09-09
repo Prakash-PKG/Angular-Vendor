@@ -34,9 +34,9 @@ export class XsrfInterceptor implements HttpInterceptor {
         let requestToForward = req.clone();
 
         if (csrfToken !== null) {
-            // requestToForward = requestToForward.clone({
-            //     headers: requestToForward.headers.set('X-XSRF-TOKEN', csrfToken)
-            // });
+            requestToForward = requestToForward.clone({
+                headers: requestToForward.headers.set('X-XSRF-TOKEN', csrfToken)
+            });
         }
 
         if (authToken !== null) {
