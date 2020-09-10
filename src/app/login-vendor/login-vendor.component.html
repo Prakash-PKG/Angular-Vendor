@@ -41,15 +41,19 @@
               <mat-error *ngIf="(isFormSubmitted || f.password.touched ) && f.password.errors?.required" class="errortxt">
                 OTP is required</mat-error>
             </mat-form-field>
+             <div>
+                <re-captcha formControlName="recaptchaReactive"></re-captcha>
+            </div>
 
           </div>
           <!-- errors -->
           <div class="errortxt loginerror">{{ errorMessage }}</div>
 
+         
           <!--  login button -->
           <div class="row actions margin-unset" *ngIf="haveOTP">
             <button mat-raised-button type="submit" class=" footer-actions mat-elevation-z8"
-              [disabled]="f.userId.invalid || f.password.invalid || isSignIn">
+              [disabled]="f.userId.invalid || f.password.invalid || f.recaptchaReactive.invalid || isSignIn">
               <i *ngIf="isSignIn" class="fa fa-spin fa-spinner pull-right" style="padding:5px"
                 aria-hidden="true"></i>Sign
               In</button>

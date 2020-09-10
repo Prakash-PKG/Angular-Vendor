@@ -93,7 +93,8 @@ export class LoginVendorComponent implements OnInit {
         this.isloading = false;
         this.loginForm = this._formBuilder.group({
             userId: [null, [Validators.required, Validators.email]],
-            password: [null, [Validators.required]]
+            password: [null, [Validators.required]],
+            recaptchaReactive: [null, [Validators.required]]
         });
     }
 }
