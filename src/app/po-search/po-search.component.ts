@@ -179,7 +179,6 @@ export class PoSearchComponent implements OnInit {
        
         this._homeService.updateBusy(<BusyDataModel>{ isBusy: true, msg: "Loading..." });
         this._initDetails = await this._poSearchService.getPOList(req);
-        console.log(this._initDetails);
         if (this._initDetails && this._initDetails.poList && this._initDetails.poList.length > 0) {
 
             this.poList = this._initDetails.poList.concat();

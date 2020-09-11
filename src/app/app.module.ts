@@ -212,13 +212,27 @@ import { RecaptchaModule, RECAPTCHA_SETTINGS, RecaptchaSettings, RecaptchaFormsM
         {
             provide: RECAPTCHA_SETTINGS,
             useValue: {
-            siteKey: '6LegE8oZAAAAAJ3sX2P7sav-lf30GFNXzVnaKGYg',
+            siteKey: getDevCaptchaSiteKey(),
             } as RecaptchaSettings,
         }
     ],
     bootstrap: [AppComponent]
 })
 export class AppModule { }
+
+export function getDevCaptchaSiteKey() {
+    // Label:       mvendor.dev.recapcha.com
+    // Site Key: 	6Le82soZAAAAAI47ijVhYo0y6f0xAThTCyecbq6I
+    // Secret Key:	6Le82soZAAAAAHqla_djqqIb5-6qud1Rr1UVqo10
+    return "6Le82soZAAAAAI47ijVhYo0y6f0xAThTCyecbq6I";
+}
+
+export function getProdCaptchaSiteKey() {
+    // Label:       mvendor.prod.recapcha.com
+    // Site Key:	6LdL28oZAAAAAB4A3Cm7KRGVDLAWMfBFSMuBlseK
+    // Secret Key:	6LdL28oZAAAAANuTrdDVO1K_-vbMSWU8ARdt-r8z
+    return "6LdL28oZAAAAAB4A3Cm7KRGVDLAWMfBFSMuBlseK";
+}
 
 
 export function getDevAdalConfig() {

@@ -499,7 +499,29 @@ export class InvoiceUploadComponent implements OnInit {
 
         if (this._tempInvoiceFilesList.length > 0 && this._tempInvoiceFilesList.length == this._invoicefileCnt) {
             this.onInvoiceAttachFileClick();
+            //this.getInvoiceFileData(readerEvt.target.result, actualFileName);
         }
+    }
+
+    getInvoiceFileData(fileData, actualFileName) {
+        let fileReq = null;
+        let fd = new FormData();
+        const blob = new Blob([fileData], { type: 'application/pdf' });
+        fd.append('file', blob, actualFileName);
+
+        this._homeService.updateBusy(<BusyDataModel>{ isBusy: true, msg: "Attaching..." });
+        this._invoiceUploadService.getInvoiceFileData(fd)
+            .subscribe(response => {
+                this._homeService.updateBusy(<BusyDataModel>{ isBusy: false, msg: null });
+                if (response) {
+                    
+                }
+            },
+            (error) => {
+                this._homeService.updateBusy(<BusyDataModel>{ isBusy: false, msg: null });
+                console.log(error);
+                //this.displayFileUploadStatus("Files upload failed.");
+            });
     }
 
     onInvoiceAttachFileClick() {
