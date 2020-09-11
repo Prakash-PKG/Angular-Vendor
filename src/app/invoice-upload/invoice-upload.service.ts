@@ -4,9 +4,10 @@ import { InvoiceUploadResultModel, InvoiceUploadReqModel, InvoiceDocumentReqMode
     ProjectAutoCompleteModel, InvoiceExistReqModel, StatusModel } from './../models/data-models';
 import { Injectable } from '@angular/core';
 import { AppService } from './../app.service';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { catchError, retry, tap, map, finalize } from 'rxjs/operators';
 import { Observable, throwError } from 'rxjs';
+import { Response, Headers, RequestOptions, Http, ResponseContentType } from '@angular/http';
 
 @Injectable({
     providedIn: 'root'
@@ -14,7 +15,8 @@ import { Observable, throwError } from 'rxjs';
 export class InvoiceUploadService {
 
     constructor(private _appService: AppService,
-                private _http: HttpClient) { }
+                private _http: HttpClient,
+                private _angularHttpClient: Http) { }
 
     async getInvoiceUploadInitData(req: InvoiceUploadReqModel) {
         let url = this._appService.baseUrl + "invUploadInitData";
@@ -111,5 +113,23 @@ export class InvoiceUploadService {
     getNonPOTemplateFileData() {
         let url = this._appService.baseUrl + 'downloadNonPOTemplate';
         return this._http.get(url, { responseType: 'arraybuffer', observe: 'response' });
+    }
+
+    getInvoiceFileData(formData: FormData) {
+        let url = "http://madvisor-dbc.marlabsai.com/base-module";
+        let token = "eyI3OSI6WzgyLCJDRCJdfQ.ewAQiQ_h4LfR0tKtBzfw3H_50j-iQHL2awKOMdBrh6s";
+
+        let options = new RequestOptions({
+            headers: new Headers({
+                'Content-Type': 'application/x-www-form-urlencoded',
+                'token': token
+                //'Authorization': 'Basic ' + token,
+            }),
+            withCredentials: true,
+            responseType: ResponseContentType.Json
+        });
+       
+        return this._angularHttpClient.post(url, formData, options);
+
     }
 }

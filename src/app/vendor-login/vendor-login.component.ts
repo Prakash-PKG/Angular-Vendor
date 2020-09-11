@@ -15,6 +15,7 @@ import {
     HttpErrorResponse
 } from "@angular/common/http";
 
+
 @Component({
     selector: 'app-vendor-login',
     templateUrl: './vendor-login.component.html',
@@ -134,7 +135,8 @@ export class VendorLoginComponent implements OnInit {
         //     return true;
         // }
     
-        if (this.loginForm.get("userId").invalid || this.loginForm.get("password").invalid || this.loading) {
+        if (this.loginForm.get("userId").invalid || this.loginForm.get("password").invalid || 
+                this.loginForm.get("recaptchaReactive").invalid || this.loading) {
             return true;
         }
 
@@ -148,7 +150,7 @@ export class VendorLoginComponent implements OnInit {
     }
 
     ngOnInit() {
-        // let csrfToken = this._tokenExtractor.getToken() as string;
+        //let csrfToken = this._tokenExtractor.getToken() as string;
         // if(csrfToken) {
         //     this.captchaComponent.captchaEndpoint =
         //     this._appService.baseUrl + 'simple-captcha-endpoint?_csrf=' + csrfToken;
@@ -158,16 +160,19 @@ export class VendorLoginComponent implements OnInit {
         //     this._appService.baseUrl + 'simple-captcha-endpoint';
         // }
 
-        this.captchaComponent.captchaEndpoint =
-            this._appService.baseUrl + 'simple-captcha-endpoint';
+        //console.log("inside vendor login, csrf: " + csrfToken);
+
+        // this.captchaComponent.captchaEndpoint =
+        //     this._appService.baseUrl + 'simple-captcha-endpoint';
 
         this.isSessionExpireVisible = false;
 
         this.isFormSubmitted = false;
         this.loading = false;
         this.loginForm = this._formBuilder.group({
-            userId: [null, [Validators.required, Validators.email]],
-            password: [null, [Validators.required, Validators.minLength(4)]]
+            userId: [null, [Validators.required]],
+            password: [null, [Validators.required, Validators.minLength(4)]],
+            recaptchaReactive: [null, [Validators.required]]
         });
 
         this._isSessionExpiredSubscription = this._homeService.isSessionExpired.subscribe(data => {

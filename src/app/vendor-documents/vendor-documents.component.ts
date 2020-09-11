@@ -39,6 +39,8 @@ export class VendorDocumentsComponent implements OnInit {
     private counterSubject: BehaviorSubject<number>;
     private counterSubscription: Subscription;
 
+    maxLutDate = new Date();
+
 
     vendorDocCtrl = {
         incCerCtrl: { documentTypeId: 1, browserId: 'incCerFileCtrl', placeholder: 'Incorporation Certificate', controlName: '' },
@@ -83,37 +85,53 @@ export class VendorDocumentsComponent implements OnInit {
             this.filesMap[documentTypeId].isAttachWithoutValue = false;
         }
         if (event.target.files && event.target.files.length > 0) {
-            this.counterSubject = new BehaviorSubject(0);
-            this.counterSubscription = this.counterSubject
-                .pipe(
-                    scan((sum, curr) => sum + curr, 0),
-                    takeWhile(val => val < event.target.files.length),
-                    takeLast(1)
-                )
-                .subscribe((val: number) => {
-                    this.onAttachFileClick(documentTypeId);
-                    this.counterSubscription.unsubscribe();
-                });
-            for (let f = 0; f < event.target.files.length; f++) {
-                let file = event.target.files[f];
-                if (file) {
-                    let fileDetails: FileDetailsModel = {
-                        actualFileName: file.name,
-                        uniqueFileName: null,
-                        fileData: null,
-                        documentTypeId: documentTypeId,
-                        fileId: null,
-                        createdDate: null,
-                        createdBy: null
-                    };
-                    this.filesMap[documentTypeId].toAttach.push(fileDetails);
 
-                    let reader = new FileReader();
-                    reader.onload = this._handleFileReaderLoaded.bind(this, file.name, this.filesMap[documentTypeId].toAttach, documentTypeId);
-                    reader.readAsBinaryString(file);
+            let isExeFileExist: boolean = false;
+            for (let i = 0; i < event.target.files.length; i++) {
+                let file = event.target.files[i];
+                let ext = file.name.split('.').pop().toLowerCase();
+                if (ext == 'exe') {
+                    isExeFileExist = true;
+                    break;
                 }
             }
 
+            if (isExeFileExist) {
+                this.displayFileUploadStatus("Can't attach exe file.");
+            }
+            else {
+
+                this.counterSubject = new BehaviorSubject(0);
+                this.counterSubscription = this.counterSubject
+                    .pipe(
+                        scan((sum, curr) => sum + curr, 0),
+                        takeWhile(val => val < event.target.files.length),
+                        takeLast(1)
+                    )
+                    .subscribe((val: number) => {
+                        this.onAttachFileClick(documentTypeId);
+                        this.counterSubscription.unsubscribe();
+                    });
+                for (let f = 0; f < event.target.files.length; f++) {
+                    let file = event.target.files[f];
+                    if (file) {
+                        let fileDetails: FileDetailsModel = {
+                            actualFileName: file.name,
+                            uniqueFileName: null,
+                            fileData: null,
+                            documentTypeId: documentTypeId,
+                            fileId: null,
+                            createdDate: null,
+                            createdBy: null
+                        };
+                        this.filesMap[documentTypeId].toAttach.push(fileDetails);
+
+                        let reader = new FileReader();
+                        reader.onload = this._handleFileReaderLoaded.bind(this, file.name, this.filesMap[documentTypeId].toAttach, documentTypeId);
+                        reader.readAsBinaryString(file);
+                    }
+                }
+            }
         }
         else {
             this._vendorRegistrationService.updateBusy(<BusyDataModel>{ isBusy: false, msg: "Attaching..." });
@@ -209,6 +227,21 @@ export class VendorDocumentsComponent implements OnInit {
         this._vendorRegistrationService.downloadFile(fileDetails);
     }
 
+    displayFileUploadStatus(msg: string) {
+        const dialogRef = this._dialog.open(MessageDialogComponent, {
+            disableClose: true,
+            panelClass: 'dialog-box',
+            width: '550px',
+            data: <MessageDialogModel>{
+                title: "Invoice Upload Action",
+                message: msg
+            }
+        });
+
+        dialogRef.afterClosed().subscribe(result => {
+
+        });
+    }
 
     updateDataForBackup() {
         this._appService.vendorRegistrationDetails.panNum = this.vendorDocumentForm.get("panNum").value;
@@ -429,13 +462,14 @@ export class VendorDocumentsComponent implements OnInit {
 
     ngOnInit() {
         this.isSubmitted = false;
+        this.maxLutDate.setDate(this.maxLutDate.getDate() + 1);
 
         this.initializeFilesList();
 
         this.vendorDocumentForm = this._formBuilder.group({
 
-            panNum: [null, [Validators.required, Validators.minLength(10), Validators.maxLength(10),Validators.pattern(/^[a-zA-Z0-9]*([a-zA-Z]+[0-9]+|[0-9]+[a-zA-Z]+)[a-zA-Z0-9]*$/)]],
-            gstNum: [null, [Validators.minLength(15), Validators.maxLength(15),Validators.pattern(/^[a-zA-Z0-9]*([a-zA-Z]+[0-9]+|[0-9]+[a-zA-Z]+)[a-zA-Z0-9]*$/)]],
+            panNum: [null, [Validators.required, Validators.minLength(10), Validators.maxLength(10), Validators.pattern(/^[a-zA-Z0-9]*([a-zA-Z]+[0-9]+|[0-9]+[a-zA-Z]+)[a-zA-Z0-9]*$/)]],
+            gstNum: [null, [Validators.minLength(15), Validators.maxLength(15), Validators.pattern(/^[a-zA-Z0-9]*([a-zA-Z]+[0-9]+|[0-9]+[a-zA-Z]+)[a-zA-Z0-9]*$/)]],
             pfNum: [null],
             esiNum: [null],
             cinNum: [null],

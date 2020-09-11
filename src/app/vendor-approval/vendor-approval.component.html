@@ -463,8 +463,8 @@
                     <div class="Rtable-cell Rtable-cell--head">LUT Date</div>
                     <div class="Rtable-cell">
                         <mat-form-field style="width:9em;">
-                            <input matInput [matDatepicker]="picker" formControlName="lutDate" autocomplete="off">
-                            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                            <input matInput [matDatepicker]="picker" formControlName="lutDate" autocomplete="off"  [max]="maxLutDate">
+                            <mat-datepicker-toggle matSuffix [for]="picker" ></mat-datepicker-toggle>
                             <mat-datepicker #picker></mat-datepicker>
                         </mat-form-field>
                         <div *ngIf="isSubmitted && f?.lutDate?.errors?.required" class="errortxt">
