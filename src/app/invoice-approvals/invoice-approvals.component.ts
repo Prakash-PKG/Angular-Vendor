@@ -318,22 +318,22 @@ export class InvoiceApprovalsComponent implements OnInit {
         this.isHoldVisible = false;
         if(this._appService.selectedPendingApprovalRecord) {
 
-            this.documentType = this._appService.selectedPendingApprovalRecord.documentType;
-
-            if(globalConstant.userDetails.isPurchaseOwner || globalConstant.userDetails.isSubContractReceiver) {
-                this.isRejectVisible = true;
-            }
-
-            if(globalConstant.userDetails.isFunctionalHead || globalConstant.userDetails.isFinance) {
-                this.isHoldVisible = true;
-            }
-
-            this.totalAmount = "0.000";
-
             this.isPOInvoice = false;
             if(this._appService.selectedPendingApprovalRecord.purchaseOrderId && this._appService.selectedPendingApprovalRecord.poNumber) {
                 this.isPOInvoice = true;
             }
+
+            this.documentType = this._appService.selectedPendingApprovalRecord.documentType;
+
+            if(!this.isPOInvoice || globalConstant.userDetails.isPurchaseOwner || globalConstant.userDetails.isSubContractReceiver) {
+                this.isRejectVisible = true;
+            }
+
+            if(this.isPOInvoice && (globalConstant.userDetails.isFunctionalHead || globalConstant.userDetails.isFinance)) {
+                this.isHoldVisible = true;
+            }
+
+            this.totalAmount = "0.000";
 
             this.isGrnSesRequired = false;
             if(this.grnSesAccountCategories.indexOf(this._appService.selectedPendingApprovalRecord.accountAssignmenCategory) > -1) {
