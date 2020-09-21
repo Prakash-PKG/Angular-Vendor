@@ -300,9 +300,15 @@ export class InvoiceSearchComponent implements OnInit {
         let endDateVal = this.invoiceSearchForm.get("endDate").value;
 
         this.invoiceList = this.totalInvoiceList.filter(function (req) {
-            if ((req.poNumber && req.poNumber.toString().toLowerCase().indexOf(lcPoNumberVal) > -1) &&
+            
+            let isPONumberValid: boolean = true;
+            if(req.poNumber) {
+                isPONumberValid = (req.poNumber && req.poNumber.toString().toLowerCase().indexOf(lcPoNumberVal) > -1);
+            }
+            
+            if (isPONumberValid &&
                 (req.invoiceNumber && req.invoiceNumber.toString().toLowerCase().indexOf(lcInvoiceNumberVal) > -1) &&
-                (req.vendorId && req.vendorId.toString().toLowerCase().indexOf(lcVendorIdVal) > -1) &&
+                (req.vendorId && req.vendorId.toString().toLowerCase().indexOf(lcVendorIdVal) > -1)  &&
                 (req.companyCode && req.companyCode.toString().toLowerCase().indexOf(lcEntityNoVal) > -1) &&
                 (req.projectId && req.projectId.toString().toLowerCase().indexOf(lcProjectIdVal) > -1) &&
                 ((req.invoiceDate && startDateVal) ? new Date(req.invoiceDate) > startDateVal : true) &&
