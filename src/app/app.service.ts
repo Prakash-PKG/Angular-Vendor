@@ -15,8 +15,8 @@ import { Subject, Observable, BehaviorSubject } from 'rxjs';
 })
 export class AppService {
 
-    readonly domain = "http://localhost:8080";
-    // readonly domain = "https://mvendor-dev.marlabs.com"; 
+    //readonly domain = "http://localhost:8080";
+    readonly domain = "https://mvendor-dev.marlabs.com"; 
        // readonly domain = "https://mvendor-stg.marlabs.com";     
     readonly baseUrl = this.domain + "/mvendor/";
     readonly customerAuthUrl = this.domain + "/customerAuth/oauth/token";
@@ -309,7 +309,7 @@ export class AppService {
     };
 
     getFileData(fileDetails: FileDetailsModel) {
-        let url = this.baseUrl + 'downloadInvDoc/' + fileDetails.uniqueFileName;
+        let url = this.baseUrl + 'downloadInvDoc/' + encodeURIComponent(fileDetails.uniqueFileName);
         return this._http.get(url, { responseType: 'arraybuffer', observe: 'response' });
     }
 
