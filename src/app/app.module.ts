@@ -91,6 +91,9 @@ import { SessionTimeoutDialogComponent } from './session-timeout-dialog/session-
 import { globalConstant } from './common/global-constant';
 
 import { RecaptchaModule, RECAPTCHA_SETTINGS, RecaptchaSettings, RecaptchaFormsModule } from 'ng-recaptcha';
+import { VendorReportComponent } from './vendor-report/vendor-report.component';
+import { InvoicePostingReportComponent } from './invoice-posting-report/invoice-posting-report.component';
+import { InvoiceReportComponent } from './invoice-report/invoice-report.component';
 
 @NgModule({
     declarations: [
@@ -127,7 +130,10 @@ import { RecaptchaModule, RECAPTCHA_SETTINGS, RecaptchaSettings, RecaptchaFormsM
         ContactComponent,
         InvoiceCommunicationDialogComponent,
         AppCaptchaComponent,
-        SessionTimeoutDialogComponent
+        SessionTimeoutDialogComponent,
+        VendorReportComponent,
+        InvoicePostingReportComponent,
+        InvoiceReportComponent
     ],
     imports: [
         BrowserModule,

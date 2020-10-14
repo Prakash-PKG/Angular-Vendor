@@ -70,10 +70,7 @@ export class VendorDashboardComponent implements OnInit {
             if (response.body) {
                 let results: VendorMasterDetailsModel[] = response.body as VendorMasterDetailsModel[];
                 this.vendorList = results;
-                console.log(results.length);
-                console.log(this.vendorList.length);
                 this.vendorList = [].concat.apply([], results);
-                console.log(this.vendorList);
                 this.totalVendorList = this.vendorList.concat();
                 this.vendorList = this.totalVendorList.slice(0, this.pageSize);
  

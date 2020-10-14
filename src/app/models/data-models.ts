@@ -690,3 +690,7 @@ export class ResetPasswordData {
 export class VoucherReqModel {
     invoiceId: number;
 }
+export class VendorReportReqModel {
+    vendorIdList: string[];
+
+} 

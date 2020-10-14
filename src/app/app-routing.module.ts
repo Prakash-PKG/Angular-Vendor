@@ -26,6 +26,9 @@ import { LoginVendorComponent } from './login-vendor/login-vendor.component';
 import { VendorDumpComponent } from './vendor-dump/vendor-dump.component';
 import { AuthenticationGuard } from 'microsoft-adal-angular6';
 import { ContactComponent } from './contact/contact.component';
+import { VendorReportComponent } from './vendor-report/vendor-report.component';
+import { InvoicePostingReportComponent } from './invoice-posting-report/invoice-posting-report.component';
+import { InvoiceReportComponent } from './invoice-report/invoice-report.component';
 
 const routes: Routes = [
     {
@@ -103,6 +106,21 @@ const routes: Routes = [
             {
                 path: 'vendordump',
                 component: VendorDumpComponent,
+                canActivate: [AuthGuardLogin]
+            },
+            {
+                path: 'venreport',
+                component: VendorReportComponent,
+                canActivate: [AuthGuardLogin]
+            },
+            {
+                path: 'invpostreport',
+                component: InvoicePostingReportComponent,
+                canActivate: [AuthGuardLogin]
+            },
+            {
+                path: 'invreport',
+                component: InvoiceReportComponent,
                 canActivate: [AuthGuardLogin]
             },
             {

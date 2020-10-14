@@ -1,0 +1,124 @@
+<div class="main">
+  <div class="title">
+      <h3>Invoice Report</h3>
+  </div>
+  <div class="search-row">
+      <form [formGroup]="poSearchForm" class="search-row-element">
+          <mat-form-field class="field search-row-element">
+              <mat-label>PO No.</mat-label>
+              <input type="text" matInput formControlName="poNumber" autocomplete="off">
+          </mat-form-field>
+
+          <mat-form-field class="field search-row-element">
+              <mat-label>Vendor Id</mat-label>
+              <input type="text" matInput formControlName="vendorId" autocomplete="off">
+          </mat-form-field>
+
+          <mat-form-field class="field search-row-element">
+              <mat-label>Project Id</mat-label>
+              <input type="text" matInput formControlName="projectId" autocomplete="off">
+          </mat-form-field>
+
+          <mat-form-field class="field search-row-element">
+              <mat-label>Entity</mat-label>
+              <input type="text" matInput formControlName="entityNo" autocomplete="off">
+          </mat-form-field>
+
+          <mat-form-field class="field search-row-element">
+              <mat-label>From Date</mat-label>
+              <input matInput [matDatepicker]="picker" disabled formControlName="startDate" autocomplete="off">
+              <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+              <mat-datepicker #picker disabled="false"></mat-datepicker>
+          </mat-form-field>
+
+          <mat-form-field class="field search-row-element">
+              <mat-label>To Date</mat-label>
+              <input matInput [matDatepicker]="picker1" disabled formControlName="endDate" autocomplete="off">
+              <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+              <mat-datepicker #picker1 disabled="false"></mat-datepicker>
+          </mat-form-field>
+      </form>
+
+      <div class="actions search-row-element">
+          <button mat-raised-button class="footer-actions" (click)="onClearClick()">Clear</button>
+      </div>
+
+      <!--<mat-icon class="search-btn mat-elevation-z3 search-row-element">search</mat-icon>-->
+
+      <div class="actions search-row-element">
+          <button mat-raised-button class="footer-actions">Download Excel</button>
+      </div>
+  </div>
+
+
+  <div class="container my-container margin-unset full-width">
+      <table class="dataTable full-width">
+          <thead>
+              <tr>
+                  <th class="headers" scope="col">
+                      <span>PO No. </span>
+                  </th>
+                  <th class="headers" scope="col" *ngIf="isVendor == false">
+                      <span>Vendor Id</span>
+                  </th>
+                  <th class="headers" scope="col" *ngIf="isVendor == false">
+                      <span>Vendor Name</span>
+                  </th>
+                  <th class="headers" scope="col">
+                      <span>Project Id</span>
+                  </th>
+                  <th class="headers" scope="col">
+                      <span>Entity</span>
+                  </th>
+                  <th class="headers" scope="col">
+                      <span>PO Date</span>
+                  </th>
+                  <th class="headers" scope="col">
+                      <span>Total Amount</span>
+                  </th>
+                  <th class="headers" scope="col">
+                      <span>Billed Amount</span>
+                  </th>
+                  <th class="headers" scope="col">
+                      <span>Paid Amount</span>
+                  </th>
+              </tr>
+          </thead>
+          <tbody>
+              <!-- <tr *ngFor="let po of poList; let poInd = index">
+                  <td style="cursor: pointer" (click)="onPOClick(po)" class="tencharacters">
+                      {{ po.poNumber }}
+                  </td>
+                  <td class="tencharacters" *ngIf="isVendor == false">
+                      {{ po.vendorId }}
+                  </td>
+                  <td *ngIf="isVendor == false">
+                      {{ po.vendorName }}
+                  </td>
+                  <td>
+                      {{ po.projectId }}
+                  </td>
+                  <td>
+                      {{ po.companyCode }}
+                  </td>
+                  <td class="tencharacters">
+                      {{ getFormattedDate(po.poDate) }}
+                  </td>
+                  <td class="amount tencharacters">
+                      {{ po.totalAmount }}
+                  </td>
+                  <td class="amount tencharacters">
+                      {{ po.billedAmount }}
+                  </td>
+                  <td class="amount tencharacters">
+                      {{ po.paidAmount }}
+                  </td>
+              </tr> -->
+          </tbody>
+      </table>
+      <mat-paginator [length]="totalPoList.length" [pageSize]="pageSize" [pageSizeOptions]="pageSizeOptions"
+          (page)="onPageChanged($event)"></mat-paginator>
+
+
+  </div>
+</div>

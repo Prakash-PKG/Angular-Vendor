@@ -1,0 +1,87 @@
+<div class="main">
+  <div class="title">
+      <h3>Vendor Report</h3>
+  </div>
+  <div class="search-row">
+      <form [formGroup]="vendorSearchForm" class="search-row-element">
+          <mat-form-field class="field search-row-element">
+              <mat-label>Vendor Id</mat-label>
+              <input type="text" matInput formControlName="vendorId" autocomplete="off">
+          </mat-form-field>
+
+          <mat-form-field class="field search-row-element">
+              <mat-label>Vendor Name</mat-label>
+              <input type="text" matInput formControlName="vendorName" autocomplete="off">
+          </mat-form-field>
+
+         </form>
+
+      <div class="actions search-row-element">
+          <button mat-raised-button class="footer-actions" (click)="onClearClick()">Clear</button>
+      </div>
+
+      <div class="actions search-row-element">
+        <button mat-raised-button class="footer-actions" (click)="onReportDownloadClick()">Download Report</button>
+    </div>
+  </div>
+
+
+  <div class="container my-container margin-unset full-width">
+      <table class="dataTable full-width">
+          <thead>
+              <tr>
+                  <th class="headers" scope="col" style="cursor:pointer;">
+                      <span>Vendor Id</span>
+                  </th>
+
+                  <th class="headers" scope="col">
+                      <span>Internal Id</span>
+                  </th>
+
+                  <th class="headers" scope="col">
+                      <span>Vendor Name</span>
+                  </th>
+
+                  <th class="headers" scope="col">
+                      <span>Company Code</span>
+                  </th>
+
+                  <th class="headers" scope="col">
+                      <span>Vendor EmailId</span>
+                  </th>
+                  <th class="headers" scope="col">
+                      <span>Mobile No.</span>
+                  </th>
+              </tr>
+          </thead>
+          <tbody>
+              <tr *ngFor="let vendor of vendorList; let poInd = index">
+
+                  <td class="eightcharacters" style="cursor:pointer;">
+                      {{ vendor.vendorId }}
+                  </td>
+
+                  <td class="eightcharacters">
+                      {{ vendor.vendorMasterId }}
+                  </td>
+                  <td>
+                      {{ vendor.vendorName }}
+                  </td>
+
+                  <td class="eightcharacters">
+                      {{ vendor.companyCode }}
+                  </td>
+
+                  <td>
+                      {{ vendor.emailId }}
+                  </td>
+                  <td>
+                      {{ vendor.mobileNum }}
+                  </td>
+              </tr>
+          </tbody>
+      </table>
+      <mat-paginator [length]="totalVendorList.length" [pageSize]="pageSize" [pageSizeOptions]="pageSizeOptions"
+      (page)="onPageChanged($event)"></mat-paginator>
+  </div>
+</div>

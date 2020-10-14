@@ -84,6 +84,24 @@
                 </div>
                 <div class="navtxt">Vendor Dump</div>
             </li>
+            <li [ngClass]="{'collapsed': isSidebarCollapsed == true}" (click)="onInvPostReportClick()">
+                <div class="side-icon">
+                    <mat-icon matTooltip="Vendor Report">description</mat-icon>
+                </div>
+                <div class="navtxt">Invoice Posting Report</div>
+            </li>
+            <li [ngClass]="{'collapsed': isSidebarCollapsed == true}" (click)="onInvReportClick()">
+                <div class="side-icon">
+                    <mat-icon matTooltip="Vendor Report">description</mat-icon>
+                </div>
+                <div class="navtxt">Invoice Report</div>
+            </li>
+            <li [ngClass]="{'collapsed': isSidebarCollapsed == true}" (click)="onVenReportClick()">
+                <div class="side-icon">
+                    <mat-icon matTooltip="Vendor Report">description</mat-icon>
+                </div>
+                <div class="navtxt">Vendor Report</div>
+            </li>
         </ul>
         <li class="removehover" [ngClass]="{'remove-li': isSidebarCollapsed == true}">
             <div class="side-icon">
