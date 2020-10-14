@@ -75,7 +75,7 @@ export class VendorApprovalService {
     }
 
     getFileData(fileDetails: FileDetailsModel) {
-        let url = this._appService.baseUrl + 'downloadVenDoc/' + fileDetails.uniqueFileName;
+        let url = this._appService.baseUrl + 'downloadVenDoc/' + encodeURIComponent(fileDetails.uniqueFileName);
         return this._http.get(url, { responseType: 'arraybuffer', observe: 'response' });
     }
 

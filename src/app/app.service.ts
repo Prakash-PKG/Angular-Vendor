@@ -309,7 +309,7 @@ export class AppService {
     };
 
     getFileData(fileDetails: FileDetailsModel) {
-        let url = this.baseUrl + 'downloadInvDoc/' + fileDetails.uniqueFileName;
+        let url = this.baseUrl + 'downloadInvDoc/' + encodeURIComponent(fileDetails.uniqueFileName);
         return this._http.get(url, { responseType: 'arraybuffer', observe: 'response' });
     }
 
