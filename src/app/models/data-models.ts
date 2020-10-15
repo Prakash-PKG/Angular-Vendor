@@ -690,7 +690,37 @@ export class ResetPasswordData {
 export class VoucherReqModel {
     invoiceId: number;
 }
+
 export class VendorReportReqModel {
     vendorIdList: string[];
+}
 
+export class InvoiceSLAReportDetailsModel {
+    slNo: number;
+	vendorId: string;
+	vendorName: string;
+	invoiceNumber: string;
+	invoiceDate: string;
+	invoiceSubmittedDate: string;
+	invoiceTotalAmt: string;
+	invFreightCharges: string;
+	invTotalTax: string;
+	invoiceGrossAmt: string;
+	poNumber: string;
+	projectId: string;
+	receiverName: string;
+	receivedDate: string;
+	invGrnSesNumber: string;
+	invGrnSesCreatedDate: string;
+	dmName: string;
+	dmApprovedDate: string;
+	finApproverName: string;
+	finApprovedDate: string;
+	postedToSAPDocNumber: string;
+	postedSAPDate: string;
+	invStatus: string;
 } 
+
+export class InvoiceSLAReportReqModel {
+    startDate: string;
+}

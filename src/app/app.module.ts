@@ -93,7 +93,7 @@ import { globalConstant } from './common/global-constant';
 import { RecaptchaModule, RECAPTCHA_SETTINGS, RecaptchaSettings, RecaptchaFormsModule } from 'ng-recaptcha';
 import { VendorReportComponent } from './vendor-report/vendor-report.component';
 import { InvoicePostingReportComponent } from './invoice-posting-report/invoice-posting-report.component';
-import { InvoiceReportComponent } from './invoice-report/invoice-report.component';
+import { InvoiceSlaReportComponent } from './invoice-sla-report/invoice-sla-report.component';
 
 @NgModule({
     declarations: [
@@ -133,7 +133,7 @@ import { InvoiceReportComponent } from './invoice-report/invoice-report.componen
         SessionTimeoutDialogComponent,
         VendorReportComponent,
         InvoicePostingReportComponent,
-        InvoiceReportComponent
+        InvoiceSlaReportComponent
     ],
     imports: [
         BrowserModule,
