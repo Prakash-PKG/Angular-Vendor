@@ -1,18 +1,18 @@
 import { HttpClient } from '@angular/common/http';
 import { AppService } from './../app.service';
-import { InvoiceSLAReportDetailsModel, InvoiceSLAReportReqModel } from './../models/data-models';
+import { InvoicePostingReportDetailsModel, InvoiceSLAReportReqModel } from './../models/data-models';
 import { Injectable } from '@angular/core';
 
 @Injectable({
     providedIn: 'root'
 })
-export class InvoiceSlaReportService {
+export class InvoicePostingReportService {
 
     constructor(private _appService: AppService,
         private _http: HttpClient) { }
 
     async getInvoiceSLAList() {
-        let url = this._appService.baseUrl + "invoiceSLAReportDashBoard";
+        let url = this._appService.baseUrl + "invoicePostingReportDashBoard";
         try {
             let response = await this._http.get(url).toPromise();
             return this.prepareInvoiceList(response);
@@ -23,7 +23,7 @@ export class InvoiceSlaReportService {
     }
 
     prepareInvoiceList(response: any) {
-        let list: InvoiceSLAReportDetailsModel[] = [];
+        let list: InvoicePostingReportDetailsModel[] = [];
         if (response && response.length > 0) {
             list = response.concat();
         }
@@ -32,8 +32,7 @@ export class InvoiceSlaReportService {
     }
 
     getFileData(req: InvoiceSLAReportReqModel) {
-        let url = this._appService.baseUrl + 'invoiceSLAReport';
+        let url = this._appService.baseUrl + 'invoicePostingReport';
         return this._http.post(url, req, { responseType: 'arraybuffer', observe: 'response' });
     }
-
 }

@@ -724,3 +724,35 @@ export class InvoiceSLAReportDetailsModel {
 export class InvoiceSLAReportReqModel {
     startDate: string;
 }
+
+export class InvoicePostingReportDetailsModel {
+    slNo: number;
+	invEnteredDate: string;
+	vendorId: string;
+	vendorName: string;
+	invoiceNumber: string;
+	invoiceDate: string;
+	invoiceTotalAmt: string;
+	invTotalTax: string;
+	invFreightCharges: string;
+	invoiceGrossAmt: string;
+    tdsAmount: string;
+    netAmount: string;
+	hsn: string;
+	poNumber: string;
+	purchasingGroup: string;
+	projectId: string;
+	projectDescription: string;
+	productLineDesc: string;
+    isBillable: string;
+	finApprovedDate: string;
+	postedSAPDate: string;
+	payment: string;
+	paidDate: string;
+	paymentStatus: string;
+	ageing: string;
+}
+
+export class invoicePostingReportReqModel {
+    startDate: string;
+}
