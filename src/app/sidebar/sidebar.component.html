@@ -59,48 +59,48 @@
                 <div class="navtxt">Pending Payments Invoices</div>
             </li>
         </ul>-->
-        <li *ngIf="isPOInvoiceDumpVisible == true" [ngClass]="{'remove-li': isSidebarCollapsed == true}">
+        <li [ngClass]="{'remove-li': isSidebarCollapsed == true}">
             <div class="side-icon">
                 <mat-icon>description</mat-icon>
             </div>
             <div class="navtxt">Reports</div>
         </li>
-        <ul class="childdash" *ngIf="isPOInvoiceDumpVisible == true">
-            <li [ngClass]="{'collapsed': isSidebarCollapsed == true}" (click)="onPOInvoiceDumpClick()">
+        <ul class="childdash" >
+            <li *ngIf="isPOInvoiceDumpVisible == true" [ngClass]="{'collapsed': isSidebarCollapsed == true}" (click)="onPOInvoiceDumpClick()">
                 <div class="side-icon">
                     <mat-icon matTooltip="PO Invoice Dump">description</mat-icon>
                 </div>
                 <div class="navtxt">PO Invoice Dump</div>
             </li>
-            <li [ngClass]="{'collapsed': isSidebarCollapsed == true}" (click)="onNonPOInvoiceDumpClick()">
+            <li *ngIf="isPOInvoiceDumpVisible == true" [ngClass]="{'collapsed': isSidebarCollapsed == true}" (click)="onNonPOInvoiceDumpClick()">
                 <div class="side-icon">
                     <mat-icon matTooltip="Non-PO Invoice Dump">description</mat-icon>
                 </div>
                 <div class="navtxt">Non PO Invoice Dump</div>
             </li>
-            <li [ngClass]="{'collapsed': isSidebarCollapsed == true}" (click)="onVendorDumpClick()">
+            <li *ngIf="isPOInvoiceDumpVisible == true" [ngClass]="{'collapsed': isSidebarCollapsed == true}" (click)="onVendorDumpClick()">
                 <div class="side-icon">
                     <mat-icon matTooltip="Vendor Dump">description</mat-icon>
                 </div>
                 <div class="navtxt">Vendor Dump</div>
             </li>
-            <li [ngClass]="{'collapsed': isSidebarCollapsed == true}" (click)="onInvPostReportClick()">
+            <li *ngIf="isInvoiceReportViewer == true" [ngClass]="{'collapsed': isSidebarCollapsed == true}" (click)="onInvPostReportClick()">
                 <div class="side-icon">
                     <mat-icon matTooltip="Vendor Report">description</mat-icon>
                 </div>
                 <div class="navtxt">Invoice Posting Report</div>
             </li>
-            <li [ngClass]="{'collapsed': isSidebarCollapsed == true}" (click)="onInvReportClick()">
+            <li *ngIf="isInvoiceReportViewer == true" [ngClass]="{'collapsed': isSidebarCollapsed == true}" (click)="onInvReportClick()">
                 <div class="side-icon">
                     <mat-icon matTooltip="Vendor Report">description</mat-icon>
                 </div>
-                <div class="navtxt">Invoice Report</div>
+                <div class="navtxt">Invoice SLA Report</div>
             </li>
-            <li [ngClass]="{'collapsed': isSidebarCollapsed == true}" (click)="onVenReportClick()">
+            <li *ngIf="isVendorReportViewer == true" [ngClass]="{'collapsed': isSidebarCollapsed == true}" (click)="onVenReportClick()">
                 <div class="side-icon">
                     <mat-icon matTooltip="Vendor Report">description</mat-icon>
                 </div>
-                <div class="navtxt">Vendor Report</div>
+                <div class="navtxt">Vendor Master Report</div>
             </li>
         </ul>
         <li class="removehover" [ngClass]="{'remove-li': isSidebarCollapsed == true}">

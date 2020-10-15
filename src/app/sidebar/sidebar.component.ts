@@ -34,6 +34,8 @@ export class SidebarComponent implements OnInit {
     isEmpanelmentVisible: boolean = false;
     isVendorDashboardVisible: boolean = false;
     isVendorRegistrationVisible: boolean = false;
+    isVendorReportViewer: boolean = false;
+    isInvoiceReportViewer: boolean = false;
 
     _sidebarExpansionSubscription: any = null;
 
@@ -191,5 +193,8 @@ export class SidebarComponent implements OnInit {
         if (globalConstant.userDetails.isEmpanelment) {
             this.isVendorRegistrationVisible = true;
         }
+
+        this.isVendorReportViewer = globalConstant.userDetails.isVendorReportViewer;
+        this.isInvoiceReportViewer = globalConstant.userDetails.isInvoiceReportViewer;
     }
 }
