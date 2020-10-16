@@ -1,87 +1,192 @@
 <div class="main">
-  <div class="title">
-      <h3>Vendor Report</h3>
-  </div>
-  <div class="search-row">
-      <form [formGroup]="vendorSearchForm" class="search-row-element">
-          <mat-form-field class="field search-row-element">
-              <mat-label>Vendor Id</mat-label>
-              <input type="text" matInput formControlName="vendorId" autocomplete="off">
-          </mat-form-field>
-
-          <mat-form-field class="field search-row-element">
-              <mat-label>Vendor Name</mat-label>
-              <input type="text" matInput formControlName="vendorName" autocomplete="off">
-          </mat-form-field>
-
-         </form>
-
-      <div class="actions search-row-element">
-          <button mat-raised-button class="footer-actions" (click)="onClearClick()">Clear</button>
-      </div>
-
-      <div class="actions search-row-element">
-        <button mat-raised-button class="footer-actions" (click)="onReportDownloadClick()">Download Report</button>
+    <div class="title">
+        <h3>Vendor Report</h3>
     </div>
-  </div>
+    <div class="search-row">
+        <form [formGroup]="vendorSearchForm" class="search-row-element">
+            <mat-form-field class="field search-row-element">
+                <mat-label>Vendor Id</mat-label>
+                <input type="text" matInput formControlName="vendorId" autocomplete="off">
+            </mat-form-field>
+
+            <mat-form-field class="field search-row-element">
+                <mat-label>Vendor Name</mat-label>
+                <input type="text" matInput formControlName="vendorName" autocomplete="off">
+            </mat-form-field>
+
+        </form>
+
+        <div class="actions search-row-element">
+            <button mat-raised-button class="footer-actions" (click)="onClearClick()">Clear</button>
+        </div>
+
+        <div class="actions search-row-element">
+            <button mat-raised-button class="footer-actions" (click)="onReportDownloadClick()">Download Report</button>
+        </div>
+    </div>
 
 
-  <div class="container my-container margin-unset full-width">
-      <table class="dataTable full-width">
-          <thead>
-              <tr>
-                  <th class="headers" scope="col" style="cursor:pointer;">
-                      <span>Vendor Id</span>
-                  </th>
+    <div class="container my-container margin-unset full-width">
+        <table class="dataTable full-width">
+            <thead>
+                <tr>
+                    <th class="headers" scope="col">
+                        <span>Internal Id</span>
+                    </th>
 
-                  <th class="headers" scope="col">
-                      <span>Internal Id</span>
-                  </th>
+                    <th class="headers" scope="col" style="cursor:pointer;">
+                        <span>Vendor Id</span>
+                    </th>
 
-                  <th class="headers" scope="col">
-                      <span>Vendor Name</span>
-                  </th>
+                    <th class="headers" scope="col">
+                        <span>Vendor Name</span>
+                    </th>
 
-                  <th class="headers" scope="col">
-                      <span>Company Code</span>
-                  </th>
+                    <th class="headers" scope="col">
+                        <span>Address 1</span>
+                    </th>
 
-                  <th class="headers" scope="col">
-                      <span>Vendor EmailId</span>
-                  </th>
-                  <th class="headers" scope="col">
-                      <span>Mobile No.</span>
-                  </th>
-              </tr>
-          </thead>
-          <tbody>
-              <tr *ngFor="let vendor of vendorList; let poInd = index">
+                    <th class="headers" scope="col">
+                        <span>Address 2</span>
+                    </th>
 
-                  <td class="eightcharacters" style="cursor:pointer;">
-                      {{ vendor.vendorId }}
-                  </td>
+                    <th class="headers" scope="col">
+                        <span>Street</span>
+                    </th>
 
-                  <td class="eightcharacters">
-                      {{ vendor.vendorMasterId }}
-                  </td>
-                  <td>
-                      {{ vendor.vendorName }}
-                  </td>
+                    <th class="headers" scope="col">
+                        <span>Pincode</span>
+                    </th>
 
-                  <td class="eightcharacters">
-                      {{ vendor.companyCode }}
-                  </td>
+                    <th class="headers" scope="col">
+                        <span>City</span>
+                    </th>
 
-                  <td>
-                      {{ vendor.emailId }}
-                  </td>
-                  <td>
-                      {{ vendor.mobileNum }}
-                  </td>
-              </tr>
-          </tbody>
-      </table>
-      <mat-paginator [length]="totalVendorList.length" [pageSize]="pageSize" [pageSizeOptions]="pageSizeOptions"
-      (page)="onPageChanged($event)"></mat-paginator>
-  </div>
+                    <th class="headers" scope="col">
+                        <span>Country Code</span>
+                    </th>
+
+                    <th class="headers" scope="col">
+                        <span>State Code</span>
+                    </th>
+
+                    <th class="headers" scope="col">
+                        <span>PAN No</span>
+                    </th>
+
+                    <th class="headers" scope="col">
+                        <span>GST No</span>
+                    </th>
+
+                    <th class="headers" scope="col">
+                        <span>Bank Name</span>
+                    </th>
+
+                    <th class="headers" scope="col">
+                        <span>Bank A/c No</span>
+                    </th>
+
+                    <th class="headers" scope="col">
+                        <span>IFSC Code</span>
+                    </th>
+
+                    <th class="headers" scope="col">
+                        <span>Email ID</span>
+                    </th>
+
+                    <th class="headers" scope="col">
+                        <span>Contact Number</span>
+                    </th>
+                    
+                    <th class="headers" scope="col">
+                        <span>Contact Person</span>
+                    </th>
+
+                    <th class="headers" scope="col">
+                        <span>MSME</span>
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let vendor of vendorList; let poInd = index">
+                    <td class="eightcharacters">
+                        {{ vendor.vendorMasterId }}
+                    </td>
+
+                    <td class="eightcharacters" style="cursor:pointer;">
+                        {{ vendor.vendorId }}
+                    </td>
+
+                    <td>
+                        {{ vendor.vendorName }}
+                    </td>
+
+                    <td>
+                        {{ vendor.address1 }}
+                    </td>
+
+                    <td>
+                        {{ vendor.address2 }}
+                    </td>
+
+                    <td>
+                        {{ vendor.street }}
+                    </td>
+
+                    <td>
+                        {{ vendor.pincode }}
+                    </td>
+
+                    <td>
+                        {{ vendor.city }}
+                    </td>
+
+                    <td>
+                        {{ vendor.countryCode }}
+                    </td>
+
+                    <td>
+                        {{ vendor.stateCode }}
+                    </td>
+
+                    <td>
+                        {{ vendor.panNum }}
+                    </td>
+
+                    <td>
+                        {{ vendor.gstNum }}
+                    </td>
+
+                    <td>
+                        {{ vendor.bankName }}
+                    </td>
+
+                    <td>
+                        {{ vendor.accountNum }}
+                    </td>
+
+                    <td class="eightcharacters">
+                        {{ vendor.ifscCode }}
+                    </td>
+
+                    <td>
+                        {{ vendor.emailId }}
+                    </td>
+
+                    <td>
+                        {{ vendor.mobileNum }}
+                    </td>
+
+                    <td>
+                        {{ vendor.contactPerson }}
+                    </td>
+                    
+                    <td>
+                        {{ vendor.isMsmedRegistered }}
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <mat-paginator [length]="totalVendorList.length" [pageSize]="pageSize" [pageSizeOptions]="pageSizeOptions" (page)="onPageChanged($event)"></mat-paginator>
+    </div>
 </div>
