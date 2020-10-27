@@ -1,0 +1,228 @@
+<div class="main">
+    <div class="title">
+        <h3>Invoice SLA Report</h3>
+    </div>
+    <div class="search-row">
+        <form [formGroup]="invoiceSearchForm" class="search-row-element">
+            <mat-form-field class="field search-row-element">
+                <mat-label>Invoice No.</mat-label>
+                <input type="text" matInput formControlName="invoiceNumber" autocomplete="off">
+            </mat-form-field>
+
+            <mat-form-field class="field search-row-element">
+                <mat-label>From Date</mat-label>
+                <input matInput [matDatepicker]="picker" disabled formControlName="startDate" autocomplete="off">
+                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-datepicker #picker disabled="false"></mat-datepicker>
+            </mat-form-field>
+
+            <mat-form-field class="field search-row-element">
+                <mat-label>To Date</mat-label>
+                <input matInput [matDatepicker]="picker1" disabled formControlName="endDate" autocomplete="off">
+                <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+                <mat-datepicker #picker1 disabled="false"></mat-datepicker>
+            </mat-form-field>
+        </form>
+
+        <div class="actions search-row-element">
+            <button mat-raised-button class="footer-actions" (click)="onClearClick()">Clear</button>
+        </div>
+
+        <div class="actions search-row-element">
+            <button mat-raised-button class="footer-actions" (click) = "onInvoiceDownloadClick()">Download Excel</button>
+        </div>
+    </div>
+
+
+    <div class="container my-container margin-unset full-width">
+        <table class="dataTable full-width">
+            <thead>
+                <tr>
+                    <th class="headers" scope="col">
+                        <span>Sl No. </span>
+                    </th>
+
+                    <th class="headers" scope="col">
+                        <span>Invoice Entered on</span>
+                    </th>
+
+                    <th class="headers" scope="col">
+                        <span>Vendor Id</span>
+                    </th>
+
+                    <th class="headers" scope="col">
+                        <span>Vendor Name</span>
+                    </th>
+
+                    <th class="headers" scope="col">
+                        <span>Invoice Number</span>
+                    </th>
+
+                    <th class="headers" scope="col">
+                        <span>Invoice Date</span>
+                    </th>
+
+                    <th class="headers" scope="col">
+                        <span>Basic Amount</span>
+                    </th>
+
+                    <th class="headers" scope="col">
+                        <span>Tax</span>
+                    </th>
+
+                    <th class="headers" scope="col">
+                        <span>Freight</span>
+                    </th>
+
+                    <th class="headers" scope="col">
+                        <span>Gross Amount</span>
+                    </th>
+
+                    <th class="headers" scope="col">
+                        <span>TDS Amount</span>
+                    </th>
+
+                    <th class="headers" scope="col">
+                        <span>Net Amount</span>
+                    </th>
+
+                    <th class="headers" scope="col">
+                        <span>HSN/SAC Code</span>
+                    </th>
+
+                    <th class="headers" scope="col">
+                        <span>PO Number</span>
+                    </th>
+
+                    <th class="headers" scope="col">
+                        <span>Purchasing Group/Role</span>
+                    </th>
+
+                    <th class="headers" scope="col">
+                        <span>Project Number</span>
+                    </th>
+
+                    <th class="headers" scope="col">
+                        <span>Project Description</span>
+                    </th>
+
+                    <th class="headers" scope="col">
+                        <span>Product Line Description</span>
+                    </th>
+
+                    <th class="headers" scope="col">
+                        <span>Billable</span>
+                    </th>
+
+                    <th class="headers" scope="col">
+                        <span>Finance Approval Date</span>
+                    </th>
+
+                    <th class="headers" scope="col">
+                        <span>Posted Date</span>
+                    </th>
+
+                    <th class="headers" scope="col">
+                        <span>Payment</span>
+                    </th>
+
+                    <th class="headers" scope="col">
+                        <span>Paid Date</span>
+                    </th>
+
+                    <th class="headers" scope="col">
+                        <span>Payment Status</span>
+                    </th>
+
+                    <th class="headers" scope="col">
+                        <span>Ageing</span>
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let inv of invoiceList; let invInd = index">
+                    <td class="tencharacters">
+                        {{ inv.slNo }}
+                    </td>
+                    <td class="tencharacters">
+                        {{ inv.invEnteredDate }}
+                    </td>
+                    <td class="tencharacters">
+                        {{ inv.vendorId }}
+                    </td>
+                    <td>
+                        {{ inv.vendorName }}
+                    </td>
+                    <td>
+                        {{ inv.invoiceNumber }}
+                    </td>
+                    <td>
+                        {{ inv.invoiceDate }}
+                    </td>
+                    
+                    <td class="amount tencharacters">
+                        {{ inv.invoiceTotalAmt }}
+                    </td>
+                    <td class="amount tencharacters">
+                        {{ inv.invTotalTax }}
+                    </td>
+                    <td class="amount tencharacters">
+                        {{ inv.invFreightCharges }}
+                    </td>
+                    <td class="amount tencharacters">
+                        {{ inv.invoiceGrossAmt }}
+                    </td>
+
+                    <td class="amount tencharacters">
+                        {{ inv.tdsAmount }}
+                    </td>
+                    
+                    <td class="amount tencharacters">
+                        {{ inv.netAmount }}
+                    </td>
+
+                    <td>
+                        {{ inv.hsn }}
+                    </td>
+                    <td>
+                        {{ inv.poNumber }}
+                    </td>
+                    <td>
+                        {{ inv.purchasingGroup }}
+                    </td>
+                    <td>
+                        {{ inv.projectId }}
+                    </td>
+                    <td>
+                        {{ inv.projectDescription }}
+                    </td>
+                    <td>
+                        {{ inv.productLineDesc }}
+                    </td>
+                    <td>
+                        {{ inv.isBillable }}
+                    </td>
+                    <td>
+                        {{ inv.finApprovedDate }}
+                    </td>
+                    <td>
+                        {{ inv.postedSAPDate }}
+                    </td>
+                    <td>
+                        {{ inv.payment }}
+                    </td>
+                    <td>
+                        {{ inv.paidDate }}
+                    </td>
+                    <td>
+                        {{ inv.paymentStatus }}
+                    </td>
+                    <td>
+                        {{ inv.ageing }}
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <mat-paginator [length]="totalInvoiceList.length" [pageSize]="pageSize" [pageSizeOptions]="pageSizeOptions" (page)="onPageChanged($event)"></mat-paginator>
+    </div>
+</div>

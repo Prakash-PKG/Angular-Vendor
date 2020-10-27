@@ -9,6 +9,8 @@ export const globalConstant : any = {
     procurementRoles: ["procurement"],
     vendorRoles: ["vendor"],
     tempVendorRoles: ["vendor-temp"],
+    vendorReportViewerRoles: ["vendor-report"],
+    invoiceReportViewerRoles: ["invoice-report"],
     userDetails: {
         userId: "",
         userEmail: "",
@@ -24,6 +26,8 @@ export const globalConstant : any = {
         isFinance: false,
         isEmpanelment: false,
         isTempVendor: false,
+        isVendorReportViewer: false,
+        isInvoiceReportViewer: false,
         poDepts: [],
         functionalHeadDepts: [],
         functionalHeadProjects: [],

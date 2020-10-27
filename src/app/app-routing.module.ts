@@ -1,3 +1,4 @@
+import { InvoiceSlaReportComponent } from './invoice-sla-report/invoice-sla-report.component';
 import { VendorLoginComponent } from './vendor-login/vendor-login.component';
 import { NonPoInvoiceDumpComponent } from './non-po-invoice-dump/non-po-invoice-dump.component';
 import { PoInvoiceDumpComponent } from './po-invoice-dump/po-invoice-dump.component';
@@ -26,6 +27,8 @@ import { LoginVendorComponent } from './login-vendor/login-vendor.component';
 import { VendorDumpComponent } from './vendor-dump/vendor-dump.component';
 import { AuthenticationGuard } from 'microsoft-adal-angular6';
 import { ContactComponent } from './contact/contact.component';
+import { VendorReportComponent } from './vendor-report/vendor-report.component';
+import { InvoicePostingReportComponent } from './invoice-posting-report/invoice-posting-report.component';
 
 const routes: Routes = [
     {
@@ -103,6 +106,21 @@ const routes: Routes = [
             {
                 path: 'vendordump',
                 component: VendorDumpComponent,
+                canActivate: [AuthGuardLogin]
+            },
+            {
+                path: 'venreport',
+                component: VendorReportComponent,
+                canActivate: [AuthGuardLogin]
+            },
+            {
+                path: 'invpostreport',
+                component: InvoicePostingReportComponent,
+                canActivate: [AuthGuardLogin]
+            },
+            {
+                path: 'invsla',
+                component: InvoiceSlaReportComponent,
                 canActivate: [AuthGuardLogin]
             },
             {
