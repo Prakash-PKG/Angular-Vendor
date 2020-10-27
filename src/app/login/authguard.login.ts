@@ -62,6 +62,8 @@ export class AuthGuardLogin implements CanActivate {
             globalConstant.userDetails.isFinance = false;
             globalConstant.userDetails.isEmpanelment = false;
             globalConstant.userDetails.isTempVendor = false;
+            globalConstant.userDetails.isVendorReportViewer = false;
+            globalConstant.userDetails.isInvoiceReportViewer = false;
             globalConstant.userDetails.poDepts = [];
             globalConstant.userDetails.functionalHeadDepts = [];
             globalConstant.userDetails.functionalHeadProjects = [];
@@ -163,6 +165,22 @@ export class AuthGuardLogin implements CanActivate {
                 }
                 else {
                     globalConstant.userDetails.isTempVendor = false;
+                }
+
+                let vendorReportRoles = globalConstant.userDetails.userRoles.filter(r => globalConstant.vendorReportViewerRoles.indexOf(r.roleCode) > -1);
+                if(vendorReportRoles && vendorReportRoles.length > 0) {
+                    globalConstant.userDetails.isVendorReportViewer = true;
+                }
+                else {
+                    globalConstant.userDetails.isVendorReportViewer = false;
+                }
+
+                let invoiceReportRoles = globalConstant.userDetails.userRoles.filter(r => globalConstant.invoiceReportViewerRoles.indexOf(r.roleCode) > -1);
+                if(invoiceReportRoles && invoiceReportRoles.length > 0) {
+                    globalConstant.userDetails.isInvoiceReportViewer = true;
+                }
+                else {
+                    globalConstant.userDetails.isInvoiceReportViewer = false;
                 }
             }
 

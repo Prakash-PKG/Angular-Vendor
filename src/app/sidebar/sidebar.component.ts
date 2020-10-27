@@ -34,6 +34,8 @@ export class SidebarComponent implements OnInit {
     isEmpanelmentVisible: boolean = false;
     isVendorDashboardVisible: boolean = false;
     isVendorRegistrationVisible: boolean = false;
+    isVendorReportViewer: boolean = false;
+    isInvoiceReportViewer: boolean = false;
 
     _sidebarExpansionSubscription: any = null;
 
@@ -82,7 +84,17 @@ export class SidebarComponent implements OnInit {
     onVenApp2Click() {
         this._router.navigate([this._appService.routingConstants.vendorApproval]);
     }
+    onVenReportClick() {
+        this._router.navigate([this._appService.routingConstants.vendorReport]);
+    }
+    onInvPostReportClick() {
 
+        this._router.navigate([this._appService.routingConstants.invoicePostReport]);
+    }
+    onInvReportClick() {
+
+        this._router.navigate([this._appService.routingConstants.invoiceReport]);
+    }
     onInvoiceUploadClick() {
         this._router.navigate([this._appService.routingConstants.invoiceUpload]);
     }
@@ -154,11 +166,11 @@ export class SidebarComponent implements OnInit {
         //     this.isApprovalsVisible = false;
         // }
 
-        
+
         this.isApprovalsVisible = false;
-        if (globalConstant.userDetails.isSubContractReceiver || globalConstant.userDetails.isPurchaseOwner 
-            || globalConstant.userDetails.isFunctionalHead || globalConstant.userDetails.isProcurement 
-            || globalConstant.userDetails.isFinance ) {
+        if (globalConstant.userDetails.isSubContractReceiver || globalConstant.userDetails.isPurchaseOwner
+            || globalConstant.userDetails.isFunctionalHead || globalConstant.userDetails.isProcurement
+            || globalConstant.userDetails.isFinance) {
             this.isApprovalsVisible = true;
         }
 
@@ -181,5 +193,8 @@ export class SidebarComponent implements OnInit {
         if (globalConstant.userDetails.isEmpanelment) {
             this.isVendorRegistrationVisible = true;
         }
+
+        this.isVendorReportViewer = globalConstant.userDetails.isVendorReportViewer;
+        this.isInvoiceReportViewer = globalConstant.userDetails.isInvoiceReportViewer;
     }
 }
