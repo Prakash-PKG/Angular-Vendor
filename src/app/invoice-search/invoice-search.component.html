@@ -45,13 +45,13 @@
         </form>
 
         <div class="actions search-row-element">
-            <button mat-raised-button class="footer-actions" (click) = "onClearClick()">Clear</button>
+            <button mat-raised-button class="footer-actions" (click)="onClearClick()">Clear</button>
         </div>
 
         <!--<mat-icon class="search-btn mat-elevation-z3 search-row-element">search</mat-icon>-->
 
         <div class="actions search-row-element">
-            <button mat-raised-button class="footer-actions" (click) = "onInvoiceDownloadClick()" >Export Excel</button>
+            <button mat-raised-button class="footer-actions" (click)="onInvoiceDownloadClick()">Export Excel</button>
         </div>
     </div>
 
@@ -90,12 +90,18 @@
                         <span>Total Amt <small>(inc. tax)</small></span>
                     </th>
                     <th class="headers" scope="col">
+                        <span>TCS Amount</span>
+                    </th>
+                    <th class="headers" scope="col">
                         <span>Payment Status</span>
                     </th>
-                    <th class="headers" scope="col" *ngIf = "isFinanceMember == true">
+                    <th class="headers" scope="col">
+                        <span>Invoice Status</span>
+                    </th>
+                    <th class="headers" scope="col" *ngIf="isFinanceMember == true">
                         <span>Voucher Print</span>
                     </th>
-                    <th *ngIf = "isForPayments == true">
+                    <th *ngIf="isForPayments == true">
                     </th>
                 </tr>
             </thead>
@@ -107,16 +113,16 @@
                     <td class="tencharacters">
                         {{ inv.poNumber }}
                     </td>
-                    <td  class="tencharacters">
+                    <td class="tencharacters">
                         {{ inv.vendorId }}
                     </td>
                     <td>
                         {{ inv.vendorName }}
                     </td>
-                     <td>
+                    <td>
                         {{ inv.companyCode ? inv.companyCode : "" }}
                     </td>
-                     <td>
+                    <td>
                         {{ inv.projectId ? inv.projectId : "" }}
                     </td>
                     <td class="tencharacters">
@@ -125,29 +131,38 @@
                     <td class="tencharacters">
                         {{ inv.grnSesNumber }}
                     </td>
-                    <td  class="eightcharacters">
+                    <td class="eightcharacters">
                         {{ inv.currencyType }}
                     </td>
                     <td class="amount tencharacters">
                         {{ inv.totalAmt }}
                     </td>
                     <td class="amount tencharacters">
+                        {{ inv.tcsAmount }}
+                    </td>
+                    <td class="amount tencharacters">
                         {{ getPaymentStatus(inv) }}
                     </td>
-                    <td *ngIf = "isFinanceMember == true">
-                        <div class="actions search-row-element" *ngIf = "inv?.statusCode == 'approved-finance'">
-                            <button mat-raised-button class="footer-actions" (click) = "onPrintVoucherClick(inv)">Print Voucher</button>
+                    <td class="amount tencharacters">
+                        {{ inv.statusCode }}
+                    </td>
+
+                    <td *ngIf="isFinanceMember == true">
+                        <div class="actions search-row-element" *ngIf="inv?.statusCode == 'approved-finance'">
+                            <button mat-raised-button class="footer-actions" (click)="onPrintVoucherClick(inv)">Print
+                                Voucher</button>
                         </div>
                     </td>
-                    <td *ngIf = "isForPayments == true">
+                    <td *ngIf="isForPayments == true">
                         <div class="actions search-row-element">
-                            <button mat-raised-button class="footer-actions" (click) = "onUpdatePaymentStatusClick(inv)">Update Status</button>
+                            <button mat-raised-button class="footer-actions"
+                                (click)="onUpdatePaymentStatusClick(inv)">Update Status</button>
                         </div>
                     </td>
                 </tr>
             </tbody>
         </table>
         <mat-paginator [length]="totalInvoiceList.length" [pageSize]="pageSize" [pageSizeOptions]="pageSizeOptions"
-        (page)="onPageChanged($event)"></mat-paginator>
+            (page)="onPageChanged($event)"></mat-paginator>
     </div>
 </div>

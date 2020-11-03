@@ -223,6 +223,7 @@ export class InvoiceModel {
     accountAssignmenCategory: string;
     documentType: string;
     paymentStatus: string;
+    tcsAmount: string;   
 }
 
 export class InvoiceSearchRequestModel {
@@ -697,29 +698,29 @@ export class VendorReportReqModel {
 
 export class InvoiceSLAReportDetailsModel {
     slNo: number;
-	vendorId: string;
-	vendorName: string;
-	invoiceNumber: string;
-	invoiceDate: string;
-	invoiceSubmittedDate: string;
-	invoiceTotalAmt: string;
-	invFreightCharges: string;
-	invTotalTax: string;
-	invoiceGrossAmt: string;
-	poNumber: string;
-	projectId: string;
-	receiverName: string;
-	receivedDate: string;
-	invGrnSesNumber: string;
-	invGrnSesCreatedDate: string;
-	dmName: string;
-	dmApprovedDate: string;
-	finApproverName: string;
-	finApprovedDate: string;
-	postedToSAPDocNumber: string;
-	postedSAPDate: string;
-	invStatus: string;
-} 
+    vendorId: string;
+    vendorName: string;
+    invoiceNumber: string;
+    invoiceDate: string;
+    invoiceSubmittedDate: string;
+    invoiceTotalAmt: string;
+    invFreightCharges: string;
+    invTotalTax: string;
+    invoiceGrossAmt: string;
+    poNumber: string;
+    projectId: string;
+    receiverName: string;
+    receivedDate: string;
+    invGrnSesNumber: string;
+    invGrnSesCreatedDate: string;
+    dmName: string;
+    dmApprovedDate: string;
+    finApproverName: string;
+    finApprovedDate: string;
+    postedToSAPDocNumber: string;
+    postedSAPDate: string;
+    invStatus: string;
+}
 
 export class InvoiceSLAReportReqModel {
     startDate: string;
@@ -727,30 +728,30 @@ export class InvoiceSLAReportReqModel {
 
 export class InvoicePostingReportDetailsModel {
     slNo: number;
-	invEnteredDate: string;
-	vendorId: string;
-	vendorName: string;
-	invoiceNumber: string;
-	invoiceDate: string;
-	invoiceTotalAmt: string;
-	invTotalTax: string;
-	invFreightCharges: string;
-	invoiceGrossAmt: string;
+    invEnteredDate: string;
+    vendorId: string;
+    vendorName: string;
+    invoiceNumber: string;
+    invoiceDate: string;
+    invoiceTotalAmt: string;
+    invTotalTax: string;
+    invFreightCharges: string;
+    invoiceGrossAmt: string;
     tdsAmount: string;
     netAmount: string;
-	hsn: string;
-	poNumber: string;
-	purchasingGroup: string;
-	projectId: string;
-	projectDescription: string;
-	productLineDesc: string;
+    hsn: string;
+    poNumber: string;
+    purchasingGroup: string;
+    projectId: string;
+    projectDescription: string;
+    productLineDesc: string;
     isBillable: string;
-	finApprovedDate: string;
-	postedSAPDate: string;
-	payment: string;
-	paidDate: string;
-	paymentStatus: string;
-	ageing: string;
+    finApprovedDate: string;
+    postedSAPDate: string;
+    payment: string;
+    paidDate: string;
+    paymentStatus: string;
+    ageing: string;
 }
 
 export class invoicePostingReportReqModel {
