@@ -281,7 +281,7 @@
         </div>
         <div class="flex-item">
             <mat-form-field class="full-width" style="margin-left: 20px">
-                <input matInput placeholder="Remarks" [(ngModel)]="remarks" maxlength="35" (blur)="onRemarksBlur()"
+                <input matInput placeholder="Remarks" [(ngModel)]="remarks" maxlength="50" (blur)="onRemarksBlur()"
                     autocomplete="off">
                     <mat-error class="error-txt"> {{ remarksErrMsg }}</mat-error>
             </mat-form-field>
