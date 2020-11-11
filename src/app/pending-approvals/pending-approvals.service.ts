@@ -32,14 +32,5 @@ export class PendingApprovalsService {
 
         return initModel;
     }
-    async getRejectedInvoices(req: PendingApprovalRequestModel) {
-        let url = this._appService.baseUrl + "rejectedInvoices";
-        try {
-            let response = await this._http.post(url, req).toPromise();
-            return this.preparePendingApprovals(response);
-        } catch (error) {
-            await console.log(error);
-            return (new PendingApprovalResultModel());
-        }
-    }
+   
 }

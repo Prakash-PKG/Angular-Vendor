@@ -27,6 +27,12 @@
             </div>
             <div class="navtxt">Approvals</div>
         </li>
+        <li *ngIf="isApprovalsVisible == true" (click)="onRejectedInvoiceClick()">
+            <div class="side-icon">
+                <mat-icon matTooltip="Rejected Invoices">not_interested</mat-icon>
+            </div>
+            <div class="navtxt">Rejected Invoices</div>
+        </li>
         <li (click)="onPoSearchClick()">
             <div class="side-icon">
                 <mat-icon matTooltip="PO Search">pageview</mat-icon>
