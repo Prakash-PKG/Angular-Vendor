@@ -224,22 +224,22 @@ export class InvoiceUploadComponent implements OnInit {
     registerVendorAutoComplete() {
         this.invoiceUploadForm.get("vendorId").valueChanges
             .pipe(debounceTime(300),
-            tap(() => { this.isLoading = true; }),
-            switchMap(term => {
-                if (term && typeof term === 'string') {
-                    let sText: string = term as string;
+                tap(() => { this.isLoading = true; }),
+                switchMap(term => {
+                    if (term && typeof term === 'string') {
+                        let sText: string = term as string;
 
-                    if (sText && sText.length > 1) {
-                        return this._invoiceUploadService.getVendorsData({ searchText: term });
+                        if (sText && sText.length > 1) {
+                            return this._invoiceUploadService.getVendorsData({ searchText: term });
+                        }
                     }
-                }
 
-                this.isLoading = false;
-                this.filteredVendors = [];
-                return [];
+                    this.isLoading = false;
+                    this.filteredVendors = [];
+                    return [];
 
-            }),
-            tap(() => { this.isLoading = false; })
+                }),
+                tap(() => { this.isLoading = false; })
             )
             .subscribe(results => {
                 this.filteredVendors = results as VendorAutoCompleteModel[];
@@ -283,22 +283,22 @@ export class InvoiceUploadComponent implements OnInit {
     registerProjectAutoComplete() {
         this.invoiceUploadForm.get("projectId").valueChanges
             .pipe(debounceTime(300),
-            tap(() => { this.isLoading = true; }),
-            switchMap(term => {
-                if (term && typeof term === 'string') {
-                    let sText: string = term as string;
+                tap(() => { this.isLoading = true; }),
+                switchMap(term => {
+                    if (term && typeof term === 'string') {
+                        let sText: string = term as string;
 
-                    if (sText && sText.length > 1) {
-                        return this._invoiceUploadService.getProjectsData({ searchText: term });
+                        if (sText && sText.length > 1) {
+                            return this._invoiceUploadService.getProjectsData({ searchText: term });
+                        }
                     }
-                }
 
-                this.isLoading = false;
-                this.filteredProjects = [];
-                return [];
+                    this.isLoading = false;
+                    this.filteredProjects = [];
+                    return [];
 
-            }),
-            tap(() => { this.isLoading = false; })
+                }),
+                tap(() => { this.isLoading = false; })
             )
             .subscribe(results => {
                 this.filteredProjects = results as ProjectAutoCompleteModel[];
@@ -442,18 +442,18 @@ export class InvoiceUploadComponent implements OnInit {
             this._tempInvoiceFilesList = [];
             this._invoicefileCnt = 0;
             if (event.target.files && event.target.files.length > 0) {
-                
+
                 let isExeFileExist: boolean = false;
                 for (let i = 0; i < event.target.files.length; i++) {
                     let file = event.target.files[i];
                     let ext = file.name.split('.').pop().toLowerCase();
-                    if(ext == 'exe') {
+                    if (ext == 'exe') {
                         isExeFileExist = true;
                         break;
                     }
                 }
 
-                if(isExeFileExist) {
+                if (isExeFileExist) {
                     this.displayFileUploadStatus("Can't attach exe file.");
                 }
                 else {
@@ -477,8 +477,8 @@ export class InvoiceUploadComponent implements OnInit {
                         }
                     }
                 }
-                
-                
+
+
             }
         }
 
@@ -514,14 +514,14 @@ export class InvoiceUploadComponent implements OnInit {
             .subscribe(response => {
                 this._homeService.updateBusy(<BusyDataModel>{ isBusy: false, msg: null });
                 if (response) {
-                    
+
                 }
             },
-            (error) => {
-                this._homeService.updateBusy(<BusyDataModel>{ isBusy: false, msg: null });
-                console.log(error);
-                //this.displayFileUploadStatus("Files upload failed.");
-            });
+                (error) => {
+                    this._homeService.updateBusy(<BusyDataModel>{ isBusy: false, msg: null });
+                    console.log(error);
+                    //this.displayFileUploadStatus("Files upload failed.");
+                });
     }
 
     onInvoiceAttachFileClick() {
@@ -548,11 +548,11 @@ export class InvoiceUploadComponent implements OnInit {
                     }
                 }
             },
-            (error) => {
-                this._homeService.updateBusy(<BusyDataModel>{ isBusy: false, msg: null });
-                console.log(error);
-                this.displayFileUploadStatus("Files upload failed.");
-            });
+                (error) => {
+                    this._homeService.updateBusy(<BusyDataModel>{ isBusy: false, msg: null });
+                    console.log(error);
+                    this.displayFileUploadStatus("Files upload failed.");
+                });
     }
 
     onSupportingBrowseClick(event: any) {
@@ -588,13 +588,13 @@ export class InvoiceUploadComponent implements OnInit {
             for (let i = 0; i < event.target.files.length; i++) {
                 let file = event.target.files[i];
                 let ext = file.name.split('.').pop().toLowerCase();
-                if(ext == 'exe') {
+                if (ext == 'exe') {
                     isExeFileExist = true;
                     break;
                 }
             }
 
-            if(isExeFileExist) {
+            if (isExeFileExist) {
                 this.displayFileUploadStatus("Can't attach exe file.");
             }
             else {
@@ -648,11 +648,11 @@ export class InvoiceUploadComponent implements OnInit {
                     }
                 }
             },
-            (error) => {
-                this._homeService.updateBusy(<BusyDataModel>{ isBusy: false, msg: null });
-                console.log(error);
-                this.displayFileUploadStatus("Files upload failed.");
-            });
+                (error) => {
+                    this._homeService.updateBusy(<BusyDataModel>{ isBusy: false, msg: null });
+                    console.log(error);
+                    this.displayFileUploadStatus("Files upload failed.");
+                });
     }
 
     displayFileUploadStatus(msg: string) {
@@ -667,7 +667,7 @@ export class InvoiceUploadComponent implements OnInit {
         });
 
         dialogRef.afterClosed().subscribe(result => {
-            
+
         });
     }
 
@@ -737,6 +737,18 @@ export class InvoiceUploadComponent implements OnInit {
 
         this.updateInvoiceTotalAmt();
     }
+    ontcsAmountBlur() {
+        let tcsAmountVal = this.invoiceUploadForm.get("tcsAmount").value;
+        if (tcsAmountVal && !isNaN(tcsAmountVal)) {
+            let tcsAmount = Number(tcsAmountVal).toFixed(3);
+            this.invoiceUploadForm.get("tcsAmount").setValue(tcsAmount);
+        }
+        else {
+            this.invoiceUploadForm.get("tcsAmount").setValue(null);
+        }
+
+        this.updateInvoiceTotalAmt();
+    }
 
     onTotalTaxBlur() {
         let totalTaxVal = this.invoiceUploadForm.get("totalTax").value;
@@ -758,10 +770,13 @@ export class InvoiceUploadComponent implements OnInit {
         let fregihtChargesVal = this.invoiceUploadForm.get("freightCharges").value;
         let fregihtCharges = fregihtChargesVal ? +fregihtChargesVal : 0;
 
+        let tcsAmountVal = this.invoiceUploadForm.get("tcsAmount").value;
+        let tcsAmount = tcsAmountVal ? +tcsAmountVal : 0;
+
         let totalTaxVal = this.invoiceUploadForm.get("totalTax").value;
         let totalTax = totalTaxVal ? +totalTaxVal : 0;
 
-        let totalInvAmt: number = totalItemsAmt + fregihtCharges + totalTax;
+        let totalInvAmt: number = totalItemsAmt + fregihtCharges + totalTax + tcsAmount;
         this.invoiceUploadForm.get("totalInvAmt").setValue(totalInvAmt.toFixed(3));
     }
 
@@ -872,10 +887,10 @@ export class InvoiceUploadComponent implements OnInit {
                         this.removefileFromList(fileIndex, fileType);
                     }
                 },
-                (error) => {
-                    this._homeService.updateBusy(<BusyDataModel>{ isBusy: false, msg: null });
-                    console.log(error);
-                });
+                    (error) => {
+                        this._homeService.updateBusy(<BusyDataModel>{ isBusy: false, msg: null });
+                        console.log(error);
+                    });
         }
         else {
             this.removefileFromList(fileIndex, fileType);
@@ -1171,7 +1186,8 @@ export class InvoiceUploadComponent implements OnInit {
                 companyCode: companyCode,
                 companyName: companyName,
                 createdBy: null,
-                createdDate: null
+                createdDate: null,
+                tcsAmount: this.invoiceUploadForm.get("tcsAmount").value ? this.invoiceUploadForm.get("tcsAmount").value : null
             },
             itemsDetails: itemsList,
             filesList: filesList
@@ -1192,11 +1208,11 @@ export class InvoiceUploadComponent implements OnInit {
                     }
                 }
             },
-            (error) => {
-                this._homeService.updateBusy(<BusyDataModel>{ isBusy: false, msg: null });
-                console.log(error);
-                this.displayInvoiceUploadStatus("Invoice upload failed.", false);
-            });
+                (error) => {
+                    this._homeService.updateBusy(<BusyDataModel>{ isBusy: false, msg: null });
+                    console.log(error);
+                    this.displayInvoiceUploadStatus("Invoice upload failed.", false);
+                });
     }
 
     displayInvoiceUploadStatus(msg: string, status: boolean) {
@@ -1265,6 +1281,7 @@ export class InvoiceUploadComponent implements OnInit {
             companyCode: null,
             createdBy: null,
             createdDate: null,
+            tcsAmount: null,
             itemsList: this._formBuilder.array([], Validators.required)
         });
 

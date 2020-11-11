@@ -255,6 +255,16 @@
                                 (blur)="onFreightChargesBlur()">
                             <span style="width: 40%;">{{ currency }}</span>
                         </td>
+                    </tr>            <tr>
+                        <td class="header"> TCS Amount
+                        </td>
+                        <td class="amount">
+                            <input class="inv-qty" formControlName="tcsAmount"
+                                style="width: 60%;margin-right: 5px;"
+                                [ngClass]="{ 'errorinput': isSubmitted && f.tcsAmount.errors }"
+                                (blur)="ontcsAmountBlur()">
+                            <span style="width: 40%;">{{ currency }}</span>
+                        </td>
                     </tr>
                     <tr>
                         <td class="header"> Total Tax Amount

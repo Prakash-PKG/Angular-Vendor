@@ -223,7 +223,7 @@ export class InvoiceModel {
     accountAssignmenCategory: string;
     documentType: string;
     paymentStatus: string;
-    tcsAmount: string;   
+    tcsAmount: string;
 }
 
 export class InvoiceSearchRequestModel {
@@ -486,6 +486,7 @@ export class InvoiceDetailsModel {
     companyName: string;
     createdBy: string;
     createdDate: string;
+    tcsAmount: string;
 }
 
 export class UpdateInvoiceRequestModel {
