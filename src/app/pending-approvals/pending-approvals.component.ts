@@ -17,18 +17,19 @@ export class PendingApprovalsComponent implements OnInit {
     isDashboardCollapsed: boolean = true;
     _sidebarExpansionSubscription: any = null;
     _pendingApprovalDetails: PendingApprovalResultModel = null;
+    _rejectedInvoices:PendingApprovalResultModel = null;
     allPendingApprovals: PendingApprovalsModel[] = [];
     vendorPendingApprovals: PendingApprovalsModel[] = [];
     invoicePendingApprovals: PendingApprovalsModel[] = [];
 
     constructor(private _homeService: HomeService,
-                private _appService: AppService,
-                private _router: Router,
-                private _pendingApprovalsService: PendingApprovalsService) { }
+        private _appService: AppService,
+        private _router: Router,
+        private _pendingApprovalsService: PendingApprovalsService) { }
 
     getVendorNameOrInvoiceNo(apprModel: PendingApprovalsModel) {
         let name: string = "";
-        if(apprModel.approveType == this._appService.approvalTypes.vendor) {
+        if (apprModel.approveType == this._appService.approvalTypes.vendor) {
             name = apprModel.vendorName;
         }
         else {
@@ -43,7 +44,7 @@ export class PendingApprovalsComponent implements OnInit {
     }
 
     getApprovalType(apprModel: PendingApprovalsModel) {
-        if(apprModel.approveType == this._appService.approvalTypes.vendor) {
+        if (apprModel.approveType == this._appService.approvalTypes.vendor) {
             return "Vendor Approval";
         }
         else {
@@ -61,6 +62,8 @@ export class PendingApprovalsComponent implements OnInit {
         }
     }
 
+
+
     async loadInitData() {
         let req: PendingApprovalRequestModel = {
             employeeId: null,
@@ -70,37 +73,37 @@ export class PendingApprovalsComponent implements OnInit {
             isSubContractReceiver: false
         };
 
-        if(globalConstant.userDetails.isSubContractReceiver) {
+        if (globalConstant.userDetails.isSubContractReceiver) {
             req.isSubContractReceiver = true;
             req.departments = req.departments.concat(globalConstant.userDetails.poDepts);
         }
 
-        if(globalConstant.userDetails.isPurchaseOwner) {
+        if (globalConstant.userDetails.isPurchaseOwner) {
             req.approvalLevels.push(this._appService.approvalLevels.po);
             req.departments = req.departments.concat(globalConstant.userDetails.poDepts);
         }
 
-        if(globalConstant.userDetails.isFunctionalHead) {
+        if (globalConstant.userDetails.isFunctionalHead) {
             req.approvalLevels.push(this._appService.approvalLevels.functionalHead);
             req.departments = req.departments.concat(globalConstant.userDetails.functionalHeadDepts);
             req.projectIds = req.projectIds.concat(globalConstant.userDetails.functionalHeadProjects);
         }
 
-        if(globalConstant.userDetails.isProcurement) {
+        if (globalConstant.userDetails.isProcurement) {
             req.approvalLevels.push(this._appService.approvalLevels.procurement);
         }
 
-        if(globalConstant.userDetails.isFinance) {
+        if (globalConstant.userDetails.isFinance) {
             req.approvalLevels.push(this._appService.approvalLevels.finance);
         }
 
-        if(req.departments && req.departments.length > 0) {
+        if (req.departments && req.departments.length > 0) {
             req.departments = _.uniq(req.departments);
         }
 
         this._homeService.updateBusy(<BusyDataModel>{ isBusy: true, msg: "Loading..." });
         this._pendingApprovalDetails = await this._pendingApprovalsService.getPendingApprovals(req);
-        if(this._pendingApprovalDetails.pendingApprovals && this._pendingApprovalDetails.pendingApprovals.length > 0) {
+        if (this._pendingApprovalDetails.pendingApprovals && this._pendingApprovalDetails.pendingApprovals.length > 0) {
             this.allPendingApprovals = this._pendingApprovalDetails.pendingApprovals.concat();
             this.vendorPendingApprovals = this.allPendingApprovals.filter(a => a.approveType == this._appService.approvalTypes.vendor);
             this.invoicePendingApprovals = this.allPendingApprovals.filter(a => a.approveType == this._appService.approvalTypes.invoice);
@@ -122,7 +125,7 @@ export class PendingApprovalsComponent implements OnInit {
         });
 
         setTimeout(() => {
-           this.loadInitData();
+            this.loadInitData();
         }, 100);
     }
 

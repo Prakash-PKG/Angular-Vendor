@@ -1,7 +1,7 @@
 import { InvoiceSearchService } from './invoice-search.service';
 import {
     InvoiceSearchRequestModel, BusyDataModel,
-    InvoiceSearchResultModel, InvoiceModel, VoucherReqModel 
+    InvoiceSearchResultModel, InvoiceModel, VoucherReqModel
 } from './../models/data-models';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatSort, MatTableDataSource } from '@angular/material';
@@ -84,20 +84,20 @@ export class InvoiceSearchComponent implements OnInit {
         private _datePipe: DatePipe,
         private _invoiceSearchService: InvoiceSearchService) { }
 
-        setPageSizeOptions(setPageSizeOptionsInput: string) {
-            this.pageSizeOptions = setPageSizeOptionsInput.split(',').map(str => +str);
-        }
-    
-        onPageChanged(e) {
-            let firstCut = e.pageIndex * e.pageSize;
-            let secondCut = firstCut + e.pageSize;
-            this.invoiceList = this.totalInvoiceList.slice(firstCut, secondCut);
-        }
+    setPageSizeOptions(setPageSizeOptionsInput: string) {
+        this.pageSizeOptions = setPageSizeOptionsInput.split(',').map(str => +str);
+    }
+
+    onPageChanged(e) {
+        let firstCut = e.pageIndex * e.pageSize;
+        let secondCut = firstCut + e.pageSize;
+        this.invoiceList = this.totalInvoiceList.slice(firstCut, secondCut);
+    }
 
     getPaymentStatus(inv: InvoiceModel) {
         let paymentStatus: string = "";
-        if(inv && inv.statusCode == "approved-finance") {
-            if(inv.paymentStatus) {
+        if (inv && inv.statusCode == "approved-finance") {
+            if (inv.paymentStatus) {
                 paymentStatus = inv.paymentStatus;
             }
             else {
@@ -210,7 +210,7 @@ export class InvoiceSearchComponent implements OnInit {
         // }
 
         // return req;
-        
+
         let req: InvoiceSearchRequestModel = {
             vendorId: null,
             employeeId: null,
@@ -220,7 +220,7 @@ export class InvoiceSearchComponent implements OnInit {
             projectIds: []
         };
 
-        if(globalConstant.userDetails.isVendor) {
+        if (globalConstant.userDetails.isVendor) {
             req.vendorId = globalConstant.userDetails.userId;
         }
         else {
@@ -234,22 +234,22 @@ export class InvoiceSearchComponent implements OnInit {
             //     req.approvalLevels.push(this._appService.approvalLevels.finance);
             // }
 
-            if(globalConstant.userDetails.isPurchaseOwner || globalConstant.userDetails.isInvoiceUploader) {
+            if (globalConstant.userDetails.isPurchaseOwner || globalConstant.userDetails.isInvoiceUploader) {
                 req.approvalLevels.push(this._appService.approvalLevels.po);
                 req.departments = req.departments.concat(globalConstant.userDetails.poDepts);
             }
 
-            if(globalConstant.userDetails.isFunctionalHead) {
+            if (globalConstant.userDetails.isFunctionalHead) {
                 req.approvalLevels.push(this._appService.approvalLevels.functionalHead);
                 req.departments = req.departments.concat(globalConstant.userDetails.functionalHeadDepts);
                 req.projectIds = req.projectIds.concat(globalConstant.userDetails.functionalHeadProjects);
             }
 
-            if(globalConstant.userDetails.isFinance) {
+            if (globalConstant.userDetails.isFinance) {
                 req.approvalLevels.push(this._appService.approvalLevels.finance);
             }
 
-            if(req.departments && req.departments.length > 0) {
+            if (req.departments && req.departments.length > 0) {
                 req.departments = _.uniq(req.departments);
             }
         }
@@ -268,12 +268,20 @@ export class InvoiceSearchComponent implements OnInit {
         if (this._initDetails && this._initDetails.invoiceList && this._initDetails.invoiceList.length > 0) {
             this.invoiceList = this._initDetails.invoiceList.concat();
             this.totalInvoiceList = this.invoiceList.concat();
-
+            this.totalInvoiceList = this.sortInvByDate(this.totalInvoiceList);
             this.invoiceList = this.totalInvoiceList.slice(0, this.pageSize);
         }
         this._homeService.updateBusy(<BusyDataModel>{ isBusy: false, msg: null });
     }
 
+    sortInvByDate(totalInvoiceList: InvoiceModel[]) {
+
+        totalInvoiceList = totalInvoiceList.sort(function (a, b) {
+            return new Date(b.invoiceDate).getTime() - new Date(a.invoiceDate).getTime();
+        });
+
+        return totalInvoiceList;
+    }
     onClearClick() {
         this.invoiceSearchForm.reset();
         this.invoiceList = this.totalInvoiceList.concat();
@@ -300,12 +308,12 @@ export class InvoiceSearchComponent implements OnInit {
         let endDateVal = this.invoiceSearchForm.get("endDate").value;
 
         this.invoiceList = this.totalInvoiceList.filter(function (req) {
-            
+
             let isPONumberValid: boolean = true;
-            if(req.poNumber) {
+            if (req.poNumber) {
                 isPONumberValid = (req.poNumber && req.poNumber.toString().toLowerCase().indexOf(lcPoNumberVal) > -1);
             }
-            
+
             if (isPONumberValid &&
                 (req.invoiceNumber && req.invoiceNumber.toString().toLowerCase().indexOf(lcInvoiceNumberVal) > -1) &&
                 ( (req.vendorId && req.vendorId.toString().toLowerCase().indexOf(lcVendorIdVal) > -1) || (req.vendorName && req.vendorName.toString().toLowerCase().indexOf(lcVendorIdVal) > -1) ) &&

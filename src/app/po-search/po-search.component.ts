@@ -176,18 +176,27 @@ export class PoSearchComponent implements OnInit {
         this.poList = [];
         this.totalPoList = [];
         let req: POSearchReqModel = this.getPOSearchRequestData();
-       
+
         this._homeService.updateBusy(<BusyDataModel>{ isBusy: true, msg: "Loading..." });
         this._initDetails = await this._poSearchService.getPOList(req);
         if (this._initDetails && this._initDetails.poList && this._initDetails.poList.length > 0) {
 
             this.poList = this._initDetails.poList.concat();
             this.totalPoList = this.poList.concat();
-          
+            this.totalPoList = this.sortPOByDate(this.totalPoList);
             this.poList = this.totalPoList.slice(0, this.pageSize);
- 
+
         }
         this._homeService.updateBusy(<BusyDataModel>{ isBusy: false, msg: null });
+    }
+
+    sortPOByDate(totalPoList: PODetailsModel[]) {
+       
+        totalPoList = totalPoList.sort(function (a, b) {
+            return new Date(b.createdDate).getTime() - new Date(a.createdDate).getTime();
+        });
+        
+        return totalPoList;        
     }
 
     getFormattedDate(dtStr: string) {
