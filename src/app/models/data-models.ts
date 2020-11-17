@@ -224,6 +224,7 @@ export class InvoiceModel {
     documentType: string;
     paymentStatus: string;
     tcsAmount: string;
+    invoiceUploadedBy:string;
 }
 
 export class InvoiceSearchRequestModel {
@@ -298,6 +299,7 @@ export class ApprovalLevelsModel {
     status: string;
     date: string;
     remarks: string;
+    approverName:string;
 }
 
 export class PendingApprovalResultModel {
@@ -590,6 +592,7 @@ export class InvoiceApprovalModel {
     createdDate: string;
     updatedBy: string;
     updatedDate: string;
+    approverName: string;
 }
 
 export class UpdateInvoiceApprovalReqModel {

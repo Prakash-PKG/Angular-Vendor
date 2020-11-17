@@ -2,9 +2,11 @@ import { InvoiceSearchService } from './../invoice-search/invoice-search.service
 import { MessageDialogModel } from './../models/popup-models';
 import { MessageDialogComponent } from './../message-dialog/message-dialog.component';
 import { globalConstant } from './../common/global-constant';
-import { InvoiceModel, BusyDataModel, InvoiceDetailsRequestModel, InvoiceDetailsResultModel, 
-    ItemDisplayModel, FileDetailsModel, InvoiceApprovalModel, ApprovalLevelsModel, paymentStatusModel, 
-    PaymentStatusDetailsModel, PaymentReqModel, StatusModel, PaymentDetailsModel, VoucherReqModel } from './../models/data-models';
+import {
+    InvoiceModel, BusyDataModel, InvoiceDetailsRequestModel, InvoiceDetailsResultModel,
+    ItemDisplayModel, FileDetailsModel, InvoiceApprovalModel, ApprovalLevelsModel, paymentStatusModel,
+    PaymentStatusDetailsModel, PaymentReqModel, StatusModel, PaymentDetailsModel, VoucherReqModel
+} from './../models/data-models';
 import { AppService } from './../app.service';
 import { InvoiceDetailsService } from './invoice-details.service';
 import { Component, OnInit } from '@angular/core';
@@ -21,7 +23,7 @@ export class InvoiceDetailsComponent implements OnInit {
     isDashboardCollapsed: boolean = true;
     _sidebarExpansionSubscription: any = null;
 
-    statusHeaderArr: string[] = ['Stages', 'Status', 'Remarks'];
+    statusHeaderArr: string[] = ['Stages', 'Status', 'Action By', 'Action Date', 'Remarks'];
     headerArr: string[] = [];
 
     poInvHeaderArr: string[] = ['Item No.', 'Item Desc', "HSN/SAC", "From Date", "To Date", "Personnel Number", 'Order Units', "UOM", 'Inv Units', 'Curr', 'Rate', 'Amount'];
@@ -74,11 +76,11 @@ export class InvoiceDetailsComponent implements OnInit {
     isPrintVoucherVisible: boolean = false;
 
     constructor(private _homeService: HomeService,
-                private _router: Router,
-                public _dialog: MatDialog,
-                private _invoiceDetailsService: InvoiceDetailsService,
-                private _invoiceSearchService: InvoiceSearchService,
-                private _appService: AppService) { }
+        private _router: Router,
+        public _dialog: MatDialog,
+        private _invoiceDetailsService: InvoiceDetailsService,
+        private _invoiceSearchService: InvoiceSearchService,
+        private _appService: AppService) { }
 
     onPrintVoucherClick() {
         let req: VoucherReqModel = {
@@ -108,10 +110,10 @@ export class InvoiceDetailsComponent implements OnInit {
                 this._homeService.updateBusy(<BusyDataModel>{ isBusy: false, msg: null });
             });
     }
-    
+
     getPOProjectName() {
         let projectName: string = "";
-        if(this.invoiceDetails && this.invoiceDetails.projectName && this.invoiceDetails.projectId) {
+        if (this.invoiceDetails && this.invoiceDetails.projectName && this.invoiceDetails.projectId) {
             projectName = this.invoiceDetails.projectName + "( " + this.invoiceDetails.projectId + " )";
         }
 
@@ -121,7 +123,7 @@ export class InvoiceDetailsComponent implements OnInit {
     onAmountPaidBlur() {
         this.amountPaidErrMsg = "";
         let amountPaidVal: any = this.amountPaid;
-        if(amountPaidVal && !isNaN(amountPaidVal)) {
+        if (amountPaidVal && !isNaN(amountPaidVal)) {
             let amtPaid = Number(amountPaidVal).toFixed(3);
             this.amountPaid = amtPaid;
         }
@@ -141,24 +143,24 @@ export class InvoiceDetailsComponent implements OnInit {
         this.paymentStatusErrMsg = "";
         this.remarksErrMsg = "";
 
-        if(!this.amountPaid) {
+        if (!this.amountPaid) {
             this.amountPaidErrMsg = "Amount Paid is required.";
         }
 
-        if(!this.selectedPaymentStatus) {
+        if (!this.selectedPaymentStatus) {
             this.paymentStatusErrMsg = "Payment Status is required.";
         }
 
-        if(!this.remarks) {
+        if (!this.remarks) {
             this.remarksErrMsg = "Remarks is required.";
         }
 
-        if(!this.amountPaid || !this.selectedPaymentStatus || !this.remarks) {
+        if (!this.amountPaid || !this.selectedPaymentStatus || !this.remarks) {
             isValid = false;
         }
 
-        if(isValid && this.selectedPaymentStatus == "paid") {
-            if(+this.invoiceDetails.totalAmt != +this.amountPaid) {
+        if (isValid && this.selectedPaymentStatus == "paid") {
+            if (+this.invoiceDetails.totalAmt != +this.amountPaid) {
                 isValid = false;
                 this.amountPaidErrMsg = "If Payment status is Paid, Amount Paid(Incl Tax) must equal to Invoice Total Amount(Incl Tax).";
             }
@@ -168,7 +170,7 @@ export class InvoiceDetailsComponent implements OnInit {
     }
 
     onUpdatePaymentStatusClick() {
-        if(this.invoiceDetails && this.isPaymentDetailsValid()) {
+        if (this.invoiceDetails && this.isPaymentDetailsValid()) {
             let req: PaymentReqModel = {
                 paymentDetailsId: (this._initDetails.paymentDetails && this._initDetails.paymentDetails.paymentDetailsId) ? this._initDetails.paymentDetails.paymentDetailsId : null,
                 purchaseOrderId: this.invoiceDetails.purchaseOrderId,
@@ -200,11 +202,11 @@ export class InvoiceDetailsComponent implements OnInit {
                         }
                     }
                 },
-                (error) => {
-                    this._homeService.updateBusy(<BusyDataModel>{ isBusy: false, msg: null });
-                    this.displayPaymentUpdateStatus(this._appService.messages.paymentStatusUpdateFailureMsg, false);
-                    console.log(error);
-                });
+                    (error) => {
+                        this._homeService.updateBusy(<BusyDataModel>{ isBusy: false, msg: null });
+                        this.displayPaymentUpdateStatus(this._appService.messages.paymentStatusUpdateFailureMsg, false);
+                        console.log(error);
+                    });
         }
     }
 
@@ -229,7 +231,7 @@ export class InvoiceDetailsComponent implements OnInit {
 
     onRemarksBlur() {
         this.remarksErrMsg = "";
-        if(this.remarks) {
+        if (this.remarks) {
             this.remarks = this.remarks.trim();
         }
     }
@@ -240,7 +242,7 @@ export class InvoiceDetailsComponent implements OnInit {
     }
 
     getPaymentStatusDetails() {
-        if(this.invoicePaymentStatusDetails && this.invoicePaymentStatusDetails.status && this.invoicePaymentStatusDetails.paymentDate) {
+        if (this.invoicePaymentStatusDetails && this.invoicePaymentStatusDetails.status && this.invoicePaymentStatusDetails.paymentDate) {
             return this.invoicePaymentStatusDetails.status + " on " + this._appService.getFormattedDate(this.invoicePaymentStatusDetails.paymentDate);
         }
 
@@ -248,7 +250,7 @@ export class InvoiceDetailsComponent implements OnInit {
     }
 
     getTDSAmount() {
-        if(this.invoicePaymentStatusDetails && this.invoicePaymentStatusDetails.tdsAmt) {
+        if (this.invoicePaymentStatusDetails && this.invoicePaymentStatusDetails.tdsAmt) {
             return this.invoicePaymentStatusDetails.tdsAmt + " " + this.currency;
         }
 
@@ -256,7 +258,7 @@ export class InvoiceDetailsComponent implements OnInit {
     }
 
     getPaidAmount() {
-        if(this.invoicePaymentStatusDetails && this.invoicePaymentStatusDetails.invoiceAmountPaid) {
+        if (this.invoicePaymentStatusDetails && this.invoicePaymentStatusDetails.invoiceAmountPaid) {
             return this.invoicePaymentStatusDetails.invoiceAmountPaid + " " + this.currency;
         }
 
@@ -264,7 +266,7 @@ export class InvoiceDetailsComponent implements OnInit {
     }
 
     getPaidDate() {
-        if(this.invoicePaymentStatusDetails && this.invoicePaymentStatusDetails.paymentDate) {
+        if (this.invoicePaymentStatusDetails && this.invoicePaymentStatusDetails.paymentDate) {
             return this._appService.getFormattedDate(this.invoicePaymentStatusDetails.paymentDate);
         }
 
@@ -272,7 +274,7 @@ export class InvoiceDetailsComponent implements OnInit {
     }
 
     getRemarks() {
-        if(this.invoicePaymentStatusDetails && this.invoicePaymentStatusDetails.remarks) {
+        if (this.invoicePaymentStatusDetails && this.invoicePaymentStatusDetails.remarks) {
             return this.invoicePaymentStatusDetails.remarks;
         }
 
@@ -281,13 +283,13 @@ export class InvoiceDetailsComponent implements OnInit {
 
     updateRemarksList() {
         this.remarksList = [];
-        if(this.invoicePaymentStatusDetails && this.invoicePaymentStatusDetails.remarks) {
+        if (this.invoicePaymentStatusDetails && this.invoicePaymentStatusDetails.remarks) {
             this.remarksList = this.invoicePaymentStatusDetails.remarks.split(",");
         }
     }
 
     getPaidStatus() {
-        if(this.invoicePaymentStatusDetails && this.invoicePaymentStatusDetails.status) {
+        if (this.invoicePaymentStatusDetails && this.invoicePaymentStatusDetails.status) {
             return this.invoicePaymentStatusDetails.status;
         }
 
@@ -295,7 +297,7 @@ export class InvoiceDetailsComponent implements OnInit {
     }
 
     getStatusDetails(level: ApprovalLevelsModel) {
-        if(level && ( level.status == this._appService.statusNames.approved || level.status == this._appService.statusNames.received || level.status == this._appService.statusNames.rejected)) {
+        if (level && (level.status == this._appService.statusNames.approved || level.status == this._appService.statusNames.received || level.status == this._appService.statusNames.rejected)) {
             return level.status + " on " + level.date;
         }
 
@@ -307,10 +309,10 @@ export class InvoiceDetailsComponent implements OnInit {
     }
 
     getFormattedDate(dtStr: string) {
-        if(dtStr) {
+        if (dtStr) {
             return this._appService.getFormattedDate(dtStr);
         }
-        
+
         return "";
     }
 
@@ -328,9 +330,9 @@ export class InvoiceDetailsComponent implements OnInit {
 
         this.isPrintVoucherVisible = false;
 
-        if(this.invoiceDetails && this.invoiceDetails.invoiceId) {
+        if (this.invoiceDetails && this.invoiceDetails.invoiceId) {
 
-            if(this.invoiceDetails.statusCode == 'approved-finance' && globalConstant.userDetails.isFinance) {
+            if (this.invoiceDetails.statusCode == 'approved-finance' && globalConstant.userDetails.isFinance) {
                 this.isPrintVoucherVisible = true;
             }
 
@@ -338,14 +340,14 @@ export class InvoiceDetailsComponent implements OnInit {
 
             this.currency = this.invoiceDetails.currencyType;
 
-            if(!this.invoiceDetails.purchaseOrderId) {
+            if (!this.invoiceDetails.purchaseOrderId) {
                 this.isPOBasedInvoice = false;
                 this.headerArr = this.nonPoInvHeaderArr.concat();
             }
             else {
-                if(this.invoiceDetails.accountAssignmenCategory == '4' && 
+                if (this.invoiceDetails.accountAssignmenCategory == '4' &&
                     (this.invoiceDetails.documentType == 'ZFO' || this.invoiceDetails.documentType == 'ZHR')) {
-                    
+
                     this.isFromToMandatory = true;
                     this.headerArr = this.poInvHeaderArr.concat();
                 }
@@ -366,20 +368,20 @@ export class InvoiceDetailsComponent implements OnInit {
 
             this._homeService.updateBusy(<BusyDataModel>{ isBusy: true, msg: "Loading..." });
             this._initDetails = await this._invoiceDetailsService.getInvoiceDetails(req);
-            if(this._initDetails) {
+            if (this._initDetails) {
                 this.invoicePaymentDetails = this._initDetails.paymentDetails;
-                
-                if(this._initDetails.paymentStatusList && this._initDetails.paymentStatusList.length > 0) {
+
+                if (this._initDetails.paymentStatusList && this._initDetails.paymentStatusList.length > 0) {
                     this.paymentStatusList = this._initDetails.paymentStatusList.concat();
                 }
 
                 this.invoicePaymentStatusDetails = this._initDetails.paymentStatusDetails;
                 this.itemsList = (this._initDetails.itemsList && this._initDetails.itemsList.length > 0) ? this._initDetails.itemsList.concat() : [];
                 let totalAmt: number = 0;
-                for(let i = 0; i < this.itemsList.length; i++) {
+                for (let i = 0; i < this.itemsList.length; i++) {
                     //this.itemsList[i].unitsTotalAmount = (this.itemsList[i].unitPrice && this.itemsList[i].invoiceUnits) ? +this.itemsList[i].unitPrice * +this.itemsList[i].invoiceUnits : null;
                     this.itemsList[i].unitsTotalAmount = (this.itemsList[i].totalAmt) ? +this.itemsList[i].totalAmt : null;
-                    if(this.itemsList[i].unitsTotalAmount && this.itemsList[i].unitsTotalAmount > 0) {
+                    if (this.itemsList[i].unitsTotalAmount && this.itemsList[i].unitsTotalAmount > 0) {
                         totalAmt = totalAmt + this.itemsList[i].unitsTotalAmount;
                     }
                 }
@@ -389,55 +391,60 @@ export class InvoiceDetailsComponent implements OnInit {
                 this.supportFilesList = this._initDetails.supportFilesList;
                 this.rectifiedFilesList = this._initDetails.rectifiedFilesList;
 
-                if(this._initDetails.approvalsList && this._initDetails.approvalsList.length > 0) {
+                if (this._initDetails.approvalsList && this._initDetails.approvalsList.length > 0) {
                     this.approvalLevelList = [];
 
                     let poApprovalModel: InvoiceApprovalModel = this._initDetails.approvalsList.find(a => a.approvalLevel == this._appService.approvalLevels.po);
-                    if(poApprovalModel != null) {
+                    if (poApprovalModel != null) {
                         this.uploadLevel = {
                             levelName: "Upload",
                             status: "Submitted",
                             date: this._appService.getFormattedDate(poApprovalModel.createdDate),
-                            remarks: this.invoiceDetails.remarks
+                            remarks: this.invoiceDetails.remarks,
+                            approverName: this.invoiceDetails.invoiceUploadedBy
                         };
                         this.approvalLevelList.push(this.uploadLevel);
 
-                        if(this.isSesSubContractPO == false) {
+                        if (this.isSesSubContractPO == false) {
                             let poStatusCode = (poApprovalModel.statusCode == 'approved') ? 'received' : poApprovalModel.statusCode;
                             this.poLevel = {
                                 levelName: "Receiver",
                                 status: this._appService.statusNames[poStatusCode],
                                 date: (poApprovalModel.statusCode == this._appService.statusCodes.approved || poApprovalModel.statusCode == this._appService.statusCodes.rejected) ? this._appService.getFormattedDate(poApprovalModel.updatedDate) : "",
-                                remarks: poApprovalModel.remarks
+                                remarks: poApprovalModel.remarks,
+                                approverName: poApprovalModel.approverName
                             };
                             this.approvalLevelList.push(this.poLevel);
                         }
                     }
 
                     let functionalHeadApprovalModel: InvoiceApprovalModel = this._initDetails.approvalsList.find(a => a.approvalLevel == this._appService.approvalLevels.functionalHead);
-                    if(functionalHeadApprovalModel != null) {
+                    if (functionalHeadApprovalModel != null) {
                         this.fhLevel = {
                             levelName: "Delivery Manager",
                             status: this._appService.statusNames[functionalHeadApprovalModel.statusCode],
                             date: (functionalHeadApprovalModel.statusCode == this._appService.statusCodes.approved || functionalHeadApprovalModel.statusCode == this._appService.statusCodes.rejected) ? this._appService.getFormattedDate(functionalHeadApprovalModel.updatedDate) : "",
-                            remarks: functionalHeadApprovalModel.remarks
+                            remarks: functionalHeadApprovalModel.remarks,
+                            approverName: functionalHeadApprovalModel.approverName
                         };
                         this.approvalLevelList.push(this.fhLevel);
                     }
-                    
+
                     let financeApprovalModel: InvoiceApprovalModel = this._initDetails.approvalsList.find(a => a.approvalLevel == this._appService.approvalLevels.finance);
-                    if(financeApprovalModel != null) {
+                    if (financeApprovalModel != null) {
                         this.financeLevel = {
                             levelName: "Finance",
                             status: this._appService.statusNames[financeApprovalModel.statusCode],
                             date: (financeApprovalModel.statusCode == this._appService.statusCodes.approved || financeApprovalModel.statusCode == this._appService.statusCodes.rejected) ? this._appService.getFormattedDate(functionalHeadApprovalModel.updatedDate) : "",
-                            remarks: financeApprovalModel.remarks
+                            remarks: financeApprovalModel.remarks,
+                            approverName: financeApprovalModel.approverName
                         };
                         this.approvalLevelList.push(this.financeLevel);
                     }
+                    console.log(this.approvalLevelList);
                 }
 
-                if(this.invoicePaymentStatusDetails) {
+                if (this.invoicePaymentStatusDetails) {
                     // this.amountPaid = this.invoicePaymentDetails.amountPaid;
                     // this.remarks = this.invoicePaymentDetails.remarks;
                     // this.selectedPaymentStatus = this.invoicePaymentDetails.statusCode;
@@ -446,9 +453,10 @@ export class InvoiceDetailsComponent implements OnInit {
                         levelName: "Payment",
                         status: this.getPaidStatus(),
                         date: this.getPaidDate(),
-                        remarks: this.getRemarks()
+                        remarks: this.getRemarks(),
+                        approverName: null
                     };
-                    
+
                     this.approvalLevelList.push(paymentLevel);
                 }
 
@@ -478,7 +486,7 @@ export class InvoiceDetailsComponent implements OnInit {
         this.invoiceDetails = this._appService.selectedInvoice;
 
         setTimeout(() => {
-           this.loadInitData();
+            this.loadInitData();
         }, 100);
     }
 
