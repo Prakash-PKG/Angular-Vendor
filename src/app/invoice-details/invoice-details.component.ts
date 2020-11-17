@@ -401,7 +401,7 @@ export class InvoiceDetailsComponent implements OnInit {
                             status: "Submitted",
                             date: this._appService.getFormattedDate(poApprovalModel.createdDate),
                             remarks: this.invoiceDetails.remarks,
-                            approverName: this.invoiceDetails.invoiceUploadedBy
+                            approverName: poApprovalModel.invoiceUploadedBy 
                         };
                         this.approvalLevelList.push(this.uploadLevel);
 
