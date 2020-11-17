@@ -29,6 +29,7 @@ import { AuthenticationGuard } from 'microsoft-adal-angular6';
 import { ContactComponent } from './contact/contact.component';
 import { VendorReportComponent } from './vendor-report/vendor-report.component';
 import { InvoicePostingReportComponent } from './invoice-posting-report/invoice-posting-report.component';
+import { InvoiceRejectedComponent } from './invoice-rejected/invoice-rejected.component';
 
 const routes: Routes = [
     {
@@ -61,6 +62,11 @@ const routes: Routes = [
             {
                 path: 'invapproval',
                 component: InvoiceApprovalsComponent,
+                canActivate: [AuthGuardLogin]
+            },
+            {
+                path: 'invrejected',
+                component: InvoiceRejectedComponent,
                 canActivate: [AuthGuardLogin]
             },
             {

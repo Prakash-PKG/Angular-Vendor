@@ -94,6 +94,7 @@ import { RecaptchaModule, RECAPTCHA_SETTINGS, RecaptchaSettings, RecaptchaFormsM
 import { VendorReportComponent } from './vendor-report/vendor-report.component';
 import { InvoicePostingReportComponent } from './invoice-posting-report/invoice-posting-report.component';
 import { InvoiceSlaReportComponent } from './invoice-sla-report/invoice-sla-report.component';
+import { InvoiceRejectedComponent } from './invoice-rejected/invoice-rejected.component';
 
 @NgModule({
     declarations: [
@@ -133,7 +134,8 @@ import { InvoiceSlaReportComponent } from './invoice-sla-report/invoice-sla-repo
         SessionTimeoutDialogComponent,
         VendorReportComponent,
         InvoicePostingReportComponent,
-        InvoiceSlaReportComponent
+        InvoiceSlaReportComponent,
+        InvoiceRejectedComponent
     ],
     imports: [
         BrowserModule,

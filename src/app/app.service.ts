@@ -37,6 +37,7 @@ export class AppService {
         posearch: "/home/posearch",
         forgotPassword: "/home/fp",
         invoiceApproval: "/home/invapproval",
+        invoiceRejected:"/home/invrejected",
         invoiceDetails: "/home/invdetails",
         invoiceSearch: "/home/invsearch",
         invoiceUpload: "/home/invupload",

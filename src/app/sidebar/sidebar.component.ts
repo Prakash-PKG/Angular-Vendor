@@ -58,6 +58,10 @@ export class SidebarComponent implements OnInit {
     onPendingApprovalClick() {
         this._router.navigate([this._appService.routingConstants.pendingApprovals]);
     }
+    onRejectedInvoiceClick(){
+        
+        this._router.navigate([this._appService.routingConstants.invoiceRejected]);
+    }
 
     onPoSearchClick() {
         this._router.navigate([this._appService.routingConstants.posearch]);

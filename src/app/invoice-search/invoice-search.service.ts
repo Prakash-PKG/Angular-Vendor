@@ -21,7 +21,16 @@ export class InvoiceSearchService {
             return (new InvoiceSearchResultModel());
         }
     }
-
+    async getRejectedInvoices() {
+        let url = this._appService.baseUrl + "rejectedInvoices";
+        try {
+            let response = await this._http.get(url).toPromise();
+            return this.prepareInvoiceList(response);
+        } catch (error) {
+            await console.log(error);
+            return (new InvoiceSearchResultModel());
+        }
+    }
     prepareInvoiceList(data) {
         let initModel: InvoiceSearchResultModel = new InvoiceSearchResultModel();
         if (data) {
@@ -34,11 +43,13 @@ export class InvoiceSearchService {
 
     getFileData(req: InvoiceSearchRequestModel) {
         let url = this._appService.baseUrl + 'invoiceDump';
-        return this._http.post(url, req, {responseType: 'arraybuffer', observe: 'response'});
+        return this._http.post(url, req, { responseType: 'arraybuffer', observe: 'response' });
     }
 
     getVoucherData(req: VoucherReqModel) {
         let url = this._appService.baseUrl + 'downloadInvVoucher';
-        return this._http.post(url, req, {responseType: 'arraybuffer', observe: 'response'});
+        return this._http.post(url, req, { responseType: 'arraybuffer', observe: 'response' });
     }
+
+
 }
