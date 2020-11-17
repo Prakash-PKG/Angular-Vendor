@@ -641,7 +641,8 @@ export class InvoiceApprovalsComponent implements OnInit {
                     createdDate: this.initDetails.approvalDetails.createdDate,
                     updatedBy: null,
                     updatedDate: null,
-                    approverName: globalConstant.userDetails.userName
+                    approverName: globalConstant.userDetails.userName,
+                    invoiceUploadedBy:null
                 },
                 itemsList: this.itemsList
             };

@@ -224,7 +224,7 @@ export class InvoiceModel {
     documentType: string;
     paymentStatus: string;
     tcsAmount: string;
-    invoiceUploadedBy:string;
+    // invoiceUploadedBy:string;
 }
 
 export class InvoiceSearchRequestModel {
@@ -593,6 +593,7 @@ export class InvoiceApprovalModel {
     updatedBy: string;
     updatedDate: string;
     approverName: string;
+    invoiceUploadedBy:string;
 }
 
 export class UpdateInvoiceApprovalReqModel {
