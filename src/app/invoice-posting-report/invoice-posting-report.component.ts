@@ -96,8 +96,8 @@ export class InvoicePostingReportComponent implements OnInit {
 
         this.invoiceList = this.totalInvoiceList.filter(function (req) {
             if ((req.invoiceNumber && req.invoiceNumber.toString().toLowerCase().indexOf(lcInvoiceNumberVal) > -1) &&
-                ((req.invEnteredDate && startDateVal) ? new Date(req.invoiceDate) > startDateVal : true) &&
-                ((req.invEnteredDate && endDateVal) ? new Date(req.invoiceDate) < endDateVal : true)) {
+                ((req.invEnteredDate && startDateVal) ? new Date(req.invEnteredDate) >= startDateVal : true) &&
+                ((req.invEnteredDate && endDateVal) ? new Date(req.invEnteredDate) <= endDateVal : true)) {
                 return true;
             }
         });
