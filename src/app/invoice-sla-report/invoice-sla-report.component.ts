@@ -73,11 +73,11 @@ export class InvoiceSlaReportComponent implements OnInit {
     async loadInitData() {
         this.invoiceList = [];
         this.totalInvoiceList = [];
- 
+
         this._homeService.updateBusy(<BusyDataModel>{ isBusy: true, msg: "Loading..." });
         this.totalInvoiceList = await this._invoiceReportService.getInvoiceSLAList();
         this.invoiceList = this.totalInvoiceList.slice(0, this.pageSize);
-        
+
         this._homeService.updateBusy(<BusyDataModel>{ isBusy: false, msg: null });
     }
 
@@ -94,10 +94,14 @@ export class InvoiceSlaReportComponent implements OnInit {
 
         let endDateVal = this.invoiceSearchForm.get("endDate").value;
 
+        let invoiceStatusVal = this.invoiceSearchForm.get("invoiceStatus").value;
+        let lcInvoiceStatusVal = (invoiceStatusVal) ? invoiceStatusVal.toLowerCase() : "";
+
         this.invoiceList = this.totalInvoiceList.filter(function (req) {
             if ((req.invoiceNumber && req.invoiceNumber.toString().toLowerCase().indexOf(lcInvoiceNumberVal) > -1) &&
-                ((req.invoiceSubmittedDate && startDateVal) ? new Date(req.invoiceDate) > startDateVal : true) &&
-                ((req.invoiceSubmittedDate && endDateVal) ? new Date(req.invoiceDate) < endDateVal : true)) {
+                ((req.invoiceSubmittedDate && startDateVal) ? new Date(req.invoiceSubmittedDate) >= startDateVal : true) &&
+                ((req.invoiceSubmittedDate && endDateVal) ? new Date(req.invoiceSubmittedDate) <= endDateVal : true) &&
+                (req.invStatus && req.invStatus.toString().toLowerCase().indexOf(lcInvoiceStatusVal) > -1)) {
                 return true;
             }
         });
@@ -119,7 +123,8 @@ export class InvoiceSlaReportComponent implements OnInit {
         this.invoiceSearchForm = this._formBuilder.group({
             invoiceNumber: null,
             startDate: null,
-            endDate: null
+            endDate: null,
+            invoiceStatus: null
         });
 
         this.invoiceSearchForm.get("invoiceNumber").valueChanges.subscribe(val => {
@@ -131,6 +136,10 @@ export class InvoiceSlaReportComponent implements OnInit {
         });
 
         this.invoiceSearchForm.get("endDate").valueChanges.subscribe(val => {
+            this.onSearchChange();
+        });
+
+        this.invoiceSearchForm.get("invoiceStatus").valueChanges.subscribe(val => {
             this.onSearchChange();
         });
 

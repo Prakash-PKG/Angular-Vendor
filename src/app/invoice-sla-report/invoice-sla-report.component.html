@@ -22,6 +22,11 @@
                 <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
                 <mat-datepicker #picker1 disabled="false"></mat-datepicker>
             </mat-form-field>
+
+            <mat-form-field class="field search-row-element">
+                <mat-label> Invoice Status</mat-label>
+                <input type="text" matInput formControlName="invoiceStatus" autocomplete="off">
+            </mat-form-field>
         </form>
 
         <div class="actions search-row-element">
@@ -31,7 +36,7 @@
         <!--<mat-icon class="search-btn mat-elevation-z3 search-row-element">search</mat-icon>-->
 
         <div class="actions search-row-element">
-            <button mat-raised-button class="footer-actions" (click) = "onInvoiceDownloadClick()">Download Excel</button>
+            <button mat-raised-button class="footer-actions" (click)="onInvoiceDownloadClick()">Download Excel</button>
         </div>
     </div>
 
@@ -207,7 +212,8 @@
                 </tr>
             </tbody>
         </table>
-        <mat-paginator [length]="totalInvoiceList.length" [pageSize]="pageSize" [pageSizeOptions]="pageSizeOptions" (page)="onPageChanged($event)"></mat-paginator>
+        <mat-paginator [length]="totalInvoiceList.length" [pageSize]="pageSize" [pageSizeOptions]="pageSizeOptions"
+            (page)="onPageChanged($event)"></mat-paginator>
 
 
     </div>
