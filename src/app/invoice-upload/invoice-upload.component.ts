@@ -830,6 +830,7 @@ export class InvoiceUploadComponent implements OnInit {
                     (this.selectedPOItem.documentType == 'ZFO' || this.selectedPOItem.documentType == 'ZHR')) {
 
                     this.isFromToMandatory = true;
+                    this.invoiceUploadForm.get("isDatesMandatory").setValue(true);
                     this.headerArr = this.poHeaderArr.concat();
                 }
 
@@ -842,6 +843,26 @@ export class InvoiceUploadComponent implements OnInit {
         this.invoiceUploadForm.get("currency").valueChanges.subscribe(val => {
             if (val) {
                 this.currency = val;
+            }
+        }); 
+
+        this.invoiceUploadForm.get("isDatesMandatory").valueChanges.subscribe(val => {
+            const itemsFa: FormArray = <FormArray>this.invoiceUploadForm.controls['itemsList'];
+            if(val) {
+                for (let i = 0; i < itemsFa.length; i++) {
+                    itemsFa.controls[i].get("fromDate").setValidators([Validators.required]);
+                    itemsFa.controls[i].get("toDate").setValidators([Validators.required]);
+                    itemsFa.controls[i].get("fromDate").updateValueAndValidity();
+                    itemsFa.controls[i].get("toDate").updateValueAndValidity();
+                }
+            }
+            else {
+                for (let i = 0; i < itemsFa.length; i++) {
+                    itemsFa.controls[i].get("fromDate").setValidators([]);
+                    itemsFa.controls[i].get("toDate").setValidators([]);
+                    itemsFa.controls[i].get("fromDate").updateValueAndValidity();
+                    itemsFa.controls[i].get("toDate").updateValueAndValidity();
+                }
             }
         });
 
@@ -928,7 +949,8 @@ export class InvoiceUploadComponent implements OnInit {
         let submittedUnits: number = (item.submittedUnits) ? +item.submittedUnits : 0.000;
         let balanceUnits: number = orderedUnits - suppliedUnits - submittedUnits;
 
-        let validatorRequiredArr = (this.isFromToMandatory) ? [Validators.required] : [];
+        let isDatesMandatoryVal: boolean =  this.invoiceUploadForm.get("isDatesMandatory").value;
+        let validatorRequiredArr = (this.isFromToMandatory && isDatesMandatoryVal) ? [Validators.required] : [];
 
         let fg: FormGroup = this._formBuilder.group({
             itemId: item.itemId,
@@ -1271,6 +1293,7 @@ export class InvoiceUploadComponent implements OnInit {
             invoiceNumber: [null, Validators.required],
             invoiceDate: [null, Validators.required],
             remarks: [null, Validators.required],
+            isDatesMandatory: false,
             freightCharges: null,
             totalTax: [null, Validators.required],
             totalItemsAmt: ["", [this.totalItemsAmtValidator.bind(this)]],
