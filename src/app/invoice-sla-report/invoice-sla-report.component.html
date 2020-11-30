@@ -25,7 +25,12 @@
 
             <mat-form-field class="field search-row-element">
                 <mat-label> Invoice Status</mat-label>
-                <input type="text" matInput formControlName="invoiceStatus" autocomplete="off">
+                <mat-select matNativeControl formControlName="invoiceStatus">
+                    <mat-option *ngFor="let iss of invoiceSearchStatus" [value]="iss">
+                        {{iss}}
+                    </mat-option>
+                </mat-select>
+               <!-- <input type="text" matInput formControlName="invoiceStatus" autocomplete="off"> -->
             </mat-form-field>
         </form>
 
