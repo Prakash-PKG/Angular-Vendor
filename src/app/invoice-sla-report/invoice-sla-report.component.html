@@ -91,6 +91,10 @@
                     </th>
 
                     <th class="headers" scope="col">
+                        <span>Company Code</span>
+                    </th>
+
+                    <th class="headers" scope="col">
                         <span>PO Number</span>
                     </th>
 
@@ -174,6 +178,9 @@
                     </td>
                     <td class="amount tencharacters">
                         {{ inv.invoiceGrossAmt }}
+                    </td>
+                    <td>
+                        {{ inv.companyCode }}
                     </td>
                     <td>
                         {{ inv.poNumber }}
