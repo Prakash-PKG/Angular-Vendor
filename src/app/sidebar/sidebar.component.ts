@@ -189,7 +189,7 @@ export class SidebarComponent implements OnInit {
         }
 
         this.isVendorDashboardVisible = false;
-        if (globalConstant.userDetails.isFinance || globalConstant.userDetails.isProcurement) {
+        if (globalConstant.userDetails.isFinance || globalConstant.userDetails.isProcurement || globalConstant.userDetails.isEmpanelment) {
             this.isVendorDashboardVisible = true;
         }
 
