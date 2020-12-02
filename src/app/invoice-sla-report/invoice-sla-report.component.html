@@ -81,14 +81,15 @@
                     <th class="headers" scope="col">
                         <span>Freight</span>
                     </th>
+                    
+                    <th class="headers" scope="col">
+                        <span>Tax Amount</span>
+                    </th>
 
                     <th class="headers" scope="col">
                         <span>Gross Amount</span>
                     </th>
 
-                    <th class="headers" scope="col">
-                        <span>Billed Amount</span>
-                    </th>
 
                     <th class="headers" scope="col">
                         <span>Company Code</span>
@@ -173,12 +174,15 @@
                     <td class="amount tencharacters">
                         {{ inv.invFreightCharges }}
                     </td>
+               
                     <td class="amount tencharacters">
                         {{ inv.invTotalTax }}
                     </td>
+                    
                     <td class="amount tencharacters">
                         {{ inv.invoiceGrossAmt }}
                     </td>
+                  
                     <td>
                         {{ inv.companyCode }}
                     </td>
