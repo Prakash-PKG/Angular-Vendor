@@ -299,7 +299,7 @@ export class ApprovalLevelsModel {
     status: string;
     date: string;
     remarks: string;
-    approverName:string;
+    approverName: string;
 }
 
 export class PendingApprovalResultModel {
@@ -593,7 +593,7 @@ export class InvoiceApprovalModel {
     updatedBy: string;
     updatedDate: string;
     approverName: string;
-    invoiceUploadedBy:string;
+    invoiceUploadedBy: string;
 }
 
 export class UpdateInvoiceApprovalReqModel {
@@ -724,6 +724,7 @@ export class InvoiceSLAReportDetailsModel {
     finApprovedDate: string;
     postedToSAPDocNumber: string;
     postedSAPDate: string;
+    companyCode: string;
     invStatus: string;
 }
 
@@ -757,6 +758,7 @@ export class InvoicePostingReportDetailsModel {
     paidDate: string;
     paymentStatus: string;
     ageing: string;
+    companyCode: string;
 }
 
 export class invoicePostingReportReqModel {
