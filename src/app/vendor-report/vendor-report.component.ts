@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { VendorMasterDetailsModel, BusyDataModel, VendorReportReqModel } from '../models/data-models';
+import { VendorMasterDetailsModel, BusyDataModel, VendorReportReqModel, vendorMasterReportDetailsModel } from '../models/data-models';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { HomeService } from '../home/home.service';
 import { AppService } from '../app.service';
@@ -19,8 +19,8 @@ export class VendorReportComponent implements OnInit {
 
     // _initDetails: VendorMasterDetailsModel = null;
 
-    vendorList: VendorMasterDetailsModel[] = [];
-    totalVendorList: VendorMasterDetailsModel[] = [];
+    vendorList: vendorMasterReportDetailsModel[] = [];
+    totalVendorList: vendorMasterReportDetailsModel[] = [];
     vendorSearchForm: FormGroup;
 
     pageSize = 25;
@@ -83,11 +83,11 @@ export class VendorReportComponent implements OnInit {
         this.totalVendorList = [];
 
         this._homeService.updateBusy(<BusyDataModel>{ isBusy: true, msg: "Loading..." });
-        this._vendorDashService.getVendorList().subscribe(response => {
+        this._vendorDashService.getVendorReportList().subscribe(response => {
 
             this._homeService.updateBusy(<BusyDataModel>{ isBusy: false, msg: null });
             if (response.body) {
-                this.totalVendorList = response.body as VendorMasterDetailsModel[];
+                this.totalVendorList = response.body as vendorMasterReportDetailsModel[];
                 // this.vendorList = results;
                 // this.vendorList = [].concat.apply([], results);
                 // this.totalVendorList = this.vendorList.concat();
