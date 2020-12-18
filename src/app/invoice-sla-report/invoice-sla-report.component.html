@@ -89,12 +89,16 @@
                     <th class="headers" scope="col">
                         <span>Gross Amount</span>
                     </th>
-
+                    <th class="headers" scope="col">
+                        <span>Currency</span>
+                    </th>
 
                     <th class="headers" scope="col">
                         <span>Company Code</span>
                     </th>
-
+                    <th class="headers" scope="col">
+                        <span>Is MSME</span>
+                    </th>
                     <th class="headers" scope="col">
                         <span>PO Number</span>
                     </th>
@@ -182,9 +186,14 @@
                     <td class="amount tencharacters">
                         {{ inv.invoiceGrossAmt }}
                     </td>
-                  
+                    <td>
+                        {{ inv.currency }}
+                    </td>
                     <td>
                         {{ inv.companyCode }}
+                    </td>
+                    <td>
+                        {{ inv.msme }}
                     </td>
                     <td>
                         {{ inv.poNumber }}

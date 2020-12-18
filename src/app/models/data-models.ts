@@ -726,6 +726,9 @@ export class InvoiceSLAReportDetailsModel {
     postedSAPDate: string;
     companyCode: string;
     invStatus: string;
+    msme: string;
+    currency: string;
+
 }
 
 export class InvoiceSLAReportReqModel {
@@ -759,12 +762,14 @@ export class InvoicePostingReportDetailsModel {
     paymentStatus: string;
     ageing: string;
     companyCode: string;
+    msme:string;
+    currency:string;
 }
 
 export class invoicePostingReportReqModel {
     startDate: string;
 }
-export class vendorMasterReportDetailsModel{
+export class vendorMasterReportDetailsModel {
     vendorMasterId: number;
     vendorName: string;
     emailId: string;
