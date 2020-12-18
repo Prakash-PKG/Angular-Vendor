@@ -129,6 +129,10 @@
                     </th>
 
                     <th class="headers" scope="col">
+                        <span>Currency</span>
+                    </th>
+
+                    <th class="headers" scope="col">
                         <span>Paid Date</span>
                     </th>
 
@@ -139,7 +143,12 @@
                     <th class="headers" scope="col">
                         <span>Ageing In Days</span>
                     </th>
-                </tr>
+                    
+                    <th class="headers" scope="col">
+                        <span>Is MSME</span>
+                    </th>
+                    
+                             </tr>
             </thead>
             <tbody>
                 <tr *ngFor="let inv of invoiceList; let invInd = index">
@@ -217,6 +226,9 @@
                         {{ inv.payment }}
                     </td>
                     <td>
+                        {{ inv.currency }}
+                    </td>
+                    <td>
                         {{ inv.paidDate }}
                     </td>
                     <td>
@@ -224,6 +236,9 @@
                     </td>
                     <td>
                         {{ inv.ageing }}
+                    </td>
+                    <td>
+                        {{ inv.msme }}
                     </td>
                 </tr>
             </tbody>
