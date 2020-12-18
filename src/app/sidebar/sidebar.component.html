@@ -65,7 +65,7 @@
                 <div class="navtxt">Pending Payments Invoices</div>
             </li>
         </ul>-->
-        <li [ngClass]="{'remove-li': isSidebarCollapsed == true}">
+        <li [ngClass]="{'remove-li': isSidebarCollapsed == true}" *ngIf="isPOInvoiceDumpVisible || isInvoiceReportViewer || isVendorReportViewer">
             <div class="side-icon">
                 <mat-icon>description</mat-icon>
             </div>
@@ -109,7 +109,7 @@
                 <div class="navtxt">Vendor Master Report</div>
             </li>
         </ul>
-        <li class="removehover" [ngClass]="{'remove-li': isSidebarCollapsed == true}">
+        <li class="removehover" [ngClass]="{'remove-li': isSidebarCollapsed == true}" *ngIf="isVendorRegistrationVisible || isEmpanelmentVisible">
             <div class="side-icon">
                 <mat-icon>person</mat-icon>
             </div>

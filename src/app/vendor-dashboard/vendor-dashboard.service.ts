@@ -15,8 +15,12 @@ export class VendorDashboardService {
         let url = this._appService.baseUrl + 'vendorDashBoard'
         return this._http.get(url, { responseType: 'json', observe: 'response' });
     }
+    getVendorReportList() {
+        let url = this._appService.baseUrl + 'vendorReportDashBoard'
+        return this._http.get(url, { responseType: 'json', observe: 'response' });
+    }
     getFileData(req: VendorReportReqModel) {
         let url = this._appService.baseUrl + 'vendorDumpReport';
-        return this._http.post(url, req, {responseType: 'arraybuffer', observe: 'response'});
+        return this._http.post(url, req, { responseType: 'arraybuffer', observe: 'response' });
     }
 }
