@@ -147,6 +147,14 @@
                     <th class="headers" scope="col">
                         <span>Is MSME</span>
                     </th>
+
+                    <th class="headers" scope="col">
+                        <span>Posted to SAP Document Number</span>
+                    </th>
+
+                    <th class="headers" scope="col">
+                        <span>Location Id</span>
+                    </th>
                     
                              </tr>
             </thead>
@@ -239,6 +247,12 @@
                     </td>
                     <td>
                         {{ inv.msme }}
+                    </td>
+                    <td>
+                        {{ inv.postedToSAPDocNumber }}
+                    </td>
+                    <td>
+                        {{ inv.plantId }}
                     </td>
                 </tr>
             </tbody>
