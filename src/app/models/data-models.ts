@@ -764,6 +764,8 @@ export class InvoicePostingReportDetailsModel {
     companyCode: string;
     msme:string;
     currency:string;
+    postedToSAPDocNumber:string;
+    plantId:string;
 }
 
 export class invoicePostingReportReqModel {
