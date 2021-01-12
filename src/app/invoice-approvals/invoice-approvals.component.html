@@ -132,7 +132,14 @@
                         Remarks
                     </div>
                     <div class="value">
-                        {{ initDetails?.invoiceDetails?.remarks }}
+                        <span *ngIf = "isReceiver == false">{{ initDetails?.invoiceDetails?.remarks }}</span>
+                        <mat-form-field *ngIf = "isReceiver == true" class="full-width" style="text-align: left;">
+                            <input matInput placeholder="Remarks" [(ngModel)]="uploaderRemarks" maxlength="50"
+                                (blur)="onUploaderRemarksBlur()" autocomplete="off">
+                        </mat-form-field>
+                        <div class="error-txt">
+                            {{ uploaderRemarksErrMsg }}
+                        </div>
                     </div>
                 </div>
                 <div class="flex-item">

@@ -44,6 +44,10 @@ export class InvoiceApprovalsComponent implements OnInit {
 
     remarks: string = "";
 
+    uploaderRemarks: string = "";
+    isReceiver: boolean = false;
+    uploaderRemarksErrMsg: string = "";
+
     isPOInvoice: boolean = false;
 
     isPOCompleted: boolean = false;
@@ -292,6 +296,12 @@ export class InvoiceApprovalsComponent implements OnInit {
         }
     }
 
+    onUploaderRemarksBlur() {
+        if(this.uploaderRemarks) {
+            this.uploaderRemarks = this.uploaderRemarks.trim();
+        }
+    }
+
     onBackBtnClick() {
         this._router.navigate([this._appService.routingConstants.pendingApprovals]);
     }
@@ -317,6 +327,10 @@ export class InvoiceApprovalsComponent implements OnInit {
         this.isRejectVisible = false;
         this.isHoldVisible = false;
         if(this._appService.selectedPendingApprovalRecord) {
+
+            if(globalConstant.userDetails.isPurchaseOwner) {
+                this.isReceiver = true;
+            }
 
             this.isPOInvoice = false;
             if(this._appService.selectedPendingApprovalRecord.purchaseOrderId && this._appService.selectedPendingApprovalRecord.poNumber) {
@@ -352,6 +366,8 @@ export class InvoiceApprovalsComponent implements OnInit {
             this.initDetails = await this._invoiceApprovalsService.getInvoiceApprovalInitData(req);
             
             if(this.initDetails) {
+                this.uploaderRemarks = (this.initDetails.invoiceDetails) ? this.initDetails.invoiceDetails.remarks : "";
+
                 this.prepareInvoiceFileTypes();
 
                 this.itemsList = this.initDetails.itemsList.concat();
@@ -518,10 +534,18 @@ export class InvoiceApprovalsComponent implements OnInit {
     updateInvoiceApprovals(action: string, msg: string) {
         this.remarksErrMsg = "";
         this.grnSesErrMsg = "";
+        this.uploaderRemarksErrMsg = "";
         let isRemarksValid: boolean = true;
+        let isUploaderRemarksValid: boolean = true;
+
         if(!this.remarks || this.remarks.trim().length == 0) {
             this.remarksErrMsg = "Please provide Remarks";
             isRemarksValid = false;
+        }
+
+        if(!this.uploaderRemarks || this.uploaderRemarks.trim().length == 0) {
+            this.uploaderRemarksErrMsg = "Please provide Remarks";
+            isUploaderRemarksValid = false;
         }
 
         // let approveSuccessMsg: string = (action == this._appService.updateOperations.approve) ? "Approved." : "Rejected.";
@@ -584,7 +608,7 @@ export class InvoiceApprovalsComponent implements OnInit {
 
         
         
-        if(isRemarksValid && isGrnSesValid) {
+        if(isRemarksValid && isGrnSesValid && isUploaderRemarksValid) {
             if(action == this._appService.updateOperations.reject || action == this._appService.updateOperations.onhold) {
                 const dialogRef = this._dialog.open(ConfirmDialogComponent, {
                     disableClose: true,
@@ -634,6 +658,7 @@ export class InvoiceApprovalsComponent implements OnInit {
                     approverId: globalConstant.userDetails.userId,
                     approvalLevel: apprLevel,
                     remarks: this.remarks,
+                    uploaderRemarks: this.uploaderRemarks,
                     approvedDate: this.initDetails.approvalDetails.approvedDate ? this.initDetails.approvalDetails.approvedDate : null,
                     onholdDate: this.initDetails.approvalDetails.onholdDate ? this.initDetails.approvalDetails.onholdDate : null,
                     rectifiedDate: this.initDetails.approvalDetails.rectifiedDate ? this.initDetails.approvalDetails.rectifiedDate : null,
