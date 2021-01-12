@@ -95,17 +95,17 @@ export class InvoiceSearchComponent implements OnInit {
     }
 
     getPaymentStatus(inv: InvoiceModel) {
-        let paymentStatus: string = "";
-        if (inv && inv.statusCode == "approved-finance") {
-            if (inv.paymentStatus) {
-                paymentStatus = inv.paymentStatus;
-            }
-            else {
-                paymentStatus = "in progress";
-            }
-        }
+        // let paymentStatus: string = "";
+        // if (inv && inv.statusCode == "approved-finance") {
+        //     if (inv.paymentStatus) {
+        //         paymentStatus = inv.paymentStatus;
+        //     }
+        //     else {
+        //         paymentStatus = "in progress";
+        //     }
+        // }
 
-        return paymentStatus;
+        return (inv.paymentStatus) ? inv.paymentStatus : "";
     }
 
     onPrintVoucherClick(inv: InvoiceModel) {
