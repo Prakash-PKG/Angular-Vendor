@@ -68,10 +68,11 @@ export class VendorApprovalComponent implements OnInit {
     isProcurement: boolean = false;
     isExistingVendor: boolean = false;
     canEdit: boolean = false;
+    canSave: boolean = false;
 
     msg: string = "";
 
-    isEditable = false;
+    isEditDisabled = false;
     isValid = true;
     isServerError = false;
     disableSubmit: boolean = false;
@@ -144,13 +145,15 @@ export class VendorApprovalComponent implements OnInit {
     }
 
     onEditClick() {
-        this.isEditable = true;
+        this.isEditDisabled = true;
+        this.canSave = true;
 
         this.vendorForm.get("vendorName").enable();
         this.vendorForm.get("contactPerson").enable();
         this.vendorForm.get("mobileNum").enable();
         this.vendorForm.get("telephoneNum").enable();
-        this.vendorForm.get("emailId").enable();
+        if (!this.isExistingVendor)
+            this.vendorForm.get("emailId").enable();
 
         this.vendorForm.get("address1").enable();
         this.vendorForm.get("address2").enable();
@@ -443,6 +446,11 @@ export class VendorApprovalComponent implements OnInit {
         this.msg = '';
         this.updateVendorApprovals(this._appService.updateOperations.approve);
     }
+    onSaveClick(){
+        this.isSubmitted = true;
+        this.msg = '';
+        this.updateVendorApprovals(this._appService.updateOperations.save);
+    }
 
     onRejectClick() {
         this.updateVendorApprovals(this._appService.updateOperations.reject);
@@ -576,7 +584,7 @@ export class VendorApprovalComponent implements OnInit {
                         this.displayVendorApprovalStatus(result.message);
                     }
                     else {
-                        this.isEditable = false;
+                        this.isEditDisabled = false;
                         this.isServerError = true;
                         this.disableSubmit = false;
                         this.msg = result.message;
@@ -584,7 +592,7 @@ export class VendorApprovalComponent implements OnInit {
                 }
             },
                 (error) => {
-                    this.isEditable = false;
+                    this.isEditDisabled = false;
                     this.disableSubmit = false;
                     this._homeService.updateBusy(<BusyDataModel>{ isBusy: false, msg: null });
                     this.msg = this._appService.messages.vendorApprovalFailure;
@@ -617,8 +625,11 @@ export class VendorApprovalComponent implements OnInit {
             this.vendorDetails = this._appService.selectedVendor;
             console.log(this.vendorDetails);
             this.canApprove = false;
-            this.isEditable = false;
-            this.canEdit = false;
+            if (this.isProcurement) {
+                this.isEditDisabled = false;
+                this.canEdit = true;
+                this.canSave = true;
+            }
 
         }
         else if (this._appService.selectedPendingApprovalRecord) {
@@ -799,7 +810,7 @@ export class VendorApprovalComponent implements OnInit {
 
     getUpdatedVendorDetails() {
 
-        if (this.isEditable) {
+        if (this.isEditDisabled) {
             this.vendorDetails.vendorName = this.vendorForm.get("vendorName").value ? this.vendorForm.get("vendorName").value.trim() : null;
             this.vendorDetails.contactPerson = this.vendorForm.get("contactPerson").value ? this.vendorForm.get("contactPerson").value.trim() : null;
             this.vendorDetails.mobileNum = this.vendorForm.get("mobileNum").value;

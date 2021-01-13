@@ -72,7 +72,8 @@ export class AppService {
         reject: "reject",
         onhold: 'onhold',
         sendBack: "sendBack",
-        rectified: "rectified"
+        rectified: "rectified",
+        proSave:'proSave'
     };
 
     readonly statusNames: any = {
