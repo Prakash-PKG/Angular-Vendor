@@ -843,3 +843,7 @@ export class vendorMasterReportDetailsModel {
     withholdTaxCode: string;
     // fileDetails: FileDetailsModel[];
 }
+export class fileDetailsVendorDocumentModel{
+    fileDetails:FileDetailsModel[];
+    vendorMasterDocumentVOList:VendorMasterDocumentModel[];
+}
