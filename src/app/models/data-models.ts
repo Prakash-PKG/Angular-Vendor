@@ -734,6 +734,7 @@ export class InvoiceSLAReportDetailsModel {
 
 export class InvoiceSLAReportReqModel {
     startDate: string;
+    endDate:string;
 }
 
 export class InvoicePostingReportDetailsModel {
@@ -771,6 +772,7 @@ export class InvoicePostingReportDetailsModel {
 
 export class invoicePostingReportReqModel {
     startDate: string;
+    endDate:string;
 }
 export class vendorMasterReportDetailsModel {
     vendorMasterId: number;

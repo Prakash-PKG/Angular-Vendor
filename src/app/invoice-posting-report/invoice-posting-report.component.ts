@@ -32,10 +32,11 @@ export class InvoicePostingReportComponent implements OnInit {
 
     onInvoiceDownloadClick() {
         let req: invoicePostingReportReqModel = {
-            startDate: null
+            startDate:  this.invoiceSearchForm.get("startDate").value,
+            endDate:  this.invoiceSearchForm.get("endDate").value
         };
 
-        let displayStartDt: string = this._datePipe.transform(new Date(), this._appService.displayDtFormat);;
+        let displayStartDt: string = this._datePipe.transform(new Date(), this._appService.displayDtFormat);
         let fileName: string = "invoice-posting-report-" + displayStartDt + ".xlsx";
         this.downloadInvoiceDump(req, fileName);
     }
