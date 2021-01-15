@@ -32,9 +32,12 @@ export class InvoiceSlaReportComponent implements OnInit {
         private _invoiceReportService: InvoiceSlaReportService) { }
 
     onInvoiceDownloadClick() {
+
+        let startDate: string = this._datePipe.transform(this.invoiceSearchForm.get("startDate").value, this._appService.dbDateFormat);
+        let endDate: string = this._datePipe.transform(this.invoiceSearchForm.get("endDate").value, this._appService.dbDateFormat);
         let req: InvoiceSLAReportReqModel = {
-            startDate:this.invoiceSearchForm.get("startDate").value,
-            endDate:  this.invoiceSearchForm.get("endDate").value
+            startDate: startDate,
+            endDate: endDate
         };
 
         let displayStartDt: string = this._datePipe.transform(new Date(), this._appService.displayDtFormat);;
