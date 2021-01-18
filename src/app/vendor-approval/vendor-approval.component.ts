@@ -574,9 +574,10 @@ export class VendorApprovalComponent implements OnInit {
             createDate: this.isExistingVendor ? this.vendorDetails.createdDate : (this.vendorApprovalInitDetails.vendorApprovalDetails.createDate ? this.vendorApprovalInitDetails.vendorApprovalDetails.createDate : null),
             vendorMasterDetails: this.getUpdatedVendorDetails()
         };
-
+   
         this._homeService.updateBusy(<BusyDataModel>{ isBusy: true, msg: null });
-        this._vendorApprovalService.updateVendorApprovalDetails(req)
+  
+        this._vendorApprovalService.updateVendorApprovalDetails(req,this.isExistingVendor)
             .subscribe(response => {
                 this._homeService.updateBusy(<BusyDataModel>{ isBusy: false, msg: null });
 
