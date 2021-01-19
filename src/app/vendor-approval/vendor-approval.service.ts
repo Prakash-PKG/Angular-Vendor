@@ -45,17 +45,32 @@ export class VendorApprovalService {
             detailsModel.vendorMasterDocumentVOList = data["vendorMasterDocumentVOList"];
             detailsModel.countriesList = data["countryDataVOList"];
             detailsModel.regionMasterVOList = data["regionMasterVOList"];
-            detailsModel.bankAccountTypeList =data["bankAccountTypeVOList"];
+            detailsModel.bankAccountTypeList = data["bankAccountTypeVOList"];
         }
-
         return detailsModel;
     }
 
-    updateVendorApprovalDetails(updateReqModel: VendorApprovalReqModel) {
-        let url = this._appService.baseUrl + "updateVendorApproval";
+    async getExVendorInitData(vendorMasterId: number) {
+        let url = this._appService.baseUrl + 'fileDetails/' + vendorMasterId
+        try {
+            let response = await this._http.get(url, { responseType: 'json', observe: 'response' }).toPromise();
+            return this.prepareVendorRegistrationInitData(response.body);
+        } catch (error) {
+            await console.log(error);
+            return (new VendorApprovalInitResultModel());
+        }
+    }
+
+    updateVendorApprovalDetails(updateReqModel: VendorApprovalReqModel, isExistingVendor: boolean) {
+        let url: string = '';
+        if (isExistingVendor)
+            url = this._appService.baseUrl + "updateVendorDetails";
+        else
+            url = this._appService.baseUrl + "updateVendorApproval";
         return this._http.post(url, updateReqModel, { responseType: 'json', observe: 'response' });
     }
-    
+
+
     sendBackForCorrection(sendVendCorrId: VendorRegistrationDetailRequestModel) {
         let url = this._appService.baseUrl + "fetchVendor";
         return this._http.post(url, sendVendCorrId, { responseType: 'json', observe: 'response' });

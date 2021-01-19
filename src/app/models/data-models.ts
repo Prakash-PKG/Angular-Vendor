@@ -585,6 +585,7 @@ export class InvoiceApprovalModel {
     approverId: string;
     approvalLevel: string;
     remarks: string;
+    uploaderRemarks: string;
     approvedDate: string;
     onholdDate: string;
     rectifiedDate: string;
@@ -843,4 +844,8 @@ export class vendorMasterReportDetailsModel {
     withHoldTypeCode: string;
     withholdTaxCode: string;
     // fileDetails: FileDetailsModel[];
+}
+export class fileDetailsVendorDocumentModel{
+    fileDetails:FileDetailsModel[];
+    vendorMasterDocumentVOList:VendorMasterDocumentModel[];
 }

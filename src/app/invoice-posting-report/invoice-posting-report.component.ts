@@ -7,13 +7,13 @@ import { FormBuilder, FormGroup, FormArray, Validators, FormControl, AbstractCon
 import { DatePipe } from '@angular/common';
 
 @Component({
-  selector: 'app-invoice-posting-report',
-  templateUrl: './invoice-posting-report.component.html',
-  styleUrls: ['./invoice-posting-report.component.scss']
+    selector: 'app-invoice-posting-report',
+    templateUrl: './invoice-posting-report.component.html',
+    styleUrls: ['./invoice-posting-report.component.scss']
 })
 export class InvoicePostingReportComponent implements OnInit {
 
-  isDashboardCollapsed: boolean = true;
+    isDashboardCollapsed: boolean = true;
     _sidebarExpansionSubscription: any = null;
 
     invoiceList: InvoicePostingReportDetailsModel[] = [];
@@ -31,11 +31,13 @@ export class InvoicePostingReportComponent implements OnInit {
         private _invoiceReportService: InvoicePostingReportService) { }
 
     onInvoiceDownloadClick() {
-        let req: invoicePostingReportReqModel = {
-            startDate:  this.invoiceSearchForm.get("startDate").value,
-            endDate:  this.invoiceSearchForm.get("endDate").value
-        };
 
+        let startDate: string = this._datePipe.transform(this.invoiceSearchForm.get("startDate").value, this._appService.dbDateFormat);
+        let endDate: string = this._datePipe.transform(this.invoiceSearchForm.get("endDate").value, this._appService.dbDateFormat);
+        let req: invoicePostingReportReqModel = {
+            startDate: startDate,
+            endDate: endDate
+        };
         let displayStartDt: string = this._datePipe.transform(new Date(), this._appService.displayDtFormat);
         let fileName: string = "invoice-posting-report-" + displayStartDt + ".xlsx";
         this.downloadInvoiceDump(req, fileName);
@@ -43,6 +45,7 @@ export class InvoicePostingReportComponent implements OnInit {
 
     downloadInvoiceDump(req: invoicePostingReportReqModel, fileName: string) {
         this._homeService.updateBusy(<BusyDataModel>{ isBusy: true, msg: "Loading..." });
+        console.log(req);
         this._invoiceReportService.getFileData(req).subscribe(
             (data) => {
                 this._homeService.updateBusy(<BusyDataModel>{ isBusy: false, msg: null });
@@ -74,11 +77,11 @@ export class InvoicePostingReportComponent implements OnInit {
     async loadInitData() {
         this.invoiceList = [];
         this.totalInvoiceList = [];
- 
+
         this._homeService.updateBusy(<BusyDataModel>{ isBusy: true, msg: "Loading..." });
         this.totalInvoiceList = await this._invoiceReportService.getInvoiceSLAList();
         this.invoiceList = this.totalInvoiceList.slice(0, this.pageSize);
-        
+
         this._homeService.updateBusy(<BusyDataModel>{ isBusy: false, msg: null });
     }
 
