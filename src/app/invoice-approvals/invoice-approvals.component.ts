@@ -323,6 +323,14 @@ export class InvoiceApprovalsComponent implements OnInit {
         return "";
     }
 
+    getPlant() {
+        if(this.initDetails && this.initDetails.invoiceDetails) {
+            return this.initDetails.invoiceDetails.plantDescription + " ( " +  this.initDetails.invoiceDetails.plantCode + " )";
+        }
+        
+        return "";
+    }
+
     async loadInitData() {
         this.isRejectVisible = false;
         this.isHoldVisible = false;

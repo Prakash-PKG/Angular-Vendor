@@ -37,6 +37,7 @@ export class InvoiceUploadService {
             initModel.invoiceFileTypes = data["invoiceFileTypes"];     
             initModel.currencyList =  data["currencyMasterList"];
             initModel.companiesList = data["companiesList"];
+            initModel.plantsList = data["plantMasterList"];
         }
 
         return initModel;

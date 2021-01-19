@@ -100,6 +100,20 @@
             <div class=" search-row-element actions" *ngIf="isFromToMandatory == true">
                 <mat-checkbox class="example-margin" formControlName="isDatesMandatory">Is Dates Mandatory</mat-checkbox>
             </div>
+        </div>
+
+        <div class="search-row">
+           <mat-form-field class="search-row-element" *ngIf="selectedInvoiceType == 'non-po'">
+                <mat-select matNativeControl formControlName="plantCode" placeholder="Choose Plant">
+                    <mat-option *ngFor="let p of plantsList" [value]="p.plantCode">
+                        {{ p.plantDescription }}
+                    </mat-option>
+                </mat-select>
+                <mat-error *ngIf="( isSubmitted ) && f?.plantCode?.errors?.required">Plant is required</mat-error>
+            </mat-form-field>
+            <mat-label *ngIf="selectedInvoiceType == 'po'" class="search-row-element">
+                <b>Plant: </b> {{ getPlant() }}
+            </mat-label>
 
             <div class=" search-row-element actions" *ngIf="selectedInvoiceType == 'non-po'">
                 <button mat-raised-button class="footer-actions footer-actions-green" (click)="onNewClick()">+</button>
