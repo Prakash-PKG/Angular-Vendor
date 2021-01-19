@@ -23,7 +23,7 @@ export class VendorApprovalService {
         let url = this._appService.baseUrl + "venApprovalDetails";
         try {
             let response = await this._http.post(url, req).toPromise();
-                   return this.prepareVendorRegistrationInitData(response);
+            return this.prepareVendorRegistrationInitData(response);
         } catch (error) {
             await console.log(error);
             return (new VendorApprovalInitResultModel());
@@ -61,10 +61,15 @@ export class VendorApprovalService {
         }
     }
 
-    updateVendorApprovalDetails(updateReqModel: VendorApprovalReqModel) {
-        let url = this._appService.baseUrl + "updateVendorApproval";
+    updateVendorApprovalDetails(updateReqModel: VendorApprovalReqModel, isExistingVendor: boolean) {
+        let url: string = '';
+        if (isExistingVendor)
+            url = this._appService.baseUrl + "updateVendorDetails";
+        else
+            url = this._appService.baseUrl + "updateVendorApproval";
         return this._http.post(url, updateReqModel, { responseType: 'json', observe: 'response' });
     }
+
 
     sendBackForCorrection(sendVendCorrId: VendorRegistrationDetailRequestModel) {
         let url = this._appService.baseUrl + "fetchVendor";
