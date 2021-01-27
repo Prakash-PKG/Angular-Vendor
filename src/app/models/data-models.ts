@@ -566,6 +566,7 @@ export class InvoiceApprovalInitResultModel {
     approvalsList: InvoiceApprovalModel[];
     communicationMsgsList: CommunicationMsgModel[];
     invoiceFileTypes: InvoiceFileTypwModel[];
+    msme: string;
 }
 
 export class GrnSesModel {

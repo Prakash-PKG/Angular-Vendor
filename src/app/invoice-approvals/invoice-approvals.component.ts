@@ -240,6 +240,22 @@ export class InvoiceApprovalsComponent implements OnInit {
         });
     }
 
+    displayMSMEData(msg: string) {
+        const dialogRef = this._dialog.open(MessageDialogComponent, {
+            disableClose: true,
+            panelClass: 'dialog-box',
+            width: '550px',
+            data: <MessageDialogModel>{
+                title: "Invoice Approval Action",
+                message: msg
+            }
+        });
+
+        dialogRef.afterClosed().subscribe(result => {
+            
+        });
+    }
+
     onDeleteFileClick(fileDetails: FileDetailsModel, fileIndex: number, fileType: string) {
         if(fileDetails.fileId) {
             this._homeService.updateBusy(<BusyDataModel>{isBusy: true, msg: "Deleting..."});
@@ -460,6 +476,10 @@ export class InvoiceApprovalsComponent implements OnInit {
             if(this.initDetails.communicationMsgsList && this.initDetails.communicationMsgsList.length > 0) {
                 this.isChatBtnVisible = true;
                 this.onCommunicationClick();
+            }
+
+            if(this.initDetails.msme == "Yes") {
+                this.displayMSMEData("Vendor is MSME registered");
             }
         }
     }
