@@ -52,6 +52,7 @@ export class InvoiceUploadResultModel {
     currencyList: currencyMasterList[];
     statusDetails: StatusModel;
     companiesList: CompanyCodeMasterList[];
+    plantsList: PlantModel[];
 }
 
 export class PODetailsModel {
@@ -71,6 +72,8 @@ export class PODetailsModel {
     companyName: string = null;
     projectId: string = null;
     projectName: string = null;
+    plantCode: string = null;
+    plantDescription = null;
     createdBy: string = null;
     createdDate: string = null;
 }
@@ -224,6 +227,8 @@ export class InvoiceModel {
     documentType: string;
     paymentStatus: string;
     tcsAmount: string;
+    plantCode: string;
+    plantDescription: string;
     // invoiceUploadedBy:string;
 }
 
@@ -411,6 +416,12 @@ export class VendorApprovalReqModel extends vendorApprovalDetails {
     vendorMasterDetails: VendorMasterDetailsModel
 }
 
+export class PlantModel {
+    plantCode: string;
+    plantDescription: string;
+    plantMasterId: number;
+}
+
 export class CompanyCodeMasterList {
     companyCode: string;
     companyDesc: string;
@@ -486,6 +497,8 @@ export class InvoiceDetailsModel {
     projectName: string;
     companyCode: string;
     companyName: string;
+    plantCode: string;
+    plantDescription: string;
     createdBy: string;
     createdDate: string;
     tcsAmount: string;
@@ -553,6 +566,7 @@ export class InvoiceApprovalInitResultModel {
     approvalsList: InvoiceApprovalModel[];
     communicationMsgsList: CommunicationMsgModel[];
     invoiceFileTypes: InvoiceFileTypwModel[];
+    msme: string;
 }
 
 export class GrnSesModel {

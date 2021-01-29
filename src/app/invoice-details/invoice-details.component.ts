@@ -304,6 +304,14 @@ export class InvoiceDetailsComponent implements OnInit {
         return "";
     }
 
+    getPlant() {
+        if(this.invoiceDetails) {
+            return this.invoiceDetails.plantDescription + " ( " +  this.invoiceDetails.plantCode + " )";
+        }
+        
+        return "";
+    }
+
     downloadFile(fileDetails: FileDetailsModel) {
         this._appService.downloadInvoiceFile(fileDetails);
     }

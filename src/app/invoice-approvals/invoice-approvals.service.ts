@@ -40,6 +40,7 @@ export class InvoiceApprovalsService {
             initModel.invoiceFileTypes = data["invoiceFileTypes"];  
             initModel.invoiceFilesList = [];
             initModel.supportFilesList = [];
+            initModel.msme = data["msme"];
 
             filesList = data["fileDetails"];
         }

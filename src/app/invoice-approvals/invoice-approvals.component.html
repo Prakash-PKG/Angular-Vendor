@@ -305,7 +305,24 @@
             </div>
         </div>
     </div>
-
+    <div class="flex-container">
+        <div class="flex-item">
+            <div class="header" style="width: 18%">
+                Plant
+            </div>
+            <div class="value">
+                {{ getPlant() }}
+            </div>
+        </div>
+        <div class="flex-item">
+            <div class="header" style="width: 18%">
+                MSME
+            </div>
+            <div class="value">
+                {{ initDetails?.msme }}
+            </div>
+        </div>
+    </div>
 
 
     <!--<div *ngIf = "isOnHold == true">

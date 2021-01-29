@@ -8,7 +8,7 @@ import {
     PODetailsModel, POItemsRequestModel, POItemsResultModel, ItemModel, FileDetailsModel, InvoiceFileTypwModel,
     UpdateInvoiceRequestModel, UpdateInvoiceResultModel, InvoiceDocumentResultModel, StatusModel,
     VendorAutoCompleteModel, ProjectAutoCompleteModel, CompanyCodeMasterList, InvoiceExistReqModel,
-    NotRejectedItemsModel
+    NotRejectedItemsModel, PlantModel
 } from './../models/data-models';
 import { Component, OnInit, HostListener } from '@angular/core';
 import { HomeService } from '../home/home.service';
@@ -117,6 +117,8 @@ export class InvoiceUploadComponent implements OnInit {
 
     companiesList: CompanyCodeMasterList[] = [];
 
+    plantsList: PlantModel[] = [];
+
     isInvoiceValid: boolean = false;
 
     invoiceNumberErrMsg: string = "";
@@ -170,6 +172,15 @@ export class InvoiceUploadComponent implements OnInit {
         }
 
         return projectName;
+    }
+
+    getPlant() {
+        let plant: string = "";
+        if (this.selectedPOItem && this.selectedPOItem.plantCode && this.selectedPOItem.plantDescription) {
+            plant = this.selectedPOItem.plantDescription + " ( " + this.selectedPOItem.plantCode + " )";
+        }
+
+        return plant;
     }
 
     onCancelClick() {
@@ -357,6 +368,7 @@ export class InvoiceUploadComponent implements OnInit {
             this.invoiceUploadForm.get("vendorId").setValidators([]);
             this.invoiceUploadForm.get("projectId").setValidators([]);
             this.invoiceUploadForm.get("companyCode").setValidators([]);
+            this.invoiceUploadForm.get("plantCode").setValidators([]);
         }
         else {
             this.headerArr = this.nonPOHeaderArr.concat();
@@ -364,6 +376,7 @@ export class InvoiceUploadComponent implements OnInit {
             this.invoiceUploadForm.get("vendorId").setValidators([Validators.required]);
             this.invoiceUploadForm.get("projectId").setValidators([Validators.required]);
             this.invoiceUploadForm.get("companyCode").setValidators([Validators.required]);
+            this.invoiceUploadForm.get("plantCode").setValidators([Validators.required]);
 
             this.invoiceUploadForm.get("poList").setValidators([]);
         }
@@ -373,6 +386,7 @@ export class InvoiceUploadComponent implements OnInit {
         this.invoiceUploadForm.get("vendorId").updateValueAndValidity();
         this.invoiceUploadForm.get("projectId").updateValueAndValidity();
         this.invoiceUploadForm.get("companyCode").updateValueAndValidity();
+        this.invoiceUploadForm.get("plantCode").updateValueAndValidity();
     }
 
     resetAllFields() {
@@ -810,6 +824,7 @@ export class InvoiceUploadComponent implements OnInit {
             this.poList = (this._initDetails.poList && this._initDetails.poList.length > 0) ? this._initDetails.poList.concat() : [];
             this.currencyList = (this._initDetails.currencyList && this._initDetails.currencyList.length > 0) ? this._initDetails.currencyList.concat() : [];
             this.companiesList = (this._initDetails.companiesList && this._initDetails.companiesList.length > 0) ? this._initDetails.companiesList.concat() : [];
+            this.plantsList = (this._initDetails.plantsList && this._initDetails.plantsList.length > 0) ? this._initDetails.plantsList.concat() : [];
         }
         this._homeService.updateBusy(<BusyDataModel>{ isBusy: false, msg: null });
 
@@ -1158,11 +1173,15 @@ export class InvoiceUploadComponent implements OnInit {
         let projName: string = null;
         let companyCode: string = null;
         let companyName: string = null;
+        let plantCode: string = null;
+        let plantDescription: string = null;
         if (this.selectedInvoiceType == 'po') {
             venId = this.selectedPOItem.vendorId;
             venName = this.selectedPOItem.vendorName;
             companyCode = this.selectedPOItem.companyCode;
             companyName = this.selectedPOItem.companyName;
+            plantCode = this.selectedPOItem.plantCode;
+            plantDescription = this.selectedPOItem.plantDescription;
         }
         else {
             let selVendor = this.invoiceUploadForm.get("vendorId").value;
@@ -1182,6 +1201,13 @@ export class InvoiceUploadComponent implements OnInit {
             if (selCompanyCodeObj) {
                 companyCode = selCompanyCodeObj.companyCode;
                 companyName = selCompanyCodeObj.companyDesc;
+            }
+
+            let selPlantCode = this.invoiceUploadForm.get("plantCode").value;
+            let selPlantCodeObj: PlantModel = this.plantsList.find(c => c.plantCode == selPlantCode);
+            if (selCompanyCodeObj) {
+                plantCode = selPlantCodeObj.plantCode;
+                plantDescription = selPlantCodeObj.plantDescription;
             }
         }
 
@@ -1207,6 +1233,8 @@ export class InvoiceUploadComponent implements OnInit {
                 projectName: projName,
                 companyCode: companyCode,
                 companyName: companyName,
+                plantCode: plantCode,
+                plantDescription: plantDescription,
                 createdBy: null,
                 createdDate: null,
                 tcsAmount: this.invoiceUploadForm.get("tcsAmount").value ? this.invoiceUploadForm.get("tcsAmount").value : null
@@ -1302,6 +1330,7 @@ export class InvoiceUploadComponent implements OnInit {
             vendorId: null,
             projectId: null,
             companyCode: null,
+            plantCode: null,
             createdBy: null,
             createdDate: null,
             tcsAmount: null,
