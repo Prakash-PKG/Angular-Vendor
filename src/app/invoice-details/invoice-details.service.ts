@@ -35,6 +35,7 @@ export class InvoiceDetailsService {
             initModel.paymentDetails = data["paymentDetails"];
             initModel.invoiceFilesList = [];
             initModel.supportFilesList = [];
+            initModel.delMgrDetails = data["delMgrDetails"];
 
             filesList = data["filesList"];
 

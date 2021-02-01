@@ -260,6 +260,24 @@ export class InvoiceDetailsResultModel {
     paymentStatusDetails: PaymentStatusDetailsModel;
     paymentStatusList: paymentStatusModel[];
     paymentDetails: PaymentDetailsModel;
+    delMgrDetails: EmployeeDetailsModel;
+}
+
+export class EmployeeDetailsModel {
+    department: string;
+    designation: string;
+    employeeId: string;
+    firstName: string;
+    lastName: string;
+    manager: boolean;
+    managerId: string;
+    mgrEmailId: string;
+    mgrFName: string;
+    mgrLName: string;
+    mgrMName: string;
+    middleName: string;
+    offEmailId: string;
+    status: string;
 }
 
 export class paymentStatusModel {

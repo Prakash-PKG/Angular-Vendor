@@ -5,7 +5,8 @@ import { globalConstant } from './../common/global-constant';
 import {
     InvoiceModel, BusyDataModel, InvoiceDetailsRequestModel, InvoiceDetailsResultModel,
     ItemDisplayModel, FileDetailsModel, InvoiceApprovalModel, ApprovalLevelsModel, paymentStatusModel,
-    PaymentStatusDetailsModel, PaymentReqModel, StatusModel, PaymentDetailsModel, VoucherReqModel
+    PaymentStatusDetailsModel, PaymentReqModel, StatusModel, PaymentDetailsModel, VoucherReqModel,
+    EmployeeDetailsModel
 } from './../models/data-models';
 import { AppService } from './../app.service';
 import { InvoiceDetailsService } from './invoice-details.service';
@@ -324,6 +325,14 @@ export class InvoiceDetailsComponent implements OnInit {
         return "";
     }
 
+    getDeliveryManagerName(delMgrDetails: EmployeeDetailsModel) {
+        if(delMgrDetails) {
+            return delMgrDetails.firstName + " " + ((delMgrDetails.middleName) ? delMgrDetails.middleName + " " : "")  + delMgrDetails.lastName + " (" + delMgrDetails.status + ")";
+        }
+        
+        return "";
+    }
+
     async loadInitData() {
         this.paymentStatusList = [];
 
@@ -428,12 +437,14 @@ export class InvoiceDetailsComponent implements OnInit {
 
                     let functionalHeadApprovalModel: InvoiceApprovalModel = this._initDetails.approvalsList.find(a => a.approvalLevel == this._appService.approvalLevels.functionalHead);
                     if (functionalHeadApprovalModel != null) {
+                        let delMgrDetails: EmployeeDetailsModel = this._initDetails.delMgrDetails;
+                        let apprName: string = (functionalHeadApprovalModel.approverName && functionalHeadApprovalModel.approverName.trim()) ? functionalHeadApprovalModel.approverName : this.getDeliveryManagerName(delMgrDetails);
                         this.fhLevel = {
                             levelName: "Delivery Manager",
                             status: this._appService.statusNames[functionalHeadApprovalModel.statusCode],
                             date: (functionalHeadApprovalModel.statusCode == this._appService.statusCodes.approved || functionalHeadApprovalModel.statusCode == this._appService.statusCodes.rejected) ? this._appService.getFormattedDate(functionalHeadApprovalModel.updatedDate) : "",
                             remarks: functionalHeadApprovalModel.remarks,
-                            approverName: functionalHeadApprovalModel.approverName
+                            approverName: apprName
                         };
                         this.approvalLevelList.push(this.fhLevel);
                     }
