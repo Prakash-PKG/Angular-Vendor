@@ -1,8 +1,15 @@
 
+export const countryCompanyCodes: any = {
+    indiaCompanyCodes: ["7510", "7520"],
+    usCompanyCodes: ["7010", "7020"]
+};
+
 export const globalConstant : any = {
-    poRoles: ["adp", "hrp", "isp", "itp", "lgp", "mkp", 'fip', 'psp', 'cgp', 'ssp', 'isp', 'hr1', 'hr2', 'hr3', 'hr4', 'ism'],
+    poRoles: ["adp", "hrp", "isp", "itp", "lgp", "mkp", 'fip', 'psp', 'cgp', 'ssp', 'isp', 'hr1', 'hr2', 'hr3', 'hr4', 'ism',
+                "adp-us"],
     invUploadRoles: ["adp-upload", "hrp-upload", "isp-upload", "itp-upload", "lgp-upload", "mkp-upload", "fip-upload",
-                        "psp-upload", "cgp-upload", "ssp-upload", "hr1-upload", "hr2-upload", "hr3-upload", "hr4-upload", "ism-upload"],
+                        "psp-upload", "cgp-upload", "ssp-upload", "hr1-upload", "hr2-upload", "hr3-upload", "hr4-upload", "ism-upload",
+                        "adp-upload-us"],
     invSubContractReceiverRoles: ["hrp-receiver"],
     functionalHeadRoles: ["functional_head"],
     financeRoles: ["finance"],
@@ -12,6 +19,19 @@ export const globalConstant : any = {
     tempVendorRoles: ["vendor-temp"],
     vendorReportViewerRoles: ["vendor-report"],
     invoiceReportViewerRoles: ["invoice-report"],
+    supportedCountries: ["IN", "US"],
+    companyCodes: {
+        "ADP": countryCompanyCodes.indiaCompanyCodes,
+        "ADP-US": countryCompanyCodes.usCompanyCodes
+    },
+    indiaCountryCode: "IN",
+    usCountryCode: "US",
+    // countryByCompanyCode: {
+    //     "7510": "IN",
+    //     "7520": "IN",
+    //     "7010": "US",
+    //     "7020": "US"
+    // },
     userDetails: {
         userId: "",
         userEmail: "",

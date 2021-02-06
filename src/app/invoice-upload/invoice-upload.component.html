@@ -151,7 +151,7 @@
                                 <div *ngIf="fa.controls[itemInd].controls.itemDescription.errors?.required" class="errortxt">Item Desc is required</div>
                             </div>
                         </td>
-                        <td style="width:7em;">
+                        <td style="width:7em;" *ngIf = "isHSNVisible == true">
                             <input class="inv-qty" formControlName="hsn" [ngClass]="{ 'errorinput': isSubmitted && fa.controls[itemInd].controls.hsn.errors }">
                             <div *ngIf="( isSubmitted ) && fa.controls[itemInd].controls.hsn.errors">
                                 <div *ngIf="fa.controls[itemInd].controls.hsn.errors?.required" class="errortxt">HSN is required
@@ -251,7 +251,7 @@
                             <span style="width: 40%;">{{ currency }}</span>
                         </td>
                     </tr>
-                    <tr>
+                    <tr *ngIf = "isTCSAmtVisible == true">
                         <td class="header"> TCS Amount
                         </td>
                         <td class="amount">
@@ -261,7 +261,27 @@
                         </td>
                     </tr>
                     <tr>
-                        <td class="header"> Total Tax Amount
+                        <td class="header"> 
+                            <span *ngIf="isRegionFieldsVisible == true">
+                                <mat-form-field  class="search-row-element">
+                                    <mat-select matNativeControl formControlName="region" placeholder="Choose Jurisdiction">
+                                        <mat-option *ngFor="let r of regionsList" [value]="r.regionCode">
+                                            {{ r.regionDesc }}
+                                        </mat-option>
+                                    </mat-select>
+                                    <mat-error *ngIf="( isSubmitted ) && f?.region?.errors?.required">Jurisdiction is required</mat-error>
+                                </mat-form-field> 
+                                Rate <input formControlName="rate" class="inv-qty" style="width: 10%" [ngClass]="{ 'errorinput': isSubmitted && f?.rate?.errors?.required }"
+                                        (blur)="onRateBlur()">
+                                    <span *ngIf="( isSubmitted ) && f?.rate?.errors?.required" class="errortxt">Rate is required</span>
+                                Non Taxable Amount <input formControlName="nonTaxableAmt" class="inv-qty" style="width: 10%" [ngClass]="{ 'errorinput': isSubmitted && f?.nonTaxableAmt?.errors?.required }"
+                                    (blur)="onNonTaxableAmtBlur()">
+                                    <span *ngIf="( isSubmitted ) && f?.nonTaxableAmt?.errors?.required" class="errortxt">Non Taxable Amount is required</span>
+                                Taxable Amount <input formControlName="taxableAmt" class="inv-qty" style="width: 10%" [ngClass]="{ 'errorinput': isSubmitted && f?.taxableAmt?.errors?.required }"
+                                    (blur)="onTaxableAmtBlur()">
+                                    <span *ngIf="( isSubmitted ) && f?.taxableAmt?.errors?.required" class="errortxt">Taxable Amount is required</span>
+                            </span>
+                            Total Tax Amount
                             <div *ngIf="( isSubmitted ) && f.totalTax.errors">
                                 <div *ngIf="f.totalTax.errors?.required" class="errortxt">Total Tax is required</div>
                             </div>

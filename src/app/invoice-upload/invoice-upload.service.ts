@@ -38,6 +38,7 @@ export class InvoiceUploadService {
             initModel.currencyList =  data["currencyMasterList"];
             initModel.companiesList = data["companiesList"];
             initModel.plantsList = data["plantMasterList"];
+            initModel.regionsList = data["regionsList"];
         }
 
         return initModel;

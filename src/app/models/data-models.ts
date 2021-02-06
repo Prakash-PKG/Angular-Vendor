@@ -39,6 +39,8 @@ export class InvoiceUploadReqModel {
     vendorId: string;
     approvalLevels: string[];
     departments: string[];
+    companyCodes: string[];
+    countryCodes: string[];
 }
 
 export class InvoiceFileTypwModel {
@@ -53,6 +55,7 @@ export class InvoiceUploadResultModel {
     statusDetails: StatusModel;
     companiesList: CompanyCodeMasterList[];
     plantsList: PlantModel[];
+    regionsList: regionMasterVOList[];
 }
 
 export class PODetailsModel {
@@ -509,6 +512,11 @@ export class InvoiceDetailsModel {
     totalAmt: string;
     grnSesNumber: string;
     statusCode: string;
+    regionCode: string;
+    regionDescription: string;
+    rate: string;
+    nonTaxableAmt: string;
+    taxableAmt: string;
     totalTax: string;
     currencyType: string;
     projectId: string;
