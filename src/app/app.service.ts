@@ -401,4 +401,18 @@ export class AppService {
         return countryCodes;
     }
 
+    getAllCountryCodesByDept(depts: string[]) {
+        let countryCodes: string[] = [];
+        for(let i = 0; i < depts.length; i++) {
+            let strArr: string[] = depts[i].split("-");
+            if(strArr.length == 1) {
+                countryCodes.push(globalConstant.indiaCountryCode);
+            }
+            else if(strArr.length == 2) {
+                countryCodes.push(strArr[1]);
+            }
+        }
+
+        return _.uniq(countryCodes);
+    }
 }

@@ -1,3 +1,4 @@
+import { LoginVendorComponent } from './../login-vendor/login-vendor.component';
 import { MessageDialogModel } from './../models/popup-models';
 import { MessageDialogComponent } from './../message-dialog/message-dialog.component';
 import { globalConstant, countryCompanyCodes } from './../common/global-constant';
@@ -431,6 +432,13 @@ export class InvoiceUploadComponent implements OnInit {
     }
 
     createNonPOItem() {
+        let hsnValidators: any = [];
+
+        let selCompany: string = this.invoiceUploadForm.get("companyCode").value;
+        if(countryCompanyCodes.indiaCompanyCodes.indexOf(selCompany) > -1) {
+            hsnValidators = [Validators.required, Validators.maxLength(8), Validators.pattern("^[0-9]*$")];
+        }
+
         let fg: FormGroup = this._formBuilder.group({
             itemId: null,
             itemNumber: [{ value: null, disabled: true }, [Validators.required, Validators.pattern("^[0-9]*$")]],
@@ -443,7 +451,7 @@ export class InvoiceUploadComponent implements OnInit {
             invoiceUnits: [null, Validators.required],
             unitPrice: [null, Validators.required],
             unitsAmt: null,
-            hsn: [null, [Validators.required, Validators.maxLength(8), Validators.pattern("^[0-9]*$")]],
+            hsn: [null, hsnValidators],
             createdBy: null,
             createdDate: null
         });
@@ -858,9 +866,13 @@ export class InvoiceUploadComponent implements OnInit {
     }
 
     async loadInitData() {
+        this.companiesList = [];
+
         this.invoiceNumberErrMsg = "";
         this.headerArr = this.poHeaderArrWithoutDates.concat();
         this.totalHeaders = this.headerArr.concat();
+
+        let wfCountryCodes: string[] = this._appService.getAllCountryCodesByDept(globalConstant.userDetails.poDepts);
 
         let req: InvoiceUploadReqModel = {
             vendorId: (globalConstant.userDetails.isVendor) ? globalConstant.userDetails.userId : null,
@@ -875,7 +887,15 @@ export class InvoiceUploadComponent implements OnInit {
             this.prepareInvoiceFileTypes();
             this.poList = (this._initDetails.poList && this._initDetails.poList.length > 0) ? this._initDetails.poList.concat() : [];
             this.currencyList = (this._initDetails.currencyList && this._initDetails.currencyList.length > 0) ? this._initDetails.currencyList.concat() : [];
-            this.companiesList = (this._initDetails.companiesList && this._initDetails.companiesList.length > 0) ? this._initDetails.companiesList.concat() : [];
+            
+            for(let i = 0; i < wfCountryCodes.length; i++) {
+                let selCompanies: CompanyCodeMasterList[] = this._initDetails.companiesList.filter(c => c.countryCode == wfCountryCodes[i]);
+                if(selCompanies && selCompanies.length > 0) {
+                    this.companiesList = this.companiesList.concat(selCompanies);
+                }
+            }
+            
+            //this.companiesList = (this._initDetails.companiesList && this._initDetails.companiesList.length > 0) ? this._initDetails.companiesList.concat() : [];
             this.plantsList = (this._initDetails.plantsList && this._initDetails.plantsList.length > 0) ? this._initDetails.plantsList.concat() : [];
         }
         this._homeService.updateBusy(<BusyDataModel>{ isBusy: false, msg: null });
@@ -899,16 +919,23 @@ export class InvoiceUploadComponent implements OnInit {
                     this.isFromToMandatory = true;
                     this.invoiceUploadForm.get("isDatesMandatory").setValue(true);
                     this.headerArr = this.poHeaderArr.concat();
-                    this.totalHeaders = this.headerArr.concat();
                 }
-
-                
+                else {
+                    this.headerArr = this.poHeaderArrWithoutDates.concat();
+                }
+                this.totalHeaders = this.headerArr.concat();
 
                 this.loadPOItems();
             }
 
             this.validateInvoiceNumber();
         });
+
+        this.invoiceUploadForm.get("companyCode").valueChanges.subscribe(val => {
+            if (val) {
+               this.onCompanyCodeChange(val);
+            }
+        }); 
 
         this.invoiceUploadForm.get("currency").valueChanges.subscribe(val => {
             if (val) {
@@ -1235,7 +1262,6 @@ export class InvoiceUploadComponent implements OnInit {
             return false;
         }
 
-
         let poNumber = null;
         if (this.selectedInvoiceType == 'po') {
             if (!this.selectedPOItem) {
@@ -1342,7 +1368,7 @@ export class InvoiceUploadComponent implements OnInit {
         }
 
         let updatePOItem: PODetailsModel = JSON.parse(JSON.stringify(this.selectedPOItem));
-        if(this.isUSWorkFlow){
+        if(this.selectedInvoiceType == 'po' && this.isUSWorkFlow){
             updatePOItem.departmentId = this.selectedPOItem.departmentId + "-" + globalConstant.usCountryCode;
         }
 

@@ -446,6 +446,7 @@ export class PlantModel {
 export class CompanyCodeMasterList {
     companyCode: string;
     companyDesc: string;
+    countryCode: string;
 }
 export class AccGroupMasterList {
     groupCode: string;
