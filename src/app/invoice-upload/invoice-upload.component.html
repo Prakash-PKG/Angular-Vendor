@@ -266,13 +266,13 @@
                                 <mat-form-field  class="search-row-element">
                                     <mat-select matNativeControl formControlName="region" placeholder="Choose Jurisdiction">
                                         <mat-option *ngFor="let r of regionsList" [value]="r.regionCode">
-                                            {{ r.regionDesc }}
+                                            {{ r.regionCode }} - {{ r.regionDesc }}
                                         </mat-option>
                                     </mat-select>
                                     <mat-error *ngIf="( isSubmitted ) && f?.region?.errors?.required">Jurisdiction is required</mat-error>
                                 </mat-form-field> 
-                                Rate <input formControlName="rate" class="inv-qty" style="width: 10%" [ngClass]="{ 'errorinput': isSubmitted && f?.rate?.errors?.required }"
-                                        (blur)="onRateBlur()">
+                                Rate <input formControlName="rate" class="inv-qty" style="width: 8%" [ngClass]="{ 'errorinput': isSubmitted && f?.rate?.errors?.required }"
+                                        (blur)="onRateBlur()">%  
                                     <span *ngIf="( isSubmitted ) && f?.rate?.errors?.required" class="errortxt">Rate is required</span>
                                 Non Taxable Amount <input formControlName="nonTaxableAmt" class="inv-qty" style="width: 10%" [ngClass]="{ 'errorinput': isSubmitted && f?.nonTaxableAmt?.errors?.required }"
                                     (blur)="onNonTaxableAmtBlur()">
