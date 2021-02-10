@@ -12,7 +12,7 @@ import {
     WithholdTypeList,
     WithholdTaxList,
     VendorRegistrationDetailRequestModel, VendorDocumentResultModel, FileDetailsModel,
-    VendorMasterDocumentModel, VendorDocumentReqModel, CountryDataModel, regionMasterVOList, fileDetailsVendorDocumentModel
+    VendorMasterDocumentModel, VendorDocumentReqModel, CountryDataModel, regionMasterVOList
 } from './../models/data-models';
 import { Component, OnInit } from '@angular/core';
 import { HomeService } from '../home/home.service';
@@ -51,8 +51,6 @@ export class VendorApprovalComponent implements OnInit {
     vendorDetails: VendorMasterDetailsModel = new VendorMasterDetailsModel();
     originalVendorDetails: VendorMasterDetailsModel = new VendorMasterDetailsModel();
 
-    exVendFileDetails: VendorApprovalInitResultModel;
-
     vendoraccGroupList: AccGroupMasterList[] = [];
     companyCodeList: CompanyCodeMasterList[] = [];
     currencyList: currencyMasterList[] = [];
@@ -70,11 +68,10 @@ export class VendorApprovalComponent implements OnInit {
     isProcurement: boolean = false;
     isExistingVendor: boolean = false;
     canEdit: boolean = false;
-    canSave: boolean = false;
 
     msg: string = "";
 
-    isEditDisabled = false;
+    isEditable = false;
     isValid = true;
     isServerError = false;
     disableSubmit: boolean = false;
@@ -147,15 +144,13 @@ export class VendorApprovalComponent implements OnInit {
     }
 
     onEditClick() {
-        this.isEditDisabled = true;
-        this.canSave = true;
+        this.isEditable = true;
 
         this.vendorForm.get("vendorName").enable();
         this.vendorForm.get("contactPerson").enable();
         this.vendorForm.get("mobileNum").enable();
         this.vendorForm.get("telephoneNum").enable();
-        if (!this.isExistingVendor)
-            this.vendorForm.get("emailId").enable();
+        this.vendorForm.get("emailId").enable();
 
         this.vendorForm.get("address1").enable();
         this.vendorForm.get("address2").enable();
@@ -448,11 +443,6 @@ export class VendorApprovalComponent implements OnInit {
         this.msg = '';
         this.updateVendorApprovals(this._appService.updateOperations.approve);
     }
-    onSaveClick() {
-        this.isSubmitted = true;
-        this.msg = '';
-        this.updateVendorApprovals(this._appService.updateOperations.proSave);
-    }
 
     onRejectClick() {
         this.updateVendorApprovals(this._appService.updateOperations.reject);
@@ -556,13 +546,12 @@ export class VendorApprovalComponent implements OnInit {
     }
 
     updateVendorApprovalDetails(action: string) {
-
         let req: VendorApprovalReqModel = {
             action: action,
-            vendorApprovalID: this.isExistingVendor ? null : this.vendorApprovalInitDetails.vendorApprovalDetails.vendorApprovalID,
-            vendorMasterId: this.isExistingVendor ? this.vendorDetails.vendorMasterId : this.vendorApprovalInitDetails.vendorApprovalDetails.vendorMasterId,
-            departmentCode: this.isExistingVendor ? globalConstant.userDetails.userRoles[0].roleCode : (this.vendorApprovalInitDetails.vendorApprovalDetails.departmentCode ?
-                this.vendorApprovalInitDetails.vendorApprovalDetails.departmentCode : globalConstant.userDetails.userRoles[0].roleCode),
+            vendorApprovalID: this.vendorApprovalInitDetails.vendorApprovalDetails.vendorApprovalID,
+            vendorMasterId: this.vendorApprovalInitDetails.vendorApprovalDetails.vendorMasterId,
+            departmentCode: this.vendorApprovalInitDetails.vendorApprovalDetails.departmentCode ?
+                this.vendorApprovalInitDetails.vendorApprovalDetails.departmentCode : globalConstant.userDetails.userRoles[0].roleCode,
             approverId: globalConstant.userDetails.userId,
             remarks: this.vendorForm.get("remarks").value ? this.vendorForm.get("remarks").value : null,
             groupCode: this.vendorForm.get("selectedVendorGroup").value ? this.vendorForm.get("selectedVendorGroup").value : null,
@@ -570,14 +559,13 @@ export class VendorApprovalComponent implements OnInit {
             currencyCode: this.vendorForm.get("selectedCurrency").value ? this.vendorForm.get("selectedCurrency").value : null,
             withholdTaxCode: this.vendorForm.get("withholdTax").value ? this.vendorForm.get("withholdTax").value : null,
             withholdTypeCode: this.vendorForm.get("withholdType").value ? this.vendorForm.get("withholdType").value : null,
-            createdBy: this.isExistingVendor ? this.vendorDetails.createdBy : (this.vendorApprovalInitDetails.vendorApprovalDetails.createdBy ? this.vendorApprovalInitDetails.vendorApprovalDetails.createdBy : globalConstant.userId),
-            createDate: this.isExistingVendor ? this.vendorDetails.createdDate : (this.vendorApprovalInitDetails.vendorApprovalDetails.createDate ? this.vendorApprovalInitDetails.vendorApprovalDetails.createDate : null),
+            createdBy: this.vendorApprovalInitDetails.vendorApprovalDetails.createdBy ? this.vendorApprovalInitDetails.vendorApprovalDetails.createdBy : globalConstant.userId,
+            createDate: this.vendorApprovalInitDetails.vendorApprovalDetails.createDate ? this.vendorApprovalInitDetails.vendorApprovalDetails.createDate : null,
             vendorMasterDetails: this.getUpdatedVendorDetails()
         };
-   
+
         this._homeService.updateBusy(<BusyDataModel>{ isBusy: true, msg: null });
-  
-        this._vendorApprovalService.updateVendorApprovalDetails(req,this.isExistingVendor)
+        this._vendorApprovalService.updateVendorApprovalDetails(req)
             .subscribe(response => {
                 this._homeService.updateBusy(<BusyDataModel>{ isBusy: false, msg: null });
 
@@ -588,7 +576,7 @@ export class VendorApprovalComponent implements OnInit {
                         this.displayVendorApprovalStatus(result.message);
                     }
                     else {
-                        this.isEditDisabled = false;
+                        this.isEditable = false;
                         this.isServerError = true;
                         this.disableSubmit = false;
                         this.msg = result.message;
@@ -596,7 +584,7 @@ export class VendorApprovalComponent implements OnInit {
                 }
             },
                 (error) => {
-                    this.isEditDisabled = false;
+                    this.isEditable = false;
                     this.disableSubmit = false;
                     this._homeService.updateBusy(<BusyDataModel>{ isBusy: false, msg: null });
                     this.msg = this._appService.messages.vendorApprovalFailure;
@@ -629,13 +617,9 @@ export class VendorApprovalComponent implements OnInit {
             this.vendorDetails = this._appService.selectedVendor;
             console.log(this.vendorDetails);
             this.canApprove = false;
-            if (this.isProcurement) {
-                this.isEditDisabled = false;
-                this.canEdit = true;
-                this.canSave = true;
-            }
-            this.vendorApprovalInitDetails = await this._vendorApprovalService.getExVendorInitData(this.vendorDetails.vendorMasterId);
-            console.log(this.vendorApprovalInitDetails);
+            this.isEditable = false;
+            this.canEdit = false;
+
         }
         else if (this._appService.selectedPendingApprovalRecord) {
             let req: VendorApprovalInitReqModel = {
@@ -645,6 +629,7 @@ export class VendorApprovalComponent implements OnInit {
             };
             this.vendorApprovalInitDetails = await this._vendorApprovalService.getVendorApprovalInitData(req);
             this.vendorDetails = this.vendorApprovalInitDetails.vendorMasterDetails;
+            // this.vendorDetails = this.originalVendorDetails;
         }
         this.loadDropDown();
         this.updateVendorFields();
@@ -814,7 +799,7 @@ export class VendorApprovalComponent implements OnInit {
 
     getUpdatedVendorDetails() {
 
-        if (this.isEditDisabled) {
+        if (this.isEditable) {
             this.vendorDetails.vendorName = this.vendorForm.get("vendorName").value ? this.vendorForm.get("vendorName").value.trim() : null;
             this.vendorDetails.contactPerson = this.vendorForm.get("contactPerson").value ? this.vendorForm.get("contactPerson").value.trim() : null;
             this.vendorDetails.mobileNum = this.vendorForm.get("mobileNum").value;

@@ -142,7 +142,7 @@
                             </mat-select>
                         </mat-form-field>
                         <mat-form-field class="full-width" *ngIf="isExistingVendor">
-                            <input type="text" matInput [disabled]='!isEditDisabled' value=" {{vendorDetails?.countryName }}"
+                            <input type="text" matInput [disabled]=true value=" {{vendorDetails?.countryName }}"
                              autocomplete="off">
                         </mat-form-field>
                         <mat-error class="errortxt" *ngIf="( isSubmitted ) && f?.countryCode?.errors?.required">Country
@@ -152,14 +152,14 @@
                     <div class="Rtable-cell Rtable-cell--head">State</div>
                     <div class="Rtable-cell">
                         <mat-form-field class="full-width" *ngIf="!isExistingVendor">
-                            <mat-select formControlName="stateCode" required >
+                            <mat-select formControlName="stateCode" required>
                                 <mat-option *ngFor="let region of regionMasterVOList" [value]="region.regionCode">
                                     {{ region.regionDesc }}
                                 </mat-option>
                             </mat-select>
                         </mat-form-field>
                         <mat-form-field class="full-width" *ngIf="isExistingVendor">
-                            <input type="text" matInput [disabled]=!isEditDisabled value=" {{vendorDetails?.stateName }}"
+                            <input type="text" matInput [disabled]=true value=" {{vendorDetails?.stateName }}"
                              autocomplete="off">
                         </mat-form-field>
                                                  <mat-error class="errortxt" *ngIf="( isSubmitted ) && f?.stateCode?.errors?.required">State is
@@ -256,14 +256,14 @@
                                         <mat-icon matTooltip="{{ file.actualFileName }}">description</mat-icon>
                                     </button>
                                     <button mat-button mat-icon-button aria-label="Delete"
-                                        *ngIf="isProcurement == true && isEditDisabled == true"
+                                        *ngIf="isProcurement == true && isEditable == true"
                                         (click)="onDeleteFileClick(file, i,vendorDocCtrl.incCerCtrl.documentTypeId)">
                                         <mat-icon>delete_outline</mat-icon>
                                     </button>
                                 </div>
                             </div>
                             <div class="flex-item">
-                                <div *ngIf="isEditDisabled">
+                                <div *ngIf="isEditable">
                                     <input style="display: none" [attr.id]="vendorDocCtrl.incCerCtrl.browserId"
                                         type="file" multiple accept=".xls,.xlsx,.doc,.docx,.pdf,.png,.jpg,.zip"
                                         (change)="onFileChange($event, vendorDocCtrl.incCerCtrl.documentTypeId)" />
@@ -287,14 +287,14 @@
                                         <mat-icon matTooltip="{{ file.actualFileName }}">description</mat-icon>
                                     </button>
                                     <button mat-button mat-icon-button aria-label="Delete"
-                                        *ngIf="isProcurement == true && isEditDisabled == true"
+                                        *ngIf="isProcurement == true && isEditable == true"
                                         (click)="onDeleteFileClick(file, i,vendorDocCtrl.canChqCtrl.documentTypeId)">
                                         <mat-icon>delete_outline</mat-icon>
                                     </button>
                                 </div>
                             </div>
                             <div class="flex-item">
-                                <div *ngIf="isEditDisabled">
+                                <div *ngIf="isEditable">
                                     <input style="display: none" [attr.id]="vendorDocCtrl.canChqCtrl.browserId"
                                         type="file" multiple accept=".xls,.xlsx,.doc,.docx,.pdf,.png,.jpg,.zip"
                                         (change)="onFileChange($event, vendorDocCtrl.canChqCtrl.documentTypeId)" />
@@ -333,14 +333,14 @@
                                         <mat-icon matTooltip="{{ file.actualFileName }}">description</mat-icon>
                                     </button>
                                     <button mat-button mat-icon-button aria-label="Delete"
-                                        *ngIf="isProcurement == true && isEditDisabled == true"
+                                        *ngIf="isProcurement == true && isEditable == true"
                                         (click)="onDeleteFileClick(file, i,vendorDocCtrl.gstCtrl.documentTypeId)">
                                         <mat-icon>delete_outline</mat-icon>
                                     </button>
                                 </div>
                             </div>
                             <div class="flex-item">
-                                <div *ngIf="isEditDisabled">
+                                <div *ngIf="isEditable">
                                     <input style="display: none" [attr.id]="vendorDocCtrl.gstCtrl.browserId" type="file"
                                         multiple accept=".xls,.xlsx,.doc,.docx,.pdf,.png,.jpg,.zip"
                                         (change)="onFileChange($event, vendorDocCtrl.gstCtrl.documentTypeId)" />
@@ -387,14 +387,14 @@
                                         <mat-icon matTooltip="{{ file.actualFileName }}">description</mat-icon>
                                     </button>
                                     <button mat-button mat-icon-button aria-label="Delete"
-                                        *ngIf="isProcurement == true && isEditDisabled == true"
+                                        *ngIf="isProcurement == true && isEditable == true"
                                         (click)="onDeleteFileClick(file, i,vendorDocCtrl.panCtrl.documentTypeId)">
                                         <mat-icon>delete_outline</mat-icon>
                                     </button>
                                 </div>
                             </div>
                             <div class="flex-item">
-                                <div *ngIf="isEditDisabled">
+                                <div *ngIf="isEditable">
                                     <input style="display: none" [attr.id]="vendorDocCtrl.panCtrl.browserId" type="file"
                                         multiple accept=".xls,.xlsx,.doc,.docx,.pdf,.png,.jpg,.zip"
                                         (change)="onFileChange($event, vendorDocCtrl.panCtrl.documentTypeId)" />
@@ -430,14 +430,14 @@
                                         <mat-icon matTooltip="{{ file.actualFileName }}">description</mat-icon>
                                     </button>
                                     <button mat-button mat-icon-button aria-label="Delete"
-                                        *ngIf="isProcurement == true && isEditDisabled == true"
+                                        *ngIf="isProcurement == true && isEditable == true"
                                         (click)="onDeleteFileClick(file, i,vendorDocCtrl.lutNoCtrl.documentTypeId)">
                                         <mat-icon>delete_outline</mat-icon>
                                     </button>
                                 </div>
                             </div>
                             <div class="flex-item">
-                                <div *ngIf="isEditDisabled">
+                                <div *ngIf="isEditable">
                                     <input style="display: none" [attr.id]="vendorDocCtrl.lutNoCtrl.browserId"
                                         type="file" multiple accept=".xls,.xlsx,.doc,.docx,.pdf,.png,.jpg,.zip"
                                         (change)="onFileChange($event, vendorDocCtrl.lutNoCtrl.documentTypeId)" />
@@ -499,14 +499,14 @@
                                         <mat-icon matTooltip="{{ file.actualFileName }}">description</mat-icon>
                                     </button>
                                     <button mat-button mat-icon-button aria-label="Delete"
-                                        *ngIf="isProcurement == true && isEditDisabled == true"
+                                        *ngIf="isProcurement == true && isEditable == true"
                                         (click)="onDeleteFileClick(file, i,vendorDocCtrl.pfCtrl.documentTypeId)">
                                         <mat-icon>delete_outline</mat-icon>
                                     </button>
                                 </div>
                             </div>
                             <div class="flex-item">
-                                <div *ngIf="isEditDisabled">
+                                <div *ngIf="isEditable">
                                     <input style="display: none" [attr.id]="vendorDocCtrl.pfCtrl.browserId" type="file"
                                         multiple accept=".xls,.xlsx,.doc,.docx,.pdf,.png,.jpg,.zip"
                                         (change)="onFileChange($event, vendorDocCtrl.pfCtrl.documentTypeId)" />
@@ -546,14 +546,14 @@
                                         <mat-icon matTooltip="{{ file.actualFileName }}">description</mat-icon>
                                     </button>
                                     <button mat-button mat-icon-button aria-label="Delete"
-                                        *ngIf="isProcurement == true && isEditDisabled == true"
+                                        *ngIf="isProcurement == true && isEditable == true"
                                         (click)="onDeleteFileClick(file, i,vendorDocCtrl.esiCtrl.documentTypeId)">
                                         <mat-icon>delete_outline</mat-icon>
                                     </button>
                                 </div>
                             </div>
                             <div class="flex-item">
-                                <div *ngIf="isEditDisabled">
+                                <div *ngIf="isEditable">
                                     <input style="display: none" [attr.id]="vendorDocCtrl.esiCtrl.browserId" type="file"
                                         multiple accept=".xls,.xlsx,.doc,.docx,.pdf,.png,.jpg,.zip"
                                         (change)="onFileChange($event, vendorDocCtrl.esiCtrl.documentTypeId)" />
@@ -576,10 +576,10 @@
 
 
                     <div class="Rtable-cell Rtable-cell--head">Is MSME registered? </div>
-                    <div class="Rtable-cell" *ngIf="!isEditDisabled">
+                    <div class="Rtable-cell" *ngIf="!isEditable">
                         {{ vendorDetails?.isMsmedRegistered == true ? 'Yes' : 'No'}}
                     </div>
-                    <div class="Rtable-cell" *ngIf="isEditDisabled">
+                    <div class="Rtable-cell" *ngIf="isEditable">
                         <mat-radio-group formControlName="isMsmedRegistered">
                             <mat-radio-button
                                 (change)="onRadioBtnSelectionChange($event,vendorDocCtrl.msmeCtrl.documentTypeId)"
@@ -601,14 +601,14 @@
                                         <mat-icon matTooltip="{{ file.actualFileName }}">description</mat-icon>
                                     </button>
                                     <button mat-button mat-icon-button aria-label="Delete"
-                                        *ngIf="isProcurement == true && isEditDisabled == true"
+                                        *ngIf="isProcurement == true && isEditable == true"
                                         (click)="onDeleteFileClick(file, i,vendorDocCtrl.msmeCtrl.documentTypeId)">
                                         <mat-icon>delete_outline</mat-icon>
                                     </button>
                                 </div>
                             </div>
                             <div class="flex-item">
-                                <div *ngIf="isEditDisabled">
+                                <div *ngIf="isEditable">
                                     <input style="display: none" [attr.id]="vendorDocCtrl.msmeCtrl.browserId"
                                         type="file" multiple accept=".xls,.xlsx,.doc,.docx,.pdf,.png,.jpg,.zip"
                                         (change)="onFileChange($event, vendorDocCtrl.msmeCtrl.documentTypeId)" />
@@ -630,9 +630,9 @@
                     </div>
 
                     <div class="Rtable-cell Rtable-cell--head">Have any TDS lower deduction certificate? </div>
-                    <div class="Rtable-cell" *ngIf="!isEditDisabled">{{ vendorDetails?.hasTdsLower == true ? 'Yes' : 'No'}}
+                    <div class="Rtable-cell" *ngIf="!isEditable">{{ vendorDetails?.hasTdsLower == true ? 'Yes' : 'No'}}
                     </div>
-                    <div class="Rtable-cell" *ngIf="isEditDisabled">
+                    <div class="Rtable-cell" *ngIf="isEditable">
                         <mat-radio-group formControlName="hasTdsLower">
                             <mat-radio-button
                                 (change)="onRadioBtnSelectionChange($event,vendorDocCtrl.tdsCtrl.documentTypeId)"
@@ -654,14 +654,14 @@
                                         <mat-icon matTooltip="{{ file.actualFileName }}">description</mat-icon>
                                     </button>
                                     <button mat-button mat-icon-button aria-label="Delete"
-                                        *ngIf="isProcurement == true && isEditDisabled == true"
+                                        *ngIf="isProcurement == true && isEditable == true"
                                         (click)="onDeleteFileClick(file, i,vendorDocCtrl.tdsCtrl.documentTypeId)">
                                         <mat-icon>delete_outline</mat-icon>
                                     </button>
                                 </div>
                             </div>
                             <div class="flex-item">
-                                <div *ngIf="isEditDisabled">
+                                <div *ngIf="isEditable">
                                     <input style="display: none" [attr.id]="vendorDocCtrl.tdsCtrl.browserId" type="file"
                                         multiple accept=".xls,.xlsx,.doc,.docx,.pdf,.png,.jpg,.zip"
                                         (change)="onFileChange($event, vendorDocCtrl.tdsCtrl.documentTypeId)" />
@@ -684,9 +684,9 @@
                     </div>
 
                     <div class="Rtable-cell Rtable-cell--head">SEZ</div>
-                    <div class="Rtable-cell" *ngIf="!isEditDisabled"> {{ vendorDetails?.isSez == true ? 'Yes' : 'No' }}
+                    <div class="Rtable-cell" *ngIf="!isEditable"> {{ vendorDetails?.isSez == true ? 'Yes' : 'No' }}
                     </div>
-                    <div class="Rtable-cell" *ngIf="isEditDisabled">
+                    <div class="Rtable-cell" *ngIf="isEditable">
                         <mat-radio-group formControlName="isSez">
                             <mat-radio-button
                                 (change)="onRadioBtnSelectionChange($event,vendorDocCtrl.sezCtrl.documentTypeId)"
@@ -708,14 +708,14 @@
                                         <mat-icon matTooltip="{{ file.actualFileName }}">description</mat-icon>
                                     </button>
                                     <button mat-button mat-icon-button aria-label="Delete"
-                                        *ngIf="isProcurement == true && isEditDisabled == true"
+                                        *ngIf="isProcurement == true && isEditable == true"
                                         (click)="onDeleteFileClick(file, i,vendorDocCtrl.sezCtrl.documentTypeId)">
                                         <mat-icon>delete_outline</mat-icon>
                                     </button>
                                 </div>
                             </div>
                             <div class="flex-item">
-                                <div *ngIf="isEditDisabled">
+                                <div *ngIf="isEditable">
                                     <input style="display: none" [attr.id]="vendorDocCtrl.sezCtrl.browserId" type="file"
                                         multiple accept=".xls,.xlsx,.doc,.docx,.pdf,.png,.jpg,.zip"
                                         (change)="onFileChange($event, vendorDocCtrl.sezCtrl.documentTypeId)" />
@@ -737,9 +737,9 @@
                     </div>
 
                     <div class="Rtable-cell Rtable-cell--head">Is RCM applicable? </div>
-                    <div class="Rtable-cell" *ngIf="!isEditDisabled">
+                    <div class="Rtable-cell" *ngIf="!isEditable">
                         {{ vendorDetails?.isRcmApplicable == true ? 'Yes' : 'No'}}</div>
-                    <div class="Rtable-cell" *ngIf="isEditDisabled">
+                    <div class="Rtable-cell" *ngIf="isEditable">
                         <mat-radio-group formControlName="isRcmApplicable">
                             <mat-radio-button [value]=true>Yes</mat-radio-button>
                             <mat-radio-button [value]=false>No</mat-radio-button>
@@ -770,14 +770,14 @@
                                         <mat-icon matTooltip="{{ file.actualFileName }}">description</mat-icon>
                                     </button>
                                     <button mat-button mat-icon-button aria-label="Delete"
-                                        *ngIf="isProcurement == true && isEditDisabled == true"
+                                        *ngIf="isProcurement == true && isEditable == true"
                                         (click)="onDeleteFileClick(file, i,vendorDocCtrl.otherCtrl.documentTypeId)">
                                         <mat-icon>delete_outline</mat-icon>
                                     </button>
                                 </div>
                             </div>
                             <div class="flex-item">
-                                <div *ngIf="isEditDisabled">
+                                <div *ngIf="isEditable">
                                     <input style="display: none" [attr.id]="vendorDocCtrl.otherCtrl.browserId"
                                         type="file" multiple accept=".xls,.xlsx,.doc,.docx,.pdf,.png,.jpg,.zip"
                                         (change)="onFileChange($event, vendorDocCtrl.otherCtrl.documentTypeId)" />
@@ -945,15 +945,12 @@
                 {{ msg }}
             </div>
             <button mat-raised-button class="footer-actions" (click)="onBackClick()">Back</button>
-            <!-- <button mat-raised-button class="footer-actions" [disabled]="isEditDisabled" (click)="onEditClick()"
-                *ngIf="canEdit">Edit</button> -->
+            <button mat-raised-button class="footer-actions" [disabled]="isEditable" (click)="onEditClick()"
+                *ngIf="canEdit">Edit</button>
             <!-- <button mat-raised-button class="footer-actions" (click)="onSendForCorrClick()">Send For Correction</button> -->
 
-            <!-- <button mat-raised-button class="footer-actions" (click)="onSaveClick()"
-                [disabled]="disableSubmit == true" *ngIf="canSave">Save</button> -->
-
             <button mat-raised-button class="footer-actions" (click)="onRejectClick()"
-                [disabled]="disableSubmit == true || isEditDisabled == true" *ngIf="canApprove">Reject</button>
+                [disabled]="disableSubmit == true || isEditable == true" *ngIf="canApprove">Reject</button>
             <button mat-raised-button class="footer-actions footer-actions-green" (click)="onApproveClick()"
                 [disabled]="disableSubmit" *ngIf="canApprove">Approve</button>
         </div>
