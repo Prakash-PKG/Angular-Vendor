@@ -709,7 +709,7 @@ export class InvoiceUploadComponent implements OnInit {
         const itemsFa: FormArray = <FormArray>this.invoiceUploadForm.controls['itemsList'];
         let invoiceUnitsVal = itemsFa.controls[itemInd].get("invoiceUnits").value;
         if (invoiceUnitsVal && !isNaN(invoiceUnitsVal) && Number(invoiceUnitsVal) > 0) {
-            let invoiceUnits = Number(invoiceUnitsVal).toFixed(3);
+            let invoiceUnits = Number(invoiceUnitsVal).toFixed(6);
             itemsFa.controls[itemInd].get("invoiceUnits").setValue(invoiceUnits);
         }
         else {
