@@ -945,12 +945,12 @@
                 {{ msg }}
             </div>
             <button mat-raised-button class="footer-actions" (click)="onBackClick()">Back</button>
-            <button mat-raised-button class="footer-actions" [disabled]="isEditDisabled" (click)="onEditClick()"
-                *ngIf="canEdit">Edit</button>
+            <!-- <button mat-raised-button class="footer-actions" [disabled]="isEditDisabled" (click)="onEditClick()"
+                *ngIf="canEdit">Edit</button> -->
             <!-- <button mat-raised-button class="footer-actions" (click)="onSendForCorrClick()">Send For Correction</button> -->
 
-            <button mat-raised-button class="footer-actions" (click)="onSaveClick()"
-                [disabled]="disableSubmit == true" *ngIf="canSave">Save</button>
+            <!-- <button mat-raised-button class="footer-actions" (click)="onSaveClick()"
+                [disabled]="disableSubmit == true" *ngIf="canSave">Save</button> -->
 
             <button mat-raised-button class="footer-actions" (click)="onRejectClick()"
                 [disabled]="disableSubmit == true || isEditDisabled == true" *ngIf="canApprove">Reject</button>
