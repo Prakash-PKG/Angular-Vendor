@@ -77,8 +77,8 @@
                         Jurisdiction
                     </div>
                     <div class="value">
-                        {{ initDetails?.invoiceDetails?.regionDescription  + " (" + initDetails?.invoiceDetails?.regionCode
-                        + ")" }}
+                        {{ (initDetails?.invoiceDetails?.regionCode)?  initDetails?.invoiceDetails?.regionDescription + " (" + initDetails?.invoiceDetails?.regionCode
+                        + ")"  : "" }}
                     </div>
                 </div>
                 <div class="flex-item">
@@ -201,7 +201,7 @@
                 </div>
                 <div class="flex-item" *ngIf="isRegionFieldsVisible ==true">
                     <div class="header">
-                        Total Non-Taxable Amt
+                        Total Non-Tax Amt
                     </div>
                     <div class="value">
                         {{ initDetails?.invoiceDetails?.nonTaxableAmt }}
