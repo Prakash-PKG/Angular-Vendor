@@ -83,21 +83,23 @@
                             {{ getPOProjectName() }}
                         </td>
                     </tr>
-                    <tr>
+                    <tr *ngIf="isRegionFieldsVisible ==true">
                         <th>
-                            TCS Amount:
+                            Rate:
                         </th>
                         <td>
-                            {{  invoiceDetails?.tcsAmount + " " + currency }}
+                            {{ (invoiceDetails?.rate)  + " " + currency   }}
+                        </td>
+                        <th>
+                            Jurisdiction:
+                        </th>
+                        <td>
+                            {{ (invoiceDetails?.regionCode)?  invoiceDetails?.regionDescription + " (" + invoiceDetails?.regionCode
+                            + ")"  : "" }}
                         </td>
 
-                        <th>
-                            PO No:
-                        </th>
-                        <td>
-                            {{ invoiceDetails?.poNumber }}
-                        </td>
                     </tr>
+
                     <tr>
                         <th>
                             Total Inv Amt <small> (Incl Tax) </small>:
@@ -106,11 +108,63 @@
                             {{ invoiceDetails?.totalAmt + " " + currency }}
                         </td>
                         <th>
+                            PO No:
+                        </th>
+                        <td>
+                            {{ invoiceDetails?.poNumber }}
+                        </td>
+
+                    </tr>
+                    <tr>
+
+                        <th *ngIf="isRegionFieldsVisible ==true">
+                            Total Taxable Amt :
+                        </th>
+                        <td *ngIf="isRegionFieldsVisible ==true">
+                            {{ invoiceDetails?.taxableAmt + " " + currency }}
+                        </td>
+                        <th *ngIf="isTCSAmtVisible ==true">
+                            TCS Amount:
+                        </th>
+                        <td *ngIf="isTCSAmtVisible ==true">
+                            {{  invoiceDetails?.tcsAmount + " " + currency }}
+                        </td>
+                        <th>
                             Invoice No:
                         </th>
                         <td>
                             {{ invoiceDetails?.invoiceNumber }}
                         </td>
+                    </tr>
+                    <tr>
+
+                        <th *ngIf="isRegionFieldsVisible ==true">
+                            Total Non-Taxable Amt :
+                        </th>
+                        <td *ngIf="isRegionFieldsVisible ==true">
+                            {{ invoiceDetails?.nonTaxableAmt + " " + currency  }}
+                        </td>
+                        <th *ngIf="isRegionFieldsVisible ==false">
+
+                        </th>
+                        <td *ngIf="isRegionFieldsVisible ==false">
+                        </td>
+
+                        <th>
+                            Invoice Date:
+                        </th>
+                        <td>
+                            {{ getFormattedDate(invoiceDetails?.invoiceDate) }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
+                            TDS Amount:
+                        </th>
+                        <td>
+                            {{ getTDSAmount() }}
+                        </td>
+
                     </tr>
                     <tr>
                         <th>
@@ -129,37 +183,15 @@
                             </div>
                             <div class="errortxt">{{ amountPaidErrMsg }}</div>
                         </td>
-
-                        <th>
-                            Invoice Date:
-                        </th>
-                        <td>
-                            {{ getFormattedDate(invoiceDetails?.invoiceDate) }}
-                        </td>
-                    </tr>
-                    <tr>
-                        <!--<th>
-                            Paid Date:
-                        </th>
-                        <td>
-                            {{ getPaidDate() }}
-                        </td>-->
-                        <th>
-                            TDS Amount:
-                        </th>
-                        <td>
-                            {{ getTDSAmount() }}
-                        </td>
-
-                    </tr>
-                    <tr *ngIf="isForPayments == false">
-                        <th>
+                        <th *ngIf="isForPayments == false">
                             Paid Status:
                         </th>
                         <td>
                             {{ getPaidStatus() }}
                         </td>
+
                     </tr>
+
                     <tr>
                         <th>
                             Invoice Documents:
@@ -301,7 +333,7 @@
                     <td>
                         <span>{{ item.itemDescription }}</span>
                     </td>
-                    <td class="eightcharacters">
+                    <td class="eightcharacters" *ngIf="isHSNVisible == true">
                         <span>{{ item.hsn }}</span>
                     </td>
                     <td *ngIf="isFromToMandatory == true">
