@@ -464,8 +464,7 @@ export class InvoiceApprovalsComponent implements OnInit {
                 }
 
                 this.updateStatusFlow();
-                this.updateCountryFLow();
-
+            
                 this.invoiceFilesList = this.initDetails.invoiceFilesList;
                 this.supportFilesList = this.initDetails.supportFilesList;
                 this.rectifiedFilesList = this.initDetails.rectifiedFilesList;
@@ -506,6 +505,7 @@ export class InvoiceApprovalsComponent implements OnInit {
                     this.isOnRectified = true;
                 }
             }
+            this.updateCountryFLow();
 
             this._homeService.updateBusy(<BusyDataModel>{ isBusy: false, msg: null });
 
