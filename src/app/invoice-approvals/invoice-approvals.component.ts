@@ -98,6 +98,9 @@ export class InvoiceApprovalsComponent implements OnInit {
 
     documentType: string = null;
 
+    indiaWorkflow: boolean = false;
+    usWorkflow: boolean = false;
+
     constructor(private _homeService: HomeService,
                 private _appService: AppService,
                 private _router: Router,
@@ -350,8 +353,20 @@ export class InvoiceApprovalsComponent implements OnInit {
     async loadInitData() {
         this.isRejectVisible = false;
         this.isHoldVisible = false;
+
+        this.indiaWorkflow = false;
+        this.usWorkflow = false;
         if(this._appService.selectedPendingApprovalRecord) {
 
+            if(this._appService.selectedPendingApprovalRecord.departmentId) {
+                 if(this._appService.selectedPendingApprovalRecord.departmentId.indexOf("-" + globalConstant.usCountryCode) > 0) {
+                    this.usWorkflow = true
+                 }
+                 else {
+                     this.indiaWorkflow = true;
+                 }
+            }
+           
             if(globalConstant.userDetails.isPurchaseOwner) {
                 this.isReceiver = true;
             }
