@@ -153,6 +153,7 @@ export class InvoiceApprovalsComponent implements OnInit {
             this.isHSNVisible = false;
             this.isTCSAmtVisible = false;
             this.isRegionFieldsVisible = true;
+            
 
             this.headerArr = this.headerArr.filter(x => x != "HSN/SAC");
         }

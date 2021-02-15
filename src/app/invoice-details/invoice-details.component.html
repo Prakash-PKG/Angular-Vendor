@@ -105,7 +105,7 @@
                             Total Inv Amt <small> (Incl Tax) </small>:
                         </th>
                         <td>
-                            {{ invoiceDetails?.totalAmt + " " + currency }}
+                            {{ invoiceDetails?.totalAmt ? ( invoiceDetails?.totalAmt + " " + currency) :''  }}
                         </td>
                         <th>
                             PO No:
@@ -121,13 +121,13 @@
                             Total Taxable Amt :
                         </th>
                         <td *ngIf="isRegionFieldsVisible ==true">
-                            {{ invoiceDetails?.taxableAmt + " " + currency }}
+                            {{ invoiceDetails?.taxableAmt? ( invoiceDetails?.taxableAmt + " " + currency) :'' }}
                         </td>
                         <th *ngIf="isTCSAmtVisible ==true">
                             TCS Amount:
                         </th>
                         <td *ngIf="isTCSAmtVisible ==true">
-                            {{  invoiceDetails?.tcsAmount + " " + currency }}
+                            {{  invoiceDetails?.tcsAmount? ( invoiceDetails?.tcsAmount + " " + currency) :'' }}
                         </td>
                         <th>
                             Invoice No:
@@ -142,7 +142,7 @@
                             Total Non-Taxable Amt :
                         </th>
                         <td *ngIf="isRegionFieldsVisible ==true">
-                            {{ invoiceDetails?.nonTaxableAmt + " " + currency  }}
+                            {{ invoiceDetails?.nonTaxableAmt ? ( invoiceDetails?.nonTaxableAmt + " " + currency) :''  }}
                         </td>
                         <th *ngIf="isRegionFieldsVisible ==false">
 

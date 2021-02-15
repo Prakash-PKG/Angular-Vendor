@@ -233,6 +233,11 @@ export class InvoiceModel {
     plantCode: string;
     plantDescription: string;
     // invoiceUploadedBy:string;
+    nonTaxableAmt: string;
+    rate: string;
+    regionCode: string;
+    regionDescription: string;
+    taxableAmt: string;
 }
 
 export class InvoiceSearchRequestModel {
@@ -775,7 +780,7 @@ export class InvoiceSLAReportDetailsModel {
 
 export class InvoiceSLAReportReqModel {
     startDate: string;
-    endDate:string;
+    endDate: string;
 }
 
 export class InvoicePostingReportDetailsModel {
@@ -805,15 +810,15 @@ export class InvoicePostingReportDetailsModel {
     paymentStatus: string;
     ageing: string;
     companyCode: string;
-    msme:string;
-    currency:string;
-    postedToSAPDocNumber:string;
-    plantId:string;
+    msme: string;
+    currency: string;
+    postedToSAPDocNumber: string;
+    plantId: string;
 }
 
 export class invoicePostingReportReqModel {
     startDate: string;
-    endDate:string;
+    endDate: string;
 }
 export class vendorMasterReportDetailsModel {
     vendorMasterId: number;
@@ -886,7 +891,7 @@ export class vendorMasterReportDetailsModel {
     withholdTaxCode: string;
     // fileDetails: FileDetailsModel[];
 }
-export class fileDetailsVendorDocumentModel{
-    fileDetails:FileDetailsModel[];
-    vendorMasterDocumentVOList:VendorMasterDocumentModel[];
+export class fileDetailsVendorDocumentModel {
+    fileDetails: FileDetailsModel[];
+    vendorMasterDocumentVOList: VendorMasterDocumentModel[];
 }
