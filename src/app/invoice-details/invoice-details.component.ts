@@ -1,7 +1,7 @@
 import { InvoiceSearchService } from './../invoice-search/invoice-search.service';
 import { MessageDialogModel } from './../models/popup-models';
 import { MessageDialogComponent } from './../message-dialog/message-dialog.component';
-import { globalConstant } from './../common/global-constant';
+import { globalConstant, countryCompanyCodes } from './../common/global-constant';
 import {
     InvoiceModel, BusyDataModel, InvoiceDetailsRequestModel, InvoiceDetailsResultModel,
     ItemDisplayModel, FileDetailsModel, InvoiceApprovalModel, ApprovalLevelsModel, paymentStatusModel,
@@ -422,13 +422,11 @@ export class InvoiceDetailsComponent implements OnInit {
                 this.invoicePaymentStatusDetails = this._initDetails.paymentStatusDetails;
                 this.itemsList = (this._initDetails.itemsList && this._initDetails.itemsList.length > 0) ? this._initDetails.itemsList.concat() : [];
 
-                if (this._appService.selectedPendingApprovalRecord && this._appService.selectedPendingApprovalRecord.departmentId) {
-                    if (this._appService.selectedPendingApprovalRecord.departmentId.indexOf("-" + globalConstant.usCountryCode) > 0) {
-                        this.usWorkflow = true
-                    }
-                    else {
-                        this.indiaWorkflow = true;
-                    }
+                if (countryCompanyCodes.usCompanyCodes.indexOf(this.invoiceDetails.companyCode)) {
+                    this.usWorkflow = true
+                }
+                else {
+                    this.indiaWorkflow = true;
                 }
                
                 let totalAmt: number = 0;
@@ -518,12 +516,12 @@ export class InvoiceDetailsComponent implements OnInit {
 
                 this.updateRemarksList();
 
+                this.updateCountryFLow();
+
             }
          
             this._homeService.updateBusy(<BusyDataModel>{ isBusy: false, msg: null });
         }
-
-        this.updateCountryFLow();
     }
 
     ngOnDestroy() {
