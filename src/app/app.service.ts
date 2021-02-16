@@ -415,4 +415,18 @@ export class AppService {
 
         return _.uniq(countryCodes);
     }
+
+    getInvoiceDumpCountryCode() {
+        let countryCode = "";
+        if (globalConstant.userDetails.isInvoiceDumpVisible) {
+            if(globalConstant.userDetails.userRoles.find(r => r.roleCode == "invoice-dump-us")) {
+                countryCode = globalConstant.usCountryCode;
+            }
+            else if(globalConstant.userDetails.userRoles.find(r => r.roleCode == "invoice-dump")) {
+                countryCode = globalConstant.indiaCountryCode;
+            }
+        }
+
+        return countryCode;
+    }
 }

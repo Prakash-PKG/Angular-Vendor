@@ -21,6 +21,7 @@ export const globalConstant : any = {
     tempVendorRoles: ["vendor-temp"],
     vendorReportViewerRoles: ["vendor-report"],
     invoiceReportViewerRoles: ["invoice-report"],
+    invoiceDumpRoles: ["invoice-dump", "invoice-dump-us"],
     supportedCountries: ["IN", "US"],
     companyCodes: {
         "ADP": countryCompanyCodes.indiaCompanyCodes,
@@ -82,7 +83,8 @@ export const globalConstant : any = {
         poDepts: [],
         functionalHeadDepts: [],
         functionalHeadProjects: [],
-        invDepts: []
+        invDepts: [],
+        isInvoiceDumpVisible: false
     },
     sessionTimeout: {
         idle: 1200,

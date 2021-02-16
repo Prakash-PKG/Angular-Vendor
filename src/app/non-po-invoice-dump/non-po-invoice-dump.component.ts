@@ -52,6 +52,7 @@ export class NonPoInvoiceDumpComponent implements OnInit {
         let req: InvoiceFinanceDumpReqModel = {
             startDate: this._initDetails.lastDumpDt,
             endDate: null,
+            countryCode: this._appService.getInvoiceDumpCountryCode(),
             employeeId: globalConstant.userDetails.userId,
             isIncremental: true
         };
@@ -78,6 +79,7 @@ export class NonPoInvoiceDumpComponent implements OnInit {
             let req: InvoiceFinanceDumpReqModel = {
                 startDate: this._datePipe.transform(this.startDate, this._appService.dbDateTimeFormat),
                 endDate: this._datePipe.transform(updatedEndDt, this._appService.dbDateTimeFormat),
+                countryCode: this._appService.getInvoiceDumpCountryCode(),
                 employeeId: globalConstant.userDetails.userId,
                 isIncremental: false
             };

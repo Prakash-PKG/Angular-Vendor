@@ -67,6 +67,7 @@ export class AuthGuardLogin implements CanActivate {
             globalConstant.userDetails.poDepts = [];
             globalConstant.userDetails.functionalHeadDepts = [];
             globalConstant.userDetails.functionalHeadProjects = [];
+            globalConstant.userDetails.isInvoiceDumpVisible = false;
 
             if(globalConstant.userDetails.userRoles && globalConstant.userDetails.userRoles.length > 0) {
                 let vendorRoles = globalConstant.userDetails.userRoles.filter(r => globalConstant.vendorRoles.indexOf(r.roleCode) > -1);
@@ -181,6 +182,14 @@ export class AuthGuardLogin implements CanActivate {
                 }
                 else {
                     globalConstant.userDetails.isInvoiceReportViewer = false;
+                }
+
+                let invoiceDumpRoles = globalConstant.userDetails.userRoles.filter(r => globalConstant.invoiceDumpRoles.indexOf(r.roleCode) > -1);
+                if(invoiceDumpRoles && invoiceDumpRoles.length > 0) {
+                    globalConstant.userDetails.isInvoiceDumpVisible = true;
+                }
+                else {
+                    globalConstant.userDetails.isInvoiceDumpVisible = false;
                 }
             }
 

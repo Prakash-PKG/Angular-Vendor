@@ -15,10 +15,10 @@ export class PoInvoiceDumpService {
         return this._http.post(url, req, {responseType: 'arraybuffer', observe: 'response'});
     }
 
-    async getPOInvoiceDumpInitDetails() {
+    async getPOInvoiceDumpInitDetails(countryCode: string) {
         let url = this._appService.baseUrl + "poInvDumpInit";
         try {
-            let response = await this._http.get(url).toPromise();
+            let response = await this._http.post(url, { 'countryCode' : countryCode}).toPromise();
             return this.preparePOInvoiceDumpInitDetails(response);
         } catch (error) {
             await console.log(error);
