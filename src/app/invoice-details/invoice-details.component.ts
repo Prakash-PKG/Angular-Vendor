@@ -428,7 +428,7 @@ export class InvoiceDetailsComponent implements OnInit {
                 else {
                     this.indiaWorkflow = true;
                 }
-               
+                
                 let totalAmt: number = 0;
                 for (let i = 0; i < this.itemsList.length; i++) {
                     //this.itemsList[i].unitsTotalAmount = (this.itemsList[i].unitPrice && this.itemsList[i].invoiceUnits) ? +this.itemsList[i].unitPrice * +this.itemsList[i].invoiceUnits : null;
@@ -495,7 +495,6 @@ export class InvoiceDetailsComponent implements OnInit {
                         };
                         this.approvalLevelList.push(this.financeLevel);
                     }
-                    console.log(this.approvalLevelList);
                 }
 
                 if (this.invoicePaymentStatusDetails) {
@@ -542,7 +541,7 @@ export class InvoiceDetailsComponent implements OnInit {
         });
 
         this.invoiceDetails = this._appService.selectedInvoice;
-
+      
         setTimeout(() => {
             this.loadInitData();
         }, 100);
