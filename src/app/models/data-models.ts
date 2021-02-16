@@ -39,6 +39,8 @@ export class InvoiceUploadReqModel {
     vendorId: string;
     approvalLevels: string[];
     departments: string[];
+    companyCodes: string[];
+    countryCodes: string[];
 }
 
 export class InvoiceFileTypwModel {
@@ -53,6 +55,7 @@ export class InvoiceUploadResultModel {
     statusDetails: StatusModel;
     companiesList: CompanyCodeMasterList[];
     plantsList: PlantModel[];
+    regionsList: regionMasterVOList[];
 }
 
 export class PODetailsModel {
@@ -230,6 +233,11 @@ export class InvoiceModel {
     plantCode: string;
     plantDescription: string;
     // invoiceUploadedBy:string;
+    nonTaxableAmt: string;
+    rate: string;
+    regionCode: string;
+    regionDescription: string;
+    taxableAmt: string;
 }
 
 export class InvoiceSearchRequestModel {
@@ -260,6 +268,24 @@ export class InvoiceDetailsResultModel {
     paymentStatusDetails: PaymentStatusDetailsModel;
     paymentStatusList: paymentStatusModel[];
     paymentDetails: PaymentDetailsModel;
+    delMgrDetails: EmployeeDetailsModel;
+}
+
+export class EmployeeDetailsModel {
+    department: string;
+    designation: string;
+    employeeId: string;
+    firstName: string;
+    lastName: string;
+    manager: boolean;
+    managerId: string;
+    mgrEmailId: string;
+    mgrFName: string;
+    mgrLName: string;
+    mgrMName: string;
+    middleName: string;
+    offEmailId: string;
+    status: string;
 }
 
 export class paymentStatusModel {
@@ -425,6 +451,7 @@ export class PlantModel {
 export class CompanyCodeMasterList {
     companyCode: string;
     companyDesc: string;
+    countryCode: string;
 }
 export class AccGroupMasterList {
     groupCode: string;
@@ -491,6 +518,11 @@ export class InvoiceDetailsModel {
     totalAmt: string;
     grnSesNumber: string;
     statusCode: string;
+    regionCode: string;
+    regionDescription: string;
+    rate: string;
+    nonTaxableAmt: string;
+    taxableAmt: string;
     totalTax: string;
     currencyType: string;
     projectId: string;
@@ -748,7 +780,7 @@ export class InvoiceSLAReportDetailsModel {
 
 export class InvoiceSLAReportReqModel {
     startDate: string;
-    endDate:string;
+    endDate: string;
 }
 
 export class InvoicePostingReportDetailsModel {
@@ -778,15 +810,15 @@ export class InvoicePostingReportDetailsModel {
     paymentStatus: string;
     ageing: string;
     companyCode: string;
-    msme:string;
-    currency:string;
-    postedToSAPDocNumber:string;
-    plantId:string;
+    msme: string;
+    currency: string;
+    postedToSAPDocNumber: string;
+    plantId: string;
 }
 
 export class invoicePostingReportReqModel {
     startDate: string;
-    endDate:string;
+    endDate: string;
 }
 export class vendorMasterReportDetailsModel {
     vendorMasterId: number;
@@ -859,7 +891,7 @@ export class vendorMasterReportDetailsModel {
     withholdTaxCode: string;
     // fileDetails: FileDetailsModel[];
 }
-export class fileDetailsVendorDocumentModel{
-    fileDetails:FileDetailsModel[];
-    vendorMasterDocumentVOList:VendorMasterDocumentModel[];
+export class fileDetailsVendorDocumentModel {
+    fileDetails: FileDetailsModel[];
+    vendorMasterDocumentVOList: VendorMasterDocumentModel[];
 }

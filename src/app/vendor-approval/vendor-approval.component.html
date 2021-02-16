@@ -143,7 +143,7 @@
                         </mat-form-field>
                         <mat-form-field class="full-width" *ngIf="isExistingVendor">
                             <input type="text" matInput [disabled]=true value=" {{vendorDetails?.countryName }}"
-                             autocomplete="off">
+                            autocomplete="off">
                         </mat-form-field>
                         <mat-error class="errortxt" *ngIf="( isSubmitted ) && f?.countryCode?.errors?.required">Country
                             is required</mat-error>
@@ -287,15 +287,15 @@
                                         <mat-icon matTooltip="{{ file.actualFileName }}">description</mat-icon>
                                     </button>
                                     <button mat-button mat-icon-button aria-label="Delete"
-                                        *ngIf="isProcurement == true && isEditable == true"
-                                        (click)="onDeleteFileClick(file, i,vendorDocCtrl.canChqCtrl.documentTypeId)">
-                                        <mat-icon>delete_outline</mat-icon>
-                                    </button>
+                                    *ngIf="isProcurement == true && isEditable == true"
+                                    (click)="onDeleteFileClick(file, i,vendorDocCtrl.canChqCtrl.documentTypeId)">
+                                    <mat-icon>delete_outline</mat-icon>
+                                </button>
                                 </div>
                             </div>
                             <div class="flex-item">
                                 <div *ngIf="isEditable">
-                                    <input style="display: none" [attr.id]="vendorDocCtrl.canChqCtrl.browserId"
+                                                                       <input style="display: none" [attr.id]="vendorDocCtrl.canChqCtrl.browserId"
                                         type="file" multiple accept=".xls,.xlsx,.doc,.docx,.pdf,.png,.jpg,.zip"
                                         (change)="onFileChange($event, vendorDocCtrl.canChqCtrl.documentTypeId)" />
                                     <button mat-button mat-icon-button aria-label="Attach" class="attach-btn"
@@ -333,10 +333,10 @@
                                         <mat-icon matTooltip="{{ file.actualFileName }}">description</mat-icon>
                                     </button>
                                     <button mat-button mat-icon-button aria-label="Delete"
-                                        *ngIf="isProcurement == true && isEditable == true"
-                                        (click)="onDeleteFileClick(file, i,vendorDocCtrl.gstCtrl.documentTypeId)">
-                                        <mat-icon>delete_outline</mat-icon>
-                                    </button>
+                                    *ngIf="isProcurement == true && isEditable == true"
+                                    (click)="onDeleteFileClick(file, i,vendorDocCtrl.gstCtrl.documentTypeId)">
+                                    <mat-icon>delete_outline</mat-icon>
+                                </button>
                                 </div>
                             </div>
                             <div class="flex-item">

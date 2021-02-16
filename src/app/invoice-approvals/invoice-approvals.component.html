@@ -12,7 +12,8 @@
             </span>
         </li>
 
-        <li class="step" *ngIf = "!isPOInvoice || (documentType && documentType != 'ZHR')" [ngClass]="(isPOCompleted == true) ? 'completed' : ''">
+        <li class="step" *ngIf="!isPOInvoice || (documentType && documentType != 'ZHR')"
+            [ngClass]="(isPOCompleted == true) ? 'completed' : ''">
             <span class="upper-text"></span>
             <span class="dot"></span>
             <span class="lower-text">
@@ -69,6 +70,15 @@
                     </div>
                     <div class="value">
                         {{ (initDetails?.invoiceDetails?.companyName) ? initDetails?.invoiceDetails?.companyName : "" }}
+                    </div>
+                </div>
+                <div class="flex-item" *ngIf="isRegionFieldsVisible ==true">
+                    <div class="header">
+                        Jurisdiction
+                    </div>
+                    <div class="value">
+                        {{ (initDetails?.invoiceDetails?.regionCode)?  initDetails?.invoiceDetails?.regionDescription + " (" + initDetails?.invoiceDetails?.regionCode
+                        + ")"  : "" }}
                     </div>
                 </div>
                 <div class="flex-item">
@@ -132,8 +142,8 @@
                         Remarks
                     </div>
                     <div class="value">
-                        <span *ngIf = "isReceiver == false">{{ initDetails?.invoiceDetails?.remarks }}</span>
-                        <mat-form-field *ngIf = "isReceiver == true" class="full-width" style="text-align: left;">
+                        <span *ngIf="isReceiver == false">{{ initDetails?.invoiceDetails?.remarks }}</span>
+                        <mat-form-field *ngIf="isReceiver == true" class="full-width" style="text-align: left;">
                             <input matInput placeholder="Remarks" [(ngModel)]="uploaderRemarks" maxlength="50"
                                 (blur)="onUploaderRemarksBlur()" autocomplete="off">
                         </mat-form-field>
@@ -173,12 +183,36 @@
                         {{ initDetails?.invoiceDetails?.freightCharges }}
                     </div>
                 </div>
-                <div class="flex-item">
+                <div class="flex-item" *ngIf="isTCSAmtVisible ==true">
                     <div class="header">
                         TCS Amt
                     </div>
                     <div class="value">
                         {{ initDetails?.invoiceDetails?.tcsAmount }}
+                    </div>
+                </div>
+                <div class="flex-item" *ngIf="isRegionFieldsVisible ==true">
+                    <div class="header">
+                        Rate
+                    </div>
+                    <div class="value">
+                        {{ initDetails?.invoiceDetails?.rate }}
+                    </div>
+                </div>
+                <div class="flex-item" *ngIf="isRegionFieldsVisible ==true">
+                    <div class="header">
+                        Total Non-Tax Amt
+                    </div>
+                    <div class="value">
+                        {{ initDetails?.invoiceDetails?.nonTaxableAmt }}
+                    </div>
+                </div>
+                <div class="flex-item" *ngIf="isRegionFieldsVisible ==true">
+                    <div class="header">
+                        Total Taxable Amt
+                    </div>
+                    <div class="value">
+                        {{ initDetails?.invoiceDetails?.taxableAmt }}
                     </div>
                 </div>
                 <div class="flex-item">
@@ -189,6 +223,7 @@
                         {{ initDetails?.invoiceDetails?.totalTax }}
                     </div>
                 </div>
+
                 <div class="flex-item">
                     <div class="header">
                         Total Inv Amt<small>(inc. tax)</small>
@@ -298,7 +333,7 @@
             <mat-form-field class="full-width" style="margin-left: 20px">
                 <input matInput placeholder="Remarks" [(ngModel)]="remarks" maxlength="50" (blur)="onRemarksBlur()"
                     autocomplete="off">
-                    <mat-error class="error-txt"> {{ remarksErrMsg }}</mat-error>
+                <mat-error class="error-txt"> {{ remarksErrMsg }}</mat-error>
             </mat-form-field>
             <div class="error-txt">
                 {{ remarksErrMsg }}
@@ -346,7 +381,7 @@
                     <td>
                         {{ item.itemDescription }}
                     </td>
-                    <td class="eightcharacters">
+                    <td class="eightcharacters" *ngIf="isHSNVisible == true">
                         {{ item.hsn }}
                     </td>
                     <td *ngIf="isFromToMandatory == true">

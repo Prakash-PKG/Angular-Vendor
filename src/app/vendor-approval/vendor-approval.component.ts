@@ -51,6 +51,8 @@ export class VendorApprovalComponent implements OnInit {
     vendorDetails: VendorMasterDetailsModel = new VendorMasterDetailsModel();
     originalVendorDetails: VendorMasterDetailsModel = new VendorMasterDetailsModel();
 
+    // exVendFileDetails: VendorApprovalInitResultModel;
+
     vendoraccGroupList: AccGroupMasterList[] = [];
     companyCodeList: CompanyCodeMasterList[] = [];
     currencyList: currencyMasterList[] = [];
@@ -443,6 +445,11 @@ export class VendorApprovalComponent implements OnInit {
         this.msg = '';
         this.updateVendorApprovals(this._appService.updateOperations.approve);
     }
+    // onSaveClick() {
+    //     this.isSubmitted = true;
+    //     this.msg = '';
+    //     this.updateVendorApprovals(this._appService.updateOperations.proSave);
+    // }
 
     onRejectClick() {
         this.updateVendorApprovals(this._appService.updateOperations.reject);
@@ -592,6 +599,7 @@ export class VendorApprovalComponent implements OnInit {
                 });
     }
 
+
     displayVendorApprovalStatus(msg: string) {
         const dialogRef = this._dialog.open(MessageDialogComponent, {
             disableClose: true,
@@ -615,7 +623,6 @@ export class VendorApprovalComponent implements OnInit {
 
         if (this._appService.isExistingVendor) {
             this.vendorDetails = this._appService.selectedVendor;
-            console.log(this.vendorDetails);
             this.canApprove = false;
             this.isEditable = false;
             this.canEdit = false;

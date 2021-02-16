@@ -1,3 +1,4 @@
+import { globalConstant } from './common/global-constant';
 import { LoginService } from './login/login.service';
 import {
     VendorMasterDetailsModel, VendorRegistrationInitDataModel,
@@ -9,6 +10,8 @@ import { DatePipe } from '@angular/common';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { UserIdleService } from 'angular-user-idle';
 import { Subject, Observable, BehaviorSubject } from 'rxjs';
+
+import * as _ from 'underscore';
 
 @Injectable({
     providedIn: 'root'
@@ -358,5 +361,58 @@ export class AppService {
 
     setSessionTimeCount(count: number) {
         this.sessionTimeCount.next(count);
+    }
+
+    getUpdatedUniqueDepartments(depts: string[]) {
+        let updatedDepts: string[] = [];
+        for(let i = 0; i < depts.length; i++) {
+            let updatedDept: string = depts[i].split("-")[0];
+            if(updatedDepts.indexOf(updatedDept) < 0) {
+                updatedDepts.push(updatedDept);
+            }
+        }
+
+        return updatedDepts;
+    }
+
+    getCompanyCodesByDept(depts: string[]) {
+        let compayCodes: string[] = [];
+        for(let i = 0; i < depts.length; i++) {
+            compayCodes = compayCodes.concat(globalConstant.companyCodes[depts[i]]);
+        }
+
+        return _.uniq(compayCodes);
+    }
+
+    getCountryCodesByDept(depts: string[]) {
+        let countryCodes: string[] = [];
+        for(let c = 0; c < globalConstant.supportedCountries.length; c++) {
+            if(globalConstant.supportedCountries[c] != "IN") {
+                for(let i = 0; i < depts.length; i++) {
+                    let hCountry = "-" + globalConstant.supportedCountries[c];
+                    let countryCode: string = depts[i].indexOf(hCountry) > 0 ? globalConstant.supportedCountries[c] : null;
+                    if(countryCode && countryCodes.indexOf(countryCode) < 0) {
+                        countryCodes.push(countryCode);
+                    }
+                }
+            }
+        }
+
+        return countryCodes;
+    }
+
+    getAllCountryCodesByDept(depts: string[]) {
+        let countryCodes: string[] = [];
+        for(let i = 0; i < depts.length; i++) {
+            let strArr: string[] = depts[i].split("-");
+            if(strArr.length == 1) {
+                countryCodes.push(globalConstant.indiaCountryCode);
+            }
+            else if(strArr.length == 2) {
+                countryCodes.push(strArr[1]);
+            }
+        }
+
+        return _.uniq(countryCodes);
     }
 }

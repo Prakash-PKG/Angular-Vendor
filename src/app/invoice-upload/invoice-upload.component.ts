@@ -1,6 +1,7 @@
+import { LoginVendorComponent } from './../login-vendor/login-vendor.component';
 import { MessageDialogModel } from './../models/popup-models';
 import { MessageDialogComponent } from './../message-dialog/message-dialog.component';
-import { globalConstant } from './../common/global-constant';
+import { globalConstant, countryCompanyCodes } from './../common/global-constant';
 import { AppService } from './../app.service';
 import { InvoiceUploadService } from './invoice-upload.service';
 import {
@@ -8,7 +9,7 @@ import {
     PODetailsModel, POItemsRequestModel, POItemsResultModel, ItemModel, FileDetailsModel, InvoiceFileTypwModel,
     UpdateInvoiceRequestModel, UpdateInvoiceResultModel, InvoiceDocumentResultModel, StatusModel,
     VendorAutoCompleteModel, ProjectAutoCompleteModel, CompanyCodeMasterList, InvoiceExistReqModel,
-    NotRejectedItemsModel, PlantModel
+    NotRejectedItemsModel, PlantModel, regionMasterVOList
 } from './../models/data-models';
 import { Component, OnInit, HostListener } from '@angular/core';
 import { HomeService } from '../home/home.service';
@@ -66,6 +67,7 @@ export class InvoiceUploadComponent implements OnInit {
     isDashboardCollapsed: boolean = true;
     _sidebarExpansionSubscription: any = null;
 
+    totalHeaders: string[] = [];
     headerArr: string[] = [];
     nonPOHeaderArr: string[] = ['Item No.', 'Item Desc', "HSN/SAC", 'Invoice Units', 'Rate', 'Amount'];
     poHeaderArr: string[] = ['Item No.', 'Item Desc', "HSN/SAC", "From Date", "To Date", "Personnel Number", 'Order Units', 'Balance Units', "UOM",
@@ -127,6 +129,15 @@ export class InvoiceUploadComponent implements OnInit {
     maxInvoiceDate: Date = new Date();
 
     isFromToMandatory: boolean = false;
+
+    isHSNVisible: boolean = false;
+    isTCSAmtVisible: boolean = false;
+    isRegionFieldsVisible: boolean = false;
+
+    isIndiaWorkflow: boolean = false;
+    isUSWorkFlow: boolean = false;
+
+    regionsList: regionMasterVOList[] = [];
 
     //totalItemsAmtValid: boolean = false;
 
@@ -362,6 +373,7 @@ export class InvoiceUploadComponent implements OnInit {
 
         if (evtData.value == "po") {
             this.headerArr = this.poHeaderArr.concat();
+            this.totalHeaders = this.headerArr.concat();
             this.invoiceUploadForm.get("poList").setValidators([Validators.required]);
 
             this.invoiceUploadForm.get("currency").setValidators([]);
@@ -372,6 +384,7 @@ export class InvoiceUploadComponent implements OnInit {
         }
         else {
             this.headerArr = this.nonPOHeaderArr.concat();
+            this.totalHeaders = this.headerArr.concat();
             this.invoiceUploadForm.get("currency").setValidators([Validators.required]);
             this.invoiceUploadForm.get("vendorId").setValidators([Validators.required]);
             this.invoiceUploadForm.get("projectId").setValidators([Validators.required]);
@@ -419,6 +432,13 @@ export class InvoiceUploadComponent implements OnInit {
     }
 
     createNonPOItem() {
+        let hsnValidators: any = [];
+
+        let selCompany: string = this.invoiceUploadForm.get("companyCode").value;
+        if(countryCompanyCodes.indiaCompanyCodes.indexOf(selCompany) > -1) {
+            hsnValidators = [Validators.required, Validators.maxLength(8), Validators.pattern("^[0-9]*$")];
+        }
+
         let fg: FormGroup = this._formBuilder.group({
             itemId: null,
             itemNumber: [{ value: null, disabled: true }, [Validators.required, Validators.pattern("^[0-9]*$")]],
@@ -431,7 +451,7 @@ export class InvoiceUploadComponent implements OnInit {
             invoiceUnits: [null, Validators.required],
             unitPrice: [null, Validators.required],
             unitsAmt: null,
-            hsn: [null, [Validators.required, Validators.maxLength(8), Validators.pattern("^[0-9]*$")]],
+            hsn: [null, hsnValidators],
             createdBy: null,
             createdDate: null
         });
@@ -689,7 +709,7 @@ export class InvoiceUploadComponent implements OnInit {
         const itemsFa: FormArray = <FormArray>this.invoiceUploadForm.controls['itemsList'];
         let invoiceUnitsVal = itemsFa.controls[itemInd].get("invoiceUnits").value;
         if (invoiceUnitsVal && !isNaN(invoiceUnitsVal) && Number(invoiceUnitsVal) > 0) {
-            let invoiceUnits = Number(invoiceUnitsVal).toFixed(3);
+            let invoiceUnits = Number(invoiceUnitsVal).toFixed(6);
             itemsFa.controls[itemInd].get("invoiceUnits").setValue(invoiceUnits);
         }
         else {
@@ -751,6 +771,7 @@ export class InvoiceUploadComponent implements OnInit {
 
         this.updateInvoiceTotalAmt();
     }
+    
     ontcsAmountBlur() {
         let tcsAmountVal = this.invoiceUploadForm.get("tcsAmount").value;
         if (tcsAmountVal && !isNaN(tcsAmountVal)) {
@@ -762,6 +783,39 @@ export class InvoiceUploadComponent implements OnInit {
         }
 
         this.updateInvoiceTotalAmt();
+    }
+
+    onRateBlur() {
+        let rateVal = this.invoiceUploadForm.get("rate").value;
+        if (rateVal && !isNaN(rateVal)) {
+            let rateAmt = Number(rateVal).toFixed(3);
+            this.invoiceUploadForm.get("rate").setValue(rateAmt);
+        }
+        else {
+            this.invoiceUploadForm.get("rate").setValue(null);
+        }
+    }
+
+    onNonTaxableAmtBlur() {
+        let amtVal = this.invoiceUploadForm.get("nonTaxableAmt").value;
+        if (amtVal && !isNaN(amtVal)) {
+            let amt = Number(amtVal).toFixed(3);
+            this.invoiceUploadForm.get("nonTaxableAmt").setValue(amt);
+        }
+        else {
+            this.invoiceUploadForm.get("nonTaxableAmt").setValue(null);
+        }
+    }
+
+    onTaxableAmtBlur() {
+        let amtVal = this.invoiceUploadForm.get("taxableAmt").value;
+        if (amtVal && !isNaN(amtVal)) {
+            let amt = Number(amtVal).toFixed(3);
+            this.invoiceUploadForm.get("taxableAmt").setValue(amt);
+        }
+        else {
+            this.invoiceUploadForm.get("taxableAmt").setValue(null);
+        }
     }
 
     onTotalTaxBlur() {
@@ -784,8 +838,11 @@ export class InvoiceUploadComponent implements OnInit {
         let fregihtChargesVal = this.invoiceUploadForm.get("freightCharges").value;
         let fregihtCharges = fregihtChargesVal ? +fregihtChargesVal : 0;
 
-        let tcsAmountVal = this.invoiceUploadForm.get("tcsAmount").value;
-        let tcsAmount = tcsAmountVal ? +tcsAmountVal : 0;
+        let tcsAmount = 0;
+        if(this.isIndiaWorkflow) {
+            let tcsAmountVal = this.invoiceUploadForm.get("tcsAmount").value;
+            tcsAmount = tcsAmountVal ? +tcsAmountVal : 0;
+        }
 
         let totalTaxVal = this.invoiceUploadForm.get("totalTax").value;
         let totalTax = totalTaxVal ? +totalTaxVal : 0;
@@ -809,13 +866,20 @@ export class InvoiceUploadComponent implements OnInit {
     }
 
     async loadInitData() {
+        this.companiesList = [];
+
         this.invoiceNumberErrMsg = "";
         this.headerArr = this.poHeaderArrWithoutDates.concat();
+        this.totalHeaders = this.headerArr.concat();
+
+        let wfCountryCodes: string[] = this._appService.getAllCountryCodesByDept(globalConstant.userDetails.poDepts);
 
         let req: InvoiceUploadReqModel = {
             vendorId: (globalConstant.userDetails.isVendor) ? globalConstant.userDetails.userId : null,
             approvalLevels: [],
-            departments: (globalConstant.userDetails.isInvoiceUploader) ? globalConstant.userDetails.poDepts : []
+            departments: (globalConstant.userDetails.isInvoiceUploader) ? this._appService.getUpdatedUniqueDepartments(globalConstant.userDetails.poDepts) : [],
+            companyCodes: (globalConstant.userDetails.isInvoiceUploader) ? this._appService.getCompanyCodesByDept(globalConstant.userDetails.poDepts) : [],
+            countryCodes: (globalConstant.userDetails.isInvoiceUploader) ? this._appService.getCountryCodesByDept(globalConstant.userDetails.poDepts) : []
         }
         this._homeService.updateBusy(<BusyDataModel>{ isBusy: true, msg: "Loading..." });
         this._initDetails = await this._invoiceUploadService.getInvoiceUploadInitData(req);
@@ -823,7 +887,15 @@ export class InvoiceUploadComponent implements OnInit {
             this.prepareInvoiceFileTypes();
             this.poList = (this._initDetails.poList && this._initDetails.poList.length > 0) ? this._initDetails.poList.concat() : [];
             this.currencyList = (this._initDetails.currencyList && this._initDetails.currencyList.length > 0) ? this._initDetails.currencyList.concat() : [];
-            this.companiesList = (this._initDetails.companiesList && this._initDetails.companiesList.length > 0) ? this._initDetails.companiesList.concat() : [];
+            
+            for(let i = 0; i < wfCountryCodes.length; i++) {
+                let selCompanies: CompanyCodeMasterList[] = this._initDetails.companiesList.filter(c => c.countryCode == wfCountryCodes[i]);
+                if(selCompanies && selCompanies.length > 0) {
+                    this.companiesList = this.companiesList.concat(selCompanies);
+                }
+            }
+            
+            //this.companiesList = (this._initDetails.companiesList && this._initDetails.companiesList.length > 0) ? this._initDetails.companiesList.concat() : [];
             this.plantsList = (this._initDetails.plantsList && this._initDetails.plantsList.length > 0) ? this._initDetails.plantsList.concat() : [];
         }
         this._homeService.updateBusy(<BusyDataModel>{ isBusy: false, msg: null });
@@ -848,12 +920,22 @@ export class InvoiceUploadComponent implements OnInit {
                     this.invoiceUploadForm.get("isDatesMandatory").setValue(true);
                     this.headerArr = this.poHeaderArr.concat();
                 }
+                else {
+                    this.headerArr = this.poHeaderArrWithoutDates.concat();
+                }
+                this.totalHeaders = this.headerArr.concat();
 
                 this.loadPOItems();
             }
 
             this.validateInvoiceNumber();
         });
+
+        this.invoiceUploadForm.get("companyCode").valueChanges.subscribe(val => {
+            if (val) {
+               this.onCompanyCodeChange(val);
+            }
+        }); 
 
         this.invoiceUploadForm.get("currency").valueChanges.subscribe(val => {
             if (val) {
@@ -885,6 +967,72 @@ export class InvoiceUploadComponent implements OnInit {
         this.registerProjectAutoComplete();
     }
 
+    onCompanyCodeChange(companyCode: string) {
+        this.invoiceUploadForm.get("region").setValue(null);
+        this.invoiceUploadForm.get("rate").setValue(null);
+        this.invoiceUploadForm.get("nonTaxableAmt").setValue(null);
+        this.invoiceUploadForm.get("taxableAmt").setValue(null);
+
+        const itemsFa: FormArray = <FormArray>this.invoiceUploadForm.controls['itemsList'];
+        for (let i = 0; i < itemsFa.length; i++) {
+            itemsFa.controls[i].get("hsn").setValue(null);
+        }
+
+        this.isIndiaWorkflow = false;
+        this.isUSWorkFlow = false;
+
+        this.isHSNVisible = false;
+        this.isTCSAmtVisible = false;
+        this.isRegionFieldsVisible = false;
+        if(countryCompanyCodes.indiaCompanyCodes.indexOf(companyCode) > -1) {
+            this.isIndiaWorkflow = true;
+
+            this.isHSNVisible = true;
+            this.isTCSAmtVisible = true;
+            this.isRegionFieldsVisible = false;
+
+            this.headerArr = this.totalHeaders.concat();
+
+            this.invoiceUploadForm.get("region").setValidators([]);
+            this.invoiceUploadForm.get("rate").setValidators([]);
+            this.invoiceUploadForm.get("nonTaxableAmt").setValidators([]);
+            this.invoiceUploadForm.get("taxableAmt").setValidators([]);
+
+            for (let i = 0; i < itemsFa.length; i++) {
+                itemsFa.controls[i].get("hsn").setValidators([Validators.required, Validators.maxLength(8), Validators.pattern("^[0-9]*$")]);
+                itemsFa.controls[i].get("hsn").updateValueAndValidity();
+            }
+        }
+        else if(countryCompanyCodes.usCompanyCodes.indexOf(companyCode) > -1) {
+            this.isUSWorkFlow = true;
+
+            this.isHSNVisible = false;
+            this.isTCSAmtVisible = false;
+            this.isRegionFieldsVisible = true;
+
+            this.headerArr = this.totalHeaders.filter(x => x != "HSN/SAC");
+
+            this.regionsList = this._initDetails.regionsList.filter(x => x.countryCode == "US");
+
+            this.invoiceUploadForm.get("region").setValidators([Validators.required]);
+            this.invoiceUploadForm.get("rate").setValidators([Validators.required]);
+            this.invoiceUploadForm.get("nonTaxableAmt").setValidators([Validators.required]);
+            this.invoiceUploadForm.get("taxableAmt").setValidators([Validators.required]);
+
+            for (let i = 0; i < itemsFa.length; i++) {
+                itemsFa.controls[i].get("hsn").setValidators([]);
+                itemsFa.controls[i].get("hsn").updateValueAndValidity();
+            }
+        }
+
+        this.invoiceUploadForm.get("region").updateValueAndValidity();
+        this.invoiceUploadForm.get("rate").updateValueAndValidity();
+        this.invoiceUploadForm.get("nonTaxableAmt").updateValueAndValidity();
+        this.invoiceUploadForm.get("taxableAmt").updateValueAndValidity();
+
+        itemsFa.updateValueAndValidity();
+    }
+
     onRemarksBlur() {
         let val: string = this.invoiceUploadForm.get("remarks").value;
         if (val) {
@@ -908,6 +1056,8 @@ export class InvoiceUploadComponent implements OnInit {
                 formsList.insert(formsList.length, this.createItem(itemsList[i]));
             }
         }
+
+        this.onCompanyCodeChange(this.selectedPOItem.companyCode);
 
         this.updateAmountDetails();
     }
@@ -1112,7 +1262,6 @@ export class InvoiceUploadComponent implements OnInit {
             return false;
         }
 
-
         let poNumber = null;
         if (this.selectedInvoiceType == 'po') {
             if (!this.selectedPOItem) {
@@ -1211,13 +1360,25 @@ export class InvoiceUploadComponent implements OnInit {
             }
         }
 
+        let selRegionCode: string = this.invoiceUploadForm.get("region").value;
+        let selRegionDesc: string = null;
+        if(selRegionCode) {
+            let selRegionObj: regionMasterVOList = this._initDetails.regionsList.find(r => r.regionCode == selRegionCode);
+            selRegionDesc = selRegionObj.regionDesc;
+        }
+
+        let updatePOItem: PODetailsModel = JSON.parse(JSON.stringify(this.selectedPOItem));
+        if(this.selectedInvoiceType == 'po' && this.isUSWorkFlow){
+            updatePOItem.departmentId = this.selectedPOItem.departmentId + "-" + globalConstant.usCountryCode;
+        }
+
         let req: UpdateInvoiceRequestModel = {
             action: action,
             userId: (this.selectedInvoiceType == 'po' && globalConstant.userDetails.isVendor) ? globalConstant.userDetails.userEmail : globalConstant.userDetails.userId,
-            poDetails: this.selectedPOItem,
+            poDetails: updatePOItem,
             invoiceDetails: {
                 invoiceId: null,
-                purchaseOrderId: (this.selectedPOItem) ? this.selectedPOItem.purchaseOrderId : null,
+                purchaseOrderId: (updatePOItem) ? updatePOItem.purchaseOrderId : null,
                 vendorId: venId,
                 vendorName: venName,
                 invoiceNumber: this.invoiceUploadForm.get("invoiceNumber").value,
@@ -1227,6 +1388,11 @@ export class InvoiceUploadComponent implements OnInit {
                 totalAmt: this.invoiceUploadForm.get("totalInvAmt").value,
                 grnSesNumber: null,
                 statusCode: null,
+                regionCode: this.invoiceUploadForm.get("region").value ? this.invoiceUploadForm.get("region").value : null,
+                regionDescription: selRegionDesc,
+                rate: this.invoiceUploadForm.get("rate").value ? this.invoiceUploadForm.get("rate").value : null,
+                nonTaxableAmt: this.invoiceUploadForm.get("nonTaxableAmt").value ? this.invoiceUploadForm.get("nonTaxableAmt").value : null,
+                taxableAmt: this.invoiceUploadForm.get("taxableAmt").value ? this.invoiceUploadForm.get("taxableAmt").value : null,
                 totalTax: this.invoiceUploadForm.get("totalTax").value,
                 currencyType: this.currency,
                 projectId: projId,
@@ -1311,6 +1477,7 @@ export class InvoiceUploadComponent implements OnInit {
         this.isDashboardCollapsed = true;
 
         this.headerArr = this.poHeaderArr.concat();
+        this.totalHeaders = this.headerArr.concat();
 
         this._sidebarExpansionSubscription = this._homeService.isSidebarCollapsed.subscribe(data => {
             this.isDashboardCollapsed = !data;
@@ -1323,6 +1490,10 @@ export class InvoiceUploadComponent implements OnInit {
             remarks: [null, Validators.required],
             isDatesMandatory: false,
             freightCharges: null,
+            region: null,
+            rate: null,
+            nonTaxableAmt: null,
+            taxableAmt: null,
             totalTax: [null, Validators.required],
             totalItemsAmt: ["", [this.totalItemsAmtValidator.bind(this)]],
             totalInvAmt: [""],

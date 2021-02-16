@@ -1,11 +1,12 @@
 import { InvoiceSearchService } from './../invoice-search/invoice-search.service';
 import { MessageDialogModel } from './../models/popup-models';
 import { MessageDialogComponent } from './../message-dialog/message-dialog.component';
-import { globalConstant } from './../common/global-constant';
+import { globalConstant, countryCompanyCodes } from './../common/global-constant';
 import {
     InvoiceModel, BusyDataModel, InvoiceDetailsRequestModel, InvoiceDetailsResultModel,
     ItemDisplayModel, FileDetailsModel, InvoiceApprovalModel, ApprovalLevelsModel, paymentStatusModel,
-    PaymentStatusDetailsModel, PaymentReqModel, StatusModel, PaymentDetailsModel, VoucherReqModel
+    PaymentStatusDetailsModel, PaymentReqModel, StatusModel, PaymentDetailsModel, VoucherReqModel,
+    EmployeeDetailsModel
 } from './../models/data-models';
 import { AppService } from './../app.service';
 import { InvoiceDetailsService } from './invoice-details.service';
@@ -75,6 +76,13 @@ export class InvoiceDetailsComponent implements OnInit {
 
     isPrintVoucherVisible: boolean = false;
 
+    indiaWorkflow: boolean = false;
+    usWorkflow: boolean = false;
+
+    isHSNVisible: boolean = false;
+    isTCSAmtVisible: boolean = false;
+    isRegionFieldsVisible: boolean = false;
+
     constructor(private _homeService: HomeService,
         private _router: Router,
         public _dialog: MatDialog,
@@ -82,6 +90,23 @@ export class InvoiceDetailsComponent implements OnInit {
         private _invoiceSearchService: InvoiceSearchService,
         private _appService: AppService) { }
 
+    updateCountryFLow() {
+        if (this.indiaWorkflow) {
+
+            this.isHSNVisible = true;
+            this.isTCSAmtVisible = true;
+            this.isRegionFieldsVisible = false;
+
+        }
+        else if (this.usWorkflow) {
+
+            this.isHSNVisible = false;
+            this.isTCSAmtVisible = false;
+            this.isRegionFieldsVisible = true;
+
+            this.headerArr = this.headerArr.filter(x => x != "HSN/SAC");
+        }
+    }
     onPrintVoucherClick() {
         let req: VoucherReqModel = {
             invoiceId: this.invoiceDetails.invoiceId
@@ -305,10 +330,10 @@ export class InvoiceDetailsComponent implements OnInit {
     }
 
     getPlant() {
-        if(this.invoiceDetails) {
-            return this.invoiceDetails.plantDescription + " ( " +  this.invoiceDetails.plantCode + " )";
+        if (this.invoiceDetails) {
+            return this.invoiceDetails.plantDescription + " ( " + this.invoiceDetails.plantCode + " )";
         }
-        
+
         return "";
     }
 
@@ -319,6 +344,14 @@ export class InvoiceDetailsComponent implements OnInit {
     getFormattedDate(dtStr: string) {
         if (dtStr) {
             return this._appService.getFormattedDate(dtStr);
+        }
+
+        return "";
+    }
+
+    getDeliveryManagerName(delMgrDetails: EmployeeDetailsModel) {
+        if (delMgrDetails) {
+            return delMgrDetails.firstName + " " + ((delMgrDetails.middleName) ? delMgrDetails.middleName + " " : "") + delMgrDetails.lastName + " (" + delMgrDetails.status + ")";
         }
 
         return "";
@@ -337,6 +370,9 @@ export class InvoiceDetailsComponent implements OnInit {
         this.financeLevel = null;
 
         this.isPrintVoucherVisible = false;
+
+        this.indiaWorkflow = false;
+        this.usWorkflow = false;
 
         if (this.invoiceDetails && this.invoiceDetails.invoiceId) {
 
@@ -385,6 +421,14 @@ export class InvoiceDetailsComponent implements OnInit {
 
                 this.invoicePaymentStatusDetails = this._initDetails.paymentStatusDetails;
                 this.itemsList = (this._initDetails.itemsList && this._initDetails.itemsList.length > 0) ? this._initDetails.itemsList.concat() : [];
+
+                if (countryCompanyCodes.usCompanyCodes.indexOf(this.invoiceDetails.companyCode)) {
+                    this.usWorkflow = true
+                }
+                else {
+                    this.indiaWorkflow = true;
+                }
+                
                 let totalAmt: number = 0;
                 for (let i = 0; i < this.itemsList.length; i++) {
                     //this.itemsList[i].unitsTotalAmount = (this.itemsList[i].unitPrice && this.itemsList[i].invoiceUnits) ? +this.itemsList[i].unitPrice * +this.itemsList[i].invoiceUnits : null;
@@ -409,7 +453,7 @@ export class InvoiceDetailsComponent implements OnInit {
                             status: "Submitted",
                             date: this._appService.getFormattedDate(poApprovalModel.createdDate),
                             remarks: this.invoiceDetails.remarks,
-                            approverName: poApprovalModel.invoiceUploadedBy 
+                            approverName: poApprovalModel.invoiceUploadedBy
                         };
                         this.approvalLevelList.push(this.uploadLevel);
 
@@ -428,12 +472,14 @@ export class InvoiceDetailsComponent implements OnInit {
 
                     let functionalHeadApprovalModel: InvoiceApprovalModel = this._initDetails.approvalsList.find(a => a.approvalLevel == this._appService.approvalLevels.functionalHead);
                     if (functionalHeadApprovalModel != null) {
+                        let delMgrDetails: EmployeeDetailsModel = this._initDetails.delMgrDetails;
+                        let apprName: string = (functionalHeadApprovalModel.approverName && functionalHeadApprovalModel.approverName.trim()) ? functionalHeadApprovalModel.approverName : this.getDeliveryManagerName(delMgrDetails);
                         this.fhLevel = {
                             levelName: "Delivery Manager",
                             status: this._appService.statusNames[functionalHeadApprovalModel.statusCode],
                             date: (functionalHeadApprovalModel.statusCode == this._appService.statusCodes.approved || functionalHeadApprovalModel.statusCode == this._appService.statusCodes.rejected) ? this._appService.getFormattedDate(functionalHeadApprovalModel.updatedDate) : "",
                             remarks: functionalHeadApprovalModel.remarks,
-                            approverName: functionalHeadApprovalModel.approverName
+                            approverName: apprName
                         };
                         this.approvalLevelList.push(this.fhLevel);
                     }
@@ -449,7 +495,6 @@ export class InvoiceDetailsComponent implements OnInit {
                         };
                         this.approvalLevelList.push(this.financeLevel);
                     }
-                    console.log(this.approvalLevelList);
                 }
 
                 if (this.invoicePaymentStatusDetails) {
@@ -469,7 +514,11 @@ export class InvoiceDetailsComponent implements OnInit {
                 }
 
                 this.updateRemarksList();
+
+                this.updateCountryFLow();
+
             }
+         
             this._homeService.updateBusy(<BusyDataModel>{ isBusy: false, msg: null });
         }
     }
@@ -492,7 +541,7 @@ export class InvoiceDetailsComponent implements OnInit {
         });
 
         this.invoiceDetails = this._appService.selectedInvoice;
-
+      
         setTimeout(() => {
             this.loadInitData();
         }, 100);
