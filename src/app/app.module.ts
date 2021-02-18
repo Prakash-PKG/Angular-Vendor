@@ -96,6 +96,8 @@ import { InvoicePostingReportComponent } from './invoice-posting-report/invoice-
 import { InvoiceSlaReportComponent } from './invoice-sla-report/invoice-sla-report.component';
 import { InvoiceRejectedComponent } from './invoice-rejected/invoice-rejected.component';
 
+
+// https://www.npmjs.com/package/ng-recaptcha/v/5.0.0   -- Recaptcha is using
 @NgModule({
     declarations: [
         AppComponent,

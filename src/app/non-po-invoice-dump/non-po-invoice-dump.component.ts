@@ -125,9 +125,10 @@ export class NonPoInvoiceDumpComponent implements OnInit {
     }
 
     async loadInitData() {
+        let countryCode = this._appService.getInvoiceDumpCountryCode();
         this.incrementalStartDate = " - ";
         this._homeService.updateBusy(<BusyDataModel>{ isBusy: true, msg: "Loading..." });
-        this._initDetails = await this._nonpoInvoiceDumpService.getNonPOInvoiceDumpInitDetails();
+        this._initDetails = await this._nonpoInvoiceDumpService.getNonPOInvoiceDumpInitDetails(countryCode);
         if (this._initDetails && this._initDetails.lastDumpDt) {
             this.incrementalStartDate = this._datePipe.transform(new Date(this._initDetails.lastDumpDt), this._appService.displayDateTimeFormat);
         }

@@ -63,7 +63,7 @@ export class PendingApprovalsComponent implements OnInit {
     }
 
 
-
+    // Brings Vendor and Invoice pending approvals according to the roles and departments
     async loadInitData() {
         let req: PendingApprovalRequestModel = {
             employeeId: null,

@@ -15,10 +15,10 @@ export class NonPoInvoiceDumpService {
         return this._http.post(url, req, { responseType: 'arraybuffer', observe: 'response' });
     }
 
-    async getNonPOInvoiceDumpInitDetails() {
+    async getNonPOInvoiceDumpInitDetails(countryCode: string) {
         let url = this._appService.baseUrl + "nonpoInvDumpInit";
         try {
-            let response = await this._http.get(url).toPromise();
+            let response = await this._http.post(url, { 'countryCode' : countryCode}).toPromise();
             return this.prepareNonPOInvoiceDumpInitDetails(response);
         } catch (error) {
             await console.log(error);
