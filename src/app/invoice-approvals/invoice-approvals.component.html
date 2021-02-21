@@ -349,8 +349,8 @@
                 {{ getPlant() }}
             </div>
         </div>
-        <div class="flex-item">
-            <div class="header" style="width: 18%">
+        <div class="flex-item" *ngIf="initDetails?.msme =='Yes'">
+            <div class="header" style="width: 18%" >
                 MSME
             </div>
             <div class="value">
