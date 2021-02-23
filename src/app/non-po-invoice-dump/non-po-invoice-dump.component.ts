@@ -52,6 +52,7 @@ export class NonPoInvoiceDumpComponent implements OnInit {
         let req: InvoiceFinanceDumpReqModel = {
             startDate: this._initDetails.lastDumpDt,
             endDate: null,
+            countryCode: this._appService.getInvoiceDumpCountryCode(),
             employeeId: globalConstant.userDetails.userId,
             isIncremental: true
         };
@@ -78,6 +79,7 @@ export class NonPoInvoiceDumpComponent implements OnInit {
             let req: InvoiceFinanceDumpReqModel = {
                 startDate: this._datePipe.transform(this.startDate, this._appService.dbDateTimeFormat),
                 endDate: this._datePipe.transform(updatedEndDt, this._appService.dbDateTimeFormat),
+                countryCode: this._appService.getInvoiceDumpCountryCode(),
                 employeeId: globalConstant.userDetails.userId,
                 isIncremental: false
             };
@@ -123,9 +125,10 @@ export class NonPoInvoiceDumpComponent implements OnInit {
     }
 
     async loadInitData() {
+        let countryCode = this._appService.getInvoiceDumpCountryCode();
         this.incrementalStartDate = " - ";
         this._homeService.updateBusy(<BusyDataModel>{ isBusy: true, msg: "Loading..." });
-        this._initDetails = await this._nonpoInvoiceDumpService.getNonPOInvoiceDumpInitDetails();
+        this._initDetails = await this._nonpoInvoiceDumpService.getNonPOInvoiceDumpInitDetails(countryCode);
         if (this._initDetails && this._initDetails.lastDumpDt) {
             this.incrementalStartDate = this._datePipe.transform(new Date(this._initDetails.lastDumpDt), this._appService.displayDateTimeFormat);
         }

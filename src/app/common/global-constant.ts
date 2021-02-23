@@ -11,7 +11,8 @@ export const globalConstant : any = {
     invUploadRoles: ["adp-upload", "hrp-upload", "isp-upload", "itp-upload", "lgp-upload", "mkp-upload", "fip-upload",
                         "psp-upload", "cgp-upload", "ssp-upload", "hr1-upload", "hr2-upload", "hr3-upload", "hr4-upload", "ism-upload",
                         "adp-upload-us","cgp-upload-us","hr1-upload-us","hr2-upload-us","hr3-upload-us","hr4-upload-us"
-                        ,"ism-upload-us","isp-upload-us","itp-upload-us","lgp-upload-us","mkp-upload-us","psp-upload-us","ssp-upload-us"],
+                        ,"ism-upload-us","isp-upload-us","itp-upload-us","lgp-upload-us","mkp-upload-us","psp-upload-us","ssp-upload-us"
+                        ,"fip-upload-us"],
     invSubContractReceiverRoles: ["hrp-receiver"],
     functionalHeadRoles: ["functional_head"],
     financeRoles: ["finance"],
@@ -21,6 +22,7 @@ export const globalConstant : any = {
     tempVendorRoles: ["vendor-temp"],
     vendorReportViewerRoles: ["vendor-report"],
     invoiceReportViewerRoles: ["invoice-report"],
+    invoiceDumpRoles: ["invoice-dump", "invoice-dump-us"],
     supportedCountries: ["IN", "US"],
     companyCodes: {
         "ADP": countryCompanyCodes.indiaCompanyCodes,
@@ -82,7 +84,8 @@ export const globalConstant : any = {
         poDepts: [],
         functionalHeadDepts: [],
         functionalHeadProjects: [],
-        invDepts: []
+        invDepts: [],
+        isInvoiceDumpVisible: false
     },
     sessionTimeout: {
         idle: 1200,

@@ -138,6 +138,7 @@ export class InvoiceUploadComponent implements OnInit {
     isUSWorkFlow: boolean = false;
 
     regionsList: regionMasterVOList[] = [];
+    isTaxableAmtVisible: boolean = true;
 
     //totalItemsAmtValid: boolean = false;
 
@@ -435,7 +436,7 @@ export class InvoiceUploadComponent implements OnInit {
         let hsnValidators: any = [];
 
         let selCompany: string = this.invoiceUploadForm.get("companyCode").value;
-        if(countryCompanyCodes.indiaCompanyCodes.indexOf(selCompany) > -1) {
+        if (countryCompanyCodes.indiaCompanyCodes.indexOf(selCompany) > -1) {
             hsnValidators = [Validators.required, Validators.maxLength(8), Validators.pattern("^[0-9]*$")];
         }
 
@@ -709,7 +710,7 @@ export class InvoiceUploadComponent implements OnInit {
         const itemsFa: FormArray = <FormArray>this.invoiceUploadForm.controls['itemsList'];
         let invoiceUnitsVal = itemsFa.controls[itemInd].get("invoiceUnits").value;
         if (invoiceUnitsVal && !isNaN(invoiceUnitsVal) && Number(invoiceUnitsVal) > 0) {
-            let invoiceUnits = Number(invoiceUnitsVal).toFixed(6);
+            let invoiceUnits = Number(invoiceUnitsVal).toFixed(3);
             itemsFa.controls[itemInd].get("invoiceUnits").setValue(invoiceUnits);
         }
         else {
@@ -771,7 +772,7 @@ export class InvoiceUploadComponent implements OnInit {
 
         this.updateInvoiceTotalAmt();
     }
-    
+
     ontcsAmountBlur() {
         let tcsAmountVal = this.invoiceUploadForm.get("tcsAmount").value;
         if (tcsAmountVal && !isNaN(tcsAmountVal)) {
@@ -787,12 +788,23 @@ export class InvoiceUploadComponent implements OnInit {
 
     onRateBlur() {
         let rateVal = this.invoiceUploadForm.get("rate").value;
+        let rateAmt = null
         if (rateVal && !isNaN(rateVal)) {
-            let rateAmt = Number(rateVal).toFixed(3);
+            rateAmt = Number(rateVal).toFixed(3);
             this.invoiceUploadForm.get("rate").setValue(rateAmt);
         }
         else {
             this.invoiceUploadForm.get("rate").setValue(null);
+        }
+        if (rateAmt == 0 || rateAmt == null) {
+            this.invoiceUploadForm.get("taxableAmt").setValidators([]);
+            this.invoiceUploadForm.get("taxableAmt").updateValueAndValidity();
+            this.isTaxableAmtVisible = false;
+        }
+        else {
+            this.invoiceUploadForm.get("taxableAmt").setValidators([Validators.required]);
+            this.invoiceUploadForm.get("taxableAmt").updateValueAndValidity();
+            this.isTaxableAmtVisible = true;
         }
     }
 
@@ -817,7 +829,31 @@ export class InvoiceUploadComponent implements OnInit {
             this.invoiceUploadForm.get("taxableAmt").setValue(null);
         }
     }
+    getInvoiceNetAmount() {
+        let invNetAmt = this.invoiceUploadForm.get("totalItemsAmt").value;
+        invNetAmt = (invNetAmt && !isNaN(invNetAmt)) ? Number(invNetAmt).toFixed(3) : null;
+        let invNetAmtVal: number = +invNetAmt;
 
+        let taxAmt = this.invoiceUploadForm.get("taxableAmt").value;
+        let taxAmtVal: number;
+        if (taxAmt && !isNaN(taxAmt)) {
+            taxAmt = Number(taxAmt).toFixed(3);
+            taxAmtVal = +taxAmt;
+        }
+        else { taxAmtVal = null }
+
+        let nonTaxAmt = this.invoiceUploadForm.get("nonTaxableAmt").value;
+        let nonTaxAmtVal: number;
+        if (nonTaxAmt && !isNaN(nonTaxAmt)) {
+            nonTaxAmt = Number(nonTaxAmt).toFixed(3);
+            nonTaxAmtVal = +nonTaxAmt;
+        }
+        else { nonTaxAmtVal = null }
+
+        invNetAmtVal = taxAmtVal ? (invNetAmtVal + taxAmtVal) : invNetAmtVal;
+        invNetAmtVal = nonTaxAmtVal ? (invNetAmtVal + nonTaxAmtVal) : invNetAmtVal;
+        return invNetAmtVal;
+    }
     onTotalTaxBlur() {
         let totalTaxVal = this.invoiceUploadForm.get("totalTax").value;
         if (totalTaxVal && !isNaN(totalTaxVal)) {
@@ -839,7 +875,7 @@ export class InvoiceUploadComponent implements OnInit {
         let fregihtCharges = fregihtChargesVal ? +fregihtChargesVal : 0;
 
         let tcsAmount = 0;
-        if(this.isIndiaWorkflow) {
+        if (this.isIndiaWorkflow) {
             let tcsAmountVal = this.invoiceUploadForm.get("tcsAmount").value;
             tcsAmount = tcsAmountVal ? +tcsAmountVal : 0;
         }
@@ -887,14 +923,14 @@ export class InvoiceUploadComponent implements OnInit {
             this.prepareInvoiceFileTypes();
             this.poList = (this._initDetails.poList && this._initDetails.poList.length > 0) ? this._initDetails.poList.concat() : [];
             this.currencyList = (this._initDetails.currencyList && this._initDetails.currencyList.length > 0) ? this._initDetails.currencyList.concat() : [];
-            
-            for(let i = 0; i < wfCountryCodes.length; i++) {
+
+            for (let i = 0; i < wfCountryCodes.length; i++) {
                 let selCompanies: CompanyCodeMasterList[] = this._initDetails.companiesList.filter(c => c.countryCode == wfCountryCodes[i]);
-                if(selCompanies && selCompanies.length > 0) {
+                if (selCompanies && selCompanies.length > 0) {
                     this.companiesList = this.companiesList.concat(selCompanies);
                 }
             }
-            
+
             //this.companiesList = (this._initDetails.companiesList && this._initDetails.companiesList.length > 0) ? this._initDetails.companiesList.concat() : [];
             this.plantsList = (this._initDetails.plantsList && this._initDetails.plantsList.length > 0) ? this._initDetails.plantsList.concat() : [];
         }
@@ -933,19 +969,19 @@ export class InvoiceUploadComponent implements OnInit {
 
         this.invoiceUploadForm.get("companyCode").valueChanges.subscribe(val => {
             if (val) {
-               this.onCompanyCodeChange(val);
+                this.onCompanyCodeChange(val);
             }
-        }); 
+        });
 
         this.invoiceUploadForm.get("currency").valueChanges.subscribe(val => {
             if (val) {
                 this.currency = val;
             }
-        }); 
+        });
 
         this.invoiceUploadForm.get("isDatesMandatory").valueChanges.subscribe(val => {
             const itemsFa: FormArray = <FormArray>this.invoiceUploadForm.controls['itemsList'];
-            if(val) {
+            if (val) {
                 for (let i = 0; i < itemsFa.length; i++) {
                     itemsFa.controls[i].get("fromDate").setValidators([Validators.required]);
                     itemsFa.controls[i].get("toDate").setValidators([Validators.required]);
@@ -984,7 +1020,7 @@ export class InvoiceUploadComponent implements OnInit {
         this.isHSNVisible = false;
         this.isTCSAmtVisible = false;
         this.isRegionFieldsVisible = false;
-        if(countryCompanyCodes.indiaCompanyCodes.indexOf(companyCode) > -1) {
+        if (countryCompanyCodes.indiaCompanyCodes.indexOf(companyCode) > -1) {
             this.isIndiaWorkflow = true;
 
             this.isHSNVisible = true;
@@ -1003,7 +1039,7 @@ export class InvoiceUploadComponent implements OnInit {
                 itemsFa.controls[i].get("hsn").updateValueAndValidity();
             }
         }
-        else if(countryCompanyCodes.usCompanyCodes.indexOf(companyCode) > -1) {
+        else if (countryCompanyCodes.usCompanyCodes.indexOf(companyCode) > -1) {
             this.isUSWorkFlow = true;
 
             this.isHSNVisible = false;
@@ -1114,7 +1150,7 @@ export class InvoiceUploadComponent implements OnInit {
         let submittedUnits: number = (item.submittedUnits) ? +item.submittedUnits : 0.000;
         let balanceUnits: number = orderedUnits - suppliedUnits - submittedUnits;
 
-        let isDatesMandatoryVal: boolean =  this.invoiceUploadForm.get("isDatesMandatory").value;
+        let isDatesMandatoryVal: boolean = this.invoiceUploadForm.get("isDatesMandatory").value;
         let validatorRequiredArr = (this.isFromToMandatory && isDatesMandatoryVal) ? [Validators.required] : [];
 
         let fg: FormGroup = this._formBuilder.group({
@@ -1362,13 +1398,13 @@ export class InvoiceUploadComponent implements OnInit {
 
         let selRegionCode: string = this.invoiceUploadForm.get("region").value;
         let selRegionDesc: string = null;
-        if(selRegionCode) {
+        if (selRegionCode) {
             let selRegionObj: regionMasterVOList = this._initDetails.regionsList.find(r => r.regionCode == selRegionCode);
             selRegionDesc = selRegionObj.regionDesc;
         }
 
         let updatePOItem: PODetailsModel = JSON.parse(JSON.stringify(this.selectedPOItem));
-        if(this.selectedInvoiceType == 'po' && this.isUSWorkFlow){
+        if (this.selectedInvoiceType == 'po' && this.isUSWorkFlow) {
             updatePOItem.departmentId = this.selectedPOItem.departmentId + "-" + globalConstant.usCountryCode;
         }
 

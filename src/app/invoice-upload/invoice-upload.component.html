@@ -2,15 +2,18 @@
     <div class="title">
         <h3>Invoice Creation</h3>
     </div>
-    <mat-radio-group class="tp-radio-group" [(ngModel)]="selectedInvoiceType" *ngIf="isSelectedInvoiceTypeVisible == true" style="margin-top: 1em;">
-        <mat-radio-button class="tp-radio-button" value="po" (change)="onInvoiceTypeChange($event)" style="margin-right: 1em;">
+    <mat-radio-group class="tp-radio-group" [(ngModel)]="selectedInvoiceType"
+        *ngIf="isSelectedInvoiceTypeVisible == true" style="margin-top: 1em;">
+        <mat-radio-button class="tp-radio-button" value="po" (change)="onInvoiceTypeChange($event)"
+            style="margin-right: 1em;">
             PO Invoice
         </mat-radio-button>
         <mat-radio-button class="tp-radio-button" value="non-po" (change)="onInvoiceTypeChange($event)">
             Non PO Invoice
         </mat-radio-button>
 
-        <button *ngIf="selectedInvoiceType == 'non-po'" mat-raised-button class="clsDownloadTemplate" (click)="onDownloadTemplateClick()">Download Template</button>
+        <button *ngIf="selectedInvoiceType == 'non-po'" mat-raised-button class="clsDownloadTemplate"
+            (click)="onDownloadTemplateClick()">Download Template</button>
     </mat-radio-group>
 
     <form [formGroup]="invoiceUploadForm">
@@ -35,9 +38,10 @@
             </mat-form-field>
 
             <mat-form-field *ngIf="selectedInvoiceType == 'non-po'">
-                <input matInput placeholder="Select Vendor" aria-label="State" [matAutocomplete]="auto" formControlName="vendorId" (blur)="onVendorBlur()">
-                <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayVendor" (optionSelected)="onVendorOptionSelected($event)"
-                    (closed)="onVendorPanelClosed()">
+                <input matInput placeholder="Select Vendor" aria-label="State" [matAutocomplete]="auto"
+                    formControlName="vendorId" (blur)="onVendorBlur()">
+                <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayVendor"
+                    (optionSelected)="onVendorOptionSelected($event)" (closed)="onVendorPanelClosed()">
                     <mat-option *ngIf="isLoading" class="is-loading">Loading...</mat-option>
                     <ng-container *ngIf="!isLoading">
                         <mat-option *ngFor="let v of filteredVendors" [value]="v">
@@ -49,15 +53,16 @@
             </mat-form-field>
 
             <mat-form-field class="search-row-element">
-                <input type="text" matInput formControlName="invoiceNumber" placeholder="Invoice No." maxlength="16" autocomplete="off" (blur)="onInvoiceBlur()">
+                <input type="text" matInput formControlName="invoiceNumber" placeholder="Invoice No." maxlength="16"
+                    autocomplete="off" (blur)="onInvoiceBlur()">
                 <mat-error *ngIf="( isSubmitted ) && f?.invoiceNumber?.errors?.required">Invoice No. is required
                 </mat-error>
             </mat-form-field>
             <div class="errortxt">{{ invoiceNumberErrMsg }}</div>
 
             <mat-form-field class="search-row-element date">
-                <input matInput [matDatepicker]="picker" formControlName="invoiceDate" [min]="minInvoiceDate" [max]="maxInvoiceDate" placeholder="Invoice Date"
-                    autocomplete="off">
+                <input matInput [matDatepicker]="picker" formControlName="invoiceDate" [min]="minInvoiceDate"
+                    [max]="maxInvoiceDate" placeholder="Invoice Date" autocomplete="off">
                 <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                 <mat-datepicker #picker></mat-datepicker>
                 <mat-error *ngIf="( isSubmitted ) && f?.invoiceDate?.errors?.required">Inv Date is required
@@ -79,9 +84,10 @@
         </div>
         <div class="search-row">
             <mat-form-field *ngIf="selectedInvoiceType == 'non-po'" style="width: 500px">
-                <input matInput placeholder="Select Project" aria-label="State" [matAutocomplete]="auto" formControlName="projectId" (blur)="onProjectBlur()">
-                <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayProject" (optionSelected)="onProjectOptionSelected($event)"
-                    (closed)="onProjectPanelClosed()">
+                <input matInput placeholder="Select Project" aria-label="State" [matAutocomplete]="auto"
+                    formControlName="projectId" (blur)="onProjectBlur()">
+                <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayProject"
+                    (optionSelected)="onProjectOptionSelected($event)" (closed)="onProjectPanelClosed()">
                     <mat-option *ngIf="isLoading" class="is-loading">Loading...</mat-option>
                     <ng-container *ngIf="!isLoading">
                         <mat-option *ngFor="let p of filteredProjects" [value]="p">
@@ -93,17 +99,19 @@
             </mat-form-field>
 
             <mat-form-field class="search-row-element remarks">
-                <input type="text" matInput placeholder="Remarks" maxlength="50" (blur)="onRemarksBlur()" formControlName="remarks" autocomplete="off">
+                <input type="text" matInput placeholder="Remarks" maxlength="50" (blur)="onRemarksBlur()"
+                    formControlName="remarks" autocomplete="off">
                 <mat-error *ngIf="( isSubmitted ) && f?.remarks?.errors?.required">Remarks is required</mat-error>
             </mat-form-field>
 
             <div class=" search-row-element actions" *ngIf="isFromToMandatory == true">
-                <mat-checkbox class="example-margin" formControlName="isDatesMandatory">Is Dates Mandatory</mat-checkbox>
+                <mat-checkbox class="example-margin" formControlName="isDatesMandatory">Is Dates Mandatory
+                </mat-checkbox>
             </div>
         </div>
 
         <div class="search-row">
-           <mat-form-field class="search-row-element" *ngIf="selectedInvoiceType == 'non-po'">
+            <mat-form-field class="search-row-element" *ngIf="selectedInvoiceType == 'non-po'">
                 <mat-select matNativeControl formControlName="plantCode" placeholder="Choose Plant">
                     <mat-option *ngFor="let p of plantsList" [value]="p.plantCode">
                         {{ p.plantDescription }}
@@ -131,10 +139,12 @@
                     </tr>
                 </thead>
                 <tbody formArrayName="itemsList">
-                    <tr *ngFor="let item of invoiceUploadForm.get('itemsList')?.controls; let itemInd = index; " [formGroupName]="itemInd" style="vertical-align: baseline;">
+                    <tr *ngFor="let item of invoiceUploadForm.get('itemsList')?.controls; let itemInd = index; "
+                        [formGroupName]="itemInd" style="vertical-align: baseline;">
                         <td style="width:5em;">
                             <span *ngIf="selectedInvoiceType == 'po'">{{ item.get("itemNumber").value }}</span>
-                            <input *ngIf="selectedInvoiceType == 'non-po'" class="inv-qty" [ngClass]="{ 'errorinput': isSubmitted && fa.controls[itemInd].controls.itemNumber.errors }"
+                            <input *ngIf="selectedInvoiceType == 'non-po'" class="inv-qty"
+                                [ngClass]="{ 'errorinput': isSubmitted && fa.controls[itemInd].controls.itemNumber.errors }"
                                 formControlName="itemNumber">
                             <div *ngIf="( isSubmitted ) && fa.controls[itemInd].controls.itemNumber.errors">
                                 <div *ngIf="fa.controls[itemInd].controls.itemNumber.errors?.required" class="errortxt">
@@ -145,37 +155,48 @@
                         </td>
                         <td>
                             <span *ngIf="selectedInvoiceType == 'po'">{{ item.get("itemDescription").value }}</span>
-                            <input *ngIf="selectedInvoiceType == 'non-po'" class="inv-qty" [ngClass]="{ 'errorinput': isSubmitted && fa.controls[itemInd].controls.itemDescription.errors }"
+                            <input *ngIf="selectedInvoiceType == 'non-po'" class="inv-qty"
+                                [ngClass]="{ 'errorinput': isSubmitted && fa.controls[itemInd].controls.itemDescription.errors }"
                                 formControlName="itemDescription">
                             <div *ngIf="( isSubmitted ) && fa.controls[itemInd].controls.itemDescription.errors">
-                                <div *ngIf="fa.controls[itemInd].controls.itemDescription.errors?.required" class="errortxt">Item Desc is required</div>
+                                <div *ngIf="fa.controls[itemInd].controls.itemDescription.errors?.required"
+                                    class="errortxt">Item Desc is required</div>
                             </div>
                         </td>
-                        <td style="width:7em;" *ngIf = "isHSNVisible == true">
-                            <input class="inv-qty" formControlName="hsn" [ngClass]="{ 'errorinput': isSubmitted && fa.controls[itemInd].controls.hsn.errors }">
+                        <td style="width:7em;" *ngIf="isHSNVisible == true">
+                            <input class="inv-qty" formControlName="hsn"
+                                [ngClass]="{ 'errorinput': isSubmitted && fa.controls[itemInd].controls.hsn.errors }">
                             <div *ngIf="( isSubmitted ) && fa.controls[itemInd].controls.hsn.errors">
-                                <div *ngIf="fa.controls[itemInd].controls.hsn.errors?.required" class="errortxt">HSN is required
+                                <div *ngIf="fa.controls[itemInd].controls.hsn.errors?.required" class="errortxt">HSN is
+                                    required
                                 </div>
-                                <div *ngIf="fa.controls[itemInd].controls.hsn.errors?.maxlength" class="errortxt">HSN Max length is 8</div>
-                                <div *ngIf="fa.controls[itemInd].controls.hsn.errors?.pattern" class="errortxt">Allows numbers only</div>
+                                <div *ngIf="fa.controls[itemInd].controls.hsn.errors?.maxlength" class="errortxt">HSN
+                                    Max length is 8</div>
+                                <div *ngIf="fa.controls[itemInd].controls.hsn.errors?.pattern" class="errortxt">Allows
+                                    numbers only</div>
                             </div>
                         </td>
                         <td *ngIf="isFromToMandatory == true">
                             <mat-form-field class="search-row-element date">
-                                <input matInput [matDatepicker]='fromDate_itemInd' formControlName="fromDate" placeholder="From Date" autocomplete="off">
+                                <input matInput [matDatepicker]='fromDate_itemInd' formControlName="fromDate"
+                                    placeholder="From Date" autocomplete="off">
                                 <mat-datepicker-toggle matSuffix [for]="fromDate_itemInd"></mat-datepicker-toggle>
                                 <mat-datepicker #fromDate_itemInd></mat-datepicker>
-                                <mat-error *ngIf="( isSubmitted ) && fa.controls[itemInd].controls.fromDate.errors?.required">
+                                <mat-error
+                                    *ngIf="( isSubmitted ) && fa.controls[itemInd].controls.fromDate.errors?.required">
                                     Inv Date is required
                                 </mat-error>
                             </mat-form-field>
                         </td>
                         <td *ngIf="isFromToMandatory == true">
                             <mat-form-field class="search-row-element date">
-                                <input matInput [matDatepicker]="toDate_itemInd" formControlName="toDate" placeholder="To Date" autocomplete="off">
+                                <input matInput [matDatepicker]="toDate_itemInd" formControlName="toDate"
+                                    placeholder="To Date" autocomplete="off">
                                 <mat-datepicker-toggle matSuffix [for]="toDate_itemInd"></mat-datepicker-toggle>
                                 <mat-datepicker #toDate_itemInd></mat-datepicker>
-                                <mat-error *ngIf="( isSubmitted ) && fa.controls[itemInd].controls.toDate.errors?.required">Inv Date is required
+                                <mat-error
+                                    *ngIf="( isSubmitted ) && fa.controls[itemInd].controls.toDate.errors?.required">Inv
+                                    Date is required
                                 </mat-error>
                             </mat-form-field>
                         </td>
@@ -195,10 +216,12 @@
                             <span>{{ item.get("uom").value }}</span>
                         </td>
                         <td style="width:10em;">
-                            <input class="inv-qty" formControlName="invoiceUnits" [ngClass]="{ 'errorinput': isSubmitted && ( fa.controls[itemInd].controls.invoiceUnits.errors || fa.controls[itemInd].errors ) }"
+                            <input class="inv-qty" formControlName="invoiceUnits"
+                                [ngClass]="{ 'errorinput': isSubmitted && ( fa.controls[itemInd].controls.invoiceUnits.errors || fa.controls[itemInd].errors ) }"
                                 (blur)="onInvoiceUnitsBlur(itemInd)">
                             <div *ngIf="( isSubmitted ) && fa.controls[itemInd].controls.invoiceUnits.errors">
-                                <div *ngIf="fa.controls[itemInd].controls.invoiceUnits.errors?.required" class="errortxt">Invoice Units is required</div>
+                                <div *ngIf="fa.controls[itemInd].controls.invoiceUnits.errors?.required"
+                                    class="errortxt">Invoice Units is required</div>
                             </div>
 
                             <div *ngIf="isSubmitted && fa.controls[itemInd].errors">
@@ -210,7 +233,8 @@
                         </td>
                         <td class="amount" style="width:8.7em;">
                             <span *ngIf="selectedInvoiceType == 'po'">{{ item.get("unitPrice").value }}</span>
-                            <input *ngIf="selectedInvoiceType == 'non-po'" class="inv-qty" [ngClass]="{ 'errorinput': isSubmitted && fa.controls[itemInd].controls.unitPrice.errors }"
+                            <input *ngIf="selectedInvoiceType == 'non-po'" class="inv-qty"
+                                [ngClass]="{ 'errorinput': isSubmitted && fa.controls[itemInd].controls.unitPrice.errors }"
                                 formControlName="unitPrice" (blur)="onUnitPriceBlur(itemInd)">
                             <div *ngIf="( isSubmitted ) && fa.controls[itemInd].controls.unitPrice.errors">
                                 <div *ngIf="fa.controls[itemInd].controls.unitPrice.errors?.required" class="errortxt">
@@ -238,7 +262,8 @@
                             </div>
                         </td>
                         <td class="amount">
-                            <span style="margin-right: 5px;">{{ f["totalItemsAmt"].value}}</span>
+                            <span style="margin-right: 5px;">{{ getInvoiceNetAmount()}}</span>
+                            <!-- <span style="margin-right: 5px;">{{ f["totalItemsAmt"].value}}</span> -->
                             <span>{{currency }}</span>
                         </td>
                     </tr>
@@ -246,40 +271,53 @@
                         <td class="header"> Freight Amount
                         </td>
                         <td class="amount">
-                            <input class="inv-qty" formControlName="freightCharges" style="width: 60%;margin-right: 5px;" [ngClass]="{ 'errorinput': isSubmitted && f.freightCharges.errors }"
+                            <input class="inv-qty" formControlName="freightCharges"
+                                style="width: 60%;margin-right: 5px;"
+                                [ngClass]="{ 'errorinput': isSubmitted && f.freightCharges.errors }"
                                 (blur)="onFreightChargesBlur()">
                             <span style="width: 40%;">{{ currency }}</span>
                         </td>
                     </tr>
-                    <tr *ngIf = "isTCSAmtVisible == true">
+                    <tr *ngIf="isTCSAmtVisible == true">
                         <td class="header"> TCS Amount
                         </td>
                         <td class="amount">
-                            <input class="inv-qty" formControlName="tcsAmount" style="width: 60%;margin-right: 5px;" [ngClass]="{ 'errorinput': isSubmitted && f.tcsAmount.errors }"
+                            <input class="inv-qty" formControlName="tcsAmount" style="width: 60%;margin-right: 5px;"
+                                [ngClass]="{ 'errorinput': isSubmitted && f.tcsAmount.errors }"
                                 (blur)="ontcsAmountBlur()">
                             <span style="width: 40%;">{{ currency }}</span>
                         </td>
                     </tr>
                     <tr>
-                        <td class="header"> 
+                        <td class="header">
                             <span *ngIf="isRegionFieldsVisible == true">
-                                <mat-form-field  class="search-row-element">
-                                    <mat-select matNativeControl formControlName="region" placeholder="Choose Jurisdiction">
-                                        <mat-option *ngFor="let r of regionsList" [value]="r.regionCode">
-                                            {{ r.regionCode }} - {{ r.regionDesc }}
-                                        </mat-option>
-                                    </mat-select>
-                                    <mat-error *ngIf="( isSubmitted ) && f?.region?.errors?.required">Jurisdiction is required</mat-error>
-                                </mat-form-field> 
-                                Rate <input formControlName="rate" class="inv-qty" style="width: 8%" [ngClass]="{ 'errorinput': isSubmitted && f?.rate?.errors?.required }"
-                                        (blur)="onRateBlur()">%  
-                                    <span *ngIf="( isSubmitted ) && f?.rate?.errors?.required" class="errortxt">Rate is required</span>
-                                Non Taxable Amount <input formControlName="nonTaxableAmt" class="inv-qty" style="width: 10%" [ngClass]="{ 'errorinput': isSubmitted && f?.nonTaxableAmt?.errors?.required }"
-                                    (blur)="onNonTaxableAmtBlur()">
-                                    <span *ngIf="( isSubmitted ) && f?.nonTaxableAmt?.errors?.required" class="errortxt">Non Taxable Amount is required</span>
-                                Taxable Amount <input formControlName="taxableAmt" class="inv-qty" style="width: 10%" [ngClass]="{ 'errorinput': isSubmitted && f?.taxableAmt?.errors?.required }"
-                                    (blur)="onTaxableAmtBlur()">
-                                    <span *ngIf="( isSubmitted ) && f?.taxableAmt?.errors?.required" class="errortxt">Taxable Amount is required</span>
+                            <mat-form-field class="search-row-element">
+                                <mat-select matNativeControl formControlName="region" placeholder="Choose Jurisdiction">
+                                    <mat-option *ngFor="let r of regionsList" [value]="r.regionCode">
+                                        {{ r.regionCode }} - {{ r.regionDesc }}
+                                    </mat-option>
+                                </mat-select>
+                                <mat-error *ngIf="( isSubmitted ) && f?.region?.errors?.required">Jurisdiction is
+                                    required</mat-error>
+                            </mat-form-field>
+                            <span>Rate </span>
+                            <input formControlName="rate" class="inv-qty" style="width: 8%"
+                                [ngClass]="{ 'errorinput': isSubmitted && f?.rate?.errors?.required }"
+                                (blur)="onRateBlur()">%
+                            <span *ngIf="( isSubmitted ) && f?.rate?.errors?.required" class="errortxt">Rate is
+                                required</span>
+                            <span>Non Taxable Amount</span>
+                            <input formControlName="nonTaxableAmt" class="inv-qty" style="width: 10%"
+                                [ngClass]="{ 'errorinput': isSubmitted && f?.nonTaxableAmt?.errors?.required }"
+                                (blur)="onNonTaxableAmtBlur()">
+                            <span *ngIf="( isSubmitted ) && f?.nonTaxableAmt?.errors?.required" class="errortxt">Non
+                                Taxable Amount is required</span>
+                            <span *ngIf="isTaxableAmtVisible">Taxable Amount </span>
+                            <input formControlName="taxableAmt" class="inv-qty" style="width: 10%"
+                                [ngClass]="{ 'errorinput': isSubmitted && f?.taxableAmt?.errors?.required }"
+                                (blur)="onTaxableAmtBlur()" *ngIf="isTaxableAmtVisible">
+                            <span *ngIf="( isSubmitted ) && f?.taxableAmt?.errors?.required" class="errortxt">Taxable
+                                Amount is required</span>
                             </span>
                             Total Tax Amount
                             <div *ngIf="( isSubmitted ) && f.totalTax.errors">
@@ -287,8 +325,9 @@
                             </div>
                         </td>
                         <td class="amount">
-                            <input class="inv-qty" formControlName="totalTax" [ngClass]="{ 'errorinput': isSubmitted && f.totalTax.errors }" style="width: 60%;margin-right: 5px;"
-                                (blur)="onTotalTaxBlur()">
+                            <input class="inv-qty" formControlName="totalTax"
+                                [ngClass]="{ 'errorinput': isSubmitted && f.totalTax.errors }"
+                                style="width: 60%;margin-right: 5px;" (blur)="onTotalTaxBlur()">
                             <span style="width: 40%;">{{ currency }}</span>
                         </td>
                     </tr>
@@ -296,7 +335,8 @@
                         <td class="header"> Invoice Total Amount
                         </td>
                         <td class="amount">
-                            <span style="margin-right: 5px;">{{f["totalInvAmt"].value}}</span><span>{{ currency }}</span>
+                            <span
+                                style="margin-right: 5px;">{{f["totalInvAmt"].value}}</span><span>{{ currency }}</span>
                         </td>
                     </tr>
                 </tbody>
@@ -310,9 +350,10 @@
                 <div class="attachment-elements" style="font-weight: bold">
                     Invoice Attachments
                 </div>
-                <input class="attachment-elements" style="display: none" [attr.id]="'invoiceFileCtrl'" type="file" accept=".xls,.xlsx,.doc,.docx,.pdf,.png,.jpg,.zip"
-                    (change)="onInvoiceFileChange($event)" />
-                <button mat-raised-button class="footer-actions attachment-elements" (click)="onInvoiceBrowseClick($event)">Browse & Attach</button>
+                <input class="attachment-elements" style="display: none" [attr.id]="'invoiceFileCtrl'" type="file"
+                    accept=".xls,.xlsx,.doc,.docx,.pdf,.png,.jpg,.zip" (change)="onInvoiceFileChange($event)" />
+                <button mat-raised-button class="footer-actions attachment-elements"
+                    (click)="onInvoiceBrowseClick($event)">Browse & Attach</button>
                 <!--<button mat-raised-button class="footer-actions  attachment-elements"
                     (click)="onInvoiceAttachFileClick()">Attach</button>-->
                 <div class="filename attachment-elements" *ngFor="let f of invoiceFilesList; let fInd = index">
@@ -337,9 +378,11 @@
                 <div class="attachment-elements" style="font-weight: bold">
                     Supporting Attachments
                 </div>
-                <input class="attachment-elements" style="display: none" [attr.id]="'supportingFileCtrl'" type="file" multiple accept=".xls,.xlsx,.doc,.docx,.pdf,.png,.jpg,.zip"
+                <input class="attachment-elements" style="display: none" [attr.id]="'supportingFileCtrl'" type="file"
+                    multiple accept=".xls,.xlsx,.doc,.docx,.pdf,.png,.jpg,.zip"
                     (change)="onSupportingFileChange($event)" />
-                <button mat-raised-button class="footer-actions attachment-elements" (click)="onSupportingBrowseClick($event)">Browse & Attach</button>
+                <button mat-raised-button class="footer-actions attachment-elements"
+                    (click)="onSupportingBrowseClick($event)">Browse & Attach</button>
                 <!--<button mat-raised-button class="footer-actions  attachment-elements"
                     (click)="onSupportingAttachFileClick()">Attach</button>-->
                 <div class="filename attachment-elements" *ngFor="let f of supportingFilesList; let fInd = index">

@@ -353,6 +353,7 @@ export class POSearchReqModel extends PendingApprovalRequestModel {
 export class InvoiceFinanceDumpReqModel {
     startDate: string;
     endDate: string;
+    countryCode: string;
     employeeId: string;
     isIncremental: boolean;
 }
