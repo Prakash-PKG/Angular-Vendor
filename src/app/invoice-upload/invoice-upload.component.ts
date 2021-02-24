@@ -843,7 +843,7 @@ export class InvoiceUploadComponent implements OnInit {
         let rateVal = this.invoiceUploadForm.get("rate").value ? +this.invoiceUploadForm.get("rate").value : 0;
         let taxableAmt = this.invoiceUploadForm.get("taxableAmt").value ? +this.invoiceUploadForm.get("taxableAmt").value : 0;
         
-        let totalTaxAmt: string = (rateVal * taxableAmt).toFixed(3);
+        let totalTaxAmt: string = ((rateVal * taxableAmt)/100).toFixed(3);
         this.invoiceUploadForm.get("totalTax").setValue(totalTaxAmt);
     }
 
