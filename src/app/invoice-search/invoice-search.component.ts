@@ -235,7 +235,6 @@ export class InvoiceSearchComponent implements OnInit {
             // }
 
             if (globalConstant.userDetails.isPurchaseOwner || globalConstant.userDetails.isInvoiceUploader) {
-                req.approvalLevels.push(this._appService.approvalLevels.po);
                 req.departments = req.departments.concat(globalConstant.userDetails.poDepts);
             }
 
