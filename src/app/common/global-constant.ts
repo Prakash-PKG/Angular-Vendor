@@ -13,7 +13,8 @@ export const globalConstant : any = {
                         "adp-upload-us","cgp-upload-us","hr1-upload-us","hr2-upload-us","hr3-upload-us","hr4-upload-us"
                         ,"ism-upload-us","isp-upload-us","itp-upload-us","lgp-upload-us","mkp-upload-us","psp-upload-us","ssp-upload-us"
                         ,"fip-upload-us"],
-    invSubContractReceiverRoles: ["hrp-receiver"],
+    invSubContractReceiverRoles: ["hrp-receiver", "hr1-receiver", "hr2-receiver", "hr3-receiver", "hr4-receiver",
+                                    "hrp-receiver-us", "hr1-receiver-us", "hr2-receiver-us", "hr3-receiver-us", "hr4-receiver-us"],
     functionalHeadRoles: ["functional_head"],
     financeRoles: ["finance"],
     empanelmentRoles: ["empanelment"],
