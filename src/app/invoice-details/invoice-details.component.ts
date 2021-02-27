@@ -422,16 +422,16 @@ export class InvoiceDetailsComponent implements OnInit {
                 this.invoicePaymentStatusDetails = this._initDetails.paymentStatusDetails;
                 this.itemsList = (this._initDetails.itemsList && this._initDetails.itemsList.length > 0) ? this._initDetails.itemsList.concat() : [];
 
-                if (countryCompanyCodes.usCompanyCodes.indexOf(this.invoiceDetails.companyCode)) {
+                if (countryCompanyCodes.usCompanyCodes.indexOf(this.invoiceDetails.companyCode) > -1) {
                     this.usWorkflow = true;
+
                 }
                 else {
                     this.indiaWorkflow = true;
                 }
-                
+
                 let totalAmt: number = 0;
                 for (let i = 0; i < this.itemsList.length; i++) {
-                    //this.itemsList[i].unitsTotalAmount = (this.itemsList[i].unitPrice && this.itemsList[i].invoiceUnits) ? +this.itemsList[i].unitPrice * +this.itemsList[i].invoiceUnits : null;
                     this.itemsList[i].unitsTotalAmount = (this.itemsList[i].totalAmt) ? +this.itemsList[i].totalAmt : null;
                     if (this.itemsList[i].unitsTotalAmount && this.itemsList[i].unitsTotalAmount > 0) {
                         totalAmt = totalAmt + this.itemsList[i].unitsTotalAmount;
@@ -498,9 +498,6 @@ export class InvoiceDetailsComponent implements OnInit {
                 }
 
                 if (this.invoicePaymentStatusDetails) {
-                    // this.amountPaid = this.invoicePaymentDetails.amountPaid;
-                    // this.remarks = this.invoicePaymentDetails.remarks;
-                    // this.selectedPaymentStatus = this.invoicePaymentDetails.statusCode;
 
                     let paymentLevel: ApprovalLevelsModel = {
                         levelName: "Payment",
@@ -518,7 +515,7 @@ export class InvoiceDetailsComponent implements OnInit {
                 this.updateCountryFLow();
 
             }
-         
+
             this._homeService.updateBusy(<BusyDataModel>{ isBusy: false, msg: null });
         }
     }
@@ -541,7 +538,7 @@ export class InvoiceDetailsComponent implements OnInit {
         });
 
         this.invoiceDetails = this._appService.selectedInvoice;
-      
+    
         setTimeout(() => {
             this.loadInitData();
         }, 100);
