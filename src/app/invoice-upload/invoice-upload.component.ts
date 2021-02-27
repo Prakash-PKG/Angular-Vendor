@@ -411,6 +411,8 @@ export class InvoiceUploadComponent implements OnInit {
         this.invoiceUploadForm.get("poList").setValidators([]);
         this.invoiceUploadForm.get("currency").setValidators([]);
 
+        
+        this.invoiceUploadForm.get("freightCharges").setValue("");
         this.invoiceUploadForm.get("totalItemsAmt").setValue("");
         this.invoiceUploadForm.get("totalInvAmt").setValue("");
     }
@@ -746,6 +748,7 @@ export class InvoiceUploadComponent implements OnInit {
 
     updateAmountDetails() {
         this.invoiceUploadForm.get("totalInvAmt").setValue("0");
+                this.invoiceUploadForm.get("freightCharges").setValue("0");
 
         let totalItemsAmt = 0;
         const itemsFa: FormArray = <FormArray>this.invoiceUploadForm.controls['itemsList'];
@@ -766,7 +769,7 @@ export class InvoiceUploadComponent implements OnInit {
             this.invoiceUploadForm.get("freightCharges").setValue(freightCharges);
         }
         else {
-            this.invoiceUploadForm.get("freightCharges").setValue(null);
+            this.invoiceUploadForm.get("freightCharges").setValue(0);
         }
 
         this.updateInvoiceTotalAmt();
@@ -845,6 +848,8 @@ export class InvoiceUploadComponent implements OnInit {
         
         let totalTaxAmt: string = ((rateVal * taxableAmt)/100).toFixed(3);
         this.invoiceUploadForm.get("totalTax").setValue(totalTaxAmt);
+
+        this.updateInvoiceTotalAmt();
     }
 
     onTotalTaxBlur() {
@@ -1415,7 +1420,7 @@ export class InvoiceUploadComponent implements OnInit {
                 invoiceNumber: this.invoiceUploadForm.get("invoiceNumber").value,
                 invoiceDate: this._appService.getFormattedDateTime(this.invoiceUploadForm.get("invoiceDate").value),
                 remarks: this.invoiceUploadForm.get("remarks").value,
-                freightCharges: this.invoiceUploadForm.get("freightCharges").value ? this.invoiceUploadForm.get("freightCharges").value : null,
+                freightCharges: this.invoiceUploadForm.get("freightCharges").value ? this.invoiceUploadForm.get("freightCharges").value : 0,
                 totalAmt: this.invoiceUploadForm.get("totalInvAmt").value,
                 grnSesNumber: null,
                 statusCode: null,
@@ -1535,7 +1540,7 @@ export class InvoiceUploadComponent implements OnInit {
             invoiceDate: [null, Validators.required],
             remarks: [null, Validators.required],
             isDatesMandatory: false,
-            freightCharges: null,
+            freightCharges: '',
             region: null,
             rate: null,
             nonTaxableAmt: null,

@@ -423,7 +423,7 @@ export class InvoiceDetailsComponent implements OnInit {
                 this.itemsList = (this._initDetails.itemsList && this._initDetails.itemsList.length > 0) ? this._initDetails.itemsList.concat() : [];
 
                 if (countryCompanyCodes.usCompanyCodes.indexOf(this.invoiceDetails.companyCode)) {
-                    this.usWorkflow = true
+                    this.usWorkflow = true;
                 }
                 else {
                     this.indiaWorkflow = true;
@@ -475,7 +475,7 @@ export class InvoiceDetailsComponent implements OnInit {
                         let delMgrDetails: EmployeeDetailsModel = this._initDetails.delMgrDetails;
                         let apprName: string = (functionalHeadApprovalModel.approverName && functionalHeadApprovalModel.approverName.trim()) ? functionalHeadApprovalModel.approverName : this.getDeliveryManagerName(delMgrDetails);
                         this.fhLevel = {
-                            levelName: "Delivery Manager",
+                            levelName: "Business Head",
                             status: this._appService.statusNames[functionalHeadApprovalModel.statusCode],
                             date: (functionalHeadApprovalModel.statusCode == this._appService.statusCodes.approved || functionalHeadApprovalModel.statusCode == this._appService.statusCodes.rejected) ? this._appService.getFormattedDate(functionalHeadApprovalModel.updatedDate) : "",
                             remarks: functionalHeadApprovalModel.remarks,
