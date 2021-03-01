@@ -133,6 +133,7 @@ export class InvoiceApprovalsComponent implements OnInit {
     //     });
     // }
 
+    // Rectified file upload functionality starts here
     onRectifiedFileBrowseClick(event: any) {
         event.preventDefault();
 
@@ -265,6 +266,9 @@ export class InvoiceApprovalsComponent implements OnInit {
         });
     }
 
+    // Rectified file upload functionality ends here
+
+    // MSME data is displayed if it is YES
     displayMSMEData(msg: string) {
         const dialogRef = this._dialog.open(MessageDialogComponent, {
             disableClose: true,
@@ -281,6 +285,7 @@ export class InvoiceApprovalsComponent implements OnInit {
         });
     }
 
+    // Triggers on deleting the file
     onDeleteFileClick(fileDetails: FileDetailsModel, fileIndex: number, fileType: string) {
         if (fileDetails.fileId) {
             this._homeService.updateBusy(<BusyDataModel>{ isBusy: true, msg: "Deleting..." });
@@ -302,12 +307,14 @@ export class InvoiceApprovalsComponent implements OnInit {
         }
     }
 
+    // removes the file from list
     removefileFromList(fileIndex: number, fileType: string) {
         if (this.newRectifiedFilesList.length > 0) {
             this.newRectifiedFilesList.splice(fileIndex, 1);
         }
     }
 
+    // Invoice file types will be prepared
     prepareInvoiceFileTypes() {
         this.invoiceFileTypeId = null;
         this.supportFileTypeId = null;
@@ -325,37 +332,44 @@ export class InvoiceApprovalsComponent implements OnInit {
         }
     }
 
+    // Fires on Remarks field blur event
     onRemarksBlur() {
         if (this.remarks) {
             this.remarks = this.remarks.trim();
         }
     }
 
+    // Fires on Item Remarks field blur event
     onItemRemarksBlur(item: ItemDisplayModel) {
         if (item.remarks) {
             item.remarks = item.remarks.trim();
         }
     }
 
+    // Fires on upload Remarks field blur event
     onUploaderRemarksBlur() {
         if (this.uploaderRemarks) {
             this.uploaderRemarks = this.uploaderRemarks.trim();
         }
     }
 
+    // Fires on Back button is triggerred
     onBackBtnClick() {
         this._router.navigate([this._appService.routingConstants.pendingApprovals]);
     }
 
+    // gets units amount
     getUnitsAmt(item: ItemDisplayModel) {
         let unitsAmt = (item.unitPrice && item.invoiceUnits) ? +item.unitPrice * +item.invoiceUnits : null;
         return unitsAmt;
     }
 
+    // gets currency type
     getCurrencyType() {
         return this.initDetails.poDetails.currencyType;
     }
 
+    // gets formatted date
     getFormattedDate(dtStr: string) {
         if (dtStr) {
             return this._appService.getFormattedDate(dtStr);
@@ -364,6 +378,7 @@ export class InvoiceApprovalsComponent implements OnInit {
         return "";
     }
 
+    // gets plant details
     getPlant() {
         if (this.initDetails && this.initDetails.invoiceDetails) {
             return this.initDetails.invoiceDetails.plantDescription + " ( " + this.initDetails.invoiceDetails.plantCode + " )";
@@ -372,6 +387,7 @@ export class InvoiceApprovalsComponent implements OnInit {
         return "";
     }
 
+    // loads initial data
     async loadInitData() {
         this.isRejectVisible = false;
         this.isHoldVisible = false;
@@ -522,6 +538,7 @@ export class InvoiceApprovalsComponent implements OnInit {
         }
     }
 
+    // updates GRN/SES data
     updateGrnSesItemsDisplayData() {
         this.grnSesItemsDisplayList = [];
         if (this.initDetails.grnSesItemsList && this.initDetails.grnSesItemsList.length > 0) {
@@ -540,6 +557,7 @@ export class InvoiceApprovalsComponent implements OnInit {
         }
     }
 
+    // updates status details
     updateStatusFlow() {
         this.isPOCompleted = false;
         this.isFunctionalHeadCompleted = false;
@@ -597,6 +615,7 @@ export class InvoiceApprovalsComponent implements OnInit {
         });
     }
 
+    // updates invoice approval details
     updateInvoiceApprovals(action: string, msg: string) {
         this.remarksErrMsg = "";
         this.grnSesErrMsg = "";
@@ -698,6 +717,7 @@ export class InvoiceApprovalsComponent implements OnInit {
         }
     }
 
+    // updates invoice approval details
     updateInvoiceApprovalDetails(action: string) {
         let apprLevel: string = this.initDetails.approvalDetails.approvalLevel;
         if (this.isOnHold) {
@@ -781,16 +801,19 @@ export class InvoiceApprovalsComponent implements OnInit {
         });
     }
 
+    // file will be downloaded
     downloadFile(fileDetails: FileDetailsModel) {
         this._appService.downloadInvoiceFile(fileDetails);
     }
 
+    // calls on page move events
     ngOnDestroy() {
         if (this._sidebarExpansionSubscription) {
             this._sidebarExpansionSubscription.unsubscribe();
         }
     }
 
+    // calls at the time of page loading
     ngOnInit() {
         this.isDashboardCollapsed = true;
 
