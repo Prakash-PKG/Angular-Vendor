@@ -5,14 +5,14 @@ export const countryCompanyCodes: any = {
 };
 
 export const globalConstant : any = {
-    poRoles: ["adp", "hrp", "isp", "itp", "lgp", "mkp", 'fip', 'psp', 'cgp', 'ssp', 'isp', 'hr1', 'hr2', 'hr3', 'hr4', 'ism',
+    poRoles: ["adp", "hrp", "isp", "itp", "lgp", "mkp", 'fip', 'psp', 'cgp', 'ssp', 'hr1', 'hr2', 'hr3', 'hr4', 'ism',
                 "adp-us","cgp-us","fip-us","hr1-us","hr2-us","hr3-us","hr4-us","ism-us","isp-us","itp-us","lgp-us","mkp-us"
-                ,"psp-us","ssp-us"],
+                ,"psp-us","ssp-us","hrp-us"],
     invUploadRoles: ["adp-upload", "hrp-upload", "isp-upload", "itp-upload", "lgp-upload", "mkp-upload", "fip-upload",
                         "psp-upload", "cgp-upload", "ssp-upload", "hr1-upload", "hr2-upload", "hr3-upload", "hr4-upload", "ism-upload",
                         "adp-upload-us","cgp-upload-us","hr1-upload-us","hr2-upload-us","hr3-upload-us","hr4-upload-us"
                         ,"ism-upload-us","isp-upload-us","itp-upload-us","lgp-upload-us","mkp-upload-us","psp-upload-us","ssp-upload-us"
-                        ,"fip-upload-us"],
+                        ,"fip-upload-us","hrp-upload-us"],
     invSubContractReceiverRoles: ["hrp-receiver", "hr1-receiver", "hr2-receiver", "hr3-receiver", "hr4-receiver",
                                     "hrp-receiver-us", "hr1-receiver-us", "hr2-receiver-us", "hr3-receiver-us", "hr4-receiver-us"],
     functionalHeadRoles: ["functional_head"],

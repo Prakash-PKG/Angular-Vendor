@@ -37,7 +37,7 @@ export class PoInvoiceDumpComponent implements OnInit {
                 private _homeService: HomeService) { }
 
     
-
+    // on dump type change event it will fire
     onDumpTypeChange(evtData) {
  
         if(evtData.value == "incremental") {
@@ -50,6 +50,7 @@ export class PoInvoiceDumpComponent implements OnInit {
 
     }
 
+    // fires on incremental dump download click
     onIncrementalDownloadClick() {
         let req: InvoiceFinanceDumpReqModel = {
             startDate: this._initDetails.lastDumpDt,
@@ -64,6 +65,7 @@ export class PoInvoiceDumpComponent implements OnInit {
         this.downloadInvoiceFile(req, fileName);
     }
 
+    // fires on date range download click
     onDateRangeDownloadClick() {
 
         if(!this.startDate) {
@@ -94,16 +96,19 @@ export class PoInvoiceDumpComponent implements OnInit {
         }
     }
 
+    // fires on date range change
     onStartDateChange(evt: MatDatepickerInputEvent<Date>) {
         this.minEndDate = evt.value;
         this.startDateErrMsg = "";
     }
 
+    // fires end data range change
     onEndDateChange(evt: MatDatepickerInputEvent<Date>) {
         this.maxStartDate = evt.value;
         this.endDateErrMsg = "";
     }
 
+    // fires on dowload invoice file click
     downloadInvoiceFile(req: InvoiceFinanceDumpReqModel, fileName: string) {
         this._homeService.updateBusy(<BusyDataModel>{ isBusy: true, msg: "Loading..." });
         this.__poInvoiceDumpService.getFileData(req).subscribe(
@@ -126,6 +131,7 @@ export class PoInvoiceDumpComponent implements OnInit {
             });
     }
 
+    // loads initial data
     async loadInitData() {
         let countryCode = this._appService.getInvoiceDumpCountryCode();
         this.incrementalStartDate = " - ";
@@ -137,6 +143,7 @@ export class PoInvoiceDumpComponent implements OnInit {
         this._homeService.updateBusy(<BusyDataModel>{ isBusy: false, msg: null });
     }
 
+    // calls on page load 
     ngOnInit() {
         setTimeout(() => {
            this.loadInitData();

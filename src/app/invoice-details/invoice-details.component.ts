@@ -90,6 +90,7 @@ export class InvoiceDetailsComponent implements OnInit {
         private _invoiceSearchService: InvoiceSearchService,
         private _appService: AppService) { }
 
+    // updates country flow details
     updateCountryFLow() {
         if (this.indiaWorkflow) {
 
@@ -107,6 +108,8 @@ export class InvoiceDetailsComponent implements OnInit {
             this.headerArr = this.headerArr.filter(x => x != "HSN/SAC");
         }
     }
+
+    // fires on print voucher click
     onPrintVoucherClick() {
         let req: VoucherReqModel = {
             invoiceId: this.invoiceDetails.invoiceId
@@ -116,6 +119,7 @@ export class InvoiceDetailsComponent implements OnInit {
         this.downloadVoucher(req, fileName);
     }
 
+    // downloads voucher
     downloadVoucher(req: VoucherReqModel, fileName: string) {
         this._homeService.updateBusy(<BusyDataModel>{ isBusy: true, msg: "Loading..." });
         this._invoiceSearchService.getVoucherData(req).subscribe(
@@ -136,6 +140,7 @@ export class InvoiceDetailsComponent implements OnInit {
             });
     }
 
+    // get project name
     getPOProjectName() {
         let projectName: string = "";
         if (this.invoiceDetails && this.invoiceDetails.projectName && this.invoiceDetails.projectId) {
@@ -145,6 +150,7 @@ export class InvoiceDetailsComponent implements OnInit {
         return projectName;
     }
 
+    // on amount field value change 
     onAmountPaidBlur() {
         this.amountPaidErrMsg = "";
         let amountPaidVal: any = this.amountPaid;
@@ -161,6 +167,7 @@ export class InvoiceDetailsComponent implements OnInit {
         this.paymentStatusErrMsg = "";
     }
 
+    // checks payment details valid or not
     isPaymentDetailsValid() {
         let isValid: boolean = true;
 
@@ -194,6 +201,7 @@ export class InvoiceDetailsComponent implements OnInit {
         return isValid;
     }
 
+    // on update payment status click
     onUpdatePaymentStatusClick() {
         if (this.invoiceDetails && this.isPaymentDetailsValid()) {
             let req: PaymentReqModel = {
@@ -254,6 +262,7 @@ export class InvoiceDetailsComponent implements OnInit {
         });
     }
 
+    // on remarks field value change
     onRemarksBlur() {
         this.remarksErrMsg = "";
         if (this.remarks) {
@@ -261,11 +270,13 @@ export class InvoiceDetailsComponent implements OnInit {
         }
     }
 
+    // fires back button is triggerred
     onBackBtnClick() {
         this._appService.isInvoiceSearchForPayments = this.isForPayments;
         this._router.navigate([this._appService.routingConstants.invoiceSearch]);
     }
 
+    // gets payment status details
     getPaymentStatusDetails() {
         if (this.invoicePaymentStatusDetails && this.invoicePaymentStatusDetails.status && this.invoicePaymentStatusDetails.paymentDate) {
             return this.invoicePaymentStatusDetails.status + " on " + this._appService.getFormattedDate(this.invoicePaymentStatusDetails.paymentDate);
@@ -274,6 +285,7 @@ export class InvoiceDetailsComponent implements OnInit {
         return "";
     }
 
+    // gets tcs amount
     getTDSAmount() {
         if (this.invoicePaymentStatusDetails && this.invoicePaymentStatusDetails.tdsAmt) {
             return this.invoicePaymentStatusDetails.tdsAmt + " " + this.currency;
@@ -282,6 +294,7 @@ export class InvoiceDetailsComponent implements OnInit {
         return "";
     }
 
+    // gets paid amount
     getPaidAmount() {
         if (this.invoicePaymentStatusDetails && this.invoicePaymentStatusDetails.invoiceAmountPaid) {
             return this.invoicePaymentStatusDetails.invoiceAmountPaid + " " + this.currency;
@@ -290,6 +303,7 @@ export class InvoiceDetailsComponent implements OnInit {
         return "";
     }
 
+    // gets paid date
     getPaidDate() {
         if (this.invoicePaymentStatusDetails && this.invoicePaymentStatusDetails.paymentDate) {
             return this._appService.getFormattedDate(this.invoicePaymentStatusDetails.paymentDate);
@@ -298,6 +312,7 @@ export class InvoiceDetailsComponent implements OnInit {
         return "";
     }
 
+    // gets remarks
     getRemarks() {
         if (this.invoicePaymentStatusDetails && this.invoicePaymentStatusDetails.remarks) {
             return this.invoicePaymentStatusDetails.remarks;
@@ -306,6 +321,7 @@ export class InvoiceDetailsComponent implements OnInit {
         return "";
     }
 
+    // updates remarks list
     updateRemarksList() {
         this.remarksList = [];
         if (this.invoicePaymentStatusDetails && this.invoicePaymentStatusDetails.remarks) {
@@ -313,6 +329,7 @@ export class InvoiceDetailsComponent implements OnInit {
         }
     }
 
+    // gets paid status
     getPaidStatus() {
         if (this.invoicePaymentStatusDetails && this.invoicePaymentStatusDetails.status) {
             return this.invoicePaymentStatusDetails.status;
@@ -321,6 +338,7 @@ export class InvoiceDetailsComponent implements OnInit {
         return "";
     }
 
+    // gets status
     getStatusDetails(level: ApprovalLevelsModel) {
         if (level && (level.status == this._appService.statusNames.approved || level.status == this._appService.statusNames.received || level.status == this._appService.statusNames.rejected)) {
             return level.status + " on " + level.date;
@@ -329,6 +347,7 @@ export class InvoiceDetailsComponent implements OnInit {
         return "";
     }
 
+    // gets plant details
     getPlant() {
         if (this.invoiceDetails) {
             return this.invoiceDetails.plantDescription + " ( " + this.invoiceDetails.plantCode + " )";
@@ -337,10 +356,12 @@ export class InvoiceDetailsComponent implements OnInit {
         return "";
     }
 
+    // on downloadd file click
     downloadFile(fileDetails: FileDetailsModel) {
         this._appService.downloadInvoiceFile(fileDetails);
     }
 
+    // gets formatted date
     getFormattedDate(dtStr: string) {
         if (dtStr) {
             return this._appService.getFormattedDate(dtStr);
@@ -349,6 +370,7 @@ export class InvoiceDetailsComponent implements OnInit {
         return "";
     }
 
+    // gets delivery manager name
     getDeliveryManagerName(delMgrDetails: EmployeeDetailsModel) {
         if (delMgrDetails) {
             return delMgrDetails.firstName + " " + ((delMgrDetails.middleName) ? delMgrDetails.middleName + " " : "") + delMgrDetails.lastName + " (" + delMgrDetails.status + ")";
@@ -357,6 +379,7 @@ export class InvoiceDetailsComponent implements OnInit {
         return "";
     }
 
+    // loads initial data
     async loadInitData() {
         this.paymentStatusList = [];
 
@@ -422,16 +445,16 @@ export class InvoiceDetailsComponent implements OnInit {
                 this.invoicePaymentStatusDetails = this._initDetails.paymentStatusDetails;
                 this.itemsList = (this._initDetails.itemsList && this._initDetails.itemsList.length > 0) ? this._initDetails.itemsList.concat() : [];
 
-                if (countryCompanyCodes.usCompanyCodes.indexOf(this.invoiceDetails.companyCode)) {
-                    this.usWorkflow = true
+                if (countryCompanyCodes.usCompanyCodes.indexOf(this.invoiceDetails.companyCode) > -1) {
+                    this.usWorkflow = true;
+
                 }
                 else {
                     this.indiaWorkflow = true;
                 }
-                
+
                 let totalAmt: number = 0;
                 for (let i = 0; i < this.itemsList.length; i++) {
-                    //this.itemsList[i].unitsTotalAmount = (this.itemsList[i].unitPrice && this.itemsList[i].invoiceUnits) ? +this.itemsList[i].unitPrice * +this.itemsList[i].invoiceUnits : null;
                     this.itemsList[i].unitsTotalAmount = (this.itemsList[i].totalAmt) ? +this.itemsList[i].totalAmt : null;
                     if (this.itemsList[i].unitsTotalAmount && this.itemsList[i].unitsTotalAmount > 0) {
                         totalAmt = totalAmt + this.itemsList[i].unitsTotalAmount;
@@ -475,7 +498,7 @@ export class InvoiceDetailsComponent implements OnInit {
                         let delMgrDetails: EmployeeDetailsModel = this._initDetails.delMgrDetails;
                         let apprName: string = (functionalHeadApprovalModel.approverName && functionalHeadApprovalModel.approverName.trim()) ? functionalHeadApprovalModel.approverName : this.getDeliveryManagerName(delMgrDetails);
                         this.fhLevel = {
-                            levelName: "Delivery Manager",
+                            levelName: "Business Head",
                             status: this._appService.statusNames[functionalHeadApprovalModel.statusCode],
                             date: (functionalHeadApprovalModel.statusCode == this._appService.statusCodes.approved || functionalHeadApprovalModel.statusCode == this._appService.statusCodes.rejected) ? this._appService.getFormattedDate(functionalHeadApprovalModel.updatedDate) : "",
                             remarks: functionalHeadApprovalModel.remarks,
@@ -498,9 +521,6 @@ export class InvoiceDetailsComponent implements OnInit {
                 }
 
                 if (this.invoicePaymentStatusDetails) {
-                    // this.amountPaid = this.invoicePaymentDetails.amountPaid;
-                    // this.remarks = this.invoicePaymentDetails.remarks;
-                    // this.selectedPaymentStatus = this.invoicePaymentDetails.statusCode;
 
                     let paymentLevel: ApprovalLevelsModel = {
                         levelName: "Payment",
@@ -518,17 +538,19 @@ export class InvoiceDetailsComponent implements OnInit {
                 this.updateCountryFLow();
 
             }
-         
+
             this._homeService.updateBusy(<BusyDataModel>{ isBusy: false, msg: null });
         }
     }
 
+    // calls on destroy event
     ngOnDestroy() {
         if (this._sidebarExpansionSubscription) {
             this._sidebarExpansionSubscription.unsubscribe();
         }
     }
 
+    // calls on page loadd event
     ngOnInit() {
         this.isForPayments = this._appService.isInvoiceDetailsForPayments;
 
@@ -541,7 +563,7 @@ export class InvoiceDetailsComponent implements OnInit {
         });
 
         this.invoiceDetails = this._appService.selectedInvoice;
-      
+    
         setTimeout(() => {
             this.loadInitData();
         }, 100);
