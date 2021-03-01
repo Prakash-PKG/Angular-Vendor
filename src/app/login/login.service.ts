@@ -6,6 +6,7 @@ import { Response, Headers, RequestOptions, Http, ResponseContentType } from '@a
 import { HttpClient, HttpResponse, HttpParams, HttpHeaders } from "@angular/common/http";
 
 import { AppService } from './../app.service';
+import { jsonpCallbackContext } from '@angular/common/http/src/module';
 
 @Injectable({
     providedIn: 'root'
@@ -80,11 +81,11 @@ export class LoginService {
                 'Accept': 'application/json',
                 'x-auth-token': this._appService.token
             }),
-            withCredentials: true,
+            // withCredentials: true,
             responseType: ResponseContentType.Json
         });
-        let url = this._appService.baseUrl + "venForgetPassword";
-        return this._http.post(url, req, options);
+       let url = this._appService.baseUrl +"venForgetPassword";
+        return this._http.post(url,req,options);
     }
 
     logout(accessToken: string) {

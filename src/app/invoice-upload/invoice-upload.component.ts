@@ -155,6 +155,7 @@ export class InvoiceUploadComponent implements OnInit {
         private _http: HttpClient,
         private _invoiceUploadService: InvoiceUploadService) { }
 
+    // fires on Download template click
     onDownloadTemplateClick() {
         this._invoiceUploadService.getNonPOTemplateFileData().subscribe(
             (data) => {
@@ -176,6 +177,7 @@ export class InvoiceUploadComponent implements OnInit {
 
     get fa() { return <FormArray>this.invoiceUploadForm.controls['itemsList']; }
 
+    // gets project name
     getPOProjectName() {
         let projectName: string = "";
         if (this.selectedPOItem && this.selectedPOItem.projectName && this.selectedPOItem.projectId) {
@@ -185,6 +187,7 @@ export class InvoiceUploadComponent implements OnInit {
         return projectName;
     }
 
+    // gets plant details
     getPlant() {
         let plant: string = "";
         if (this.selectedPOItem && this.selectedPOItem.plantCode && this.selectedPOItem.plantDescription) {
@@ -194,14 +197,17 @@ export class InvoiceUploadComponent implements OnInit {
         return plant;
     }
 
+    // fires on cancel click
     onCancelClick() {
         this._router.navigate([this._appService.routingConstants.invoiceSearch]);
     }
 
+    // fires on invoice number change
     onInvoiceBlur() {
         this.validateInvoiceNumber();
     }
 
+    // validates invoice number
     async validateInvoiceNumber() {
         this.invoiceNumberErrMsg = "";
 
@@ -268,15 +274,18 @@ export class InvoiceUploadComponent implements OnInit {
             });
     }
 
+    // displays vendor name
     displayVendor(v: VendorAutoCompleteModel) {
         if (v) { return v.vendorName + " ( " + v.vendorId + " )"; }
     }
 
+    // fires on vendor option selected
     onVendorOptionSelected(evt: VendorAutoCompleteModel) {
         this.filteredVendors = [];
         this.validateInvoiceNumber();
     }
 
+    // gets vendor name
     getDisplayVendorName(v: VendorAutoCompleteModel) {
         if (v) {
             return "<b>" + v.vendorName + "</b> (" + v.vendorId + ")";
@@ -285,10 +294,12 @@ export class InvoiceUploadComponent implements OnInit {
         return "";
     }
 
+    // fires vendor panel closed
     onVendorPanelClosed() {
         this.filteredVendors = [];
     }
 
+    // fires on vendor value change
     onVendorBlur() {
         setTimeout(() => {
             let val = this.invoiceUploadForm.get("vendorId").value;
@@ -327,6 +338,7 @@ export class InvoiceUploadComponent implements OnInit {
             });
     }
 
+    // diplays project details
     displayProject(p: ProjectAutoCompleteModel) {
         if (p) { return p.projectId + " ( " + p.projectName + " )"; }
     }
@@ -343,10 +355,12 @@ export class InvoiceUploadComponent implements OnInit {
         return "";
     }
 
+    // on project panel closed
     onProjectPanelClosed() {
         this.filteredProjects = [];
     }
 
+    // on project value change 
     onProjectBlur() {
         setTimeout(() => {
             let val = this.invoiceUploadForm.get("projectId").value;
@@ -368,6 +382,7 @@ export class InvoiceUploadComponent implements OnInit {
         }
     }
 
+    // fires on invoice type change
     onInvoiceTypeChange(evtData) {
         this.resetAllFields();
 
@@ -402,6 +417,7 @@ export class InvoiceUploadComponent implements OnInit {
         this.invoiceUploadForm.get("plantCode").updateValueAndValidity();
     }
 
+    // resets all fields
     resetAllFields() {
         this.invoiceUploadForm.reset();
         this.removeItems();
@@ -417,6 +433,7 @@ export class InvoiceUploadComponent implements OnInit {
         this.invoiceUploadForm.get("totalInvAmt").setValue("");
     }
 
+    // updates non po item numbers
     updateNonPOItemNumbers() {
         const itemsFa: FormArray = <FormArray>this.invoiceUploadForm.controls['itemsList'];
         let itemNoVal: number = 0;
@@ -426,6 +443,7 @@ export class InvoiceUploadComponent implements OnInit {
         }
     }
 
+    // fires on new click
     onNewClick() {
         const formsList = <FormArray>this.invoiceUploadForm.controls['itemsList'];
         formsList.insert(formsList.length, this.createNonPOItem());
@@ -433,6 +451,7 @@ export class InvoiceUploadComponent implements OnInit {
         this.updateNonPOItemNumbers();
     }
 
+    // creates non po item
     createNonPOItem() {
         let hsnValidators: any = [];
 
@@ -461,6 +480,7 @@ export class InvoiceUploadComponent implements OnInit {
         return fg;
     }
 
+    // file upload functionality starts here
     onInvoiceBrowseClick(event: any) {
         event.preventDefault();
 
@@ -690,7 +710,7 @@ export class InvoiceUploadComponent implements OnInit {
                     this.displayFileUploadStatus("Files upload failed.");
                 });
     }
-
+    
     displayFileUploadStatus(msg: string) {
         const dialogRef = this._dialog.open(MessageDialogComponent, {
             disableClose: true,
@@ -706,7 +726,9 @@ export class InvoiceUploadComponent implements OnInit {
 
         });
     }
+    // file upload functionality ends here
 
+    // fires on invoice units change
     onInvoiceUnitsBlur(itemInd: number) {
         const itemsFa: FormArray = <FormArray>this.invoiceUploadForm.controls['itemsList'];
         let invoiceUnitsVal = itemsFa.controls[itemInd].get("invoiceUnits").value;
@@ -721,6 +743,7 @@ export class InvoiceUploadComponent implements OnInit {
         this.updateItemTotalAmount(itemInd);
     }
 
+    // on units price change
     onUnitPriceBlur(itemInd: number) {
         const itemsFa: FormArray = <FormArray>this.invoiceUploadForm.controls['itemsList'];
         let UnitPriceVal = itemsFa.controls[itemInd].get("unitPrice").value;
@@ -735,6 +758,7 @@ export class InvoiceUploadComponent implements OnInit {
         this.updateItemTotalAmount(itemInd);
     }
 
+    // updates item total amount
     updateItemTotalAmount(itemInd: number) {
         const itemsFa: FormArray = <FormArray>this.invoiceUploadForm.controls['itemsList'];
         let unitPriceVal = itemsFa.controls[itemInd].get("unitPrice").value;
@@ -746,6 +770,7 @@ export class InvoiceUploadComponent implements OnInit {
         this.updateAmountDetails();
     }
 
+    // updates amount details
     updateAmountDetails() {
         this.invoiceUploadForm.get("totalInvAmt").setValue("0");
                 this.invoiceUploadForm.get("freightCharges").setValue("0");
@@ -762,6 +787,7 @@ export class InvoiceUploadComponent implements OnInit {
         this.updateInvoiceTotalAmt();
     }
 
+    // on freight charge change event fires
     onFreightChargesBlur() {
         let freightChargesVal = this.invoiceUploadForm.get("freightCharges").value;
         if (freightChargesVal && !isNaN(freightChargesVal)) {
@@ -775,6 +801,7 @@ export class InvoiceUploadComponent implements OnInit {
         this.updateInvoiceTotalAmt();
     }
     
+    // fires on tcs amount change
     ontcsAmountBlur() {
         let tcsAmountVal = this.invoiceUploadForm.get("tcsAmount").value;
         if (tcsAmountVal && !isNaN(tcsAmountVal)) {
@@ -788,6 +815,7 @@ export class InvoiceUploadComponent implements OnInit {
         this.updateInvoiceTotalAmt();
     }
 
+    // on rate change
     onRateBlur() {
         let rateVal = this.invoiceUploadForm.get("rate").value;
         if (rateVal && !isNaN(rateVal)) {
@@ -814,6 +842,7 @@ export class InvoiceUploadComponent implements OnInit {
         this.updateTotalTaxAmt();
     }
 
+    // on non taxable amoutn change
     onNonTaxableAmtBlur() {
         let amtVal = this.invoiceUploadForm.get("nonTaxableAmt").value;
         if (amtVal && !isNaN(amtVal)) {
@@ -827,6 +856,7 @@ export class InvoiceUploadComponent implements OnInit {
         this.invoiceUploadForm.get("totalItemsAmt").updateValueAndValidity();
     }
 
+    // fires on taxable amount change
     onTaxableAmtBlur() {
         let amtVal = this.invoiceUploadForm.get("taxableAmt").value;
         if (amtVal && !isNaN(amtVal)) {
@@ -842,6 +872,7 @@ export class InvoiceUploadComponent implements OnInit {
         this.updateTotalTaxAmt();
     }
 
+    // updates total tax amount
     updateTotalTaxAmt() {
         let rateVal = this.invoiceUploadForm.get("rate").value ? +this.invoiceUploadForm.get("rate").value : 0;
         let taxableAmt = this.invoiceUploadForm.get("taxableAmt").value ? +this.invoiceUploadForm.get("taxableAmt").value : 0;
@@ -852,6 +883,7 @@ export class InvoiceUploadComponent implements OnInit {
         this.updateInvoiceTotalAmt();
     }
 
+    // fires on total tax amount change
     onTotalTaxBlur() {
         let totalTaxVal = this.invoiceUploadForm.get("totalTax").value;
         if (totalTaxVal && !isNaN(totalTaxVal)) {
@@ -865,6 +897,7 @@ export class InvoiceUploadComponent implements OnInit {
         this.updateInvoiceTotalAmt();
     }
 
+    // updates invoice total amount
     updateInvoiceTotalAmt() {
         let totalItemsAmtVal = this.invoiceUploadForm.get("totalItemsAmt").value;
         let totalItemsAmt = totalItemsAmtVal ? +totalItemsAmtVal : 0;
@@ -885,6 +918,7 @@ export class InvoiceUploadComponent implements OnInit {
         this.invoiceUploadForm.get("totalInvAmt").setValue(totalInvAmt.toFixed(3));
     }
 
+    // prepares invoice file type
     prepareInvoiceFileTypes() {
         this.invoiceFileTypeId = null;
         this.supportFileTypeId = null;
@@ -899,6 +933,7 @@ export class InvoiceUploadComponent implements OnInit {
         }
     }
 
+    // loads init data
     async loadInitData() {
         this.companiesList = [];
 
@@ -1001,6 +1036,7 @@ export class InvoiceUploadComponent implements OnInit {
         this.registerProjectAutoComplete();
     }
 
+    // fires on company code change
     onCompanyCodeChange(companyCode: string) {
         this.invoiceUploadForm.get("region").setValue(null);
         this.invoiceUploadForm.get("rate").setValue(null);
@@ -1069,6 +1105,7 @@ export class InvoiceUploadComponent implements OnInit {
         itemsFa.updateValueAndValidity();
     }
 
+    // fires on remarks change
     onRemarksBlur() {
         let val: string = this.invoiceUploadForm.get("remarks").value;
         if (val) {
@@ -1076,6 +1113,7 @@ export class InvoiceUploadComponent implements OnInit {
         }
     }
 
+    // loads po items
     async loadPOItems() {
         this.removeItems();
         let req: POItemsRequestModel = {
@@ -1098,6 +1136,7 @@ export class InvoiceUploadComponent implements OnInit {
         this.updateAmountDetails();
     }
 
+    // on delete file click
     onDeleteFileClick(fileDetails: FileDetailsModel, fileIndex: number, fileType: string) {
         if (fileDetails.fileId) {
             this._homeService.updateBusy(<BusyDataModel>{ isBusy: true, msg: "Deleting..." });
@@ -1119,6 +1158,7 @@ export class InvoiceUploadComponent implements OnInit {
         }
     }
 
+    // fires on remove file click
     removefileFromList(fileIndex: number, fileType: string) {
         if (fileType == 'invoice') {
             if (this.invoiceFilesList.length > 0) {
@@ -1131,10 +1171,12 @@ export class InvoiceUploadComponent implements OnInit {
         }
     }
 
+    // fires on download file click
     downloadFile(fileDetails: FileDetailsModel) {
         this._appService.downloadInvoiceFile(fileDetails);
     }
 
+    // fires on remove item click
     removeItems() {
         const controlsList: FormArray = <FormArray>this.invoiceUploadForm.controls['itemsList'];
         let cnt = 0;
@@ -1143,6 +1185,7 @@ export class InvoiceUploadComponent implements OnInit {
         }
     }
 
+    // creates new item
     createItem(item: ItemModel) {
         let unitsAmt = (item.unitPrice && item.invoiceUnits) ? +item.unitPrice * +item.invoiceUnits : null;
         let orderedUnits: number = (item.orderedUnits) ? +item.orderedUnits : 0.000;
@@ -1177,6 +1220,7 @@ export class InvoiceUploadComponent implements OnInit {
         return fg;
     }
 
+    // validates invoice total amount
     invoiceGreaterThanBalance(invoiceUnits: string, balanceUnits: string, itemNumber: string, orderedUnits: string, errorMsg: string) {
         return (group: FormGroup): { [key: string]: any } => {
             let invCtrl = group.controls[invoiceUnits];
@@ -1239,14 +1283,17 @@ export class InvoiceUploadComponent implements OnInit {
         }
     }
 
+    // fires on save click
     onSaveClick() {
         this.updateInvoiceDetails(this._appService.updateOperations.save);
     }
 
+    // fires on submit click
     onSubmitClick() {
         this.updateInvoiceDetails(this._appService.updateOperations.submit);
     }
 
+    // checks whether form is valid or not
     isUploadFormValid() {
         this.invoiceFilesErrMsg = "";
         this.supportFilesErrMsg = "";
@@ -1291,6 +1338,7 @@ export class InvoiceUploadComponent implements OnInit {
         return false;
     }
 
+    // updates invoice details
     updateInvoiceDetails(action: string) {
         this.isSubmitted = true;
 
@@ -1485,6 +1533,7 @@ export class InvoiceUploadComponent implements OnInit {
         });
     }
 
+    // validates amount
     totalItemsAmtValidator(control: AbstractControl) {
         if (this.invoiceUploadForm) {
             let totalItemsAmtVal = this.invoiceUploadForm.get("totalItemsAmt").value;
@@ -1516,12 +1565,14 @@ export class InvoiceUploadComponent implements OnInit {
         return {};
     }
 
+    // fires on page destory event
     ngOnDestroy() {
         if (this._sidebarExpansionSubscription) {
             this._sidebarExpansionSubscription.unsubscribe();
         }
     }
 
+    // fires on page load event
     ngOnInit() {
         this.isSelectedInvoiceTypeVisible = (globalConstant.userDetails.isVendor) ? false : true;
 
