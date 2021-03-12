@@ -16,7 +16,7 @@ export const globalConstant : any = {
     invSubContractReceiverRoles: ["hrp-receiver", "hr1-receiver", "hr2-receiver", "hr3-receiver", "hr4-receiver",
                                     "hrp-receiver-us", "hr1-receiver-us", "hr2-receiver-us", "hr3-receiver-us", "hr4-receiver-us"],
     functionalHeadRoles: ["functional_head"],
-    financeRoles: ["finance"],
+    financeRoles: ["finance","finance-nonpo","finance-po"],
     empanelmentRoles: ["empanelment"],
     procurementRoles: ["procurement"],
     vendorRoles: ["vendor"],
