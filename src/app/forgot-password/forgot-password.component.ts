@@ -1,10 +1,12 @@
 import { AppService } from './../app.service';
 import { LoginService } from './../login/login.service';
+import { CryptoService } from './../common/crypto.service';
 import { Component, OnInit, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
 import { globalConstant } from '../common/global-constant';
 import { HomeService } from '../home/home.service';
 import { ForgotPasswordData, BusyDataModel, StatusModel, ResetPasswordData } from '../models/data-models';
+import { AlertModule } from 'ngx-bootstrap';
 
 
 @Component({
@@ -19,6 +21,7 @@ export class ForgotPasswordComponent implements OnInit {
     otp: string = '';
     newPassword: string = '';
     confirmPassword: string = '';
+    flag:boolean;
 
     generateOTP: boolean = true;
     //validateOTP: boolean = false;
@@ -34,6 +37,7 @@ export class ForgotPasswordComponent implements OnInit {
         // @Inject(MAT_DIALOG_DATA) public data: ForgotPasswordData,
         private _homeService: HomeService,
         private _loginService: LoginService,
+        private _cryptoService: CryptoService,
         private _appService: AppService
     ) { }
 
@@ -64,14 +68,15 @@ export class ForgotPasswordComponent implements OnInit {
     }
 
     onResetPasswordClick() {
-        this.errormsg = '';
+       this.errormsg = '';
         if (this.invalidPassword) {
             return;
         }
+        if(this.newPassword.length)
         this.invalid = false;
         let resetPasswordReq: ResetPasswordData = {
             userName: this.emailId,
-            password: this.newPassword,
+            password: this._cryptoService.encryptVendorPassword(this.newPassword),
             oTP: this.otp
         };
         this.isLoading = true;

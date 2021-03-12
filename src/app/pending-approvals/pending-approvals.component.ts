@@ -27,6 +27,7 @@ export class PendingApprovalsComponent implements OnInit {
         private _router: Router,
         private _pendingApprovalsService: PendingApprovalsService) { }
 
+    // gets vendor name
     getVendorNameOrInvoiceNo(apprModel: PendingApprovalsModel) {
         let name: string = "";
         if (apprModel.approveType == this._appService.approvalTypes.vendor) {
@@ -39,10 +40,12 @@ export class PendingApprovalsComponent implements OnInit {
         return name;
     }
 
+    // gets submitted date
     getSubmittedDate(apprModel: PendingApprovalsModel) {
         return this._appService.getFormattedDate(apprModel.submittedDate);
     }
 
+    // gets approval type
     getApprovalType(apprModel: PendingApprovalsModel) {
         if (apprModel.approveType == this._appService.approvalTypes.vendor) {
             return "Vendor Approval";
@@ -52,6 +55,7 @@ export class PendingApprovalsComponent implements OnInit {
         }
     }
 
+    // on Approve record click
     onApprovalRecClick(apprModel: PendingApprovalsModel) {
         this._appService.selectedPendingApprovalRecord = apprModel;
         if(apprModel.approveType == this._appService.approvalTypes.vendor) {
@@ -112,12 +116,14 @@ export class PendingApprovalsComponent implements OnInit {
         this._homeService.updateBusy(<BusyDataModel>{ isBusy: false, msg: null });
     }
 
+    // calls on destroy event
     ngOnDestroy() {
         if (this._sidebarExpansionSubscription) {
             this._sidebarExpansionSubscription.unsubscribe();
         }
     }
 
+    // calls on page load event
     ngOnInit() {
         this.isDashboardCollapsed = true;
 

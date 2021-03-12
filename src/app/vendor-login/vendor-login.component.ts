@@ -49,7 +49,7 @@ export class VendorLoginComponent implements OnInit {
     get f() { return this.loginForm.controls; }
 
     checkVendorAuthentication(userId: string, password: string, loginType: string) {
-        this._loginService.login(userId, password, loginType).subscribe(
+        this._loginService.login(userId, this._cryptoService.encryptVendorPassword(password), loginType).subscribe(
             (response) => {
                 this.loading = false;
                 this._loginService.storeUserData(response);
