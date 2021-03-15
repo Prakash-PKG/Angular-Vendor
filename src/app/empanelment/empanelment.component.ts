@@ -14,23 +14,32 @@ export class EmpanelmentComponent implements OnInit {
     empanelmentForm: FormGroup;
     message: string = "";
     loading: boolean = false;
-
+    public countyList = [
+        { countryCode: 'IN', country_name: 'India' },
+        { country_code: 'US', country_name: 'United States of America' },
+    ];
+    public countyListData = [];
     constructor(private _empanelmentService: EmpanelmentService,
         private _formBuilder: FormBuilder) { }
 
     ngOnInit() {
         this.empanelmentForm = this._formBuilder.group({
             emailId: [null, [Validators.required, Validators.email]],
+            countryCode: [null, [Validators.required]],
         });
+        this.getCountyList();
     }
-
+    getCountyList() {
+        return this.countyListData = this.countyList;
+    }
     onEmpanelmentClick() {
         this.loading = true;
         this.message = "";
         if (this.empanelmentForm.valid) {
             let req: EmpanelmentSubmitReqModel = {
                 emailId: this.empanelmentForm.get("emailId").value,
-                sentBy: "105173"
+                sentBy: "105173",
+                countryCode: this.empanelmentForm.get("countryCode").value,
             }
 
             this._empanelmentService.submitEmpanelmentReq(req)

@@ -29,6 +29,7 @@ export class EmpanelmentInitDataModel {
 export class EmpanelmentSubmitReqModel {
     emailId: string;
     sentBy: string;
+    countryCode:String;
 }
 
 export class EmpanelmentSubmitResultModel {
