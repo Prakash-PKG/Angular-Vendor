@@ -20,6 +20,7 @@ export class VendorDetailsComponent implements OnInit {
     failureMsg: string = "";
     requiredErrorMsg: string = "This field is mandatory";
     isSubmitted: boolean = false;
+    vendorCountryName:string="";
 
     constructor(private _appService: AppService,
         private _vendorRegistrationService: VendorRegistrationService,
@@ -33,13 +34,13 @@ export class VendorDetailsComponent implements OnInit {
         this.failureMsg = "";
         this.isSubmitted = true;
         if (this.vendorDetailsForm.valid) {
-
             this._appService.vendorRegistrationDetails.vendorName = this.vendorDetailsForm.get("vendorName").value;
             this._appService.vendorRegistrationDetails.contactPerson = this.vendorDetailsForm.get("contactPerson").value;
             this._appService.vendorRegistrationDetails.mobileNum = this.vendorDetailsForm.get("mobileNum").value;
             this._appService.vendorRegistrationDetails.telephoneNum = this.vendorDetailsForm.get("telephoneNum").value;
             this._appService.vendorRegistrationDetails.emailId = this.vendorDetailsForm.get("emailId").value;
             this._appService.vendorRegistrationDetails.password = this.vendorDetailsForm.get("password").value;
+            this._appService.vendorRegistrationDetails.usVendorBusiness=this.vendorDetailsForm.get("usVendorBusiness").value;
 
             let req: VendorRegistrationRequestModel = {
                 action: this._appService.updateOperations.save,
@@ -99,9 +100,9 @@ export class VendorDetailsComponent implements OnInit {
     }
 
     ngOnInit() {
-        this.isSubmitted = false;
-
-        this.vendorDetailsForm = this._formBuilder.group({
+    this.vendorCountryName=this._vendorRegistrationService.countyryName;
+    this.isSubmitted = false;
+     this.vendorDetailsForm = this._formBuilder.group({
             vendorName: [null, [Validators.required, Validators.nullValidator]],
             contactPerson: [null],
             mobileNum: [null, [Validators.required, Validators.minLength(10), Validators.maxLength(10), Validators.nullValidator,Validators.pattern("^[0-9]*$")]],

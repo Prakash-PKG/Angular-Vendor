@@ -177,6 +177,7 @@ export class VendorMasterDetailsModel {
     withHoldTypeCode: string;
     withholdTaxCode: string;
     fileDetails: FileDetailsModel[];
+    usVendorBusiness:string;
 }
 
 export interface FileMap {
@@ -201,7 +202,8 @@ export class VendorRegistrationInitDataModel {
     documentDetailsList: VendorMasterDocumentModel[];
     regionMasterVOList: regionMasterVOList[];
     bankAccountTypeList: BankAccountTypeModel[];
-}
+    vendorCounty:string;
+    }
 
 export class InvoiceSearchResultModel {
     statusDetails: StatusModel;

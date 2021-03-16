@@ -3,6 +3,7 @@ import { EmpanelmentSubmitReqModel } from './../models/data-models';
 import { EmpanelmentService } from './empanelment.service';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Observable } from 'rxjs';
 
 @Component({
     selector: 'app-empanelment',
@@ -16,9 +17,10 @@ export class EmpanelmentComponent implements OnInit {
     loading: boolean = false;
     public countyList = [
         { countryCode: 'IN', country_name: 'India' },
-        { country_code: 'US', country_name: 'United States of America' },
+        { countryCode: 'US', country_name: 'United States of America' },
     ];
-    public countyListData = [];
+    public countyListData:any = [];
+     
     constructor(private _empanelmentService: EmpanelmentService,
         private _formBuilder: FormBuilder) { }
 
@@ -28,9 +30,9 @@ export class EmpanelmentComponent implements OnInit {
             countryCode: [null, [Validators.required]],
         });
         this.getCountyList();
-    }
-    getCountyList() {
-        return this.countyListData = this.countyList;
+       }
+    getCountyList(){
+        return this.countyListData =this.countyList;
     }
     onEmpanelmentClick() {
         this.loading = true;

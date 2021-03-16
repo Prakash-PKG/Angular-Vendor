@@ -16,4 +16,5 @@ export class EmpanelmentService {
         let url = this._appService.baseUrl + "submitEmpanelment";
         return this._http.post(url, filesReq, { responseType: 'json', observe: 'response' });
     }
+    
 }
