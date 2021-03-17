@@ -203,7 +203,7 @@ export class VendorRegistrationInitDataModel {
     regionMasterVOList: regionMasterVOList[];
     bankAccountTypeList: BankAccountTypeModel[];
     vendorCounty:string;
-    }
+}
 
 export class InvoiceSearchResultModel {
     statusDetails: StatusModel;

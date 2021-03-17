@@ -101,7 +101,7 @@ export class VendorDetailsComponent implements OnInit {
 
     ngOnInit() {
     this.vendorCountryName=this._vendorRegistrationService.countyryName;
-    this.isSubmitted = false;
+     this.isSubmitted = false;
      this.vendorDetailsForm = this._formBuilder.group({
             vendorName: [null, [Validators.required, Validators.nullValidator]],
             contactPerson: [null],

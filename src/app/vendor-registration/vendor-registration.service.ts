@@ -49,7 +49,7 @@ export class VendorRegistrationService {
             initModel.bankAccountTypeList = data["bankAccountTypeVOList"];
             initModel.vendorCounty=data["vendorCounty"];
             this.countyryName=data["vendorCounty"];
-             }
+           }
 
         return initModel;
     }
