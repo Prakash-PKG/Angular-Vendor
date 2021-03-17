@@ -59,7 +59,8 @@
             <mat-error class="errortxt" *ngIf="( isSubmitted ) && f?.emailId?.errors?.email">Email Id is not valid
             </mat-error>
         </div>
-        <div *ngIf="vendorCounty=='US' " class="col-6 form-group">
+
+        <div *ngIf="showUSField()" class="col-6 form-group">
             <mat-form-field class="full-width">
                 <input type="text" matInput placeholder="Doing Business As" formControlName="usVendorBusiness" autocomplete="off"
                     required>
@@ -102,8 +103,6 @@
 </form>
 
 <div class="row actions margin-unset">
-    <!-- <div class="errortxt">
-        {{ failureMsg }}
-    </div> -->
+
     <button mat-raised-button class="footer-actions" (click)="onNextClick()">Next</button>
 </div>

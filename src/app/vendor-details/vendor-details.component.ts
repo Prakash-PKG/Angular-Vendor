@@ -20,7 +20,7 @@ export class VendorDetailsComponent implements OnInit {
     failureMsg: string = "";
     requiredErrorMsg: string = "This field is mandatory";
     isSubmitted: boolean = false;
-    vendorCounty: string = "";
+    // vendorCounty: string = "";
     constructor(private _appService: AppService,
         private _vendorRegistrationService: VendorRegistrationService,
         private _router: Router,
@@ -39,15 +39,12 @@ export class VendorDetailsComponent implements OnInit {
             this._appService.vendorRegistrationDetails.telephoneNum = this.vendorDetailsForm.get("telephoneNum").value;
             this._appService.vendorRegistrationDetails.emailId = this.vendorDetailsForm.get("emailId").value;
             this._appService.vendorRegistrationDetails.password = this.vendorDetailsForm.get("password").value;
-            this._appService.vendorRegistrationDetails.usVendorBusiness=this.vendorDetailsForm.get("usVendorBusiness").value;
+            this._appService.vendorRegistrationDetails.usVendorBusiness = this.vendorDetailsForm.get("usVendorBusiness").value;
 
             let req: VendorRegistrationRequestModel = {
                 action: this._appService.updateOperations.save,
                 vendorMasterDetails: this._appService.vendorRegistrationDetails
             }
-
-            // console.log(req);
-            // this._router.navigate([this._appService.routingConstants.vendorAddressDetails]);
 
             this._vendorRegistrationService.updateBusy(<BusyDataModel>{ isBusy: true, msg: null });
             this._vendorRegistrationService.updateVendorRegistrationDetails(req)
@@ -90,6 +87,7 @@ export class VendorDetailsComponent implements OnInit {
         this.vendorDetailsForm.get("confirmPassword").setValue(this._appService.vendorRegistrationDetails.password);
         this.vendorDetailsForm.get("usVendorBusiness").setValue(this._appService.vendorRegistrationDetails.usVendorBusiness);
     }
+
     isNumberKey(evt) {
         let charCode = (evt.which) ? evt.which : evt.keyCode
         if (charCode > 31 && (charCode < 48 || charCode > 57))
@@ -97,11 +95,12 @@ export class VendorDetailsComponent implements OnInit {
 
         return true;
     }
+    showUSField() {
+        return this._vendorRegistrationService.vendorUS;
+    }
 
     ngOnInit() {
-        this.vendorCounty=this._appService.countyNm;
-        console.log("Country     "+this.vendorCounty);
-       this.isSubmitted = false;
+        this.isSubmitted = false;
         this.vendorDetailsForm = this._formBuilder.group({
             vendorName: [null, [Validators.required, Validators.nullValidator]],
             contactPerson: [null],
@@ -110,13 +109,12 @@ export class VendorDetailsComponent implements OnInit {
             emailId: [null, [Validators.required, Validators.email, Validators.nullValidator]],
             password: [null, [Validators.required, Validators.nullValidator, Validators.pattern(/^(?:(?:(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z]))|(?:(?=.*[a-z])(?=.*[A-Z])(?=.*[*.!@$%^&(){}[]:;<>,.?~_+-=|\]))|(?:(?=.*[0-9])(?=.*[A-Z])(?=.*[*.!@$%^&(){}[]:;<>,.?~_+-=|\]))|(?:(?=.*[0-9])(?=.*[a-z])(?=.*[*.!@$%^&(){}[]:;<>,.?~_+-=|\]))).{8,}$/)]],
             confirmPassword: [null, [Validators.required, Validators.nullValidator]],
-            usVendorBusiness: [null]
+            usVendorBusiness: [null, [Validators.required]]
         },
             { validator: equalValueValidator('password', 'confirmPassword') }
         );
         this._vendorRegistrationService.updateCurrentPageDetails({ pageName: 'venDetails' });
         this.updateVendorDetails();
-        
     }
 
 }

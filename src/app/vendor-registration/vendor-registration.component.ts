@@ -48,7 +48,6 @@ export class VendorRegistrationComponent implements OnInit {
             if (data && data.isBusy == true) {
                 spin.show();
                 this.spinnerCls = "overlay";
-                //this.busyMsg = (data.msg) ? data.msg : "Please wait...";
                 this.busyMsg = "Please wait...";
             }
             else {

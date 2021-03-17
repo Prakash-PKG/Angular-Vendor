@@ -14,8 +14,8 @@ export class VendorRegistrationService {
     // Based on this, Busy icon will show
     private busy = new BehaviorSubject<BusyDataModel>(<BusyDataModel>{ isBusy: false, msg: null });
     isBusy = this.busy.asObservable();
-    vendorUserId:string="";
-    countyryName:string="";
+    vendorUserId: string = "";
+    vendorUS: boolean = false;
     // Based on this, can identify current page
     private pgDetails = new BehaviorSubject<PageDetailsModel>(<PageDetailsModel>{ pageName: "" });
     currentPageDetails = this.pgDetails.asObservable();
@@ -29,11 +29,8 @@ export class VendorRegistrationService {
     }
 
     async getVendorRegistrationInitData(vendorUserId) {
-        // let  UserId=localStorage.getItem("userId");
-        // this.vendorUserId=UserId;
-        console.log("vendor service   " + vendorUserId);
-        
-        let url = this._appService.baseUrl + "venRegInitData/"+vendorUserId;
+
+        let url = this._appService.baseUrl + "venRegInitData/" + vendorUserId;
         try {
             let response = await this._http.get(url).toPromise();
             return this.prepareVendorRegistrationInitData(response);
@@ -50,9 +47,9 @@ export class VendorRegistrationService {
             initModel.documentDetailsList = data["vendorMasterDocumentVOList"];
             initModel.regionMasterVOList = data["regionMasterVOList"];
             initModel.bankAccountTypeList = data["bankAccountTypeVOList"];
-            initModel.vendorCounty=data["vendorCounty"];
-            this._appService.countyNm=initModel.vendorCounty;
-            }
+            initModel.vendorCounty = data["vendorCounty"];
+        }
+        this.vendorUS = initModel.vendorCounty == 'US' ? true : false;
 
         return initModel;
     }
