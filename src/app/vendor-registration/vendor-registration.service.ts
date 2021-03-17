@@ -27,10 +27,10 @@ export class VendorRegistrationService {
         this.busy.next(obj)
     }
 
-    async getVendorRegistrationInitData() {
-        let  UserId=localStorage.getItem("userId");
-        this.vendorUserId=UserId;
-        let url = this._appService.baseUrl + "venRegInitData/"+this.vendorUserId;
+    async getVendorRegistrationInitData(vendorUserId) {
+        // let  UserId=localStorage.getItem("userId");
+        // this.vendorUserId=UserId;
+        let url = this._appService.baseUrl + "venRegInitData/"+vendorUserId;
         try {
             let response = await this._http.get(url).toPromise();
             return this.prepareVendorRegistrationInitData(response);
