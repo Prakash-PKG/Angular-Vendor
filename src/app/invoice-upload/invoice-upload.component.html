@@ -119,9 +119,9 @@
                 <button mat-raised-button class="footer-actions footer-actions-green" (click)="onNewClick()">+</button>
             </div>
         </div>
-
+<div class="errortxt" style="margin-top: 2em;" *ngIf="noVendorPO">Vendor details are not available for this PO </div>
         <!-- table details -->
-        <div class="container my-container margin-unset full-width">
+        <div class="container my-container margin-unset full-width" style="margin-top: 2em;" *ngIf="!noVendorPO">
             <table class="dataTable full-width">
                 <thead>
                     <tr>
