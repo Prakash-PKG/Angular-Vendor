@@ -177,7 +177,7 @@ export class VendorMasterDetailsModel {
     withHoldTypeCode: string;
     withholdTaxCode: string;
     fileDetails: FileDetailsModel[];
-    usVendorBusiness:string;
+    // usVendorBusiness: string;
 }
 
 export interface FileMap {

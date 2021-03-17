@@ -30,8 +30,9 @@ export class VendorRegistrationComponent implements OnInit {
 
     async loadInitData() {
         this._vendorRegistrationService.updateBusy(<BusyDataModel>{ isBusy: true, msg: "Loading..." });
-        this.vendorRegistrationInitDataModel = await this._vendorRegistrationService.getVendorRegistrationInitData();
+        this.vendorRegistrationInitDataModel = await this._vendorRegistrationService.getVendorRegistrationInitData(this._appService.vendorUserId);
         this._appService.vendorRegistrationInitDetails = this.vendorRegistrationInitDataModel;
+     
         this._vendorRegistrationService.updateBusy(<BusyDataModel>{ isBusy: false, msg: null });
     }
 
