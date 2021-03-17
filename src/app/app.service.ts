@@ -123,6 +123,8 @@ export class AppService {
     isExistingVendor: boolean = false;
     vendorUserId: string = '';
 
+    vendorUserID: string = '';
+
     getFormattedDate(dtStr: string) {
         if (dtStr) {
             return this._datePipe.transform(new Date(dtStr), this.displayDtFormat);

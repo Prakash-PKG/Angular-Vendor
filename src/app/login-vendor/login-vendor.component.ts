@@ -49,7 +49,7 @@ export class LoginVendorComponent implements OnInit {
                     this._loginVendorService.storeUserData(response);
 
                     this._router.navigate([this._appService.routingConstants.vendorDetails]);
-           
+
                     this._appService.startWatching();
                 },
                 (error) => {
