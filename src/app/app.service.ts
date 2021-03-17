@@ -25,7 +25,7 @@ export class AppService {
     readonly customerAuthUrl = this.domain + "/customerAuth/oauth/token";
     readonly isForProduction: boolean = false;
     readonly isSSORequired: boolean = false;
-    countyNm: string = "";
+    
     private sessionTimeCount: Subject<number> = new BehaviorSubject<number>(0);
     public sessionTimeCount$: Observable<number> = this.sessionTimeCount.asObservable();
 
@@ -124,7 +124,7 @@ export class AppService {
     vendorUserId: string = '';
 
     vendorUserID: string = '';
-
+    countyNm: string = '';
     getFormattedDate(dtStr: string) {
         if (dtStr) {
             return this._datePipe.transform(new Date(dtStr), this.displayDtFormat);
@@ -219,7 +219,7 @@ export class AppService {
         withHoldTypeCode: null,
         withholdTaxCode: null,
         fileDetails: [],
-        // usVendorBusiness: null,
+        usVendorBusiness: null
 
     };
 
@@ -295,8 +295,8 @@ export class AppService {
             currencyCodeDesc: null,
             withHoldTypeCode: null,
             withholdTaxCode: null,
-            fileDetails: []
-            // usVendorBusiness: null,
+            fileDetails: [],
+            usVendorBusiness: null
         };
 
         return regDetails;

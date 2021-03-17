@@ -4,6 +4,7 @@ import { AppService } from './../app.service';
 import { HttpClient } from '@angular/common/http';
 import { BusyDataModel } from './../models/data-models';
 import { BehaviorSubject, Observable } from 'rxjs';
+import { _MatChipListMixinBase } from '@angular/material';
 
 @Injectable({
     providedIn: 'root'
@@ -50,6 +51,7 @@ export class VendorRegistrationService {
             initModel.regionMasterVOList = data["regionMasterVOList"];
             initModel.bankAccountTypeList = data["bankAccountTypeVOList"];
             initModel.vendorCounty=data["vendorCounty"];
+            this._appService.countyNm=initModel.vendorCounty;
             }
 
         return initModel;

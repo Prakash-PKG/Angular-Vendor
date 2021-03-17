@@ -39,7 +39,7 @@ export class VendorDetailsComponent implements OnInit {
             this._appService.vendorRegistrationDetails.telephoneNum = this.vendorDetailsForm.get("telephoneNum").value;
             this._appService.vendorRegistrationDetails.emailId = this.vendorDetailsForm.get("emailId").value;
             this._appService.vendorRegistrationDetails.password = this.vendorDetailsForm.get("password").value;
-            // this._appService.vendorRegistrationDetails.usVendorBusiness=this.vendorDetailsForm.get("usVendorBusiness").value;
+            this._appService.vendorRegistrationDetails.usVendorBusiness=this.vendorDetailsForm.get("usVendorBusiness").value;
 
             let req: VendorRegistrationRequestModel = {
                 action: this._appService.updateOperations.save,
@@ -81,8 +81,6 @@ export class VendorDetailsComponent implements OnInit {
     }
 
     updateVendorDetails() {
-console.log("update vendor entered");
-
         this.vendorDetailsForm.get("vendorName").setValue(this._appService.vendorRegistrationDetails.vendorName);
         this.vendorDetailsForm.get("contactPerson").setValue(this._appService.vendorRegistrationDetails.contactPerson);
         this.vendorDetailsForm.get("mobileNum").setValue(this._appService.vendorRegistrationDetails.mobileNum);
@@ -90,9 +88,7 @@ console.log("update vendor entered");
         this.vendorDetailsForm.get("emailId").setValue(this._appService.vendorRegistrationDetails.emailId);
         this.vendorDetailsForm.get("password").setValue(this._appService.vendorRegistrationDetails.password);
         this.vendorDetailsForm.get("confirmPassword").setValue(this._appService.vendorRegistrationDetails.password);
-
-        // this.vendorCounty = this._appService.vendorRegistrationInitDetails && this._appService.vendorRegistrationInitDetails.vendorCounty? this._appService.vendorRegistrationInitDetails.vendorCounty:null;
-        console.log("vendorCounty    " + this._appService.vendorRegistrationInitDetails);
+        this.vendorDetailsForm.get("usVendorBusiness").setValue(this._appService.vendorRegistrationDetails.usVendorBusiness);
     }
     isNumberKey(evt) {
         let charCode = (evt.which) ? evt.which : evt.keyCode
@@ -103,8 +99,9 @@ console.log("update vendor entered");
     }
 
     ngOnInit() {
-
-        this.isSubmitted = false;
+        this.vendorCounty=this._appService.countyNm;
+        console.log("Country     "+this.vendorCounty);
+       this.isSubmitted = false;
         this.vendorDetailsForm = this._formBuilder.group({
             vendorName: [null, [Validators.required, Validators.nullValidator]],
             contactPerson: [null],
@@ -112,7 +109,8 @@ console.log("update vendor entered");
             telephoneNum: [null, [Validators.maxLength(12), Validators.minLength(11), Validators.pattern("^[0-9]*$")]],
             emailId: [null, [Validators.required, Validators.email, Validators.nullValidator]],
             password: [null, [Validators.required, Validators.nullValidator, Validators.pattern(/^(?:(?:(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z]))|(?:(?=.*[a-z])(?=.*[A-Z])(?=.*[*.!@$%^&(){}[]:;<>,.?~_+-=|\]))|(?:(?=.*[0-9])(?=.*[A-Z])(?=.*[*.!@$%^&(){}[]:;<>,.?~_+-=|\]))|(?:(?=.*[0-9])(?=.*[a-z])(?=.*[*.!@$%^&(){}[]:;<>,.?~_+-=|\]))).{8,}$/)]],
-            confirmPassword: [null, [Validators.required, Validators.nullValidator]]
+            confirmPassword: [null, [Validators.required, Validators.nullValidator]],
+            usVendorBusiness: [null]
         },
             { validator: equalValueValidator('password', 'confirmPassword') }
         );
