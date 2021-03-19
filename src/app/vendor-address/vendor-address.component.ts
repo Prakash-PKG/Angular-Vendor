@@ -125,6 +125,9 @@ export class VendorAddressComponent implements OnInit {
 
         this.vendorAddressForm.get("pincode").updateValueAndValidity();
     }
+    showUSField() {
+        return this._vendorRegistrationService.vendorUS;
+    }
 
     ngOnInit() {
         this.isSubmitted = false;

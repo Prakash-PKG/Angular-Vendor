@@ -7,10 +7,10 @@
     <div class="row field">
         <div class="col-3 form-group">
             <mat-form-field class="full-width">
-                <input type="text" matInput placeholder="Account Number" maxlength="20" formControlName="accountNum"
+                <input type="text" matInput placeholder="{{showUSField()?'Account Number/IBAN':'Account Number'}}" maxlength="20" formControlName="accountNum"
                     autocomplete="off" required>
             </mat-form-field>
-            <mat-error class="errortxt" *ngIf="( isSubmitted ) && f?.accountNum?.errors?.required">Account Number is
+            <mat-error class="errortxt" *ngIf="( isSubmitted ) && f?.accountNum?.errors?.required">{{showUSField()?'Account Number/IBAN':'Account Number'}} is
                 required</mat-error>
         </div>
         <div class="col-6 form-group">
@@ -23,12 +23,15 @@
         </div>
         <div class="col-3 form-group">
             <mat-form-field class="full-width">
-                <input type="text" matInput placeholder="IFSC code" formControlName="ifscCode" autocomplete="off"
-                    (blur)="onIFSCblur()" maxlength="11" minlength="11" required>
+                <input type="text" matInput placeholder="{{showUSField()?'ABA-RTN':'IFSC code'}}"
+                    formControlName="ifscCode" autocomplete="off" (blur)="onIFSCblur()" maxlength="11" minlength="11"
+                    required>
             </mat-form-field>
-            <mat-error class="errortxt" *ngIf="( isSubmitted ) && f?.ifscCode?.errors?.required">IFSC code is required
+            <mat-error class="errortxt" *ngIf="( isSubmitted ) && f?.ifscCode?.errors?.required">
+                {{showUSField()?'ABA-RTN':'IFSC code'}} is required
             </mat-error>
-            <mat-error class="errortxt" *ngIf="( isSubmitted ) && f?.ifscCode?.errors?.pattern">IFSC code accepts
+            <mat-error class="errortxt" *ngIf="( isSubmitted ) && f?.ifscCode?.errors?.pattern">
+                {{showUSField()?'ABA-RTN':'IFSC code'}} accepts
                 combination of alphanumeric</mat-error>
             <mat-error class="errortxt" *ngIf="( isSubmitted ) && f?.ifscCode?.errors?.minlength">Minimum 11 characters
                 are required</mat-error>
@@ -104,10 +107,10 @@
     <div class="row field" *ngIf="showUSField()">
         <div class="col-3 form-group">
             <mat-form-field class="full-width">
-                <input type="text" matInput placeholder="Bank sector" formControlName="usBankSector" autocomplete="off"
+                <input type="text" matInput placeholder="Bank country" formControlName="usBankSector" autocomplete="off"
                     required>
             </mat-form-field>
-            <mat-error class="errortxt" *ngIf="( isSubmitted ) && f?.usBankSector?.errors?.required">Bank sector is
+            <mat-error class="errortxt" *ngIf="( isSubmitted ) && f?.usBankSector?.errors?.required">Bank country is
                 required</mat-error>
         </div>
         <div class="col-3 form-group">
@@ -115,15 +118,17 @@
                 <input type="text" matInput placeholder="Cheque payable to" formControlName="usChequePayableTo"
                     autocomplete="off" required>
             </mat-form-field>
-            <mat-error class="errortxt" *ngIf="( isSubmitted ) && f?.usChequePayableTo?.errors?.required">Country is
+            <mat-error class="errortxt" *ngIf="( isSubmitted ) && f?.usChequePayableTo?.errors?.required">Cheque payable
+                to is
                 required</mat-error>
         </div>
-        <div class="col-3 form-group">
+        <div class="col-6 form-group">
             <mat-form-field class="full-width">
                 <input type="text" matInput placeholder="Cheque mailing address"
                     formControlName="usChecqueMailingAddress" autocomplete="off" required>
             </mat-form-field>
-            <mat-error class="errortxt" *ngIf="( isSubmitted ) && f?.usChecqueMailingAddress?.errors?.required">Country
+            <mat-error class="errortxt" *ngIf="( isSubmitted ) && f?.usChecqueMailingAddress?.errors?.required">Cheque
+                mailing address
                 is required</mat-error>
         </div>
     </div>
@@ -144,7 +149,7 @@
     <div class="row field">
         <div class="col-6 form-group">
             <mat-form-field class="full-width">
-                <input type="text" matInput placeholder="SWIFT Code/IBAN" formControlName="swiftIbanCode"
+                <input type="text" matInput placeholder="{{showUSField()?'SWIFT code/BIC':'SWIFT Code/IBAN'}}" formControlName="swiftIbanCode"
                     autocomplete="off">
             </mat-form-field>
         </div>

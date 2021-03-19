@@ -68,7 +68,7 @@ export class VendorBankDetailsComponent implements OnInit {
 
         this.failureMsg = "";
         this.isSubmitted = true;
-
+        this.updateUSFieldsValidation();
         if (this.vendorBankForm.valid) {
 
             // this._appService.vendorRegistrationDetails.bankAddress = this.vendorBankForm.get("bankAddress").value;

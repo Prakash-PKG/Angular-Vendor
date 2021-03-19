@@ -62,7 +62,7 @@
 
         <div *ngIf="showUSField()" class="col-6 form-group">
             <mat-form-field class="full-width">
-                <input type="text" matInput placeholder="Doing Business As" formControlName="usVendorBusiness" autocomplete="off"
+                <input type="text" matInput placeholder="Doing Business As" formControlName="usVendorBusiness" autocomplete="off" maxlength="50"
                     required>
             </mat-form-field>
             <mat-error class="errortxt" *ngIf="( isSubmitted ) && f?.usVendorBusiness?.errors?.required">Doing Business As is
