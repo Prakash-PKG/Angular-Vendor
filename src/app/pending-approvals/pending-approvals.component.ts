@@ -77,6 +77,7 @@ export class PendingApprovalsComponent implements OnInit {
             isSubContractReceiver: false
         };
 
+        req.employeeId = globalConstant.userDetails.userId;
         if (globalConstant.userDetails.isSubContractReceiver) {
             req.isSubContractReceiver = true;
             req.departments = req.departments.concat(globalConstant.userDetails.poDepts);
