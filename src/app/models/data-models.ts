@@ -178,6 +178,9 @@ export class VendorMasterDetailsModel {
     withholdTaxCode: string;
     fileDetails: FileDetailsModel[];
     usVendorBusiness: string;
+    usBankSector: string;
+    usChequePayableTo: string;
+    usChecqueMailingAddress: string;
 }
 
 export interface FileMap {

@@ -27,10 +27,10 @@
       <mat-form-field class="full-width">
             <mat-select formControlName="countryCode" placeholder="Select Country">
                 <mat-option *ngFor="let c of countyListData" [value]="c.countryCode">
-                    {{ c.country_name }}
+                    {{ c.countryName }}
                 </mat-option>
             </mat-select>
-        </mat-form-field>
+     </mat-form-field>
     </div>
       <!-- errors -->
       <div class="errortxt loginerror">{{ message }}</div>

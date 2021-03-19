@@ -219,7 +219,10 @@ export class AppService {
         withHoldTypeCode: null,
         withholdTaxCode: null,
         fileDetails: [],
-        usVendorBusiness: null
+        usVendorBusiness: null,
+        usBankSector: null,
+        usChequePayableTo: null,
+        usChecqueMailingAddress: null
 
     };
 
@@ -296,7 +299,10 @@ export class AppService {
             withHoldTypeCode: null,
             withholdTaxCode: null,
             fileDetails: [],
-            usVendorBusiness: null
+            usVendorBusiness: null,
+            usBankSector: null,
+            usChequePayableTo: null,
+            usChecqueMailingAddress: null
         };
 
         return regDetails;

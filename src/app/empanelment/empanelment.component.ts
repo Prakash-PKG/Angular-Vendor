@@ -15,12 +15,9 @@ export class EmpanelmentComponent implements OnInit {
     empanelmentForm: FormGroup;
     message: string = "";
     loading: boolean = false;
-    public countyList = [
-        { countryCode: 'IN', country_name: 'India' },
-        { countryCode: 'US', country_name: 'United States of America' },
-    ];
-    public countyListData:any = [];
-     
+
+    public countyListData: any;
+
     constructor(private _empanelmentService: EmpanelmentService,
         private _formBuilder: FormBuilder) { }
 
@@ -30,9 +27,10 @@ export class EmpanelmentComponent implements OnInit {
             countryCode: [null, [Validators.required]],
         });
         this.getCountyList();
-       }
-    getCountyList(){
-        return this.countyListData =this.countyList;
+    }
+
+    async getCountyList() {
+        this.countyListData = await this._empanelmentService.getCountryList();
     }
     onEmpanelmentClick() {
         this.loading = true;
