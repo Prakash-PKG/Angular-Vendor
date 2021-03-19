@@ -50,11 +50,17 @@ export class VendorBankDetailsComponent implements OnInit {
         this._appService.vendorRegistrationDetails.swiftIbanCode = this.vendorBankForm.get("swiftIbanCode").value;
         this._appService.vendorRegistrationDetails.routingBank = this.vendorBankForm.get("routingBank").value;
         this._appService.vendorRegistrationDetails.swiftInterm = this.vendorBankForm.get("swiftInterm").value;
+        this._appService.vendorRegistrationDetails.usBankSector = this.vendorBankForm.get("usBankSector").value;
+        this._appService.vendorRegistrationDetails.usChequePayableTo = this.vendorBankForm.get("usChequePayableTo").value;
+        this._appService.vendorRegistrationDetails.usChecqueMailingAddress = this.vendorBankForm.get("usChecqueMailingAddress").value;
     }
 
     onPrevClick() {
         this.updateControlsData();
         this._router.navigate([this._appService.routingConstants.vendorAddressDetails]);
+    }
+    showUSField() {
+        return this._vendorRegistrationService.vendorUS;
     }
 
     onNextClick() {
@@ -103,8 +109,7 @@ export class VendorBankDetailsComponent implements OnInit {
     }
 
     updateVendorDetails() {
-        // this.vendorBankForm.get("bankAddress").setValue(this._appService.vendorRegistrationDetails.bankAddress);
-      
+
         this.vendorBankForm.get("accountNum").setValue(this._appService.vendorRegistrationDetails.accountNum);
         this.vendorBankForm.get("accountType").setValue(this._appService.vendorRegistrationDetails.bankAccountTypeId);
         this.vendorBankForm.get("accountName").setValue(this._appService.vendorRegistrationDetails.accountName);
@@ -114,11 +119,22 @@ export class VendorBankDetailsComponent implements OnInit {
         this.vendorBankForm.get("bankCity").setValue(this._appService.vendorRegistrationDetails.bankCity);
         this.vendorBankForm.get("bankRegion").setValue(this._appService.vendorRegistrationDetails.bankRegion);
         this.vendorBankForm.get("bankCountry").setValue(this._appService.vendorRegistrationDetails.bankCountry);
+        this.vendorBankForm.get("usBankSector").setValue(this._appService.vendorRegistrationDetails.usBankSector);
+        this.vendorBankForm.get("usChequePayableTo").setValue(this._appService.vendorRegistrationDetails.usChequePayableTo);
+        this.vendorBankForm.get("usChecqueMailingAddress").setValue(this._appService.vendorRegistrationDetails.usChecqueMailingAddress);
         this.vendorBankForm.get("swiftIbanCode").setValue(this._appService.vendorRegistrationDetails.swiftIbanCode);
         this.vendorBankForm.get("routingBank").setValue(this._appService.vendorRegistrationDetails.routingBank);
         this.vendorBankForm.get("swiftInterm").setValue(this._appService.vendorRegistrationDetails.swiftInterm);
-      
+
         this.updateRegion();
+    }
+    updateUSFieldsValidation() {
+        if (this._vendorRegistrationService.vendorUS) {
+            this.vendorBankForm.get("usBankSector").setValidators([Validators.required]);
+            this.vendorBankForm.get("usChequePayableTo").setValidators([Validators.required]);
+            this.vendorBankForm.get("usChecqueMailingAddress").setValidators([Validators.required]);
+        }
+        this.vendorBankForm.updateValueAndValidity();
     }
 
     updateRegion() {
@@ -155,7 +171,7 @@ export class VendorBankDetailsComponent implements OnInit {
             accountNum: [null, [Validators.required]],
             accountType: [null, [Validators.required]],
             accountName: [null, [Validators.required]],
-            ifscCode: [null, [Validators.required, Validators.maxLength(11), Validators.minLength(11),Validators.pattern(/^[a-zA-Z0-9]*([a-zA-Z]+[0-9]+|[0-9]+[a-zA-Z]+)[a-zA-Z0-9]*$/)]],
+            ifscCode: [null, [Validators.required, Validators.maxLength(11), Validators.minLength(11), Validators.pattern(/^[a-zA-Z0-9]*([a-zA-Z]+[0-9]+|[0-9]+[a-zA-Z]+)[a-zA-Z0-9]*$/)]],
             bankName: [null, [Validators.required]],
             bankBranch: [null, [Validators.required]],
             bankCity: [null, [Validators.required]],
@@ -164,6 +180,9 @@ export class VendorBankDetailsComponent implements OnInit {
             swiftIbanCode: [null],
             routingBank: [null],
             swiftInterm: [null],
+            usBankSector: [null],
+            usChequePayableTo: [null],
+            usChecqueMailingAddress: [null],
         });
 
         this._vendorRegistrationService.updateCurrentPageDetails({ pageName: 'venBank' });

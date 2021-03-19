@@ -32,6 +32,7 @@ export class VendorDetailsComponent implements OnInit {
         // this._router.navigate([this._appService.routingConstants.vendorAddressDetails]);
         this.failureMsg = "";
         this.isSubmitted = true;
+        this.updateUSFieldsValidation();
         if (this.vendorDetailsForm.valid) {
             this._appService.vendorRegistrationDetails.vendorName = this.vendorDetailsForm.get("vendorName").value;
             this._appService.vendorRegistrationDetails.contactPerson = this.vendorDetailsForm.get("contactPerson").value;
@@ -98,6 +99,12 @@ export class VendorDetailsComponent implements OnInit {
     showUSField() {
         return this._vendorRegistrationService.vendorUS;
     }
+    updateUSFieldsValidation() {
+        if (this._vendorRegistrationService.vendorUS) {
+            this.vendorDetailsForm.get("usVendorBusiness").setValidators([Validators.required]);
+        }
+        this.vendorDetailsForm.get("usVendorBusiness").updateValueAndValidity();
+    }
 
     ngOnInit() {
         this.isSubmitted = false;
@@ -109,7 +116,7 @@ export class VendorDetailsComponent implements OnInit {
             emailId: [null, [Validators.required, Validators.email, Validators.nullValidator]],
             password: [null, [Validators.required, Validators.nullValidator, Validators.pattern(/^(?:(?:(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z]))|(?:(?=.*[a-z])(?=.*[A-Z])(?=.*[*.!@$%^&(){}[]:;<>,.?~_+-=|\]))|(?:(?=.*[0-9])(?=.*[A-Z])(?=.*[*.!@$%^&(){}[]:;<>,.?~_+-=|\]))|(?:(?=.*[0-9])(?=.*[a-z])(?=.*[*.!@$%^&(){}[]:;<>,.?~_+-=|\]))).{8,}$/)]],
             confirmPassword: [null, [Validators.required, Validators.nullValidator]],
-            usVendorBusiness: [null, [Validators.required]]
+            usVendorBusiness: [null]
         },
             { validator: equalValueValidator('password', 'confirmPassword') }
         );
