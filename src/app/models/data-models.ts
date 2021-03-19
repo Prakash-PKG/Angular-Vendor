@@ -29,6 +29,7 @@ export class EmpanelmentInitDataModel {
 export class EmpanelmentSubmitReqModel {
     emailId: string;
     sentBy: string;
+    countryCode:String;
 }
 
 export class EmpanelmentSubmitResultModel {
@@ -176,6 +177,7 @@ export class VendorMasterDetailsModel {
     withHoldTypeCode: string;
     withholdTaxCode: string;
     fileDetails: FileDetailsModel[];
+    usVendorBusiness: string;
 }
 
 export interface FileMap {
@@ -200,6 +202,7 @@ export class VendorRegistrationInitDataModel {
     documentDetailsList: VendorMasterDocumentModel[];
     regionMasterVOList: regionMasterVOList[];
     bankAccountTypeList: BankAccountTypeModel[];
+    vendorCounty: string;
 }
 
 export class InvoiceSearchResultModel {

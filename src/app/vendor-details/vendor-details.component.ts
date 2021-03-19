@@ -20,7 +20,7 @@ export class VendorDetailsComponent implements OnInit {
     failureMsg: string = "";
     requiredErrorMsg: string = "This field is mandatory";
     isSubmitted: boolean = false;
-
+    // vendorCounty: string = "";
     constructor(private _appService: AppService,
         private _vendorRegistrationService: VendorRegistrationService,
         private _router: Router,
@@ -33,21 +33,18 @@ export class VendorDetailsComponent implements OnInit {
         this.failureMsg = "";
         this.isSubmitted = true;
         if (this.vendorDetailsForm.valid) {
-
             this._appService.vendorRegistrationDetails.vendorName = this.vendorDetailsForm.get("vendorName").value;
             this._appService.vendorRegistrationDetails.contactPerson = this.vendorDetailsForm.get("contactPerson").value;
             this._appService.vendorRegistrationDetails.mobileNum = this.vendorDetailsForm.get("mobileNum").value;
             this._appService.vendorRegistrationDetails.telephoneNum = this.vendorDetailsForm.get("telephoneNum").value;
             this._appService.vendorRegistrationDetails.emailId = this.vendorDetailsForm.get("emailId").value;
             this._appService.vendorRegistrationDetails.password = this.vendorDetailsForm.get("password").value;
+            this._appService.vendorRegistrationDetails.usVendorBusiness = this.vendorDetailsForm.get("usVendorBusiness").value;
 
             let req: VendorRegistrationRequestModel = {
                 action: this._appService.updateOperations.save,
                 vendorMasterDetails: this._appService.vendorRegistrationDetails
             }
-
-            // console.log(req);
-            // this._router.navigate([this._appService.routingConstants.vendorAddressDetails]);
 
             this._vendorRegistrationService.updateBusy(<BusyDataModel>{ isBusy: true, msg: null });
             this._vendorRegistrationService.updateVendorRegistrationDetails(req)
@@ -81,7 +78,6 @@ export class VendorDetailsComponent implements OnInit {
     }
 
     updateVendorDetails() {
-
         this.vendorDetailsForm.get("vendorName").setValue(this._appService.vendorRegistrationDetails.vendorName);
         this.vendorDetailsForm.get("contactPerson").setValue(this._appService.vendorRegistrationDetails.contactPerson);
         this.vendorDetailsForm.get("mobileNum").setValue(this._appService.vendorRegistrationDetails.mobileNum);
@@ -89,7 +85,9 @@ export class VendorDetailsComponent implements OnInit {
         this.vendorDetailsForm.get("emailId").setValue(this._appService.vendorRegistrationDetails.emailId);
         this.vendorDetailsForm.get("password").setValue(this._appService.vendorRegistrationDetails.password);
         this.vendorDetailsForm.get("confirmPassword").setValue(this._appService.vendorRegistrationDetails.password);
+        this.vendorDetailsForm.get("usVendorBusiness").setValue(this._appService.vendorRegistrationDetails.usVendorBusiness);
     }
+
     isNumberKey(evt) {
         let charCode = (evt.which) ? evt.which : evt.keyCode
         if (charCode > 31 && (charCode < 48 || charCode > 57))
@@ -97,18 +95,21 @@ export class VendorDetailsComponent implements OnInit {
 
         return true;
     }
+    showUSField() {
+        return this._vendorRegistrationService.vendorUS;
+    }
 
     ngOnInit() {
         this.isSubmitted = false;
-
         this.vendorDetailsForm = this._formBuilder.group({
             vendorName: [null, [Validators.required, Validators.nullValidator]],
             contactPerson: [null],
-            mobileNum: [null, [Validators.required, Validators.minLength(10), Validators.maxLength(10), Validators.nullValidator,Validators.pattern("^[0-9]*$")]],
-            telephoneNum: [null, [Validators.maxLength(12), Validators.minLength(11),Validators.pattern("^[0-9]*$")]],
+            mobileNum: [null, [Validators.required, Validators.minLength(10), Validators.maxLength(10), Validators.nullValidator, Validators.pattern("^[0-9]*$")]],
+            telephoneNum: [null, [Validators.maxLength(12), Validators.minLength(11), Validators.pattern("^[0-9]*$")]],
             emailId: [null, [Validators.required, Validators.email, Validators.nullValidator]],
-            password: [null, [Validators.required, Validators.nullValidator,Validators.pattern(/^(?:(?:(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z]))|(?:(?=.*[a-z])(?=.*[A-Z])(?=.*[*.!@$%^&(){}[]:;<>,.?~_+-=|\]))|(?:(?=.*[0-9])(?=.*[A-Z])(?=.*[*.!@$%^&(){}[]:;<>,.?~_+-=|\]))|(?:(?=.*[0-9])(?=.*[a-z])(?=.*[*.!@$%^&(){}[]:;<>,.?~_+-=|\]))).{8,}$/)]],
-            confirmPassword: [null, [Validators.required, Validators.nullValidator]]
+            password: [null, [Validators.required, Validators.nullValidator, Validators.pattern(/^(?:(?:(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z]))|(?:(?=.*[a-z])(?=.*[A-Z])(?=.*[*.!@$%^&(){}[]:;<>,.?~_+-=|\]))|(?:(?=.*[0-9])(?=.*[A-Z])(?=.*[*.!@$%^&(){}[]:;<>,.?~_+-=|\]))|(?:(?=.*[0-9])(?=.*[a-z])(?=.*[*.!@$%^&(){}[]:;<>,.?~_+-=|\]))).{8,}$/)]],
+            confirmPassword: [null, [Validators.required, Validators.nullValidator]],
+            usVendorBusiness: [null, [Validators.required]]
         },
             { validator: equalValueValidator('password', 'confirmPassword') }
         );

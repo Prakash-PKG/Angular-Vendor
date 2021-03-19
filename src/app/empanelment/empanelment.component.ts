@@ -3,6 +3,7 @@ import { EmpanelmentSubmitReqModel } from './../models/data-models';
 import { EmpanelmentService } from './empanelment.service';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Observable } from 'rxjs';
 
 @Component({
     selector: 'app-empanelment',
@@ -14,23 +15,33 @@ export class EmpanelmentComponent implements OnInit {
     empanelmentForm: FormGroup;
     message: string = "";
     loading: boolean = false;
-
+    public countyList = [
+        { countryCode: 'IN', country_name: 'India' },
+        { countryCode: 'US', country_name: 'United States of America' },
+    ];
+    public countyListData:any = [];
+     
     constructor(private _empanelmentService: EmpanelmentService,
         private _formBuilder: FormBuilder) { }
 
     ngOnInit() {
         this.empanelmentForm = this._formBuilder.group({
             emailId: [null, [Validators.required, Validators.email]],
+            countryCode: [null, [Validators.required]],
         });
+        this.getCountyList();
+       }
+    getCountyList(){
+        return this.countyListData =this.countyList;
     }
-
     onEmpanelmentClick() {
         this.loading = true;
         this.message = "";
         if (this.empanelmentForm.valid) {
             let req: EmpanelmentSubmitReqModel = {
                 emailId: this.empanelmentForm.get("emailId").value,
-                sentBy: "105173"
+                sentBy: "105173",
+                countryCode: this.empanelmentForm.get("countryCode").value,
             }
 
             this._empanelmentService.submitEmpanelmentReq(req)

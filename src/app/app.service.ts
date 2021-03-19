@@ -18,14 +18,14 @@ import * as _ from 'underscore';
 })
 export class AppService {
 
-    // readonly domain = "http://localhost:8080";
-    readonly domain = "https://mvendor-dev.marlabs.com"; 
-       // readonly domain = "https://mvendor-stg.marlabs.com";     
+    readonly domain = "http://localhost:8080";
+    // readonly domain = "https://mvendor-dev.marlabs.com"; 
+    // readonly domain = "https://mvendor-stg.marlabs.com";     
     readonly baseUrl = this.domain + "/mvendor/";
     readonly customerAuthUrl = this.domain + "/customerAuth/oauth/token";
     readonly isForProduction: boolean = false;
     readonly isSSORequired: boolean = false;
-
+    
     private sessionTimeCount: Subject<number> = new BehaviorSubject<number>(0);
     public sessionTimeCount$: Observable<number> = this.sessionTimeCount.asObservable();
 
@@ -40,7 +40,7 @@ export class AppService {
         posearch: "/home/posearch",
         forgotPassword: "/home/fp",
         invoiceApproval: "/home/invapproval",
-        invoiceRejected:"/home/invrejected",
+        invoiceRejected: "/home/invrejected",
         invoiceDetails: "/home/invdetails",
         invoiceSearch: "/home/invsearch",
         invoiceUpload: "/home/invupload",
@@ -59,9 +59,9 @@ export class AppService {
         vendorDashboard: "/home/vendashboard",
         loginVendor: "/vendorlogin",
         contact: "/home/contact",
-        vendorReport:"/home/venreport",
+        vendorReport: "/home/venreport",
         invoicePostReport: "/home/invpostreport",
-        invoiceReport:"/home/invsla"
+        invoiceReport: "/home/invsla"
     };
 
     readonly pageConstants: any = {
@@ -76,7 +76,7 @@ export class AppService {
         onhold: 'onhold',
         sendBack: "sendBack",
         rectified: "rectified",
-        proSave:'proSave'
+        proSave: 'proSave'
     };
 
     readonly statusNames: any = {
@@ -121,7 +121,10 @@ export class AppService {
     isInvoiceDetailsForPayments: boolean = false;
 
     isExistingVendor: boolean = false;
+    vendorUserId: string = '';
 
+    vendorUserID: string = '';
+    countyNm: string = '';
     getFormattedDate(dtStr: string) {
         if (dtStr) {
             return this._datePipe.transform(new Date(dtStr), this.displayDtFormat);
@@ -208,14 +211,15 @@ export class AppService {
         finRemark: null,
         // isGSTReg:null,
         otherDocDesc: null,
-        bankAccountTypeId:null,
+        bankAccountTypeId: null,
         statusCode: null,
         groupCodeDesc: null,
         companyCodeDesc: null,
         currencyCodeDesc: null,
         withHoldTypeCode: null,
         withholdTaxCode: null,
-        fileDetails: []
+        fileDetails: [],
+        usVendorBusiness: null
 
     };
 
@@ -284,14 +288,15 @@ export class AppService {
             // isGSTReg:null,
             otherDocDesc: null,
             vendorId: null,
-            bankAccountTypeId:null,
+            bankAccountTypeId: null,
             statusCode: null,
             groupCodeDesc: null,
             companyCodeDesc: null,
             currencyCodeDesc: null,
             withHoldTypeCode: null,
             withholdTaxCode: null,
-            fileDetails: []
+            fileDetails: [],
+            usVendorBusiness: null
         };
 
         return regDetails;
@@ -365,9 +370,9 @@ export class AppService {
 
     getUpdatedUniqueDepartments(depts: string[]) {
         let updatedDepts: string[] = [];
-        for(let i = 0; i < depts.length; i++) {
+        for (let i = 0; i < depts.length; i++) {
             let updatedDept: string = depts[i].split("-")[0];
-            if(updatedDepts.indexOf(updatedDept) < 0) {
+            if (updatedDepts.indexOf(updatedDept) < 0) {
                 updatedDepts.push(updatedDept);
             }
         }
@@ -377,7 +382,7 @@ export class AppService {
 
     getCompanyCodesByDept(depts: string[]) {
         let compayCodes: string[] = [];
-        for(let i = 0; i < depts.length; i++) {
+        for (let i = 0; i < depts.length; i++) {
             compayCodes = compayCodes.concat(globalConstant.companyCodes[depts[i]]);
         }
 
@@ -386,12 +391,12 @@ export class AppService {
 
     getCountryCodesByDept(depts: string[]) {
         let countryCodes: string[] = [];
-        for(let c = 0; c < globalConstant.supportedCountries.length; c++) {
-            if(globalConstant.supportedCountries[c] != "IN") {
-                for(let i = 0; i < depts.length; i++) {
+        for (let c = 0; c < globalConstant.supportedCountries.length; c++) {
+            if (globalConstant.supportedCountries[c] != "IN") {
+                for (let i = 0; i < depts.length; i++) {
                     let hCountry = "-" + globalConstant.supportedCountries[c];
                     let countryCode: string = depts[i].indexOf(hCountry) > 0 ? globalConstant.supportedCountries[c] : null;
-                    if(countryCode && countryCodes.indexOf(countryCode) < 0) {
+                    if (countryCode && countryCodes.indexOf(countryCode) < 0) {
                         countryCodes.push(countryCode);
                     }
                 }
@@ -403,12 +408,12 @@ export class AppService {
 
     getAllCountryCodesByDept(depts: string[]) {
         let countryCodes: string[] = [];
-        for(let i = 0; i < depts.length; i++) {
+        for (let i = 0; i < depts.length; i++) {
             let strArr: string[] = depts[i].split("-");
-            if(strArr.length == 1) {
+            if (strArr.length == 1) {
                 countryCodes.push(globalConstant.indiaCountryCode);
             }
-            else if(strArr.length == 2) {
+            else if (strArr.length == 2) {
                 countryCodes.push(strArr[1]);
             }
         }
@@ -419,10 +424,10 @@ export class AppService {
     getInvoiceDumpCountryCode() {
         let countryCode = "";
         if (globalConstant.userDetails.isInvoiceDumpVisible) {
-            if(globalConstant.userDetails.userRoles.find(r => r.roleCode == "invoice-dump-us")) {
+            if (globalConstant.userDetails.userRoles.find(r => r.roleCode == "invoice-dump-us")) {
                 countryCode = globalConstant.usCountryCode;
             }
-            else if(globalConstant.userDetails.userRoles.find(r => r.roleCode == "invoice-dump")) {
+            else if (globalConstant.userDetails.userRoles.find(r => r.roleCode == "invoice-dump")) {
                 countryCode = globalConstant.indiaCountryCode;
             }
         }

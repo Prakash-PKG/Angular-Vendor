@@ -30,7 +30,7 @@ export class VendorRegistrationComponent implements OnInit {
 
     async loadInitData() {
         this._vendorRegistrationService.updateBusy(<BusyDataModel>{ isBusy: true, msg: "Loading..." });
-        this.vendorRegistrationInitDataModel = await this._vendorRegistrationService.getVendorRegistrationInitData();
+        this.vendorRegistrationInitDataModel = await this._vendorRegistrationService.getVendorRegistrationInitData(this._appService.vendorUserId);
         this._appService.vendorRegistrationInitDetails = this.vendorRegistrationInitDataModel;
         this._vendorRegistrationService.updateBusy(<BusyDataModel>{ isBusy: false, msg: null });
     }
@@ -48,7 +48,6 @@ export class VendorRegistrationComponent implements OnInit {
             if (data && data.isBusy == true) {
                 spin.show();
                 this.spinnerCls = "overlay";
-                //this.busyMsg = (data.msg) ? data.msg : "Please wait...";
                 this.busyMsg = "Please wait...";
             }
             else {
