@@ -56,7 +56,15 @@ export class VendorDocumentsComponent implements OnInit {
         sezCtrl: { documentTypeId: 9, browserId: 'sezFileCtrl', placeholder: 'SEZ / Non-SEZ', controlName: 'isSez' },
         lutNoCtrl: { documentTypeId: 10, browserId: 'lutNoFileCtrl', placeholder: 'LUT No.', controlName: 'lutNum' },
         msmeSelfCtrl: { documentTypeId: 11, browserId: 'msmeSelfFileCtrl', placeholder: 'MSME Self Attested Certificate?', controlName: '' },
-        otherCtrl: { documentTypeId: 13, browserId: 'otherFileCtrl', placeholder: 'Document Description', controlName: 'otherDocDesc' }
+        otherCtrl: { documentTypeId: 13, browserId: 'otherFileCtrl', placeholder: 'Document Description', controlName: 'otherDocDesc' },
+
+        // us fields
+        taxIdNoCtrl: { documentTypeId: 14, browserId: 'taxIdNoFileCtrl', placeholder: 'Tax ID No.', controlName: 'usTaxId' },
+        socialSecNoCtrl: { documentTypeId: 15, browserId: 'socialSecoFileCtrl', placeholder: 'Social Security No.', controlName: 'usSocialSecurity' },
+        einCtrl: { documentTypeId: 16, browserId: 'einFileCtrl', placeholder: 'EIN', controlName: 'usEinNumber' },
+        w8Ctrl: { documentTypeId: 17, browserId: 'w8FileCtrl', placeholder: 'W8 - BENE / W8 BEN', controlName: 'usW8Bene' },
+        w9Ctrl: { documentTypeId: 18, browserId: 'w9FileCtrl', placeholder: 'W9', controlName: 'usW9' },
+        minorityCertCtrl: { documentTypeId: 19, browserId: 'minorityCertFileCtrl', placeholder: 'Minority Certificate', controlName: 'usMinorityCertificate' },
     }
 
     isSubmitted: boolean = false;
@@ -258,6 +266,15 @@ export class VendorDocumentsComponent implements OnInit {
         this._appService.vendorRegistrationDetails.lutNum = this.vendorDocumentForm.get("lutNum").value;
         this._appService.vendorRegistrationDetails.lutDate = this._datePipe.transform(this.vendorDocumentForm.get("lutDate").value, this._appService.dbDateFormat);
         this._appService.vendorRegistrationDetails.otherDocDesc = this.vendorDocumentForm.get("otherDocDesc").value;
+        // US fields
+        this._appService.vendorOrgCatogery.catogery = this.vendorDocumentForm.get("vendorOrgCatogery").value;
+        this._appService.vendorOrgCatogery.subCatogery = this.vendorDocumentForm.get("vendorOrgSubCategory").value;
+        this._appService.vendorRegistrationDetails.usTaxId = this.vendorDocumentForm.get("usTaxId").value;
+        this._appService.vendorRegistrationDetails.usSocialSecurity = this.vendorDocumentForm.get("usSocialSecurity").value;
+        this._appService.vendorRegistrationDetails.usEinNumber = this.vendorDocumentForm.get("usEinNumber").value;
+        this._appService.vendorRegistrationDetails.usW8Bene = this.vendorDocumentForm.get("usW8Bene").value;
+        this._appService.vendorRegistrationDetails.usW9 = this.vendorDocumentForm.get("usW9").value;
+        this._appService.vendorRegistrationDetails.usMinorityCertificate = this.vendorDocumentForm.get("usMinorityCertificate").value;
     }
 
     onPrevClick() {
@@ -372,6 +389,15 @@ export class VendorDocumentsComponent implements OnInit {
         this.vendorDocumentForm.get("lutNum").setValue(this._appService.vendorRegistrationDetails.lutNum);
         this.vendorDocumentForm.get("lutDate").setValue(this._appService.vendorRegistrationDetails.lutDate ? new Date(this._appService.vendorRegistrationDetails.lutDate) : null);
         this.vendorDocumentForm.get("otherDocDesc").setValue(this._appService.vendorRegistrationDetails.otherDocDesc);
+        // US fields
+        this.vendorDocumentForm.get("vendorOrgCatogery").setValue(this._appService.vendorOrgCatogery.catogery);
+        this.vendorDocumentForm.get("vendorOrgSubCategory").setValue(this._appService.vendorOrgCatogery.subCatogery);
+        this.vendorDocumentForm.get("usTaxId").setValue(this._appService.vendorRegistrationDetails.usTaxId);
+        this.vendorDocumentForm.get("usSocialSecurity").setValue(this._appService.vendorRegistrationDetails.usSocialSecurity);
+        this.vendorDocumentForm.get("usEinNumber").setValue(this._appService.vendorRegistrationDetails.usEinNumber);
+        this.vendorDocumentForm.get("usW8Bene").setValue(this._appService.vendorRegistrationDetails.usW8Bene);
+        this.vendorDocumentForm.get("usW9").setValue(this._appService.vendorRegistrationDetails.usW9);
+        this.vendorDocumentForm.get("usMinorityCertificate").setValue(this._appService.vendorRegistrationDetails.usMinorityCertificate);
 
         this.filesMap = this._appService.selectedFileMap;
 
@@ -500,7 +526,15 @@ export class VendorDocumentsComponent implements OnInit {
             lutNum: [null],
             lutDate: [{ value: null, disabled: true }],
             otherDocDesc: [null],
-            vendorOrgCatogery: [null, [Validators.required]]
+            vendorOrgCatogery: [null, [Validators.required]],
+            vendorOrgSubCategory: [null],
+            vendorOrgTypes: [null],
+            usTaxId: [null],
+            usSocialSecurity: [null],
+            usEinNumber: [null, [Validators.minLength(15), Validators.maxLength(15), Validators.pattern(/^[a-zA-Z0-9]*([a-zA-Z]+[0-9]+|[0-9]+[a-zA-Z]+)[a-zA-Z0-9]*$/)]],
+            usW8Bene: [null],
+            usW9: [null],
+            usMinorityCertificate: [null]
 
         });
         this._vendorRegistrationService.updateCurrentPageDetails({ pageName: 'venDoc' });

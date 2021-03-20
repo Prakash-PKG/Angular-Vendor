@@ -177,7 +177,8 @@
             </mat-form-field>
             <mat-form-field style="width:9em;">
                 <mat-label>LUT Date</mat-label>
-                <input matInput [matDatepicker]="picker" formControlName="lutDate" autocomplete="off"  [max]="maxLutDate">
+                <input matInput [matDatepicker]="picker" formControlName="lutDate" autocomplete="off"
+                    [max]="maxLutDate">
                 <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                 <mat-datepicker #picker></mat-datepicker>
             </mat-form-field>
@@ -444,60 +445,52 @@
     </div>
 
 
-<!-- --------------------------------------------------------------------US Registration Fields------------------------------------------------------------------ -->
-<div class="row doc-field" *ngIf="showUSField()">
-    <div class="col-5 doc-form-field form-group">
-        <mat-form-field class="full-width">
-            <input type="text" matInput (keypress)="omit_special_char($event)"
-                placeholder="{{vendorDocCtrl.gstCtrl.placeholder}}" formControlName="gstNum" minlength="15"
-                maxlength="15" autocomplete="off"
-                (blur)="updateMandatory('gstNum',vendorDocCtrl.gstCtrl.documentTypeId); toUppercase('gstNum')">
-            <mat-error class="errortxt" *ngIf="( isSubmitted ) && vdf?.gstNum?.errors?.minlength">Minimum 15
-                characters are required
-            </mat-error>
-            <mat-error class="errortxt" *ngIf="( isSubmitted ) && vdf?.gstNum?.errors?.pattern">GST No. accepts
-                combination of alphanumeric</mat-error>
-        </mat-form-field>
+    <!-- --------------------------------------------------------------------US Registration Fields------------------------------------------------------------------ -->
 
-    </div>
 
-    <div class="col-7 actions">
-        <input style="display: none" [attr.id]="vendorDocCtrl.gstCtrl.browserId" type="file" multiple
-            accept=".xls,.xlsx,.doc,.docx,.pdf,.png,.jpg,.zip"
-            (change)="onFileChange($event, vendorDocCtrl.gstCtrl.documentTypeId)" />
-        <button mat-raised-button class="footer-actions"
-            (click)="onBrowseFileClick($event, vendorDocCtrl.gstCtrl.browserId)"
-            [disabled]="!vendorDocumentForm.get('gstNum').value">Attach</button>
 
-        <div *ngIf="filesMap[vendorDocCtrl.gstCtrl.documentTypeId]?.isAttached" style="display: flex;
+    <!-- ---------------------------------------minority certificate------------------ -->
+    <div class="row doc-field" *ngIf="showUSField()">
+        <div class="col-3 doc-form-field">
+            <mat-label>{{vendorDocCtrl.minorityCertCtrl.placeholder}}</mat-label>
+        </div>
+        <div class="col-2 doc-form-field">
+            <mat-radio-group formControlName="usMinorityCertificate"
+                (change)="updateMandatory('usMinorityCertificate',vendorDocCtrl.minorityCertCtrl.documentTypeId)">
+                <mat-radio-button [value]=true>YES</mat-radio-button>
+                <mat-radio-button [value]=false>NO</mat-radio-button>
+            </mat-radio-group>
+        </div>
+        <div class="col-7 actions">
+            <input style="display: none" [attr.id]="vendorDocCtrl.minorityCertCtrl.browserId" type="file" multiple
+                accept=".xls,.xlsx,.doc,.docx,.pdf,.png,.jpg,.zip"
+                (change)="onFileChange($event, vendorDocCtrl.minorityCertCtrl.documentTypeId)" />
+            <button mat-raised-button class="footer-actions" [disabled]="!vendorDocumentForm.get('usMinorityCertificate').value"
+                (click)="onBrowseFileClick($event, vendorDocCtrl.minorityCertCtrl.browserId);">Attach</button>
+            <div *ngIf="filesMap[vendorDocCtrl.minorityCertCtrl.documentTypeId]?.isAttached" style="display: flex;
 flex-wrap: wrap;">
-            <span class="filename"
-                *ngFor="let f of filesMap[vendorDocCtrl.gstCtrl.documentTypeId]?.filesList; let fInd = index">
-                <span>
-                    <mat-icon matTooltip="{{ f.actualFileName }}" (click)="downloadFile(f)">description</mat-icon>
-                    <button mat-button mat-icon-button aria-label="Delete" *ngIf="!disableSubmit"
-                        (click)="onDeleteFileClick(f, fInd, vendorDocCtrl.gstCtrl.documentTypeId)">
-                        <mat-icon>delete_outline</mat-icon>
-                    </button>
-
+                <span class="filename"
+                    *ngFor="let f of filesMap[vendorDocCtrl.minorityCertCtrl.documentTypeId]?.filesList; let fInd = index">
+                    <span>
+                        <mat-icon matTooltip="{{ f.actualFileName }}" (click)="downloadFile(f)">description</mat-icon>
+                        <button mat-button mat-icon-button aria-label="Delete" *ngIf="!disableSubmit"
+                            (click)="onDeleteFileClick(f, fInd, vendorDocCtrl.minorityCertCtrl.documentTypeId)">
+                            <mat-icon>delete_outline</mat-icon>
+                        </button>
+                    </span>
                 </span>
-            </span>
 
+            </div>
+            <div *ngIf="filesMap[vendorDocCtrl.minorityCertCtrl.documentTypeId] && filesMap[vendorDocCtrl.minorityCertCtrl.documentTypeId]?.isError"
+                class="errortxt">
+                Please attach the Document(s)
+            </div>
+            <div *ngIf="filesMap[vendorDocCtrl.minorityCertCtrl.documentTypeId]?.isAttachWithoutValue" class="errortxt">
+                Minority Certificate is not selected for this attached document
+            </div>
         </div>
-        <div *ngIf="filesMap[vendorDocCtrl.gstCtrl.documentTypeId] && 
-        filesMap[vendorDocCtrl.gstCtrl.documentTypeId]?.isError" class="errortxt">
-            Please attach the Document(s)
-        </div>
-        <div *ngIf="filesMap[vendorDocCtrl.gstCtrl.documentTypeId]?.isAttachWithoutValue" class="errortxt">
-            GST no. is missing for this attached document
-        </div>
+
     </div>
-
-</div>
-
-
-
-
     <!------------------------------------- Others Document---------------------- -->
     <div class="row doc-field">
         <div class="col-5 doc-form-field">
