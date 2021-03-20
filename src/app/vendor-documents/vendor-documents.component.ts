@@ -40,6 +40,7 @@ export class VendorDocumentsComponent implements OnInit {
     private counterSubscription: Subscription;
 
     maxLutDate = new Date();
+    usPayeeIdentificatn: string = "";
 
     organizationTypeMasterVO: organizationTypeMasterVO[] = [];
     organizationCategoryMasterVO: organizationCategoryMasterVO[] = [];
@@ -431,6 +432,7 @@ export class VendorDocumentsComponent implements OnInit {
             }
 
             this._appService.selectedFileMap = this.filesMap;
+            console.log(this.filesMap);
 
             for (let key in this.filesMap) {
                 if (this.filesMap[key].filesList.length) {
@@ -492,6 +494,35 @@ export class VendorDocumentsComponent implements OnInit {
 
     showUSField() {
         return this._vendorRegistrationService.vendorUS;
+        // return true;
+    }
+    updatePayeeIdentificatn() {
+        this.vendorDocumentForm.get("usTaxId").setValidators([]);
+        this.vendorDocumentForm.get("usW8Bene").setValidators([]);
+        this.vendorDocumentForm.get("usSocialSecurity").setValidators([]);
+        this.vendorDocumentForm.get("usEinNumber").setValidators([]);
+        this.vendorDocumentForm.get("usW9").setValidators([]);
+
+
+        switch (this.usPayeeIdentificatn) {
+            case 'taxId':
+                this.vendorDocumentForm.get("usTaxId").setValidators([Validators.required]);
+                this.vendorDocumentForm.get("usW8Bene").setValidators([Validators.required]);
+                break;
+            case 'socialSec':
+                this.vendorDocumentForm.get("usSocialSecurity").setValidators([Validators.required]);
+                break;
+            case 'ein':
+                this.vendorDocumentForm.get("usEinNumber").setValidators([Validators.required]);
+                this.vendorDocumentForm.get("usW9").setValidators([Validators.required]);
+                break;
+        }
+
+        this.vendorDocumentForm.get("usTaxId").updateValueAndValidity();
+        this.vendorDocumentForm.get("usW8Bene").updateValueAndValidity();
+        this.vendorDocumentForm.get("usSocialSecurity").updateValueAndValidity();
+        this.vendorDocumentForm.get("usEinNumber").updateValueAndValidity();
+        this.vendorDocumentForm.get("usW9").updateValueAndValidity();
     }
 
     ngOnInit() {
@@ -537,8 +568,11 @@ export class VendorDocumentsComponent implements OnInit {
             usMinorityCertificate: [null]
 
         });
-        this._vendorRegistrationService.updateCurrentPageDetails({ pageName: 'venDoc' });
         this.updateVendorDetails();
+
+        this.updatePayeeIdentificatn();
+
+        this._vendorRegistrationService.updateCurrentPageDetails({ pageName: 'venDoc' });
     }
 
 }

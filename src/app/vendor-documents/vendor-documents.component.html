@@ -448,6 +448,237 @@
     <!-- --------------------------------------------------------------------US Registration Fields------------------------------------------------------------------ -->
 
 
+    <!-- ---------------------------------------Payee Identification------------------ -->
+    <div class="row doc-field" *ngIf="showUSField()">
+        <div class="col-5 doc-form-field">
+            <mat-label>Payee Identification</mat-label>
+        </div>
+        <div class="col-7 doc-form-field">
+            <mat-radio-group [(ngModel)]="usPayeeIdentificatn" (change)="updatePayeeIdentificatn()" [ngModelOptions]="{standalone: true}">
+                <mat-radio-button value='taxId' [checked]="true">Tax ID No.</mat-radio-button>
+                <mat-radio-button value='socialSec'>Social Security No.</mat-radio-button>
+                <mat-radio-button value='ein'>EIN</mat-radio-button>
+            </mat-radio-group>
+        </div>
+    </div>
+
+    <!-- ---------------------------------------Tax ID------------------ -->
+    <div class="row doc-field"
+        *ngIf="(showUSField() && (usPayeeIdentificatn=='taxId'))">
+        <div class="col-5 doc-form-field form-group">
+            <mat-form-field class="full-width">
+                <input type="text" matInput placeholder="{{vendorDocCtrl.taxIdNoCtrl.placeholder}}"
+                    formControlName="usTaxId" autocomplete="off"
+                    (blur)="updateMandatory('usTaxId',vendorDocCtrl.taxIdNoCtrl.documentTypeId)">
+            </mat-form-field>
+        </div>
+
+        <div class="col-7 actions">
+            <input style="display: none" [attr.id]="vendorDocCtrl.taxIdNoCtrl.browserId" type="file" multiple
+                accept=".xls,.xlsx,.doc,.docx,.pdf,.png,.jpg,.zip"
+                (change)="onFileChange($event, vendorDocCtrl.taxIdNoCtrl.documentTypeId)" />
+            <button mat-raised-button class="footer-actions"
+                (click)="onBrowseFileClick($event, vendorDocCtrl.taxIdNoCtrl.browserId)"
+                [disabled]="!vendorDocumentForm.get('usTaxId').value">Attach</button>
+
+            <div *ngIf="filesMap[vendorDocCtrl.taxIdNoCtrl.documentTypeId]?.isAttached" style="display: flex;
+    flex-wrap: wrap;">
+                <span class="filename"
+                    *ngFor="let f of filesMap[vendorDocCtrl.taxIdNoCtrl.documentTypeId]?.filesList; let fInd = index">
+                    <span>
+                        <mat-icon matTooltip="{{ f.actualFileName }}" (click)="downloadFile(f)">description</mat-icon>
+                        <button mat-button mat-icon-button aria-label="Delete" *ngIf="!disableSubmit"
+                            (click)="onDeleteFileClick(f, fInd, vendorDocCtrl.taxIdNoCtrl.documentTypeId)">
+                            <mat-icon>delete_outline</mat-icon>
+                        </button>
+
+                    </span>
+                </span>
+
+            </div>
+            <div *ngIf="filesMap[vendorDocCtrl.taxIdNoCtrl.documentTypeId] && 
+            filesMap[vendorDocCtrl.taxIdNoCtrl.documentTypeId]?.isError" class="errortxt">
+                Please attach the Document(s)
+            </div>
+            <div *ngIf="filesMap[vendorDocCtrl.taxIdNoCtrl.documentTypeId]?.isAttachWithoutValue" class="errortxt">
+                Tax Id no. is missing for this attached document
+            </div>
+        </div>
+    </div>
+
+    <!-- ---------------------------------------Tax ID --  (w8 BENE)  ------------------ -->
+    <div class="row doc-field"
+        *ngIf="(showUSField() && (usPayeeIdentificatn =='taxId'))">
+        <div class="col-3 doc-form-field">
+            <mat-label>{{vendorDocCtrl.w8Ctrl.placeholder}}</mat-label>
+        </div>
+        <div class="col-2 doc-form-field">
+            <mat-radio-group formControlName="usW8Bene"
+                (change)="updateMandatory('usW8Bene',vendorDocCtrl.w8Ctrl.documentTypeId)">
+                <mat-radio-button [value]=true>YES</mat-radio-button>
+                <mat-radio-button [value]=false>NO</mat-radio-button>
+            </mat-radio-group>
+        </div>
+        <div class="col-7 actions">
+            <input style="display: none" [attr.id]="vendorDocCtrl.w8Ctrl.browserId" type="file" multiple
+                accept=".xls,.xlsx,.doc,.docx,.pdf,.png,.jpg,.zip"
+                (change)="onFileChange($event, vendorDocCtrl.w8Ctrl.documentTypeId)" />
+            <button mat-raised-button class="footer-actions" [disabled]="!vendorDocumentForm.get('usW8Bene').value"
+                (click)="onBrowseFileClick($event, vendorDocCtrl.w8Ctrl.browserId);">Attach</button>
+            <div *ngIf="filesMap[vendorDocCtrl.w8Ctrl.documentTypeId]?.isAttached" style="display: flex;
+flex-wrap: wrap;">
+                <span class="filename"
+                    *ngFor="let f of filesMap[vendorDocCtrl.w8Ctrl.documentTypeId]?.filesList; let fInd = index">
+                    <span>
+                        <mat-icon matTooltip="{{ f.actualFileName }}" (click)="downloadFile(f)">description</mat-icon>
+                        <button mat-button mat-icon-button aria-label="Delete" *ngIf="!disableSubmit"
+                            (click)="onDeleteFileClick(f, fInd, vendorDocCtrl.w8Ctrl.documentTypeId)">
+                            <mat-icon>delete_outline</mat-icon>
+                        </button>
+                    </span>
+                </span>
+
+            </div>
+            <div *ngIf="filesMap[vendorDocCtrl.w8Ctrl.documentTypeId] && filesMap[vendorDocCtrl.w8Ctrl.documentTypeId]?.isError"
+                class="errortxt">
+                Please attach the Document(s)
+            </div>
+            <div *ngIf="filesMap[vendorDocCtrl.w8Ctrl.documentTypeId]?.isAttachWithoutValue" class="errortxt">
+                w8 BENE/BEN is not selected for this attached document
+            </div>
+        </div>
+
+    </div>
+
+    <!-- ---------------------------------------Social Security------------------ -->
+    <div class="row doc-field"
+        *ngIf="(showUSField() && (usPayeeIdentificatn =='socialSec'))">
+        <div class="col-5 doc-form-field form-group">
+            <mat-form-field class="full-width">
+                <input type="text" matInput placeholder="{{vendorDocCtrl.socialSecNoCtrl.placeholder}}"
+                    formControlName="usSocialSecurity" autocomplete="off"
+                    (blur)="updateMandatory('usSocialSecurity',vendorDocCtrl.socialSecNoCtrl.documentTypeId)">
+            </mat-form-field>
+        </div>
+        <div class="col-7 actions">
+            <input style="display: none" [attr.id]="vendorDocCtrl.socialSecNoCtrl.browserId" type="file" multiple
+                accept=".xls,.xlsx,.doc,.docx,.pdf,.png,.jpg,.zip"
+                (change)="onFileChange($event, vendorDocCtrl.socialSecNoCtrl.documentTypeId)" />
+            <button mat-raised-button class="footer-actions"
+                (click)="onBrowseFileClick($event, vendorDocCtrl.socialSecNoCtrl.browserId)"
+                [disabled]="!vendorDocumentForm.get('usSocialSecurity').value">Attach</button>
+
+            <div *ngIf="filesMap[vendorDocCtrl.socialSecNoCtrl.documentTypeId]?.isAttached" style="display: flex;
+    flex-wrap: wrap;">
+                <span class="filename"
+                    *ngFor="let f of filesMap[vendorDocCtrl.socialSecNoCtrl.documentTypeId]?.filesList; let fInd = index">
+                    <span>
+                        <mat-icon matTooltip="{{ f.actualFileName }}" (click)="downloadFile(f)">description</mat-icon>
+                        <button mat-button mat-icon-button aria-label="Delete" *ngIf="!disableSubmit"
+                            (click)="onDeleteFileClick(f, fInd, vendorDocCtrl.socialSecNoCtrl.documentTypeId)">
+                            <mat-icon>delete_outline</mat-icon>
+                        </button>
+                    </span>
+                </span>
+            </div>
+            <div *ngIf="filesMap[vendorDocCtrl.socialSecNoCtrl.documentTypeId] && 
+            filesMap[vendorDocCtrl.socialSecNoCtrl.documentTypeId]?.isError" class="errortxt">
+                Please attach the Document(s)
+            </div>
+            <div *ngIf="filesMap[vendorDocCtrl.socialSecNoCtrl.documentTypeId]?.isAttachWithoutValue" class="errortxt">
+                Social security no. is missing for this attached document
+            </div>
+        </div>
+    </div>
+
+    <!-- ---------------------------------------EIN no------------------ -->
+    <div class="row doc-field" *ngIf="(showUSField() && (usPayeeIdentificatn =='ein'))">
+        <div class="col-5 doc-form-field form-group">
+            <mat-form-field class="full-width">
+                <input type="text" matInput (keypress)="omit_special_char($event)"
+                    placeholder="{{vendorDocCtrl.einCtrl.placeholder}}" formControlName="usEinNumber" autocomplete="off"
+                    minlength="15" maxlength="15"
+                    (blur)="updateMandatory('usEinNumber',vendorDocCtrl.einCtrl.documentTypeId)">
+                    <mat-error class="errortxt" *ngIf="( isSubmitted ) && vdf?.usEinNumber?.errors?.minlength">Minimum 15
+                        characters are required
+                    </mat-error>
+                    <mat-error class="errortxt" *ngIf="( isSubmitted ) && vdf?.usEinNumber?.errors?.pattern">EIN No. accepts
+                        combination of alphanumeric</mat-error>
+            </mat-form-field>
+        </div>
+        <div class="col-7 actions">
+            <input style="display: none" [attr.id]="vendorDocCtrl.einCtrl.browserId" type="file" multiple
+                accept=".xls,.xlsx,.doc,.docx,.pdf,.png,.jpg,.zip"
+                (change)="onFileChange($event, vendorDocCtrl.einCtrl.documentTypeId)" />
+            <button mat-raised-button class="footer-actions"
+                (click)="onBrowseFileClick($event, vendorDocCtrl.einCtrl.browserId)"
+                [disabled]="!vendorDocumentForm.get('usEinNumber').value">Attach</button>
+
+            <div *ngIf="filesMap[vendorDocCtrl.einCtrl.documentTypeId]?.isAttached" style="display: flex;
+flex-wrap: wrap;">
+                <span class="filename"
+                    *ngFor="let f of filesMap[vendorDocCtrl.einCtrl.documentTypeId]?.filesList; let fInd = index">
+                    <span>
+                        <mat-icon matTooltip="{{ f.actualFileName }}" (click)="downloadFile(f)">description</mat-icon>
+                        <button mat-button mat-icon-button aria-label="Delete" *ngIf="!disableSubmit"
+                            (click)="onDeleteFileClick(f, fInd, vendorDocCtrl.einCtrl.documentTypeId)">
+                            <mat-icon>delete_outline</mat-icon>
+                        </button>
+                    </span>
+                </span>
+            </div>
+            <div *ngIf="filesMap[vendorDocCtrl.einCtrl.documentTypeId] && 
+      filesMap[vendorDocCtrl.einCtrl.documentTypeId]?.isError" class="errortxt">
+                Please attach the Document(s)
+            </div>
+            <div *ngIf="filesMap[vendorDocCtrl.einCtrl.documentTypeId]?.isAttachWithoutValue" class="errortxt">
+                EIN is missing for this attached document
+            </div>
+        </div>
+    </div>
+
+    <!-- ---------------------------------------EIN No. --  (w9)  ------------------ -->
+    <div class="row doc-field" *ngIf="(showUSField() && (usPayeeIdentificatn =='ein'))">
+        <div class="col-3 doc-form-field">
+            <mat-label>{{vendorDocCtrl.w9Ctrl.placeholder}}</mat-label>
+        </div>
+        <div class="col-2 doc-form-field">
+            <mat-radio-group formControlName="usW9"
+                (change)="updateMandatory('usW9',vendorDocCtrl.w9Ctrl.documentTypeId)">
+                <mat-radio-button [value]=true>YES</mat-radio-button>
+                <mat-radio-button [value]=false>NO</mat-radio-button>
+            </mat-radio-group>
+        </div>
+        <div class="col-7 actions">
+            <input style="display: none" [attr.id]="vendorDocCtrl.w9Ctrl.browserId" type="file" multiple
+                accept=".xls,.xlsx,.doc,.docx,.pdf,.png,.jpg,.zip"
+                (change)="onFileChange($event, vendorDocCtrl.w9Ctrl.documentTypeId)" />
+            <button mat-raised-button class="footer-actions" [disabled]="!vendorDocumentForm.get('usW9').value"
+                (click)="onBrowseFileClick($event, vendorDocCtrl.w9Ctrl.browserId);">Attach</button>
+            <div *ngIf="filesMap[vendorDocCtrl.w9Ctrl.documentTypeId]?.isAttached" style="display: flex;
+flex-wrap: wrap;">
+                <span class="filename"
+                    *ngFor="let f of filesMap[vendorDocCtrl.w9Ctrl.documentTypeId]?.filesList; let fInd = index">
+                    <span>
+                        <mat-icon matTooltip="{{ f.actualFileName }}" (click)="downloadFile(f)">description</mat-icon>
+                        <button mat-button mat-icon-button aria-label="Delete" *ngIf="!disableSubmit"
+                            (click)="onDeleteFileClick(f, fInd, vendorDocCtrl.w9Ctrl.documentTypeId)">
+                            <mat-icon>delete_outline</mat-icon>
+                        </button>
+                    </span>
+                </span>
+
+            </div>
+            <div *ngIf="filesMap[vendorDocCtrl.w9Ctrl.documentTypeId] && filesMap[vendorDocCtrl.w9Ctrl.documentTypeId]?.isError"
+                class="errortxt">
+                Please attach the Document(s)
+            </div>
+            <div *ngIf="filesMap[vendorDocCtrl.w9Ctrl.documentTypeId]?.isAttachWithoutValue" class="errortxt">
+                w9 is not selected for this attached document
+            </div>
+        </div>
+
+    </div>
 
     <!-- ---------------------------------------minority certificate------------------ -->
     <div class="row doc-field" *ngIf="showUSField()">
@@ -465,7 +696,8 @@
             <input style="display: none" [attr.id]="vendorDocCtrl.minorityCertCtrl.browserId" type="file" multiple
                 accept=".xls,.xlsx,.doc,.docx,.pdf,.png,.jpg,.zip"
                 (change)="onFileChange($event, vendorDocCtrl.minorityCertCtrl.documentTypeId)" />
-            <button mat-raised-button class="footer-actions" [disabled]="!vendorDocumentForm.get('usMinorityCertificate').value"
+            <button mat-raised-button class="footer-actions"
+                [disabled]="!vendorDocumentForm.get('usMinorityCertificate').value"
                 (click)="onBrowseFileClick($event, vendorDocCtrl.minorityCertCtrl.browserId);">Attach</button>
             <div *ngIf="filesMap[vendorDocCtrl.minorityCertCtrl.documentTypeId]?.isAttached" style="display: flex;
 flex-wrap: wrap;">
@@ -491,6 +723,7 @@ flex-wrap: wrap;">
         </div>
 
     </div>
+
     <!------------------------------------- Others Document---------------------- -->
     <div class="row doc-field">
         <div class="col-5 doc-form-field">

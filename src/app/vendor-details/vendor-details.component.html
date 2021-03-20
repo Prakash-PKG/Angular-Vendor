@@ -103,6 +103,8 @@
 </form>
 
 <div class="row actions margin-unset">
-
+    <div class="errortxt">
+        {{ failureMsg }}
+    </div>
     <button mat-raised-button class="footer-actions" (click)="onNextClick()">Next</button>
 </div>
