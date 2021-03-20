@@ -50,12 +50,14 @@ export class VendorAddressComponent implements OnInit {
         this.isSubmitted = true;
 
         if (this.vendorAddressForm.valid) {
-            
+
             this.updateControlsData();
 
             let req: VendorRegistrationRequestModel = {
                 action: this._appService.updateOperations.save,
-                vendorMasterDetails: this._appService.vendorRegistrationDetails
+                vendorMasterDetails: this._appService.vendorRegistrationDetails,
+                vendorOrgCatogery: this._appService.vendorOrgCatogery,
+                vendorOrgTypes: this._appService.vendorOrgTypes
             }
             // console.log(req);
             // this._router.navigate([this._appService.routingConstants.vendorBankDetails]);
@@ -116,11 +118,11 @@ export class VendorAddressComponent implements OnInit {
 
     updatePincodeValidation() {
         let countryCodeVal = this.vendorAddressForm.get("countryCode").value;
-        if(countryCodeVal == "US") {
+        if (countryCodeVal == "US") {
             this.vendorAddressForm.get("pincode").setValidators([Validators.required, Validators.minLength(5), Validators.maxLength(10)]);
         }
         else {
-            this.vendorAddressForm.get("pincode").setValidators([Validators.required, Validators.minLength(6),  Validators.maxLength(6)]);
+            this.vendorAddressForm.get("pincode").setValidators([Validators.required, Validators.minLength(6), Validators.maxLength(6)]);
         }
 
         this.vendorAddressForm.get("pincode").updateValueAndValidity();
@@ -147,7 +149,7 @@ export class VendorAddressComponent implements OnInit {
             address2: [null],
             city: [null, [Validators.required]],
             street: [null, [Validators.required]],
-            pincode: [null, [Validators.required, Validators.maxLength(6),Validators.pattern("^[0-9]*$")]],
+            pincode: [null, [Validators.required, Validators.maxLength(6), Validators.pattern("^[0-9]*$")]],
             stateCode: [null, [Validators.required]],
             countryCode: [null, [Validators.required]]
         });

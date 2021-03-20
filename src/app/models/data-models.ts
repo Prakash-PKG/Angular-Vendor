@@ -29,7 +29,7 @@ export class EmpanelmentInitDataModel {
 export class EmpanelmentSubmitReqModel {
     emailId: string;
     sentBy: string;
-    countryCode:String;
+    countryCode: String;
 }
 
 export class EmpanelmentSubmitResultModel {
@@ -97,7 +97,20 @@ export class POSearchResultModel {
 export class VendorRegistrationRequestModel {
     action: string;
     vendorMasterDetails: VendorMasterDetailsModel;
+    // canRaiseNotification: boolean;
+    vendorOrgCatogery: vendorOrgCategoryModel;
+    vendorOrgTypes: VendorOrgTypesModel[];
 }
+export class vendorOrgCategoryModel {
+    vendorMasterId: number;
+    catogery: string;
+    subCatogery: string;
+}
+export class VendorOrgTypesModel {
+    vendorMasterId: number;
+    orgType: string;
+}
+
 export class VendorRegistrationDetailRequestModel {
     vendorMasterId: number;
 }
@@ -181,6 +194,12 @@ export class VendorMasterDetailsModel {
     usBankSector: string;
     usChequePayableTo: string;
     usChecqueMailingAddress: string;
+    usTaxId: string;
+    usSocialSecurity: string;
+    usEinNumber: string;
+    usW8Bene: string;
+    usW9: string;
+    usMinorityCertificate: string;
 }
 
 export interface FileMap {
@@ -206,6 +225,15 @@ export class VendorRegistrationInitDataModel {
     regionMasterVOList: regionMasterVOList[];
     bankAccountTypeList: BankAccountTypeModel[];
     vendorCounty: string;
+    organizationTypeMasterVO: organizationTypeMasterVO[];
+    organizationCategoryMasterVO: organizationCategoryMasterVO[];
+}
+export class organizationCategoryMasterVO {
+    catogery: string;
+    subCatogeries: string[];
+}
+export class organizationTypeMasterVO {
+    orgType: string;
 }
 
 export class InvoiceSearchResultModel {

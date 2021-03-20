@@ -9,7 +9,7 @@ import { VendorRegistrationService } from './../vendor-registration/vendor-regis
 import {
     BusyDataModel, VendorRegistrationRequestModel,
     VendorRegistrationResultModel, VendorDocumentReqModel,
-    VendorMasterDocumentModel, FileDetailsModel, VendorDocumentResultModel, StatusModel, FileMap
+    VendorMasterDocumentModel, FileDetailsModel, VendorDocumentResultModel, StatusModel, FileMap, organizationCategoryMasterVO, organizationTypeMasterVO
 } from './../models/data-models';
 import { DatePipe } from '@angular/common';
 import { HomeService } from '../home/home.service';
@@ -41,6 +41,8 @@ export class VendorDocumentsComponent implements OnInit {
 
     maxLutDate = new Date();
 
+    organizationTypeMasterVO: organizationTypeMasterVO[] = [];
+    organizationCategoryMasterVO: organizationCategoryMasterVO[] = [];
 
     vendorDocCtrl = {
         incCerCtrl: { documentTypeId: 1, browserId: 'incCerFileCtrl', placeholder: 'Incorporation Certificate', controlName: '' },
@@ -286,7 +288,9 @@ export class VendorDocumentsComponent implements OnInit {
 
             let req: VendorRegistrationRequestModel = {
                 action: this._appService.updateOperations.submit,
-                vendorMasterDetails: this._appService.vendorRegistrationDetails
+                vendorMasterDetails: this._appService.vendorRegistrationDetails,
+                vendorOrgCatogery: this._appService.vendorOrgCatogery,
+                vendorOrgTypes: this._appService.vendorOrgTypes
             }
 
             this._vendorRegistrationService.updateBusy(<BusyDataModel>{ isBusy: true, msg: null });
@@ -460,9 +464,25 @@ export class VendorDocumentsComponent implements OnInit {
 
     }
 
+    showUSField() {
+        return this._vendorRegistrationService.vendorUS;
+    }
+
     ngOnInit() {
         this.isSubmitted = false;
         this.maxLutDate.setDate(this.maxLutDate.getDate() + 1);
+
+        this.organizationTypeMasterVO = [];
+        if (this._appService.vendorRegistrationInitDetails && this._appService.vendorRegistrationInitDetails.organizationTypeMasterVO &&
+            this._appService.vendorRegistrationInitDetails.organizationTypeMasterVO.length > 0) {
+            this.organizationTypeMasterVO = this._appService.vendorRegistrationInitDetails.organizationTypeMasterVO;
+        }
+
+        this.organizationCategoryMasterVO = [];
+        if (this._appService.vendorRegistrationInitDetails && this._appService.vendorRegistrationInitDetails.organizationCategoryMasterVO &&
+            this._appService.vendorRegistrationInitDetails.organizationCategoryMasterVO.length > 0) {
+            this.organizationCategoryMasterVO = this._appService.vendorRegistrationInitDetails.organizationCategoryMasterVO;
+        }
 
         this.initializeFilesList();
 
@@ -479,7 +499,8 @@ export class VendorDocumentsComponent implements OnInit {
             hasTdsLower: [false],
             lutNum: [null],
             lutDate: [{ value: null, disabled: true }],
-            otherDocDesc: [null]
+            otherDocDesc: [null],
+            vendorOrgCatogery: [null, [Validators.required]]
 
         });
         this._vendorRegistrationService.updateCurrentPageDetails({ pageName: 'venDoc' });

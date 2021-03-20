@@ -61,6 +61,8 @@ export class VendorRegistrationComponent implements OnInit {
         });
 
         this._appService.vendorRegistrationDetails = this._appService.resetVendorRegistrationDetails();
+        this._appService.vendorOrgCatogery=this._appService.resetVendorOrgCatogery();
+        this._appService.vendorOrgTypes=this._appService.resetVendorOrgTypes();
         this._appService.selectedFileMap = {};
 
         setTimeout(() => {

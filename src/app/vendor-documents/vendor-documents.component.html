@@ -5,7 +5,7 @@
 
 <form [formGroup]="vendorDocumentForm">
     <!------------------------------------- Incorporation Certificate ---------------------- -->
-    <div class="row doc-field">
+    <div class="row doc-field" *ngIf="!showUSField()">
         <div class="col-5 doc-form-field">
             <mat-label>{{vendorDocCtrl.incCerCtrl.placeholder}}:
             </mat-label>
@@ -38,7 +38,7 @@
 
     </div>
     <!------------------------------------- GST No---------------------- -->
-    <div class="row doc-field">
+    <div class="row doc-field" *ngIf="!showUSField()">
         <div class="col-5 doc-form-field form-group">
             <mat-form-field class="full-width">
                 <input type="text" matInput (keypress)="omit_special_char($event)"
@@ -88,7 +88,7 @@
 
     </div>
     <!------------------------------------- Pan No---------------------- -->
-    <div class="row doc-field">
+    <div class="row doc-field" *ngIf="!showUSField()">
         <div class="col-5 doc-form-field form-group">
             <mat-form-field class="full-width">
                 <input type="text" matInput (keypress)="omit_special_char($event)"
@@ -136,7 +136,7 @@
 
     </div>
     <!------------------------------------- Cancelled Chequed---------------------- -->
-    <div class="row doc-field">
+    <div class="row doc-field" *ngIf="!showUSField()">
         <div class="col-5 doc-form-field">
             <mat-label> {{vendorDocCtrl.canChqCtrl.placeholder}} * :</mat-label>
         </div>
@@ -168,7 +168,7 @@
 
     </div>
     <!------------------------------------- LUT No---------------------- -->
-    <div class="row doc-field">
+    <div class="row doc-field" *ngIf="!showUSField()">
         <div class="col-5 doc-form-field">
             <mat-form-field>
                 <input type="text" matInput placeholder="{{vendorDocCtrl.lutNoCtrl.placeholder}}"
@@ -217,7 +217,7 @@
 
     </div>
     <!------------------------------------- PF No---------------------- -->
-    <div class="row doc-field">
+    <div class="row doc-field" *ngIf="!showUSField()">
         <div class="col-5 doc-form-field">
             <mat-form-field class="full-width">
                 <input type="text" matInput (keypress)="omit_special_char($event)"
@@ -257,7 +257,7 @@
 
     </div>
     <!------------------------------------- ESI  No---------------------- -->
-    <div class="row doc-field">
+    <div class="row doc-field" *ngIf="!showUSField()">
         <div class="col-5 doc-form-field">
             <mat-form-field class="full-width">
                 <input type="text" matInput placeholder="{{vendorDocCtrl.esiCtrl.placeholder}}" formControlName="esiNum"
@@ -295,7 +295,7 @@
 
     </div>
     <!------------------------------------- MSME  Registered?---------------------- -->
-    <div class="row doc-field">
+    <div class="row doc-field" *ngIf="!showUSField()">
         <div class="col-3 doc-form-field">
             <mat-label>{{vendorDocCtrl.msmeCtrl.placeholder}}</mat-label>
         </div>
@@ -337,7 +337,7 @@
 
     </div>
     <!------------------------------------- Has TDS---------------------- -->
-    <div class="row doc-field">
+    <div class="row doc-field" *ngIf="!showUSField()">
         <div class="col-3 doc-form-field">
             <mat-label>{{vendorDocCtrl.tdsCtrl.placeholder}}</mat-label>
         </div>
@@ -379,7 +379,7 @@
 
     </div>
     <!------------------------------------- isSEZ---------------------- -->
-    <div class="row doc-field">
+    <div class="row doc-field" *ngIf="!showUSField()">
         <div class="col-3 doc-form-field">
             <mat-label>{{vendorDocCtrl.sezCtrl.placeholder}}</mat-label>
         </div>
@@ -421,7 +421,7 @@
 
     </div>
     <!------------------------------------- RCM ---------------------- -->
-    <div class="row doc-field">
+    <div class="row doc-field" *ngIf="!showUSField()">
         <div class="col-3 doc-form-field">
             <mat-label>Is RCM applicable?</mat-label>
         </div>
@@ -435,15 +435,70 @@
     </div>
 
     <!------------------------------------- CIN No---------------------- -->
-    <div class="row doc-field">
+    <div class="row doc-field" *ngIf="!showUSField()">
         <div class="col-5 doc-form-field">
             <mat-form-field class="full-width">
                 <input type="text" matInput placeholder="CIN No." formControlName="cinNum" autocomplete="off">
             </mat-form-field>
         </div>
     </div>
-    <!------------------------------------- Others Document---------------------- -->
 
+
+<!-- --------------------------------------------------------------------US Registration Fields------------------------------------------------------------------ -->
+<div class="row doc-field" *ngIf="showUSField()">
+    <div class="col-5 doc-form-field form-group">
+        <mat-form-field class="full-width">
+            <input type="text" matInput (keypress)="omit_special_char($event)"
+                placeholder="{{vendorDocCtrl.gstCtrl.placeholder}}" formControlName="gstNum" minlength="15"
+                maxlength="15" autocomplete="off"
+                (blur)="updateMandatory('gstNum',vendorDocCtrl.gstCtrl.documentTypeId); toUppercase('gstNum')">
+            <mat-error class="errortxt" *ngIf="( isSubmitted ) && vdf?.gstNum?.errors?.minlength">Minimum 15
+                characters are required
+            </mat-error>
+            <mat-error class="errortxt" *ngIf="( isSubmitted ) && vdf?.gstNum?.errors?.pattern">GST No. accepts
+                combination of alphanumeric</mat-error>
+        </mat-form-field>
+
+    </div>
+
+    <div class="col-7 actions">
+        <input style="display: none" [attr.id]="vendorDocCtrl.gstCtrl.browserId" type="file" multiple
+            accept=".xls,.xlsx,.doc,.docx,.pdf,.png,.jpg,.zip"
+            (change)="onFileChange($event, vendorDocCtrl.gstCtrl.documentTypeId)" />
+        <button mat-raised-button class="footer-actions"
+            (click)="onBrowseFileClick($event, vendorDocCtrl.gstCtrl.browserId)"
+            [disabled]="!vendorDocumentForm.get('gstNum').value">Attach</button>
+
+        <div *ngIf="filesMap[vendorDocCtrl.gstCtrl.documentTypeId]?.isAttached" style="display: flex;
+flex-wrap: wrap;">
+            <span class="filename"
+                *ngFor="let f of filesMap[vendorDocCtrl.gstCtrl.documentTypeId]?.filesList; let fInd = index">
+                <span>
+                    <mat-icon matTooltip="{{ f.actualFileName }}" (click)="downloadFile(f)">description</mat-icon>
+                    <button mat-button mat-icon-button aria-label="Delete" *ngIf="!disableSubmit"
+                        (click)="onDeleteFileClick(f, fInd, vendorDocCtrl.gstCtrl.documentTypeId)">
+                        <mat-icon>delete_outline</mat-icon>
+                    </button>
+
+                </span>
+            </span>
+
+        </div>
+        <div *ngIf="filesMap[vendorDocCtrl.gstCtrl.documentTypeId] && 
+        filesMap[vendorDocCtrl.gstCtrl.documentTypeId]?.isError" class="errortxt">
+            Please attach the Document(s)
+        </div>
+        <div *ngIf="filesMap[vendorDocCtrl.gstCtrl.documentTypeId]?.isAttachWithoutValue" class="errortxt">
+            GST no. is missing for this attached document
+        </div>
+    </div>
+
+</div>
+
+
+
+
+    <!------------------------------------- Others Document---------------------- -->
     <div class="row doc-field">
         <div class="col-5 doc-form-field">
             <mat-form-field class="full-width">

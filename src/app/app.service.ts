@@ -2,7 +2,7 @@ import { globalConstant } from './common/global-constant';
 import { LoginService } from './login/login.service';
 import {
     VendorMasterDetailsModel, VendorRegistrationInitDataModel,
-    PendingApprovalsModel, FileDetailsModel, PODetailsModel, InvoiceModel, FileMap
+    PendingApprovalsModel, FileDetailsModel, PODetailsModel, InvoiceModel, FileMap, VendorOrgTypesModel, vendorOrgCategoryModel
 } from './models/data-models';
 
 import { Injectable } from '@angular/core';
@@ -25,7 +25,7 @@ export class AppService {
     readonly customerAuthUrl = this.domain + "/customerAuth/oauth/token";
     readonly isForProduction: boolean = false;
     readonly isSSORequired: boolean = false;
-    
+
     private sessionTimeCount: Subject<number> = new BehaviorSubject<number>(0);
     public sessionTimeCount$: Observable<number> = this.sessionTimeCount.asObservable();
 
@@ -222,9 +222,24 @@ export class AppService {
         usVendorBusiness: null,
         usBankSector: null,
         usChequePayableTo: null,
-        usChecqueMailingAddress: null
+        usChecqueMailingAddress: null,
+        usTaxId: null,
+        usSocialSecurity: null,
+        usEinNumber: null,
+        usW8Bene: null,
+        usW9: null,
+        usMinorityCertificate: null
+    };
+    vendorOrgCatogery: vendorOrgCategoryModel = {
+        vendorMasterId: null,
+        catogery: null,
+        subCatogery: null
 
     };
+    vendorOrgTypes: VendorOrgTypesModel[] = [{
+        vendorMasterId: null,
+        orgType: null
+    }];
 
     selectedFileMap: FileMap = {};
 
@@ -302,12 +317,33 @@ export class AppService {
             usVendorBusiness: null,
             usBankSector: null,
             usChequePayableTo: null,
-            usChecqueMailingAddress: null
+            usChecqueMailingAddress: null,
+            usTaxId: null,
+            usSocialSecurity: null,
+            usEinNumber: null,
+            usW8Bene: null,
+            usW9: null,
+            usMinorityCertificate: null
         };
 
         return regDetails;
     }
+    resetVendorOrgCatogery() {
+        let vendorOrgCatogery: vendorOrgCategoryModel = {
+            vendorMasterId: null,
+            catogery: null,
+            subCatogery: null
 
+        };
+        return vendorOrgCatogery;
+    }
+    resetVendorOrgTypes() {
+        let vendorOrgTypes: VendorOrgTypesModel[] = [{
+            vendorMasterId: null,
+            orgType: null
+        }];
+        return vendorOrgTypes;
+    }
     isEmpty(obj) {
         return Object.keys(obj).length === 0;
     }

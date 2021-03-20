@@ -48,6 +48,8 @@ export class VendorRegistrationService {
             initModel.regionMasterVOList = data["regionMasterVOList"];
             initModel.bankAccountTypeList = data["bankAccountTypeVOList"];
             initModel.vendorCounty = data["vendorCounty"];
+            initModel.organizationCategoryMasterVO = data["organizationCategoryMasterVO"];
+            initModel.organizationTypeMasterVO = data["organizationTypeMasterVO"]
         }
         this.vendorUS = initModel.vendorCounty == 'US' ? true : false;
 

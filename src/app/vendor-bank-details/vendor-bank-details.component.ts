@@ -76,7 +76,9 @@ export class VendorBankDetailsComponent implements OnInit {
 
             let req: VendorRegistrationRequestModel = {
                 action: this._appService.updateOperations.save,
-                vendorMasterDetails: this._appService.vendorRegistrationDetails
+                vendorMasterDetails: this._appService.vendorRegistrationDetails,
+                vendorOrgCatogery: this._appService.vendorOrgCatogery,
+                vendorOrgTypes: this._appService.vendorOrgTypes
             }
 
             // console.log(req);
