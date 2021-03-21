@@ -1,9 +1,7 @@
-
 .heading {
   color: blueviolet;
   margin: 2em;
   text-align: center;
-  
 }
 .heading .mat-icon {
   height: 1em;
@@ -35,10 +33,10 @@
   border-bottom: 1px solid #e9d2ff;
   border-right: 1px solid #e9d2ff;
   border-left: 1px solid #e9d2ff;
-  height: 5em;
+  min-height: 5em;
 }
-.doc-field:first-child{
-    border-top: 1px solid #e9d2ff;
+.doc-field:first-child {
+  border-top: 1px solid #e9d2ff;
 }
 .doc-field .actions .footer-actions {
   height: 2em;
@@ -49,16 +47,20 @@
   justify-content: space-between;
   align-items: center;
 }
-.col-2{
-  padding:0px;
+.col-2 {
+  padding: 0px;
   justify-content: flex-end;
 }
-.filename{
+.filename {
   background: aliceblue;
   margin-right: 5px;
   cursor: pointer;
 }
-.col-7.actions{
+.col-7.actions {
   display: flex;
   justify-content: flex-start;
+}
+ul.orgType {
+  list-style-type: none;
+  margin-top: 4px;
 }

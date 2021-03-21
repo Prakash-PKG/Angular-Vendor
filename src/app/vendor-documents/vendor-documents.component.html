@@ -454,7 +454,8 @@
             <mat-label>Payee Identification</mat-label>
         </div>
         <div class="col-7 doc-form-field">
-            <mat-radio-group [(ngModel)]="usPayeeIdentificatn" (change)="updatePayeeIdentificatn()" [ngModelOptions]="{standalone: true}">
+            <mat-radio-group [(ngModel)]="usPayeeIdentificatn" (change)="updatePayeeIdentificatn()"
+                [ngModelOptions]="{standalone: true}">
                 <mat-radio-button value='taxId' [checked]="true">Tax ID No.</mat-radio-button>
                 <mat-radio-button value='socialSec'>Social Security No.</mat-radio-button>
                 <mat-radio-button value='ein'>EIN</mat-radio-button>
@@ -463,13 +464,14 @@
     </div>
 
     <!-- ---------------------------------------Tax ID------------------ -->
-    <div class="row doc-field"
-        *ngIf="(showUSField() && (usPayeeIdentificatn=='taxId'))">
+    <div class="row doc-field" *ngIf="(showUSField() && (usPayeeIdentificatn=='taxId'))">
         <div class="col-5 doc-form-field form-group">
             <mat-form-field class="full-width">
                 <input type="text" matInput placeholder="{{vendorDocCtrl.taxIdNoCtrl.placeholder}}"
                     formControlName="usTaxId" autocomplete="off"
                     (blur)="updateMandatory('usTaxId',vendorDocCtrl.taxIdNoCtrl.documentTypeId)">
+                    <mat-error class="errortxt" *ngIf="( isSubmitted ) && vdf?.usTaxId?.errors?.required">Tax ID no. is required
+                    </mat-error>
             </mat-form-field>
         </div>
 
@@ -503,12 +505,15 @@
             <div *ngIf="filesMap[vendorDocCtrl.taxIdNoCtrl.documentTypeId]?.isAttachWithoutValue" class="errortxt">
                 Tax Id no. is missing for this attached document
             </div>
+            <div *ngIf="filesMap[vendorDocCtrl.minorityCertCtrl.documentTypeId]?.isAttachWithoutValue" class="errortxt">
+                Minority Certificate is not selected for this attached document
+            </div>
+        </div>
         </div>
     </div>
 
     <!-- ---------------------------------------Tax ID --  (w8 BENE)  ------------------ -->
-    <div class="row doc-field"
-        *ngIf="(showUSField() && (usPayeeIdentificatn =='taxId'))">
+    <div class="row doc-field" *ngIf="(showUSField() && (usPayeeIdentificatn =='taxId'))">
         <div class="col-3 doc-form-field">
             <mat-label>{{vendorDocCtrl.w8Ctrl.placeholder}}</mat-label>
         </div>
@@ -551,13 +556,14 @@ flex-wrap: wrap;">
     </div>
 
     <!-- ---------------------------------------Social Security------------------ -->
-    <div class="row doc-field"
-        *ngIf="(showUSField() && (usPayeeIdentificatn =='socialSec'))">
+    <div class="row doc-field" *ngIf="(showUSField() && (usPayeeIdentificatn =='socialSec'))">
         <div class="col-5 doc-form-field form-group">
             <mat-form-field class="full-width">
                 <input type="text" matInput placeholder="{{vendorDocCtrl.socialSecNoCtrl.placeholder}}"
                     formControlName="usSocialSecurity" autocomplete="off"
                     (blur)="updateMandatory('usSocialSecurity',vendorDocCtrl.socialSecNoCtrl.documentTypeId)">
+                    <mat-error class="errortxt" *ngIf="( isSubmitted ) && vdf?.usSocialSecurity?.errors?.required">Social Security no. is required
+                    </mat-error>
             </mat-form-field>
         </div>
         <div class="col-7 actions">
@@ -599,11 +605,16 @@ flex-wrap: wrap;">
                     placeholder="{{vendorDocCtrl.einCtrl.placeholder}}" formControlName="usEinNumber" autocomplete="off"
                     minlength="15" maxlength="15"
                     (blur)="updateMandatory('usEinNumber',vendorDocCtrl.einCtrl.documentTypeId)">
-                    <mat-error class="errortxt" *ngIf="( isSubmitted ) && vdf?.usEinNumber?.errors?.minlength">Minimum 15
-                        characters are required
+                    <mat-error class="errortxt" *ngIf="( isSubmitted ) && vdf?.usEinNumber?.errors?.required">EIN no. is required
                     </mat-error>
-                    <mat-error class="errortxt" *ngIf="( isSubmitted ) && vdf?.usEinNumber?.errors?.pattern">EIN No. accepts
-                        combination of alphanumeric</mat-error>
+                <mat-error class="errortxt" *ngIf="( isSubmitted ) && vdf?.usEinNumber?.errors?.minlength">Minimum 15
+                    characters are required
+                </mat-error>
+                <mat-error class="errortxt" *ngIf="( isSubmitted ) && vdf?.usEinNumber?.errors?.maxlength">Maximum 15
+                    characters are required
+                </mat-error>
+                <mat-error class="errortxt" *ngIf="( isSubmitted ) && vdf?.usEinNumber?.errors?.pattern">EIN No. accepts
+                    combination of alphanumeric</mat-error>
             </mat-form-field>
         </div>
         <div class="col-7 actions">
@@ -680,8 +691,50 @@ flex-wrap: wrap;">
 
     </div>
 
+    <!-- ----------------------------------------organisation type ---------------------->
+    <div class="row doc-field" *ngIf="showUSField()" style="align-items: flex-start;">
+        <div class="col-5 doc-form-field">
+            <mat-label>Organisation Type</mat-label>
+        </div>
+        <div class="col-7 doc-form-field">
+            <ul class="orgType">
+                <li *ngFor="let orgType of organizationTypeMasterVO">
+                    <mat-checkbox formControlName="vendorOrgTypes"
+                        (change)="prepareOrgTypeList($event.checked,orgType.orgType)"
+                        [checked]="setOrgType(orgType.orgType)">
+                        {{orgType.orgType}}
+                    </mat-checkbox>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <!-- ----------------------------------------organisation Categories ---------------------->
+
+    <div class="row doc-field" *ngIf="showUSField()" style="align-items: flex-start;">
+        <div class="col-5 doc-form-field">
+            <mat-label>Organisation Categories</mat-label>
+        </div>
+        <div class="col-7 doc-form-field">
+            <mat-radio-group formControlName="vendorOrgCatogery" (change)="onOrgCatChange()">
+                <div *ngFor="let orgCat of organizationCategoryMasterVO; let i=index">
+                    <mat-radio-button [value]="orgCat.catogery" class="orgCategory">
+                        {{orgCat.catogery}}
+                    </mat-radio-button>
+                    <div *ngIf="((orgCat.subCatogeries.length>1) && (vendorDocumentForm.get('vendorOrgCatogery').value == orgCat.catogery))" style="margin-left: 2em;">
+                        <mat-radio-group formControlName="vendorOrgSubCategory" (change)=prepareOrgCat()>
+                            <mat-radio-button *ngFor="let orgSubCat of orgCat.subCatogeries;let sub=index"
+                                [value]="orgSubCat" class="orgCategory" >
+                                {{orgSubCat}}
+                            </mat-radio-button>
+                        </mat-radio-group>
+                    </div>
+                </div>
+            </mat-radio-group>
+        </div>
+    </div>
+
     <!-- ---------------------------------------minority certificate------------------ -->
-    <div class="row doc-field" *ngIf="showUSField()">
+    <div class=" row doc-field" *ngIf="showUSField()">
         <div class="col-3 doc-form-field">
             <mat-label>{{vendorDocCtrl.minorityCertCtrl.placeholder}}</mat-label>
         </div>
@@ -704,7 +757,8 @@ flex-wrap: wrap;">
                 <span class="filename"
                     *ngFor="let f of filesMap[vendorDocCtrl.minorityCertCtrl.documentTypeId]?.filesList; let fInd = index">
                     <span>
-                        <mat-icon matTooltip="{{ f.actualFileName }}" (click)="downloadFile(f)">description</mat-icon>
+                        <mat-icon matTooltip="{{ f.actualFileName }}" (click)="downloadFile(f)">description
+                        </mat-icon>
                         <button mat-button mat-icon-button aria-label="Delete" *ngIf="!disableSubmit"
                             (click)="onDeleteFileClick(f, fInd, vendorDocCtrl.minorityCertCtrl.documentTypeId)">
                             <mat-icon>delete_outline</mat-icon>
@@ -745,7 +799,8 @@ flex-wrap: wrap;">
                 <span class="filename"
                     *ngFor="let f of filesMap[vendorDocCtrl.otherCtrl.documentTypeId]?.filesList; let fInd = index">
                     <span>
-                        <mat-icon matTooltip="{{ f.actualFileName }}" (click)="downloadFile(f)">description</mat-icon>
+                        <mat-icon matTooltip="{{ f.actualFileName }}" (click)="downloadFile(f)">description
+                        </mat-icon>
                         <button mat-button mat-icon-button aria-label="Delete" *ngIf="!disableSubmit"
                             (click)="onDeleteFileClick(f, fInd, vendorDocCtrl.otherCtrl.documentTypeId)">
                             <mat-icon>delete_outline</mat-icon>

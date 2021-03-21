@@ -8,8 +8,8 @@ import { VendorRegistrationService } from './../vendor-registration/vendor-regis
 
 import {
     BusyDataModel, VendorRegistrationRequestModel,
-    VendorRegistrationResultModel, VendorDocumentReqModel,
-    VendorMasterDocumentModel, FileDetailsModel, VendorDocumentResultModel, StatusModel, FileMap, organizationCategoryMasterVO, organizationTypeMasterVO
+    VendorRegistrationResultModel, VendorDocumentReqModel, vendorOrgCategoryModel,
+    VendorMasterDocumentModel, FileDetailsModel, VendorDocumentResultModel, StatusModel, FileMap, organizationCategoryMasterVO, organizationTypeMasterVO, VendorOrgTypesModel
 } from './../models/data-models';
 import { DatePipe } from '@angular/common';
 import { HomeService } from '../home/home.service';
@@ -44,6 +44,8 @@ export class VendorDocumentsComponent implements OnInit {
 
     organizationTypeMasterVO: organizationTypeMasterVO[] = [];
     organizationCategoryMasterVO: organizationCategoryMasterVO[] = [];
+
+    vendorOrgTypesList: VendorOrgTypesModel[] = [];
 
     vendorDocCtrl = {
         incCerCtrl: { documentTypeId: 1, browserId: 'incCerFileCtrl', placeholder: 'Incorporation Certificate', controlName: '' },
@@ -276,6 +278,8 @@ export class VendorDocumentsComponent implements OnInit {
         this._appService.vendorRegistrationDetails.usW8Bene = this.vendorDocumentForm.get("usW8Bene").value;
         this._appService.vendorRegistrationDetails.usW9 = this.vendorDocumentForm.get("usW9").value;
         this._appService.vendorRegistrationDetails.usMinorityCertificate = this.vendorDocumentForm.get("usMinorityCertificate").value;
+
+        this._appService.vendorOrgTypes = this.vendorOrgTypesList;
     }
 
     onPrevClick() {
@@ -399,6 +403,8 @@ export class VendorDocumentsComponent implements OnInit {
         this.vendorDocumentForm.get("usW8Bene").setValue(this._appService.vendorRegistrationDetails.usW8Bene);
         this.vendorDocumentForm.get("usW9").setValue(this._appService.vendorRegistrationDetails.usW9);
         this.vendorDocumentForm.get("usMinorityCertificate").setValue(this._appService.vendorRegistrationDetails.usMinorityCertificate);
+
+        this.vendorOrgTypesList = this._appService.vendorOrgTypes;
 
         this.filesMap = this._appService.selectedFileMap;
 
@@ -524,6 +530,51 @@ export class VendorDocumentsComponent implements OnInit {
         this.vendorDocumentForm.get("usEinNumber").updateValueAndValidity();
         this.vendorDocumentForm.get("usW9").updateValueAndValidity();
     }
+    setOrgType(orgType) {
+        // this.vendorOrgTypesList = this._appService.vendorOrgTypes;
+        return this.vendorOrgTypesList.find(selectedOrgType => selectedOrgType.orgType == orgType);
+    }
+
+    prepareOrgTypeList(event, orgType) {
+        let obj: VendorOrgTypesModel = {
+            vendorMasterId: this._appService.vendorRegistrationDetails.vendorMasterId,
+            orgType: orgType
+        }
+        if (event) {
+            this.vendorOrgTypesList = this.vendorOrgTypesList.concat(obj);
+        }
+        else {
+            let i = this.vendorOrgTypesList.findIndex(e => e.orgType == orgType);
+            this.vendorOrgTypesList.splice(i, 1);
+        }
+        this._appService.vendorOrgTypes = this.vendorOrgTypesList;
+    }
+
+    onOrgCatChange() {
+        this._appService.vendorOrgCatogery = null;
+        this.vendorDocumentForm.get('vendorOrgSubCategory').setValue(null);
+        let selectedOrgCat = this.vendorDocumentForm.get('vendorOrgCatogery').value
+        let i = this.organizationCategoryMasterVO.findIndex(orgCat => orgCat.catogery == selectedOrgCat);
+        if (this.organizationCategoryMasterVO[i].subCatogeries.length > 1) {
+            this.vendorDocumentForm.get('vendorOrgSubCategory').setValidators([Validators.required]);
+            this.vendorDocumentForm.get('vendorOrgSubCategory').updateValueAndValidity;
+        }
+        else {
+            this.vendorDocumentForm.get('vendorOrgSubCategory').setValidators([]);
+            this.vendorDocumentForm.get('vendorOrgSubCategory').updateValueAndValidity;
+            this.prepareOrgCat();
+        }
+    }
+    prepareOrgCat() {
+        let obj: vendorOrgCategoryModel = {
+            vendorMasterId: this._appService.vendorRegistrationDetails.vendorMasterId,
+            catogery: this.vendorDocumentForm.get('vendorOrgCatogery').value,
+            subCatogery: this.vendorDocumentForm.get('vendorOrgSubCategory').value
+        }
+        this._appService.vendorOrgCatogery = obj;
+        console.log(this._appService.vendorOrgCatogery);
+
+    }
 
     ngOnInit() {
         this.isSubmitted = false;
@@ -568,6 +619,7 @@ export class VendorDocumentsComponent implements OnInit {
             usMinorityCertificate: [null]
 
         });
+
         this.updateVendorDetails();
 
         this.updatePayeeIdentificatn();

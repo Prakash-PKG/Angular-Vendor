@@ -197,8 +197,8 @@ export class VendorMasterDetailsModel {
     usTaxId: string;
     usSocialSecurity: string;
     usEinNumber: string;
-    usW8Bene: string;
-    usW9: string;
+    usW8Bene:  boolean = false;
+    usW9:  boolean = false;
     usMinorityCertificate: string;
 }
 
