@@ -503,29 +503,50 @@ export class VendorDocumentsComponent implements OnInit {
         // return true;
     }
     updatePayeeIdentificatn() {
-        this.vendorDocumentForm.get("usTaxId").setValidators([]);
-        this.vendorDocumentForm.get("usW8Bene").setValidators([]);
-        this.vendorDocumentForm.get("usSocialSecurity").setValidators([]);
-        this.vendorDocumentForm.get("usEinNumber").setValidators([]);
-        this.vendorDocumentForm.get("usW9").setValidators([]);
 
         if (this.usPayeeIdentificatn == 'taxId') {
+            this.vendorDocumentForm.get("usSocialSecurity").setValidators([]);
+            this.vendorDocumentForm.get("usEinNumber").setValidators([]);
+            this.vendorDocumentForm.get("usW9").setValidators([]);
+
             this.vendorDocumentForm.get("usTaxId").setValidators([Validators.required]);
             this.vendorDocumentForm.get("usW8Bene").setValidators([Validators.required]);
+
+            this.vendorDocumentForm.get("usTaxId").updateValueAndValidity();
+            this.vendorDocumentForm.get("usW8Bene").updateValueAndValidity();
+            this.vendorDocumentForm.get("usSocialSecurity").updateValueAndValidity();
+            this.vendorDocumentForm.get("usEinNumber").updateValueAndValidity();
+            this.vendorDocumentForm.get("usW9").updateValueAndValidity();
         }
         else if (this.usPayeeIdentificatn == 'socialSec') {
+
+            this.vendorDocumentForm.get("usTaxId").setValidators([]);
+            this.vendorDocumentForm.get("usW8Bene").setValidators([]);
+            this.vendorDocumentForm.get("usEinNumber").setValidators([]);
+            this.vendorDocumentForm.get("usW9").setValidators([]);
+
             this.vendorDocumentForm.get("usSocialSecurity").setValidators([Validators.required]);
+
+            this.vendorDocumentForm.get("usTaxId").updateValueAndValidity();
+            this.vendorDocumentForm.get("usW8Bene").updateValueAndValidity();
+            this.vendorDocumentForm.get("usSocialSecurity").updateValueAndValidity();
+            this.vendorDocumentForm.get("usEinNumber").updateValueAndValidity();
+            this.vendorDocumentForm.get("usW9").updateValueAndValidity();
         }
         else if (this.usPayeeIdentificatn == 'ein') {
+            this.vendorDocumentForm.get("usTaxId").setValidators([]);
+            this.vendorDocumentForm.get("usW8Bene").setValidators([]);
+            this.vendorDocumentForm.get("usSocialSecurity").setValidators([]);
+
             this.vendorDocumentForm.get("usEinNumber").setValidators([Validators.required]);
             this.vendorDocumentForm.get("usW9").setValidators([Validators.required]);
-        }
 
-        this.vendorDocumentForm.get("usTaxId").updateValueAndValidity();
-        this.vendorDocumentForm.get("usW8Bene").updateValueAndValidity();
-        this.vendorDocumentForm.get("usSocialSecurity").updateValueAndValidity();
-        this.vendorDocumentForm.get("usEinNumber").updateValueAndValidity();
-        this.vendorDocumentForm.get("usW9").updateValueAndValidity();
+            this.vendorDocumentForm.get("usTaxId").updateValueAndValidity();
+            this.vendorDocumentForm.get("usW8Bene").updateValueAndValidity();
+            this.vendorDocumentForm.get("usSocialSecurity").updateValueAndValidity();
+            this.vendorDocumentForm.get("usEinNumber").updateValueAndValidity();
+            this.vendorDocumentForm.get("usW9").updateValueAndValidity();
+        }
     }
     setOrgType(orgType) {
         // this.vendorOrgTypesList = this._appService.vendorOrgTypes;

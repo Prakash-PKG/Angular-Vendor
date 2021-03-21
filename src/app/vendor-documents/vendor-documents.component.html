@@ -728,7 +728,7 @@ flex-wrap: wrap;">
                                 {{orgSubCat}}
                             </mat-radio-button>
                         </mat-radio-group>
-                        <div *ngIf=" ( isSubmitted ) && vendorDocumentForm.get('vendorOrgCatogery').errors?.required" class="errortxt">
+                        <div *ngIf="( isSubmitted ) && (vendorDocumentForm.get('vendorOrgSubCategory').errors?.required)" class="errortxt">
                             Organisation Sub Category is not selected
                         </div>
                     </div>

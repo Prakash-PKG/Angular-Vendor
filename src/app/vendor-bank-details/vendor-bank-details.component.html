@@ -127,13 +127,11 @@
     </div>
     <div class="row field" *ngIf="showUSField()">
         <div class="col-6 form-group">
-            <!-- <mat-form-field class="full-width"> -->
                 <mat-label>Bank Country</mat-label>
                 <mat-radio-group formControlName="usBankSector">
-                    <mat-radio-button [value]='Foreign'>Foreign</mat-radio-button>
-                    <mat-radio-button [value]='Domestic' checked>Domestic</mat-radio-button>
+                    <mat-radio-button value='Foreign'>Foreign</mat-radio-button>
+                    <mat-radio-button value='Domestic'>Domestic</mat-radio-button>
                 </mat-radio-group>
-            <!-- </mat-form-field> -->
             <mat-error class="errortxt" *ngIf="( isSubmitted ) && f?.usBankSector?.errors?.required">Bank country is
                 required</mat-error>
         </div>
