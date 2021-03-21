@@ -509,19 +509,16 @@ export class VendorDocumentsComponent implements OnInit {
         this.vendorDocumentForm.get("usEinNumber").setValidators([]);
         this.vendorDocumentForm.get("usW9").setValidators([]);
 
-
-        switch (this.usPayeeIdentificatn) {
-            case 'taxId':
-                this.vendorDocumentForm.get("usTaxId").setValidators([Validators.required]);
-                this.vendorDocumentForm.get("usW8Bene").setValidators([Validators.required]);
-                break;
-            case 'socialSec':
-                this.vendorDocumentForm.get("usSocialSecurity").setValidators([Validators.required]);
-                break;
-            case 'ein':
-                this.vendorDocumentForm.get("usEinNumber").setValidators([Validators.required]);
-                this.vendorDocumentForm.get("usW9").setValidators([Validators.required]);
-                break;
+        if (this.usPayeeIdentificatn == 'taxId') {
+            this.vendorDocumentForm.get("usTaxId").setValidators([Validators.required]);
+            this.vendorDocumentForm.get("usW8Bene").setValidators([Validators.required]);
+        }
+        else if (this.usPayeeIdentificatn == 'socialSec') {
+            this.vendorDocumentForm.get("usSocialSecurity").setValidators([Validators.required]);
+        }
+        else if (this.usPayeeIdentificatn == 'ein') {
+            this.vendorDocumentForm.get("usEinNumber").setValidators([Validators.required]);
+            this.vendorDocumentForm.get("usW9").setValidators([Validators.required]);
         }
 
         this.vendorDocumentForm.get("usTaxId").updateValueAndValidity();

@@ -456,7 +456,7 @@
         <div class="col-7 doc-form-field">
             <mat-radio-group [(ngModel)]="usPayeeIdentificatn" (change)="updatePayeeIdentificatn()"
                 [ngModelOptions]="{standalone: true}">
-                <mat-radio-button value='taxId' [checked]="true">Tax ID No.</mat-radio-button>
+                <mat-radio-button value='taxId'>Tax ID No.</mat-radio-button>
                 <mat-radio-button value='socialSec'>Social Security No.</mat-radio-button>
                 <mat-radio-button value='ein'>EIN</mat-radio-button>
             </mat-radio-group>
@@ -470,8 +470,9 @@
                 <input type="text" matInput placeholder="{{vendorDocCtrl.taxIdNoCtrl.placeholder}}"
                     formControlName="usTaxId" autocomplete="off"
                     (blur)="updateMandatory('usTaxId',vendorDocCtrl.taxIdNoCtrl.documentTypeId)">
-                    <mat-error class="errortxt" *ngIf="( isSubmitted ) && vdf?.usTaxId?.errors?.required">Tax ID no. is required
-                    </mat-error>
+                <mat-error class="errortxt" *ngIf="( isSubmitted ) && vdf?.usTaxId?.errors?.required">Tax ID no. is
+                    required
+                </mat-error>
             </mat-form-field>
         </div>
 
@@ -505,10 +506,7 @@
             <div *ngIf="filesMap[vendorDocCtrl.taxIdNoCtrl.documentTypeId]?.isAttachWithoutValue" class="errortxt">
                 Tax Id no. is missing for this attached document
             </div>
-            <div *ngIf="filesMap[vendorDocCtrl.minorityCertCtrl.documentTypeId]?.isAttachWithoutValue" class="errortxt">
-                Minority Certificate is not selected for this attached document
-            </div>
-        </div>
+
         </div>
     </div>
 
@@ -562,8 +560,9 @@ flex-wrap: wrap;">
                 <input type="text" matInput placeholder="{{vendorDocCtrl.socialSecNoCtrl.placeholder}}"
                     formControlName="usSocialSecurity" autocomplete="off"
                     (blur)="updateMandatory('usSocialSecurity',vendorDocCtrl.socialSecNoCtrl.documentTypeId)">
-                    <mat-error class="errortxt" *ngIf="( isSubmitted ) && vdf?.usSocialSecurity?.errors?.required">Social Security no. is required
-                    </mat-error>
+                <mat-error class="errortxt" *ngIf="( isSubmitted ) && vdf?.usSocialSecurity?.errors?.required">Social
+                    Security no. is required
+                </mat-error>
             </mat-form-field>
         </div>
         <div class="col-7 actions">
@@ -605,8 +604,9 @@ flex-wrap: wrap;">
                     placeholder="{{vendorDocCtrl.einCtrl.placeholder}}" formControlName="usEinNumber" autocomplete="off"
                     minlength="15" maxlength="15"
                     (blur)="updateMandatory('usEinNumber',vendorDocCtrl.einCtrl.documentTypeId)">
-                    <mat-error class="errortxt" *ngIf="( isSubmitted ) && vdf?.usEinNumber?.errors?.required">EIN no. is required
-                    </mat-error>
+                <mat-error class="errortxt" *ngIf="( isSubmitted ) && vdf?.usEinNumber?.errors?.required">EIN no. is
+                    required
+                </mat-error>
                 <mat-error class="errortxt" *ngIf="( isSubmitted ) && vdf?.usEinNumber?.errors?.minlength">Minimum 15
                     characters are required
                 </mat-error>
@@ -720,22 +720,24 @@ flex-wrap: wrap;">
                     <mat-radio-button [value]="orgCat.catogery" class="orgCategory">
                         {{orgCat.catogery}}
                     </mat-radio-button>
-                    <div *ngIf="((orgCat.subCatogeries.length>1) && (vendorDocumentForm.get('vendorOrgCatogery').value == orgCat.catogery))" style="margin-left: 2em;">
+                    <div *ngIf="((orgCat.subCatogeries.length>1) && (vendorDocumentForm.get('vendorOrgCatogery').value == orgCat.catogery))"
+                        style="margin-left: 2em;">
                         <mat-radio-group formControlName="vendorOrgSubCategory" (change)=prepareOrgCat()>
                             <mat-radio-button *ngFor="let orgSubCat of orgCat.subCatogeries;let sub=index"
-                                [value]="orgSubCat" class="orgCategory" >
+                                [value]="orgSubCat" class="orgCategory">
                                 {{orgSubCat}}
                             </mat-radio-button>
                         </mat-radio-group>
-                        <div *ngIf="!vendorDocumentForm.get('vendorOrgSubCategory').errors?.required" class="errortxt">
-                            Organisation Sub Category is not selected for this attached document
+                        <div *ngIf=" ( isSubmitted ) && vendorDocumentForm.get('vendorOrgCatogery').errors?.required" class="errortxt">
+                            Organisation Sub Category is not selected
                         </div>
                     </div>
                 </div>
             </mat-radio-group>
-            <div *ngIf="!vendorDocumentForm.get('vendorOrgCatogery').errors?.required" class="errortxt">
-                Organisation Category is not selected for this attached document
-            </div>
+
+        </div>
+        <div *ngIf="( isSubmitted ) && vendorDocumentForm.get('vendorOrgCatogery').errors?.required" class="errortxt">
+            Organisation Category is not selected
         </div>
     </div>
 
@@ -748,7 +750,7 @@ flex-wrap: wrap;">
             <mat-radio-group formControlName="usMinorityCertificate"
                 (change)="updateMandatory('usMinorityCertificate',vendorDocCtrl.minorityCertCtrl.documentTypeId)">
                 <mat-radio-button [value]=true>YES</mat-radio-button>
-                <mat-radio-button [value]=false>NO</mat-radio-button>
+                <mat-radio-button [value]=false checked>NO</mat-radio-button>
             </mat-radio-group>
         </div>
         <div class="col-7 actions">

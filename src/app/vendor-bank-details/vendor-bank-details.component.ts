@@ -61,6 +61,7 @@ export class VendorBankDetailsComponent implements OnInit {
     }
     showUSField() {
         return this._vendorRegistrationService.vendorUS;
+        // return true;
     }
 
     onNextClick() {
@@ -135,8 +136,10 @@ export class VendorBankDetailsComponent implements OnInit {
             this.vendorBankForm.get("usBankSector").setValidators([Validators.required]);
             this.vendorBankForm.get("usChequePayableTo").setValidators([Validators.required]);
             this.vendorBankForm.get("usChecqueMailingAddress").setValidators([Validators.required]);
+            this.vendorBankForm.get("usBankSector").updateValueAndValidity();
+            this.vendorBankForm.get("usChequePayableTo").updateValueAndValidity();
+            this.vendorBankForm.get("usChecqueMailingAddress").updateValueAndValidity();
         }
-        this.vendorBankForm.updateValueAndValidity();
     }
 
     updateRegion() {
