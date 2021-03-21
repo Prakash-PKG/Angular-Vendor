@@ -438,7 +438,6 @@ export class VendorDocumentsComponent implements OnInit {
             }
 
             this._appService.selectedFileMap = this.filesMap;
-            console.log(this.filesMap);
 
             for (let key in this.filesMap) {
                 if (this.filesMap[key].filesList.length) {
@@ -641,7 +640,14 @@ export class VendorDocumentsComponent implements OnInit {
         this.updateVendorDetails();
 
         this.updatePayeeIdentificatn();
-
+        if (this._vendorRegistrationService.vendorUS) {
+            this.vendorDocumentForm.get('panNum').setValidators([]);
+            this.vendorDocumentForm.get('panNum').updateValueAndValidity;
+                    }
+        else {
+            this.vendorDocumentForm.get('vendorOrgCatogery').setValidators([]);
+            this.vendorDocumentForm.get('vendorOrgCatogery').updateValueAndValidity;
+        }
         this._vendorRegistrationService.updateCurrentPageDetails({ pageName: 'venDoc' });
     }
 
