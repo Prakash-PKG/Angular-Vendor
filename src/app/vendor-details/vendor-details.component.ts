@@ -124,6 +124,16 @@ export class VendorDetailsComponent implements OnInit {
         );
         this._vendorRegistrationService.updateCurrentPageDetails({ pageName: 'venDetails' });
         this.updateVendorDetails();
+        
+        if (this._vendorRegistrationService.vendorUS) {
+            this.vendorDetailsForm.get('usVendorBusiness').setValidators([Validators.required]);
+            this.vendorDetailsForm.get('usVendorBusiness').updateValueAndValidity;
+                    }
+        else {
+            this.vendorDetailsForm.get('usVendorBusiness').setValidators([]);
+            this.vendorDetailsForm.get('usVendorBusiness').updateValueAndValidity;
+        }
+    
     }
 
 }
