@@ -158,40 +158,44 @@ export class VendorBankDetailsComponent implements OnInit {
 
     ngOnInit() {
         this.isSubmitted = false;
-
-        this.countryList = [];
-        if (this._appService.vendorRegistrationInitDetails && this._appService.vendorRegistrationInitDetails.countriesList &&
-            this._appService.vendorRegistrationInitDetails.countriesList.length > 0) {
-            this.countryList = this._appService.vendorRegistrationInitDetails.countriesList;
+        if (this._appService.vendorRegistrationDetails && this._appService.vendorRegistrationDetails.vendorMasterId == null) {
+            this._router.navigate([this._appService.routingConstants.vendorTempLogin]);
         }
 
-        this.bankAccountTypeList = [];
-        if (this._appService.vendorRegistrationInitDetails && this._appService.vendorRegistrationInitDetails.bankAccountTypeList &&
-            this._appService.vendorRegistrationInitDetails.bankAccountTypeList.length > 0) {
-            this.bankAccountTypeList = this._appService.vendorRegistrationInitDetails.bankAccountTypeList;
+        else {
+            this.countryList = [];
+            if (this._appService.vendorRegistrationInitDetails && this._appService.vendorRegistrationInitDetails.countriesList &&
+                this._appService.vendorRegistrationInitDetails.countriesList.length > 0) {
+                this.countryList = this._appService.vendorRegistrationInitDetails.countriesList;
+            }
+
+            this.bankAccountTypeList = [];
+            if (this._appService.vendorRegistrationInitDetails && this._appService.vendorRegistrationInitDetails.bankAccountTypeList &&
+                this._appService.vendorRegistrationInitDetails.bankAccountTypeList.length > 0) {
+                this.bankAccountTypeList = this._appService.vendorRegistrationInitDetails.bankAccountTypeList;
+            }
+
+            this.vendorBankForm = this._formBuilder.group({
+                // bankAddress: [null, [Validators.required]],
+                accountNum: [null, [Validators.required]],
+                accountType: [null, [Validators.required]],
+                accountName: [null, [Validators.required]],
+                ifscCode: [null, [Validators.required, Validators.maxLength(11), Validators.minLength(11), Validators.pattern(/^[a-zA-Z0-9]*([a-zA-Z]+[0-9]+|[0-9]+[a-zA-Z]+)[a-zA-Z0-9]*$/)]],
+                bankName: [null, [Validators.required]],
+                bankBranch: [null, [Validators.required]],
+                bankCity: [null, [Validators.required]],
+                bankRegion: [null, [Validators.required]],
+                bankCountry: [null, [Validators.required]],
+                swiftIbanCode: [null],
+                routingBank: [null],
+                swiftInterm: [null],
+                usBankSector: [null],
+                usChequePayableTo: [null],
+                usChecqueMailingAddress: [null],
+            });
+
+            this._vendorRegistrationService.updateCurrentPageDetails({ pageName: 'venBank' });
+            this.updateVendorDetails();
         }
-
-        this.vendorBankForm = this._formBuilder.group({
-            // bankAddress: [null, [Validators.required]],
-            accountNum: [null, [Validators.required]],
-            accountType: [null, [Validators.required]],
-            accountName: [null, [Validators.required]],
-            ifscCode: [null, [Validators.required, Validators.maxLength(11), Validators.minLength(11), Validators.pattern(/^[a-zA-Z0-9]*([a-zA-Z]+[0-9]+|[0-9]+[a-zA-Z]+)[a-zA-Z0-9]*$/)]],
-            bankName: [null, [Validators.required]],
-            bankBranch: [null, [Validators.required]],
-            bankCity: [null, [Validators.required]],
-            bankRegion: [null, [Validators.required]],
-            bankCountry: [null, [Validators.required]],
-            swiftIbanCode: [null],
-            routingBank: [null],
-            swiftInterm: [null],
-            usBankSector: [null],
-            usChequePayableTo: [null],
-            usChecqueMailingAddress: [null],
-        });
-
-        this._vendorRegistrationService.updateCurrentPageDetails({ pageName: 'venBank' });
-        this.updateVendorDetails();
     }
-
 }

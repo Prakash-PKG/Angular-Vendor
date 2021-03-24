@@ -597,60 +597,66 @@ export class VendorDocumentsComponent implements OnInit {
 
     ngOnInit() {
         this.isSubmitted = false;
-        this.maxLutDate.setDate(this.maxLutDate.getDate() + 1);
 
-        this.organizationTypeMasterVO = [];
-        if (this._appService.vendorRegistrationInitDetails && this._appService.vendorRegistrationInitDetails.organizationTypeMasterVO &&
-            this._appService.vendorRegistrationInitDetails.organizationTypeMasterVO.length > 0) {
-            this.organizationTypeMasterVO = this._appService.vendorRegistrationInitDetails.organizationTypeMasterVO;
+        if (this._appService.vendorRegistrationDetails && this._appService.vendorRegistrationDetails.vendorMasterId == null) {
+            this._router.navigate([this._appService.routingConstants.vendorTempLogin]);
         }
 
-        this.organizationCategoryMasterVO = [];
-        if (this._appService.vendorRegistrationInitDetails && this._appService.vendorRegistrationInitDetails.organizationCategoryMasterVO &&
-            this._appService.vendorRegistrationInitDetails.organizationCategoryMasterVO.length > 0) {
-            this.organizationCategoryMasterVO = this._appService.vendorRegistrationInitDetails.organizationCategoryMasterVO;
-        }
-
-        this.initializeFilesList();
-
-        this.vendorDocumentForm = this._formBuilder.group({
-
-            panNum: [null, [Validators.required, Validators.minLength(10), Validators.maxLength(10), Validators.pattern(/^[a-zA-Z0-9]*([a-zA-Z]+[0-9]+|[0-9]+[a-zA-Z]+)[a-zA-Z0-9]*$/)]],
-            gstNum: [null, [Validators.minLength(15), Validators.maxLength(15), Validators.pattern(/^[a-zA-Z0-9]*([a-zA-Z]+[0-9]+|[0-9]+[a-zA-Z]+)[a-zA-Z0-9]*$/)]],
-            pfNum: [null],
-            esiNum: [null],
-            cinNum: [null],
-            isSez: [false],
-            isRcmApplicable: [false],
-            isMsmedRegistered: [false],
-            hasTdsLower: [false],
-            lutNum: [null],
-            lutDate: [{ value: null, disabled: true }],
-            otherDocDesc: [null],
-            vendorOrgCatogery: [null, [Validators.required]],
-            vendorOrgSubCategory: [null],
-            vendorOrgTypes: [null],
-            usTaxId: [null],
-            usSocialSecurity: [null],
-            usEinNumber: [null, [Validators.minLength(15), Validators.maxLength(15), Validators.pattern(/^[a-zA-Z0-9]*([a-zA-Z]+[0-9]+|[0-9]+[a-zA-Z]+)[a-zA-Z0-9]*$/)]],
-            usW8Bene: [null],
-            usW9: [null],
-            usMinorityCertificate: [null]
-
-        });
-
-        this.updateVendorDetails();
-
-        this.updatePayeeIdentificatn();
-        if (this._vendorRegistrationService.vendorUS) {
-            this.vendorDocumentForm.get('panNum').setValidators([]);
-            this.vendorDocumentForm.get('panNum').updateValueAndValidity;
-        }
         else {
-            this.vendorDocumentForm.get('vendorOrgCatogery').setValidators([]);
-            this.vendorDocumentForm.get('vendorOrgCatogery').updateValueAndValidity;
-        }
-        this._vendorRegistrationService.updateCurrentPageDetails({ pageName: 'venDoc' });
-    }
+            this.maxLutDate.setDate(this.maxLutDate.getDate() + 1);
 
+            this.organizationTypeMasterVO = [];
+            if (this._appService.vendorRegistrationInitDetails && this._appService.vendorRegistrationInitDetails.organizationTypeMasterVO &&
+                this._appService.vendorRegistrationInitDetails.organizationTypeMasterVO.length > 0) {
+                this.organizationTypeMasterVO = this._appService.vendorRegistrationInitDetails.organizationTypeMasterVO;
+            }
+
+            this.organizationCategoryMasterVO = [];
+            if (this._appService.vendorRegistrationInitDetails && this._appService.vendorRegistrationInitDetails.organizationCategoryMasterVO &&
+                this._appService.vendorRegistrationInitDetails.organizationCategoryMasterVO.length > 0) {
+                this.organizationCategoryMasterVO = this._appService.vendorRegistrationInitDetails.organizationCategoryMasterVO;
+            }
+
+            this.initializeFilesList();
+
+            this.vendorDocumentForm = this._formBuilder.group({
+
+                panNum: [null, [Validators.required, Validators.minLength(10), Validators.maxLength(10), Validators.pattern(/^[a-zA-Z0-9]*([a-zA-Z]+[0-9]+|[0-9]+[a-zA-Z]+)[a-zA-Z0-9]*$/)]],
+                gstNum: [null, [Validators.minLength(15), Validators.maxLength(15), Validators.pattern(/^[a-zA-Z0-9]*([a-zA-Z]+[0-9]+|[0-9]+[a-zA-Z]+)[a-zA-Z0-9]*$/)]],
+                pfNum: [null],
+                esiNum: [null],
+                cinNum: [null],
+                isSez: [false],
+                isRcmApplicable: [false],
+                isMsmedRegistered: [false],
+                hasTdsLower: [false],
+                lutNum: [null],
+                lutDate: [{ value: null, disabled: true }],
+                otherDocDesc: [null],
+                vendorOrgCatogery: [null, [Validators.required]],
+                vendorOrgSubCategory: [null],
+                vendorOrgTypes: [null],
+                usTaxId: [null],
+                usSocialSecurity: [null],
+                usEinNumber: [null, [Validators.minLength(15), Validators.maxLength(15), Validators.pattern(/^[a-zA-Z0-9]*([a-zA-Z]+[0-9]+|[0-9]+[a-zA-Z]+)[a-zA-Z0-9]*$/)]],
+                usW8Bene: [null],
+                usW9: [null],
+                usMinorityCertificate: [null]
+
+            });
+
+            this.updateVendorDetails();
+
+            this.updatePayeeIdentificatn();
+            if (this._vendorRegistrationService.vendorUS) {
+                this.vendorDocumentForm.get('panNum').setValidators([]);
+                this.vendorDocumentForm.get('panNum').updateValueAndValidity;
+            }
+            else {
+                this.vendorDocumentForm.get('vendorOrgCatogery').setValidators([]);
+                this.vendorDocumentForm.get('vendorOrgCatogery').updateValueAndValidity;
+            }
+            this._vendorRegistrationService.updateCurrentPageDetails({ pageName: 'venDoc' });
+        }
+    }
 }
