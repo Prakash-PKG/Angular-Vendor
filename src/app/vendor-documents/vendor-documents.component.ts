@@ -553,7 +553,7 @@ export class VendorDocumentsComponent implements OnInit {
         }
     }
     setOrgType(orgType) {
-        // this.vendorOrgTypesList = this._appService.vendorOrgTypes;
+        this.vendorOrgTypesList = this._appService.vendorOrgTypes;
         return this.vendorOrgTypesList.find(selectedOrgType => selectedOrgType.orgType == orgType);
     }
 
