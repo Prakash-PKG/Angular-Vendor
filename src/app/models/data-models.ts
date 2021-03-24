@@ -451,6 +451,7 @@ export class VendorApprovalInitResultModel {
     regionMasterVOList: regionMasterVOList[];
     vendorOrgCatogery: vendorOrgCategoryModel;
     vendorOrgTypes: VendorOrgTypesModel[];
+    bankAccountTypeList: BankAccountTypeModel[];
 }
 
 export class VendorApprovalInitReqModel {

@@ -35,6 +35,8 @@ export class AppService {
 
     token: string = '';
 
+    vendorUserId: string = '';
+
     readonly routingConstants: any = {
         login: "/",
         posearch: "/home/posearch",
