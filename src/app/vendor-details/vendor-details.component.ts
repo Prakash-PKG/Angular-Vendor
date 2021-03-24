@@ -1,13 +1,14 @@
 import { Component, OnInit, HostListener } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-
 import { AppService } from '../app.service';
 import { VendorRegistrationService } from './../vendor-registration/vendor-registration.service';
-
 import { BusyDataModel, VendorRegistrationRequestModel, VendorRegistrationResultModel } from './../models/data-models';
-import { HomeService } from '../home/home.service';
 import { equalValueValidator } from '../common/equal-value-validator';
+import { MatDialog } from '@angular/material';
+import { MessageDialogModel } from '../models/popup-models';
+
+import { ConfirmDialogComponent } from './../confirm-dialog/confirm-dialog.component';
 
 @Component({
     selector: 'app-vendor-details',
@@ -23,23 +24,66 @@ export class VendorDetailsComponent implements OnInit {
 
     constructor(private _appService: AppService,
         private _vendorRegistrationService: VendorRegistrationService,
-        private _router: Router,
+        private _router: Router, private _dialog: MatDialog,
         private _formBuilder: FormBuilder) { }
 
 
-    @HostListener('window:beforeunload', ['$event'])
-    canDeactivate(): boolean {
-        if (!this.vendorDetailsForm.pristine) {
-            return true;
-        }
-        const confirmResult = confirm('Are you sure you want to leave this page? If you select OK unsaved changes will be discarded and you will be redirected to login page.');
-        if (confirmResult === true) {
-            this._router.navigate([this._appService.routingConstants.vendorTempLogin]);
-            return true;
-        } else {
-            return false;
-        }
-    }
+    // @HostListener('window:beforeunload', ['$event'])
+    // unloadHandler(event: Event){
+    //     console.log(event);
+    //     let confirmReload = confirm('Are you sure you want to leave this page? If you select OK unsaved changes will be discarded and you will be redirected to login page.');
+    //     if (confirmReload === true) {
+    //         console.log(confirmReload);
+    //         this._router.navigate(['/vendortemplogin']);
+    //         // return true;
+    //     } else {
+    //         // this._router.navigate(['/vendortemplogin']);
+    //         console.log(confirmReload);
+    //         // return false;
+    //     }
+    // }
+    // canDeactivate(event): boolean {
+    //     event.preventDefault();
+    //     if (!this.vendorDetailsForm.dirty) {
+    //         console.log(this.vendorDetailsForm.dirty);
+    //         return true;
+    //     }
+
+    //     let confirmReload = confirm('Are you sure you want to leave this page? If you select OK unsaved changes will be discarded and you will be redirected to login page.');
+    //     if (confirmReload === true) {
+    //         console.log(confirmReload);
+    //         this._router.navigate(['/vendortemplogin']);
+    //         return true;
+    //     } else {
+    //         this._router.navigate(['/vendortemplogin']);
+    //         console.log(confirmReload);
+    //         return false;
+    //     }
+
+
+    // const dialogRef = this._dialog.open(ConfirmDialogComponent, {
+    //     disableClose: true,
+    //     panelClass: 'dialog-box',
+    //     width: '550px',
+    //     data: <MessageDialogModel>{
+    //         title: "Reload Action",
+    //         message: 'Are you sure you want to leave this page? If you select OK unsaved changes will be discarded and you will be redirected to login page.'
+    //     }
+    // });
+
+    // dialogRef.afterClosed().subscribe(result => {
+    //     if (result === true) {
+    //         console.log("enter");
+    //         console.log(result);
+    //         this._router.navigate(['']);
+    //         return true;
+    //     }
+    //     else {
+    //         return false;
+    //     }
+    // });
+    // }
+
 
     get f() { return this.vendorDetailsForm.controls; }
 
@@ -56,6 +100,7 @@ export class VendorDetailsComponent implements OnInit {
             this._appService.vendorRegistrationDetails.emailId = this.vendorDetailsForm.get("emailId").value;
             this._appService.vendorRegistrationDetails.password = this.vendorDetailsForm.get("password").value;
             this._appService.vendorRegistrationDetails.usVendorBusiness = this.vendorDetailsForm.get("usVendorBusiness").value;
+            this._appService.vendorRegistrationDetails.vendorCountry = this._vendorRegistrationService.vendorUS ? 'US' : 'IN';
 
             let req: VendorRegistrationRequestModel = {
                 action: this._appService.updateOperations.save,

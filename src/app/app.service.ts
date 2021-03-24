@@ -18,8 +18,8 @@ import * as _ from 'underscore';
 })
 export class AppService {
 
-    // readonly domain = "http://localhost:8080";
-    readonly domain = "https://mvendor-dev.marlabs.com"; 
+    readonly domain = "http://localhost:8080";
+    // readonly domain = "https://mvendor-dev.marlabs.com"; 
     // readonly domain = "https://mvendor-stg.marlabs.com";     
     readonly baseUrl = this.domain + "/mvendor/";
     readonly customerAuthUrl = this.domain + "/customerAuth/oauth/token";
@@ -229,7 +229,8 @@ export class AppService {
         usEinNumber: null,
         usW8Bene: false,
         usW9: false,
-        usMinorityCertificate: null
+        usMinorityCertificate: null,
+        vendorCountry:null
     };
     vendorOrgCatogery: vendorOrgCategoryModel = {
         vendorMasterId: null,
@@ -324,7 +325,8 @@ export class AppService {
             usEinNumber: null,
             usW8Bene: false,
             usW9: false,
-            usMinorityCertificate: null
+            usMinorityCertificate: null,
+            vendorCountry:null
         };
 
         return regDetails;

@@ -200,6 +200,7 @@ export class VendorMasterDetailsModel {
     usW8Bene:  boolean = false;
     usW9:  boolean = false;
     usMinorityCertificate: string;
+    vendorCountry:string;
 }
 
 export interface FileMap {
