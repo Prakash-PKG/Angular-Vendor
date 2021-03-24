@@ -602,7 +602,7 @@ export class VendorDocumentsComponent implements OnInit {
         this.isSubmitted = false;
 
         if (this._appService.vendorRegistrationDetails && this._appService.vendorRegistrationDetails.vendorMasterId == null) {
-            this._router.navigate([this._appService.routingConstants.vendorTempLogin]);
+            this._router.navigate([this._appService.routingConstants.vendorDetails]);
         }
 
         else {
