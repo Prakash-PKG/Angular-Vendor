@@ -21,7 +21,7 @@ export class VendorDetailsComponent implements OnInit {
     failureMsg: string = "";
     requiredErrorMsg: string = "This field is mandatory";
     isSubmitted: boolean = false;
-
+    strMsg: string=" ";
     constructor(private _appService: AppService,
         private _vendorRegistrationService: VendorRegistrationService,
         private _router: Router, private _dialog: MatDialog,
@@ -193,6 +193,7 @@ export class VendorDetailsComponent implements OnInit {
             this.updateVendorDetails();
 
             if (this._vendorRegistrationService.vendorUS) {
+                this.strMsg="Doing Business As is required";
                 this.vendorDetailsForm.get('usVendorBusiness').setValidators([Validators.required]);
                 this.vendorDetailsForm.get('usVendorBusiness').updateValueAndValidity;
             }

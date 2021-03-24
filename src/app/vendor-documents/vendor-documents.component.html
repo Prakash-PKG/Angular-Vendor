@@ -468,7 +468,7 @@
         <div class="col-5 doc-form-field form-group">
             <mat-form-field class="full-width">
                 <input type="text" matInput placeholder="{{vendorDocCtrl.taxIdNoCtrl.placeholder}}"
-                    formControlName="usTaxId" autocomplete="off"
+                    formControlName="usTaxId" minlength="10" maxlength="20" autocomplete="off"
                     (blur)="updateMandatory('usTaxId',vendorDocCtrl.taxIdNoCtrl.documentTypeId)">
                 <mat-error class="errortxt" *ngIf="( isSubmitted ) && vdf?.usTaxId?.errors?.required">Tax ID no. is
                     required
@@ -558,7 +558,7 @@ flex-wrap: wrap;">
         <div class="col-5 doc-form-field form-group">
             <mat-form-field class="full-width">
                 <input type="text" matInput placeholder="{{vendorDocCtrl.socialSecNoCtrl.placeholder}}"
-                    formControlName="usSocialSecurity" autocomplete="off"
+                    formControlName="usSocialSecurity" minlength="8" maxlength="15" autocomplete="off"
                     (blur)="updateMandatory('usSocialSecurity',vendorDocCtrl.socialSecNoCtrl.documentTypeId)">
                 <mat-error class="errortxt" *ngIf="( isSubmitted ) && vdf?.usSocialSecurity?.errors?.required">Social
                     Security no. is required
