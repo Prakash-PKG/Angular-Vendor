@@ -18,8 +18,8 @@ import * as _ from 'underscore';
 })
 export class AppService {
 
-    readonly domain = "http://localhost:8080";
-    // readonly domain = "https://mvendor-dev.marlabs.com"; 
+    //readonly domain = "http://localhost:8080";
+     readonly domain = "https://mvendor-dev.marlabs.com"; 
     // readonly domain = "https://mvendor-stg.marlabs.com";     
     readonly baseUrl = this.domain + "/mvendor/";
     readonly customerAuthUrl = this.domain + "/customerAuth/oauth/token";
@@ -358,7 +358,7 @@ export class AppService {
 
     readonly messages: any = {
         vendorRegistrationSaveFailure: "Due to technical problems not able to proceed further. Please try later.",
-        vendorRegistrationSubmitSuccessMsg: "Vendor details submitted successfully",
+        vendorRegistrationSubmitSuccessMsg: "Vendor Registration Submitted Successfully",
         vendorApprovalSubmitSuccessMsg: "Vendor details approved successfully",
         vendorApprovalFailure: "Vendor approval/receiving is failed",
         vendorSendBackSuccess: "Vendor Details are send back for correction",
