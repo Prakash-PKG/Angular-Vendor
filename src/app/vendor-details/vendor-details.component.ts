@@ -171,30 +171,36 @@ export class VendorDetailsComponent implements OnInit {
 
     ngOnInit() {
         this.isSubmitted = false;
-        this.vendorDetailsForm = this._formBuilder.group({
-            vendorName: [null, [Validators.required, Validators.nullValidator]],
-            contactPerson: [null],
-            mobileNum: [null, [Validators.required, Validators.minLength(10), Validators.maxLength(10), Validators.nullValidator, Validators.pattern("^[0-9]*$")]],
-            telephoneNum: [null, [Validators.maxLength(12), Validators.minLength(11), Validators.pattern("^[0-9]*$")]],
-            emailId: [null, [Validators.required, Validators.email, Validators.nullValidator]],
-            password: [null, [Validators.required, Validators.nullValidator, Validators.pattern(/^(?:(?:(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z]))|(?:(?=.*[a-z])(?=.*[A-Z])(?=.*[*.!@$%^&(){}[]:;<>,.?~_+-=|\]))|(?:(?=.*[0-9])(?=.*[A-Z])(?=.*[*.!@$%^&(){}[]:;<>,.?~_+-=|\]))|(?:(?=.*[0-9])(?=.*[a-z])(?=.*[*.!@$%^&(){}[]:;<>,.?~_+-=|\]))).{8,}$/)]],
-            confirmPassword: [null, [Validators.required, Validators.nullValidator]],
-            usVendorBusiness: [null]
-        },
-            { validator: equalValueValidator('password', 'confirmPassword') }
-        );
-        this._vendorRegistrationService.updateCurrentPageDetails({ pageName: 'venDetails' });
-        this.updateVendorDetails();
-
-        if (this._vendorRegistrationService.vendorUS) {
-            this.vendorDetailsForm.get('usVendorBusiness').setValidators([Validators.required]);
-            this.vendorDetailsForm.get('usVendorBusiness').updateValueAndValidity;
+        if (this._appService.vendorRegistrationDetails && this._appService.vendorRegistrationDetails.vendorMasterId == null) {
+            this._router.navigate([this._appService.routingConstants.vendorTempLogin]);
         }
+
         else {
-            this.vendorDetailsForm.get('usVendorBusiness').setValidators([]);
-            this.vendorDetailsForm.get('usVendorBusiness').updateValueAndValidity;
+
+            this.vendorDetailsForm = this._formBuilder.group({
+                vendorName: [null, [Validators.required, Validators.nullValidator]],
+                contactPerson: [null],
+                mobileNum: [null, [Validators.required, Validators.minLength(10), Validators.maxLength(10), Validators.nullValidator, Validators.pattern("^[0-9]*$")]],
+                telephoneNum: [null, [Validators.maxLength(12), Validators.minLength(11), Validators.pattern("^[0-9]*$")]],
+                emailId: [null, [Validators.required, Validators.email, Validators.nullValidator]],
+                password: [null, [Validators.required, Validators.nullValidator, Validators.pattern(/^(?:(?:(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z]))|(?:(?=.*[a-z])(?=.*[A-Z])(?=.*[*.!@$%^&(){}[]:;<>,.?~_+-=|\]))|(?:(?=.*[0-9])(?=.*[A-Z])(?=.*[*.!@$%^&(){}[]:;<>,.?~_+-=|\]))|(?:(?=.*[0-9])(?=.*[a-z])(?=.*[*.!@$%^&(){}[]:;<>,.?~_+-=|\]))).{8,}$/)]],
+                confirmPassword: [null, [Validators.required, Validators.nullValidator]],
+                usVendorBusiness: [null]
+            },
+                { validator: equalValueValidator('password', 'confirmPassword') }
+            );
+            this._vendorRegistrationService.updateCurrentPageDetails({ pageName: 'venDetails' });
+            this.updateVendorDetails();
+
+            if (this._vendorRegistrationService.vendorUS) {
+                this.vendorDetailsForm.get('usVendorBusiness').setValidators([Validators.required]);
+                this.vendorDetailsForm.get('usVendorBusiness').updateValueAndValidity;
+            }
+            else {
+                this.vendorDetailsForm.get('usVendorBusiness').setValidators([]);
+                this.vendorDetailsForm.get('usVendorBusiness').updateValueAndValidity;
+            }
+
         }
-
     }
-
 }
