@@ -62,7 +62,7 @@ export class AppService {
         vendorReport: "/home/venreport",
         invoicePostReport: "/home/invpostreport",
         invoiceReport: "/home/invsla",
-        vendorTempLogin:"/vendortemplogin"
+        vendorTempLogin: "/vendortemplogin"
     };
 
     readonly pageConstants: any = {
@@ -122,10 +122,7 @@ export class AppService {
     isInvoiceDetailsForPayments: boolean = false;
 
     isExistingVendor: boolean = false;
-    vendorUserId: string = '';
 
-    vendorUserID: string = '';
-    countyNm: string = '';
     getFormattedDate(dtStr: string) {
         if (dtStr) {
             return this._datePipe.transform(new Date(dtStr), this.displayDtFormat);
@@ -230,7 +227,7 @@ export class AppService {
         usW8Bene: false,
         usW9: false,
         usMinorityCertificate: null,
-        vendorCountry:null
+        vendorCountry: null
     };
     vendorOrgCatogery: vendorOrgCategoryModel = {
         vendorMasterId: null,
@@ -244,6 +241,8 @@ export class AppService {
     }];
 
     selectedFileMap: FileMap = {};
+
+    usPayeeIdentificatn: string = '';
 
     resetVendorRegistrationDetails() {
         let regDetails: VendorMasterDetailsModel = {
@@ -326,7 +325,7 @@ export class AppService {
             usW8Bene: false,
             usW9: false,
             usMinorityCertificate: null,
-            vendorCountry:null
+            vendorCountry: null
         };
 
         return regDetails;

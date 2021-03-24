@@ -281,6 +281,7 @@ export class VendorDocumentsComponent implements OnInit {
         this._appService.vendorRegistrationDetails.usW9 = this.vendorDocumentForm.get("usW9").value;
         this._appService.vendorRegistrationDetails.usMinorityCertificate = this.vendorDocumentForm.get("usMinorityCertificate").value;
 
+        this._appService.usPayeeIdentificatn = this.usPayeeIdentificatn;
         this._appService.vendorOrgTypes = this.vendorOrgTypesList;
     }
 
@@ -405,6 +406,8 @@ export class VendorDocumentsComponent implements OnInit {
         this.vendorDocumentForm.get("usW8Bene").setValue(this._appService.vendorRegistrationDetails.usW8Bene);
         this.vendorDocumentForm.get("usW9").setValue(this._appService.vendorRegistrationDetails.usW9);
         this.vendorDocumentForm.get("usMinorityCertificate").setValue(this._appService.vendorRegistrationDetails.usMinorityCertificate);
+
+        this.usPayeeIdentificatn = this._appService.usPayeeIdentificatn;
 
         this.vendorOrgTypesList = this._appService.vendorOrgTypes;
 
@@ -648,6 +651,7 @@ export class VendorDocumentsComponent implements OnInit {
             this.updateVendorDetails();
 
             this.updatePayeeIdentificatn();
+
             if (this._vendorRegistrationService.vendorUS) {
                 this.vendorDocumentForm.get('panNum').setValidators([]);
                 this.vendorDocumentForm.get('panNum').updateValueAndValidity;
