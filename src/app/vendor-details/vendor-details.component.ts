@@ -88,10 +88,10 @@ export class VendorDetailsComponent implements OnInit {
     get f() { return this.vendorDetailsForm.controls; }
 
     onNextClick() {
-        // this._router.navigate([this._appService.routingConstants.vendorAddressDetails]);
+
         this.failureMsg = "";
         this.isSubmitted = true;
-        this.updateUSFieldsValidation();
+        // this.updateUSFieldsValidation();
         if (this.vendorDetailsForm.valid) {
             this._appService.vendorRegistrationDetails.vendorName = this.vendorDetailsForm.get("vendorName").value;
             this._appService.vendorRegistrationDetails.contactPerson = this.vendorDetailsForm.get("contactPerson").value;
@@ -162,20 +162,20 @@ export class VendorDetailsComponent implements OnInit {
     showUSField() {
         return this._vendorRegistrationService.vendorUS;
     }
-    updateUSFieldsValidation() {
-        if (this._vendorRegistrationService.vendorUS) {
-            this.vendorDetailsForm.get("usVendorBusiness").setValidators([Validators.required]);
-        }
-        this.vendorDetailsForm.get("usVendorBusiness").updateValueAndValidity();
-    }
+    // updateUSFieldsValidation() {
+    //     if (this._vendorRegistrationService.vendorUS) {
+    //         this.vendorDetailsForm.get("usVendorBusiness").setValidators([Validators.required]);
+    //     }
+    //     this.vendorDetailsForm.get("usVendorBusiness").updateValueAndValidity();
+    // }
 
     ngOnInit() {
         this.isSubmitted = false;
-        if (this._appService.vendorRegistrationDetails && this._appService.vendorRegistrationDetails.vendorMasterId == null) {
-            this._router.navigate([this._appService.routingConstants.vendorTempLogin]);
-        }
+        // if (this._appService.vendorRegistrationDetails && this._appService.vendorRegistrationDetails.vendorMasterId == null) {
+        //     this._router.navigate([this._appService.routingConstants.vendorTempLogin]);
+        // }
 
-        else {
+        // else {
 
             this.vendorDetailsForm = this._formBuilder.group({
                 vendorName: [null, [Validators.required, Validators.nullValidator]],
@@ -200,7 +200,6 @@ export class VendorDetailsComponent implements OnInit {
                 this.vendorDetailsForm.get('usVendorBusiness').setValidators([]);
                 this.vendorDetailsForm.get('usVendorBusiness').updateValueAndValidity;
             }
-
         }
-    }
+    // }
 }
