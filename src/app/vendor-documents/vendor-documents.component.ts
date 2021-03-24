@@ -1,5 +1,5 @@
 import { SidebarService } from './../sidebar/sidebar.service';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, HostListener } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
@@ -71,6 +71,8 @@ export class VendorDocumentsComponent implements OnInit {
     }
 
     isSubmitted: boolean = false;
+
+    // _isDirty: boolean = false;
 
     constructor(private _appService: AppService,
         private _vendorRegistrationService: VendorRegistrationService,
@@ -643,7 +645,7 @@ export class VendorDocumentsComponent implements OnInit {
         if (this._vendorRegistrationService.vendorUS) {
             this.vendorDocumentForm.get('panNum').setValidators([]);
             this.vendorDocumentForm.get('panNum').updateValueAndValidity;
-                    }
+        }
         else {
             this.vendorDocumentForm.get('vendorOrgCatogery').setValidators([]);
             this.vendorDocumentForm.get('vendorOrgCatogery').updateValueAndValidity;

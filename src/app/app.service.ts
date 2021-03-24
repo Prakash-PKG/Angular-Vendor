@@ -61,7 +61,8 @@ export class AppService {
         contact: "/home/contact",
         vendorReport: "/home/venreport",
         invoicePostReport: "/home/invpostreport",
-        invoiceReport: "/home/invsla"
+        invoiceReport: "/home/invsla",
+        vendorTempLogin:"/vendortemplogin"
     };
 
     readonly pageConstants: any = {

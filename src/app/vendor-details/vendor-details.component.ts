@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, HostListener } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
@@ -20,11 +20,26 @@ export class VendorDetailsComponent implements OnInit {
     failureMsg: string = "";
     requiredErrorMsg: string = "This field is mandatory";
     isSubmitted: boolean = false;
-    // vendorCounty: string = "";
+
     constructor(private _appService: AppService,
         private _vendorRegistrationService: VendorRegistrationService,
         private _router: Router,
         private _formBuilder: FormBuilder) { }
+
+
+    @HostListener('window:beforeunload', ['$event'])
+    canDeactivate(): boolean {
+        if (!this.vendorDetailsForm.pristine) {
+            return true;
+        }
+        const confirmResult = confirm('Are you sure you want to leave this page? If you select OK unsaved changes will be discarded and you will be redirected to login page.');
+        if (confirmResult === true) {
+            this._router.navigate([this._appService.routingConstants.vendorTempLogin]);
+            return true;
+        } else {
+            return false;
+        }
+    }
 
     get f() { return this.vendorDetailsForm.controls; }
 
@@ -81,6 +96,7 @@ export class VendorDetailsComponent implements OnInit {
     }
 
     updateVendorDetails() {
+
         this.vendorDetailsForm.get("vendorName").setValue(this._appService.vendorRegistrationDetails.vendorName);
         this.vendorDetailsForm.get("contactPerson").setValue(this._appService.vendorRegistrationDetails.contactPerson);
         this.vendorDetailsForm.get("mobileNum").setValue(this._appService.vendorRegistrationDetails.mobileNum);
@@ -124,16 +140,16 @@ export class VendorDetailsComponent implements OnInit {
         );
         this._vendorRegistrationService.updateCurrentPageDetails({ pageName: 'venDetails' });
         this.updateVendorDetails();
-        
+
         if (this._vendorRegistrationService.vendorUS) {
             this.vendorDetailsForm.get('usVendorBusiness').setValidators([Validators.required]);
             this.vendorDetailsForm.get('usVendorBusiness').updateValueAndValidity;
-                    }
+        }
         else {
             this.vendorDetailsForm.get('usVendorBusiness').setValidators([]);
             this.vendorDetailsForm.get('usVendorBusiness').updateValueAndValidity;
         }
-    
+
     }
 
 }
