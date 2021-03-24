@@ -52,7 +52,6 @@ export class VendorRegistrationService {
             initModel.organizationTypeMasterVO = data["organizationTypeMasterVO"]
         }
         this.vendorUS = initModel.vendorCounty == 'US' ? true : false;
-
         return initModel;
     }
 
