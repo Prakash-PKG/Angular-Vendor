@@ -197,10 +197,10 @@ export class VendorMasterDetailsModel {
     usTaxId: string;
     usSocialSecurity: string;
     usEinNumber: string;
-    usW8Bene:  boolean = false;
-    usW9:  boolean = false;
+    usW8Bene: boolean = false;
+    usW9: boolean = false;
     usMinorityCertificate: string;
-    vendorCountry:string;
+    vendorCountry: string;
 }
 
 export interface FileMap {
@@ -449,13 +449,15 @@ export class VendorApprovalInitResultModel {
     vendorMasterDocumentVOList: VendorMasterDocumentModel[];
     countriesList: CountryDataModel[];
     regionMasterVOList: regionMasterVOList[];
-    bankAccountTypeList: BankAccountTypeModel[];
+    vendorOrgCatogery: vendorOrgCategoryModel;
+    vendorOrgTypes: VendorOrgTypesModel[];
 }
 
 export class VendorApprovalInitReqModel {
     vendorMasterId: number;
     departmentCode: string;
     approvalId: number;
+    // employeeId: string;
 }
 
 export class vendorApprovalDetails {

@@ -11,11 +11,12 @@ import { _MatChipListMixinBase } from '@angular/material';
 })
 export class VendorRegistrationService {
 
+    vendorUS: boolean = false;
+
     // Based on this, Busy icon will show
     private busy = new BehaviorSubject<BusyDataModel>(<BusyDataModel>{ isBusy: false, msg: null });
     isBusy = this.busy.asObservable();
-    vendorUserId: string = "";
-    vendorUS: boolean = false;
+
     // Based on this, can identify current page
     private pgDetails = new BehaviorSubject<PageDetailsModel>(<PageDetailsModel>{ pageName: "" });
     currentPageDetails = this.pgDetails.asObservable();

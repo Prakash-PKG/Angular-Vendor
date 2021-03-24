@@ -643,7 +643,6 @@ export class VendorApprovalComponent implements OnInit {
         this.updateVendorFields();
         this.updateFileDetails();
         this._homeService.updateBusy(<BusyDataModel>{ isBusy: false, msg: null });
-
     }
 
     updateStates() {
@@ -680,6 +679,7 @@ export class VendorApprovalComponent implements OnInit {
             this.vendorForm.get("mobileNum").setValue(this.vendorDetails.mobileNum);
             this.vendorForm.get("telephoneNum").setValue(this.vendorDetails.telephoneNum);
             this.vendorForm.get("emailId").setValue(this.vendorDetails.emailId);
+            this.vendorForm.get('usVendorBusiness').setValue(this.vendorDetails.usVendorBusiness);
 
             this.vendorForm.get("address1").setValue(this.vendorDetails.address1);
             this.vendorForm.get("address2").setValue(this.vendorDetails.address2);
@@ -813,6 +813,7 @@ export class VendorApprovalComponent implements OnInit {
             this.vendorDetails.mobileNum = this.vendorForm.get("mobileNum").value;
             this.vendorDetails.telephoneNum = this.vendorForm.get("telephoneNum").value;
             this.vendorDetails.emailId = this.vendorForm.get("emailId").value;
+            this.vendorDetails.usVendorBusiness = this.vendorForm.get("usVendorBusiness").value;
 
             this.vendorDetails.address1 = this.vendorForm.get("address1").value ? this.vendorForm.get("address1").value.trim() : null;
             this.vendorDetails.address2 = this.vendorForm.get("address2").value ? this.vendorForm.get("address2").value.trim() : null;
@@ -841,7 +842,21 @@ export class VendorApprovalComponent implements OnInit {
 
         return this.vendorDetails;
     }
+    
+    showUSField() {
+        return this._vendorApprovalService.vendorUS;
+    }
+    updateUSFieldsValidation() {
+        if (this._vendorApprovalService.vendorUS) {
+            this.vendorForm.get('usVendorBusiness').setValidators([Validators.required]);
+            this.vendorForm.get('usVendorBusiness').updateValueAndValidity;
+        }
+        else {
+            this.vendorForm.get('usVendorBusiness').setValidators([]);
+            this.vendorForm.get('usVendorBusiness').updateValueAndValidity;
+        }
 
+    }
     ngOnInit() {
 
         this.isDashboardCollapsed = true;
@@ -872,6 +887,7 @@ export class VendorApprovalComponent implements OnInit {
             mobileNum: [{ value: null, disabled: true }, [Validators.required, Validators.minLength(10), Validators.nullValidator, Validators.pattern("^[0-9]*$")]],
             telephoneNum: [{ value: null, disabled: true }, [Validators.minLength(11), Validators.pattern("^[0-9]*$")]],
             emailId: [{ value: null, disabled: true }, [Validators.required, Validators.email, Validators.nullValidator]],
+            usVendorBusiness: [{ value: null, disabled: true }],
 
             address1: [{ value: null, disabled: true }, [Validators.required]],
             address2: [{ value: null, disabled: true }],
@@ -902,8 +918,11 @@ export class VendorApprovalComponent implements OnInit {
             remarks: null
         });
 
+        this.updateUSFieldsValidation();
+
         setTimeout(() => {
             this.loadInitData();
         }, 100);
+
     }
 }

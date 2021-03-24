@@ -16,6 +16,8 @@ import { HttpClient } from '@angular/common/http';
 })
 export class VendorApprovalService {
 
+    vendorUS: boolean = false;
+    
     constructor(private _appService: AppService,
         private _http: HttpClient) { }
 
@@ -45,9 +47,9 @@ export class VendorApprovalService {
             detailsModel.vendorMasterDocumentVOList = data["vendorMasterDocumentVOList"];
             detailsModel.countriesList = data["countryDataVOList"];
             detailsModel.regionMasterVOList = data["regionMasterVOList"];
-            detailsModel.bankAccountTypeList =data["bankAccountTypeVOList"];
+            detailsModel.bankAccountTypeList = data["bankAccountTypeVOList"];
         }
-
+        this.vendorUS = detailsModel.vendorMasterDetails.vendorCountry == 'US' ? true : false;
         return detailsModel;
     }
 
@@ -55,7 +57,7 @@ export class VendorApprovalService {
         let url = this._appService.baseUrl + "updateVendorApproval";
         return this._http.post(url, updateReqModel, { responseType: 'json', observe: 'response' });
     }
-    
+
     sendBackForCorrection(sendVendCorrId: VendorRegistrationDetailRequestModel) {
         let url = this._appService.baseUrl + "fetchVendor";
         return this._http.post(url, sendVendCorrId, { responseType: 'json', observe: 'response' });
