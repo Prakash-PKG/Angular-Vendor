@@ -126,15 +126,15 @@
                             <input type="text" matInput formControlName="city" autocomplete="off" required>
                         </mat-form-field> -
                         <mat-form-field class="full-width" style="width:45%">
-                            <input type="text" matInput onkeypress='return event.charCode >= 48 && event.charCode <= 57'
+                            <input type="text" placeholder ="{{showUSField()?'Zipcode':'Pincode'}}" matInput onkeypress='return event.charCode >= 48 && event.charCode <= 57'
                                 formControlName="pincode" autocomplete="off" maxlength="6" required>
                         </mat-form-field>
 
                         <mat-error class="errortxt" *ngIf="( isSubmitted ) && f?.pincode?.errors?.pattern">
-                            Pincode only accepts numeric values</mat-error>
+                            {{showUSField()?'Zipcode':'Pincode'}} only accepts numeric values</mat-error>
                         <mat-error class="errortxt" *ngIf="( isSubmitted ) && f?.city?.errors?.required">Town / City is
                             required</mat-error>
-                        <mat-error class="errortxt" *ngIf="( isSubmitted ) && f?.pincode?.errors?.required">Pincode is
+                        <mat-error class="errortxt" *ngIf="( isSubmitted ) && f?.pincode?.errors?.required">{{showUSField()?'Zipcode':'Pincode'}} is
                             required</mat-error>
                         <mat-error class="errortxt" *ngIf="( isSubmitted ) && f?.pincode?.errors?.minlength">Minimum
                             {{ f?.pincode?.errors?.minlength?.requiredLength }} characters are required</mat-error>
@@ -191,7 +191,7 @@
 
                 <div class="Rtable Rtable--2cols Rtable--collapse">
 
-                    <div class="Rtable-cell Rtable-cell--head">Account No.</div>
+                    <div class="Rtable-cell Rtable-cell--head">{{showUSField()?'Account Number/IBAN':'Account Number'}}</div>
                     <div class="Rtable-cell">{{ vendorDetails?.accountNum }}</div>
 
                     <div class="Rtable-cell Rtable-cell--head">Account Name</div>
@@ -200,7 +200,7 @@
                     <div class="Rtable-cell Rtable-cell--head">Account Type</div>
                     <div class="Rtable-cell">{{ vendorDetails?.accountType }}</div>
 
-                    <div class="Rtable-cell Rtable-cell--head">IFSC Code</div>
+                    <div class="Rtable-cell Rtable-cell--head">{{showUSField()?'ABA-RTN':'IFSC code'}}</div>
                     <div class="Rtable-cell">{{ vendorDetails?.ifscCode }}</div>
 
                     <div class="Rtable-cell Rtable-cell--head">Bank Name</div>
@@ -217,6 +217,15 @@
 
                     <div class="Rtable-cell Rtable-cell--head">Region</div>
                     <div class="Rtable-cell">{{ vendorDetails?.bankRegionName }}</div>
+
+                    <div class="Rtable-cell Rtable-cell--head" *ngIf="showUSField()">Cheque payable to</div>
+                    <div class="Rtable-cell" *ngIf="showUSField()">{{ vendorDetails?.usChequePayableTo }}</div>
+
+                    <div class="Rtable-cell Rtable-cell--head" *ngIf="showUSField()">Bank Country</div>
+                    <div class="Rtable-cell" *ngIf="showUSField()">{{ vendorDetails?.usBankSector }}</div>
+                    
+                    <div class="Rtable-cell Rtable-cell--head" *ngIf="showUSField()">Bank Country</div>
+                    <div class="Rtable-cell" *ngIf="showUSField()">{{ vendorDetails?.usBankSector }}</div>
                 </div>
 
                 <div class="section-title" style="margin-top:1em">
