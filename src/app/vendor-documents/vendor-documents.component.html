@@ -691,23 +691,6 @@ flex-wrap: wrap;">
 
     </div>
 
-    <!-- ----------------------------------------organisation type ---------------------->
-    <div class="row doc-field" *ngIf="showUSField()" style="align-items: flex-start;">
-        <div class="col-5 doc-form-field">
-            <mat-label>Organisation Type</mat-label>
-        </div>
-        <div class="col-7 doc-form-field">
-            <ul class="orgType">
-                <li *ngFor="let orgType of organizationTypeMasterVO">
-                    <mat-checkbox formControlName="vendorOrgTypes"
-                        (change)="prepareOrgTypeList($event.checked,orgType.orgType)"
-                        [checked]="setOrgType(orgType.orgType)">
-                        {{orgType.orgType}}
-                    </mat-checkbox>
-                </li>
-            </ul>
-        </div>
-    </div>
     <!-- ----------------------------------------organisation Categories ---------------------->
 
     <div class="row doc-field" *ngIf="showUSField()" style="align-items: flex-start;">
@@ -740,6 +723,25 @@ flex-wrap: wrap;">
             Organisation Category is not selected
         </div>
     </div>
+    
+    <!-- ----------------------------------------organisation type ---------------------->
+    <div class="row doc-field" *ngIf="showUSField()" style="align-items: flex-start;">
+        <div class="col-5 doc-form-field">
+            <mat-label>Organisation Type</mat-label>
+        </div>
+        <div class="col-7 doc-form-field">
+            <ul class="orgType">
+                <li *ngFor="let orgType of organizationTypeMasterVO">
+                    <mat-checkbox formControlName="vendorOrgTypes"
+                        (change)="prepareOrgTypeList($event.checked,orgType.orgType)"
+                        [checked]="setOrgType(orgType.orgType)">
+                        {{orgType.orgType}}
+                    </mat-checkbox>
+                </li>
+            </ul>
+        </div>
+    </div>
+    
 
     <!-- ---------------------------------------minority certificate------------------ -->
     <div class=" row doc-field" *ngIf="showUSField()">
