@@ -383,39 +383,42 @@ export class VendorDocumentsComponent implements OnInit {
     }
 
     updateVendorDetails() {
-        this.vendorDocumentForm.get("panNum").setValue(this._appService.vendorRegistrationDetails.panNum);
-        this.vendorDocumentForm.get("gstNum").setValue(this._appService.vendorRegistrationDetails.gstNum);
-        this.vendorDocumentForm.get("pfNum").setValue(this._appService.vendorRegistrationDetails.pfNum);
-        this.vendorDocumentForm.get("esiNum").setValue(this._appService.vendorRegistrationDetails.esiNum);
-        this.vendorDocumentForm.get("cinNum").setValue(this._appService.vendorRegistrationDetails.cinNum);
-        this.vendorDocumentForm.get("isSez").setValue(this._appService.vendorRegistrationDetails.isSez);
-        this.vendorDocumentForm.get("isRcmApplicable").setValue(this._appService.vendorRegistrationDetails.isRcmApplicable);
-        this.vendorDocumentForm.get("isMsmedRegistered").setValue(this._appService.vendorRegistrationDetails.isMsmedRegistered);
-        this.vendorDocumentForm.get("hasTdsLower").setValue(this._appService.vendorRegistrationDetails.hasTdsLower);
-        this.vendorDocumentForm.get("lutNum").setValue(this._appService.vendorRegistrationDetails.lutNum);
-        this.vendorDocumentForm.get("lutDate").setValue(this._appService.vendorRegistrationDetails.lutDate ? new Date(this._appService.vendorRegistrationDetails.lutDate) : null);
-        this.vendorDocumentForm.get("otherDocDesc").setValue(this._appService.vendorRegistrationDetails.otherDocDesc);
-        // US fields
-        this.vendorDocumentForm.get("vendorOrgCatogery").setValue(this._appService.vendorRegistrationDetails.vendorOrgCatogeryVO.catogery);
-        this.vendorDocumentForm.get("vendorOrgSubCategory").setValue(this._appService.vendorRegistrationDetails.vendorOrgCatogeryVO.subCatogery);
-        this.vendorDocumentForm.get("usTaxId").setValue(this._appService.vendorRegistrationDetails.usTaxId);
-        this.vendorDocumentForm.get("usSocialSecurity").setValue(this._appService.vendorRegistrationDetails.usSocialSecurity);
-        this.vendorDocumentForm.get("usEinNumber").setValue(this._appService.vendorRegistrationDetails.usEinNumber);
-        this.vendorDocumentForm.get("usW8Bene").setValue(this._appService.vendorRegistrationDetails.usW8Bene);
-        this.vendorDocumentForm.get("usW9").setValue(this._appService.vendorRegistrationDetails.usW9);
-        this.vendorDocumentForm.get("usMinorityCertificate").setValue(this._appService.vendorRegistrationDetails.usMinorityCertificate);
+        if (this._appService.vendorRegistrationDetails) {
+            this.vendorDocumentForm.get("panNum").setValue(this._appService.vendorRegistrationDetails.panNum);
+            this.vendorDocumentForm.get("gstNum").setValue(this._appService.vendorRegistrationDetails.gstNum);
+            this.vendorDocumentForm.get("pfNum").setValue(this._appService.vendorRegistrationDetails.pfNum);
+            this.vendorDocumentForm.get("esiNum").setValue(this._appService.vendorRegistrationDetails.esiNum);
+            this.vendorDocumentForm.get("cinNum").setValue(this._appService.vendorRegistrationDetails.cinNum);
+            this.vendorDocumentForm.get("isSez").setValue(this._appService.vendorRegistrationDetails.isSez);
+            this.vendorDocumentForm.get("isRcmApplicable").setValue(this._appService.vendorRegistrationDetails.isRcmApplicable);
+            this.vendorDocumentForm.get("isMsmedRegistered").setValue(this._appService.vendorRegistrationDetails.isMsmedRegistered);
+            this.vendorDocumentForm.get("hasTdsLower").setValue(this._appService.vendorRegistrationDetails.hasTdsLower);
+            this.vendorDocumentForm.get("lutNum").setValue(this._appService.vendorRegistrationDetails.lutNum);
+            this.vendorDocumentForm.get("lutDate").setValue(this._appService.vendorRegistrationDetails.lutDate ? new Date(this._appService.vendorRegistrationDetails.lutDate) : null);
+            this.vendorDocumentForm.get("otherDocDesc").setValue(this._appService.vendorRegistrationDetails.otherDocDesc);
+            // US fields
 
-        this.usPayeeIdentificatn = this._appService.usPayeeIdentificatn;
+            this.vendorDocumentForm.get("vendorOrgCatogery").setValue(this._appService.vendorRegistrationDetails.vendorOrgCatogeryVO ? this._appService.vendorRegistrationDetails.vendorOrgCatogeryVO.catogery : null);
+            this.vendorDocumentForm.get("vendorOrgSubCategory").setValue(this._appService.vendorRegistrationDetails.vendorOrgCatogeryVO ? this._appService.vendorRegistrationDetails.vendorOrgCatogeryVO.subCatogery : null);
+            this.vendorDocumentForm.get("usTaxId").setValue(this._appService.vendorRegistrationDetails.usTaxId);
+            this.vendorDocumentForm.get("usSocialSecurity").setValue(this._appService.vendorRegistrationDetails.usSocialSecurity);
+            this.vendorDocumentForm.get("usEinNumber").setValue(this._appService.vendorRegistrationDetails.usEinNumber);
+            this.vendorDocumentForm.get("usW8Bene").setValue(this._appService.vendorRegistrationDetails.usW8Bene);
+            this.vendorDocumentForm.get("usW9").setValue(this._appService.vendorRegistrationDetails.usW9);
+            this.vendorDocumentForm.get("usMinorityCertificate").setValue(this._appService.vendorRegistrationDetails.usMinorityCertificate);
 
-        this.vendorOrgTypesList = this._appService.vendorRegistrationDetails.vendorOrgTypesVO;
+            this.usPayeeIdentificatn = this._appService.usPayeeIdentificatn;
 
-        this.filesMap = this._appService.selectedFileMap;
+            this.vendorOrgTypesList = this._appService.vendorRegistrationDetails.vendorOrgTypesVO;
 
-        this.updateLUTValidations(this.vendorDocumentForm.get("lutNum").value);
+            this.filesMap = this._appService.selectedFileMap;
 
-        this.vendorDocumentForm.get("lutNum").valueChanges.subscribe(val => {
-            this.updateLUTValidations(val);
-        });
+            this.updateLUTValidations(this.vendorDocumentForm.get("lutNum").value);
+
+            this.vendorDocumentForm.get("lutNum").valueChanges.subscribe(val => {
+                this.updateLUTValidations(val);
+            });
+        }
     }
 
     updateLUTValidations(lutVal: string) {
@@ -551,15 +554,16 @@ export class VendorDocumentsComponent implements OnInit {
         }
     }
     setOrgType(orgType) {
+
         this.vendorOrgTypesList = this._appService.vendorRegistrationDetails.vendorOrgTypesVO;
-        return this.vendorOrgTypesList.find(selectedOrgType => selectedOrgType.orgType == orgType);
+        return this.vendorOrgTypesList ? this.vendorOrgTypesList.find(selectedOrgType => selectedOrgType.orgType == orgType) : false;
     }
 
     prepareOrgTypeList(event, orgType, index) {
         let obj: VendorOrgTypesModel = {
             vendorMasterId: this._appService.vendorRegistrationDetails.vendorMasterId,
             orgType: orgType,
-            vendorOrdTypeId: this._appService.vendorRegistrationDetails.vendorOrgTypesVO[index].vendorOrdTypeId ? this._appService.vendorRegistrationDetails.vendorOrgTypesVO[index].vendorOrdTypeId : null
+            vendorOrdTypeId: this._appService.vendorRegistrationDetails.vendorOrgTypesVO[index] ? this._appService.vendorRegistrationDetails.vendorOrgTypesVO[index].vendorOrdTypeId : null
 
         }
         if (event) {
@@ -608,7 +612,7 @@ export class VendorDocumentsComponent implements OnInit {
             this.maxLutDate.setDate(this.maxLutDate.getDate() + 1);
 
             this.organizationTypeMasterVO = [];
-            if (this._appService.vendorRegistrationInitDetails && this._appService.vendorRegistrationInitDetails.organizationTypeMasterVO &&
+            if (this._appService.vendorRegistrationDetails && this._appService.vendorRegistrationInitDetails.organizationTypeMasterVO &&
                 this._appService.vendorRegistrationInitDetails.organizationTypeMasterVO.length > 0) {
                 this.organizationTypeMasterVO = this._appService.vendorRegistrationInitDetails.organizationTypeMasterVO;
             }
