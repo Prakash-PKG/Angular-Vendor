@@ -195,11 +195,11 @@ export class VendorDetailsComponent implements OnInit {
             if (this._vendorRegistrationService.vendorUS) {
                 this.strMsg="Doing Business As is required";
                 this.vendorDetailsForm.get('usVendorBusiness').setValidators([Validators.required]);
-                this.vendorDetailsForm.get('usVendorBusiness').updateValueAndValidity;
+                this.vendorDetailsForm.get('usVendorBusiness').updateValueAndValidity();
             }
             else {
                 this.vendorDetailsForm.get('usVendorBusiness').setValidators([]);
-                this.vendorDetailsForm.get('usVendorBusiness').updateValueAndValidity;
+                this.vendorDetailsForm.get('usVendorBusiness').updateValueAndValidity();
             }
         }
     // }
