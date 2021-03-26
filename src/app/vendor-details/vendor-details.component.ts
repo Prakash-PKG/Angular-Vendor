@@ -105,8 +105,6 @@ export class VendorDetailsComponent implements OnInit {
             let req: VendorRegistrationRequestModel = {
                 action: this._appService.updateOperations.save,
                 vendorMasterDetails: this._appService.vendorRegistrationDetails,
-                vendorOrgCatogery: this._appService.vendorOrgCatogery,
-                vendorOrgTypes: this._appService.vendorOrgTypes
             }
 
             this._vendorRegistrationService.updateBusy(<BusyDataModel>{ isBusy: true, msg: null });

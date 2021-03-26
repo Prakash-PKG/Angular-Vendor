@@ -55,9 +55,7 @@ export class VendorAddressComponent implements OnInit {
 
             let req: VendorRegistrationRequestModel = {
                 action: this._appService.updateOperations.save,
-                vendorMasterDetails: this._appService.vendorRegistrationDetails,
-                vendorOrgCatogery: this._appService.vendorOrgCatogery,
-                vendorOrgTypes: this._appService.vendorOrgTypes
+                vendorMasterDetails: this._appService.vendorRegistrationDetails
             }
             // console.log(req);
             // this._router.navigate([this._appService.routingConstants.vendorBankDetails]);
