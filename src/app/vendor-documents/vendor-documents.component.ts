@@ -560,11 +560,11 @@ export class VendorDocumentsComponent implements OnInit {
     }
 
     prepareOrgTypeList(event, orgType, index) {
+        let vendorOrgTypeId = (this._appService.vendorRegistrationDetails && this._appService.vendorRegistrationDetails.vendorOrgTypesVO[index] && this._appService.vendorRegistrationDetails.vendorOrgTypesVO[index].vendorOrgTypeId) ? this._appService.vendorRegistrationDetails.vendorOrgTypesVO[index].vendorOrgTypeId : null
         let obj: VendorOrgTypesModel = {
             vendorMasterId: this._appService.vendorRegistrationDetails.vendorMasterId,
             orgType: orgType,
-            vendorOrdTypeId: this._appService.vendorRegistrationDetails.vendorOrgTypesVO[index] ? this._appService.vendorRegistrationDetails.vendorOrgTypesVO[index].vendorOrdTypeId : null
-
+            vendorOrgTypeId: vendorOrgTypeId
         }
         if (event) {
             this.vendorOrgTypesList = this.vendorOrgTypesList.concat(obj);

@@ -949,10 +949,11 @@ export class VendorApprovalComponent implements OnInit {
     }
 
     prepareOrgTypeList(event, orgType, index) {
+        let vendorOrgTypeId = (this.vendorDetails.vendorOrgTypesVO[index] && this.vendorDetails.vendorOrgTypesVO[index].vendorOrgTypeId) ? this.vendorDetails.vendorOrgTypesVO[index].vendorOrgTypeId : null
         let obj: VendorOrgTypesModel = {
             vendorMasterId: this.vendorDetails.vendorMasterId,
             orgType: orgType,
-            vendorOrdTypeId: this.vendorDetails.vendorOrgTypesVO[index] ? this.vendorDetails.vendorOrgTypesVO[index].vendorOrdTypeId : null
+            vendorOrgTypeId: vendorOrgTypeId
         }
         if (event) {
             this.vendorOrgTypesList = this.vendorOrgTypesList.concat(obj);
