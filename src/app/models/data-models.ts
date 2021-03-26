@@ -197,7 +197,7 @@ export class VendorMasterDetailsModel {
     usEinNumber: string;
     usW8Bene: boolean = false;
     usW9: boolean = false;
-    usMinorityCertificate: string;
+    usMinorityCertificate:  boolean = false;
     vendorCountry: string;
     vendorOrgTypesVO: VendorOrgTypesModel[];
     vendorOrgCatogeryVO: vendorOrgCategoryModel;

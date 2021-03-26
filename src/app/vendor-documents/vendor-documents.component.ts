@@ -554,20 +554,23 @@ export class VendorDocumentsComponent implements OnInit {
         }
     }
     setOrgType(orgType) {
-
         this.vendorOrgTypesList = this._appService.vendorRegistrationDetails.vendorOrgTypesVO;
         return this.vendorOrgTypesList ? this.vendorOrgTypesList.find(selectedOrgType => selectedOrgType.orgType == orgType) : false;
     }
 
     prepareOrgTypeList(event, orgType, index) {
-        let vendorOrgTypeId = (this._appService.vendorRegistrationDetails && this._appService.vendorRegistrationDetails.vendorOrgTypesVO[index] && this._appService.vendorRegistrationDetails.vendorOrgTypesVO[index].vendorOrgTypeId) ? this._appService.vendorRegistrationDetails.vendorOrgTypesVO[index].vendorOrgTypeId : null
+        this.vendorOrgTypesList = this.vendorOrgTypesList || [];
+        let vendorOrgTypeId: number = null;
+        if (this._appService.vendorRegistrationDetails && this._appService.vendorRegistrationDetails.vendorOrgTypesVO && this._appService.vendorRegistrationDetails.vendorOrgTypesVO[index] ) {
+            vendorOrgTypeId = this._appService.vendorRegistrationDetails.vendorOrgTypesVO[index].vendorOrgTypeId ? this._appService.vendorRegistrationDetails.vendorOrgTypesVO[index].vendorOrgTypeId : null
+        }
         let obj: VendorOrgTypesModel = {
             vendorMasterId: this._appService.vendorRegistrationDetails.vendorMasterId,
             orgType: orgType,
             vendorOrgTypeId: vendorOrgTypeId
         }
         if (event) {
-            this.vendorOrgTypesList = this.vendorOrgTypesList.concat(obj);
+            this.vendorOrgTypesList.push(obj);
         }
         else {
             this.vendorOrgTypesList.splice(index, 1);

@@ -230,20 +230,10 @@ export class AppService {
         usW9: false,
         usMinorityCertificate: null,
         vendorCountry: null,
-        vendorOrgTypesVO: null,
+        vendorOrgTypesVO: [],
         vendorOrgCatogeryVO: null
     };
-    // vendorOrgCatogery: vendorOrgCategoryModel = {
-    //     vendorMasterId: null,
-    //     catogery: null,
-    //     subCatogery: null
 
-    // };
-    // vendorOrgTypes: VendorOrgTypesModel[] = [{
-    //     vendorMasterId: null,
-    //     orgType: null,
-    //     vendorOrdTypeId:null
-    // }];
 
     selectedFileMap: FileMap = {};
 
@@ -331,7 +321,7 @@ export class AppService {
             usW9: false,
             usMinorityCertificate: null,
             vendorCountry: null,
-            vendorOrgTypesVO: null,
+            vendorOrgTypesVO: [],
             vendorOrgCatogeryVO: null
         };
 

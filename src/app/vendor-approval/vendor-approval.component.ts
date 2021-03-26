@@ -949,14 +949,18 @@ export class VendorApprovalComponent implements OnInit {
     }
 
     prepareOrgTypeList(event, orgType, index) {
-        let vendorOrgTypeId = (this.vendorDetails.vendorOrgTypesVO[index] && this.vendorDetails.vendorOrgTypesVO[index].vendorOrgTypeId) ? this.vendorDetails.vendorOrgTypesVO[index].vendorOrgTypeId : null
+        this.vendorOrgTypesList = this.vendorOrgTypesList || [];
+        let vendorOrgTypeId: number = null;
+        if (this.vendorDetails && this.vendorDetails.vendorOrgTypesVO && this.vendorDetails.vendorOrgTypesVO[index]) {
+            vendorOrgTypeId = this.vendorDetails.vendorOrgTypesVO[index].vendorOrgTypeId ? this.vendorDetails.vendorOrgTypesVO[index].vendorOrgTypeId : null
+        }
         let obj: VendorOrgTypesModel = {
             vendorMasterId: this.vendorDetails.vendorMasterId,
             orgType: orgType,
             vendorOrgTypeId: vendorOrgTypeId
         }
         if (event) {
-            this.vendorOrgTypesList = this.vendorOrgTypesList.concat(obj);
+            this.vendorOrgTypesList.push(obj);
         }
         else {
 
@@ -1104,8 +1108,8 @@ export class VendorApprovalComponent implements OnInit {
             usTaxId: [{ value: null, disabled: true }],
             usSocialSecurity: [{ value: null, disabled: true }],
             usEinNumber: [{ value: null, disabled: true }, [Validators.minLength(15), Validators.maxLength(15), Validators.pattern(/^[a-zA-Z0-9]*([a-zA-Z]+[0-9]+|[0-9]+[a-zA-Z]+)[a-zA-Z0-9]*$/)]],
-            usW8Bene: [{ value: null, disabled: true }],
-            usW9: [{ value: null, disabled: true }],
+            usW8Bene:[false],
+            usW9: [false],
             usMinorityCertificate: [false],
 
             selectedVendorGroup: null,
