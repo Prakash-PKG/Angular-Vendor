@@ -12,7 +12,7 @@ import {
     WithholdTypeList,
     WithholdTaxList,
     VendorRegistrationDetailRequestModel, VendorDocumentResultModel, FileDetailsModel,
-    VendorMasterDocumentModel, VendorDocumentReqModel, CountryDataModel, regionMasterVOList, fileDetailsVendorDocumentModel
+    VendorMasterDocumentModel, VendorDocumentReqModel, CountryDataModel, regionMasterVOList, fileDetailsVendorDocumentModel, organizationTypeMasterVO, organizationCategoryMasterVO, VendorOrgTypesModel, vendorOrgCategoryModel
 } from './../models/data-models';
 import { Component, OnInit } from '@angular/core';
 import { HomeService } from '../home/home.service';
@@ -49,6 +49,8 @@ export class VendorApprovalComponent implements OnInit {
 
     vendorApprovalInitDetails: VendorApprovalInitResultModel = null;
     vendorDetails: VendorMasterDetailsModel = new VendorMasterDetailsModel();
+    // vendorOrgCategory: vendorOrgCategoryModel = new vendorOrgCategoryModel();
+    vendorOrgTypesList: VendorOrgTypesModel[] = [];
     originalVendorDetails: VendorMasterDetailsModel = new VendorMasterDetailsModel();
 
     // exVendFileDetails: VendorApprovalInitResultModel;
@@ -92,6 +94,9 @@ export class VendorApprovalComponent implements OnInit {
     countriesList: CountryDataModel[] = [];
     regionMasterVOList: regionMasterVOList[] = [];
 
+    usPayeeIdentificatn: string = '';
+    organizationTypeMasterVO: organizationTypeMasterVO[] = [];
+    organizationCategoryMasterVO: organizationCategoryMasterVO[] = [];
 
     maxLutDate = new Date();
 
@@ -108,7 +113,15 @@ export class VendorApprovalComponent implements OnInit {
         lutNoCtrl: { documentTypeId: 10, browserId: 'lutNoFileCtrl', placeholder: 'LUT No.' },
         msmeSelfCtrl: { documentTypeId: 11, browserId: 'msmeSelfFileCtrl', placeholder: 'MSME Self Attested Certificate?' },
         otherCtrl: { documentTypeId: 13, browserId: 'otherFileCtrl', placeholder: 'Document Description' },
-        msaCtrl: { documentTypeId: 12, browserId: 'msaFileCtrl', placeholder: 'Attach MSA' }
+        msaCtrl: { documentTypeId: 12, browserId: 'msaFileCtrl', placeholder: 'Attach MSA' },
+
+        // us fields
+        taxIdNoCtrl: { documentTypeId: 14, browserId: 'taxIdNoFileCtrl', placeholder: 'Tax ID No.', controlName: 'usTaxId' },
+        socialSecNoCtrl: { documentTypeId: 15, browserId: 'socialSecoFileCtrl', placeholder: 'Social Security No.', controlName: 'usSocialSecurity' },
+        einCtrl: { documentTypeId: 16, browserId: 'einFileCtrl', placeholder: 'EIN', controlName: 'usEinNumber' },
+        w8Ctrl: { documentTypeId: 17, browserId: 'w8FileCtrl', placeholder: 'W8 - BENE / W8 BEN', controlName: 'usW8Bene' },
+        w9Ctrl: { documentTypeId: 18, browserId: 'w9FileCtrl', placeholder: 'W9', controlName: 'usW9' },
+        minorityCertCtrl: { documentTypeId: 19, browserId: 'minorityCertFileCtrl', placeholder: 'Minority Certificate', controlName: 'usMinorityCertificate' },
     }
 
     documentControlDetails = {
@@ -121,6 +134,14 @@ export class VendorApprovalComponent implements OnInit {
         9: { controlName: "isSez", controlType: "radio" },
         10: { controlName: "lutNum", controlType: "text" },
         13: { controlName: "otherDocDesc", controlType: "text" },
+
+        // us fields
+        14: { controlName: "usTaxId", controlType: "text" },
+        15: { controlName: "usSocialSecurity", controlType: "text" },
+        16: { controlName: "usEinNumber", controlType: "text" },
+        17: { controlName: "usW8Bene", controlType: "radio" },
+        18: { controlName: "usW9", controlType: "radio" },
+        19: { controlName: "usMinorityCertificate", controlType: "radio" },
     }
 
     constructor(private _homeService: HomeService,
@@ -183,6 +204,19 @@ export class VendorApprovalComponent implements OnInit {
         }
 
         this.vendorForm.get("otherDocDesc").enable();
+
+        //us Fields
+
+        this.vendorForm.get("usVendorBusiness").enable();
+        this.vendorForm.get("vendorOrgCatogery").enable();
+        this.vendorForm.get("vendorOrgSubCategory").enable();
+        this.vendorForm.get("vendorOrgTypes").enable();
+        this.vendorForm.get("usTaxId").enable();
+        this.vendorForm.get("usSocialSecurity").enable();
+        this.vendorForm.get("usEinNumber").enable();
+        this.vendorForm.get("usW8Bene").enable();
+        this.vendorForm.get("usW9").enable();
+        this.vendorForm.get("usMinorityCertificate").enable();
     }
 
 
@@ -570,7 +604,8 @@ export class VendorApprovalComponent implements OnInit {
             withholdTypeCode: this.vendorForm.get("withholdType").value ? this.vendorForm.get("withholdType").value : null,
             createdBy: this.vendorApprovalInitDetails.vendorApprovalDetails.createdBy ? this.vendorApprovalInitDetails.vendorApprovalDetails.createdBy : globalConstant.userId,
             createDate: this.vendorApprovalInitDetails.vendorApprovalDetails.createDate ? this.vendorApprovalInitDetails.vendorApprovalDetails.createDate : null,
-            vendorMasterDetails: this.getUpdatedVendorDetails()
+            vendorMasterDetails: this.getUpdatedVendorDetails(),
+
         };
 
         this._homeService.updateBusy(<BusyDataModel>{ isBusy: true, msg: null });
@@ -701,10 +736,21 @@ export class VendorApprovalComponent implements OnInit {
             this.vendorForm.get("lutNum").setValue(this.vendorDetails.lutNum);
             this.vendorForm.get("lutDate").setValue(this.vendorDetails.lutDate ? new Date(this.vendorDetails.lutDate) : null);
             this.vendorForm.get("otherDocDesc").setValue(this.vendorDetails.otherDocDesc);
+            //us fields
+            this.vendorForm.get("usTaxId").setValue(this.vendorDetails.usTaxId);
+            this.vendorForm.get("usSocialSecurity").setValue(this.vendorDetails.usSocialSecurity);
+            this.vendorForm.get("usEinNumber").setValue(this.vendorDetails.usEinNumber);
+            this.vendorForm.get("usW8Bene").setValue(this.vendorDetails.usW8Bene);
+            this.vendorForm.get("usW9").setValue(this.vendorDetails.usW9);
+            this.vendorForm.get("usMinorityCertificate").setValue(this.vendorDetails.usMinorityCertificate);
+
+            this.vendorForm.get("vendorOrgCatogery").setValue(this.vendorDetails.vendorOrgCatogeryVO.catogery);
+            this.vendorForm.get("vendorOrgSubCategory").setValue(this.vendorDetails.vendorOrgCatogeryVO.subCatogery);
 
             this.vendorForm.get("selectedVendorGroup").setValue(this.vendorDetails.groupCode ? this.vendorDetails.groupCode : null);
             this.vendorForm.get("selectedCompanyCode").setValue(this.vendorDetails.companyCode ? this.vendorDetails.companyCode : null);
             this.vendorForm.get("selectedCurrency").setValue(this.vendorDetails.currencyCode ? this.vendorDetails.currencyCode : null);
+            this.vendorOrgTypesList = this.vendorDetails.vendorOrgTypesVO;
         }
 
         if (globalConstant.userDetails.isFinance) {
@@ -728,6 +774,8 @@ export class VendorApprovalComponent implements OnInit {
         this.vendorForm.get("lutNum").valueChanges.subscribe(val => {
             this.updateLUTValidations(val);
         });
+
+        this.updateUSFieldsValidation();
     }
 
     updateLUTValidations(lutVal: string) {
@@ -784,6 +832,18 @@ export class VendorApprovalComponent implements OnInit {
                 this.regionMasterVOList = this.vendorApprovalInitDetails.regionMasterVOList.filter(r => r.countryCode == cntryCode);
             }
         }
+        this.organizationTypeMasterVO = [];
+        if (this.vendorApprovalInitDetails && this.vendorApprovalInitDetails.organizationTypeMasterVO &&
+            this.vendorApprovalInitDetails.organizationTypeMasterVO.length > 0) {
+            this.organizationTypeMasterVO = this.vendorApprovalInitDetails.organizationTypeMasterVO.concat();
+        }
+
+        this.organizationCategoryMasterVO = [];
+        if (this.vendorApprovalInitDetails && this.vendorApprovalInitDetails.organizationCategoryMasterVO &&
+            this.vendorApprovalInitDetails.organizationCategoryMasterVO.length > 0) {
+            this.organizationCategoryMasterVO = this.vendorApprovalInitDetails.organizationCategoryMasterVO.concat();
+        }
+
     }
 
     onHoldTypeSelected(holdType) {
@@ -813,7 +873,6 @@ export class VendorApprovalComponent implements OnInit {
             this.vendorDetails.mobileNum = this.vendorForm.get("mobileNum").value;
             this.vendorDetails.telephoneNum = this.vendorForm.get("telephoneNum").value;
             this.vendorDetails.emailId = this.vendorForm.get("emailId").value;
-            this.vendorDetails.usVendorBusiness = this.vendorForm.get("usVendorBusiness").value;
 
             this.vendorDetails.address1 = this.vendorForm.get("address1").value ? this.vendorForm.get("address1").value.trim() : null;
             this.vendorDetails.address2 = this.vendorForm.get("address2").value ? this.vendorForm.get("address2").value.trim() : null;
@@ -838,24 +897,147 @@ export class VendorApprovalComponent implements OnInit {
             this.vendorDetails.lutDate = this.vendorForm.get("lutDate").value ? this._datePipe.transform(this.vendorForm.get("lutDate").value, this._appService.dbDateFormat) : null;
 
             this.vendorDetails.otherDocDesc = this.vendorForm.get("otherDocDesc").value;
+
+            // US Fields
+            this.vendorDetails.usVendorBusiness = this.vendorForm.get("usVendorBusiness").value;
+            this.vendorDetails.usTaxId = this.vendorForm.get("usTaxId").value;
+            this.vendorDetails.usSocialSecurity = this.vendorForm.get("usSocialSecurity").value;
+            this.vendorDetails.usEinNumber = this.vendorForm.get("usEinNumber").value;
+            this.vendorDetails.usW8Bene = this.vendorForm.get("usW8Bene").value;
+            this.vendorDetails.usW9 = this.vendorForm.get("usW9").value;
+            this.vendorDetails.usMinorityCertificate = this.vendorForm.get("usMinorityCertificate").value;
+
         }
 
         return this.vendorDetails;
     }
-    
+
     showUSField() {
         return this._vendorApprovalService.vendorUS;
     }
+
+    onOrgCatChange() {
+        this.vendorDetails.vendorOrgCatogeryVO = null;
+        this.vendorForm.get('vendorOrgSubCategory').setValue(null);
+        let selectedOrgCat = this.vendorForm.get('vendorOrgCatogery').value
+        let i = this.organizationCategoryMasterVO.findIndex(orgCat => orgCat.catogery == selectedOrgCat);
+        if (this.organizationCategoryMasterVO[i].subCatogeries.length > 1) {
+            this.vendorForm.get('vendorOrgSubCategory').setValidators([Validators.required]);
+            this.vendorForm.get('vendorOrgSubCategory').updateValueAndValidity;
+        }
+        else {
+            this.vendorForm.get('vendorOrgSubCategory').setValidators([]);
+            this.vendorForm.get('vendorOrgSubCategory').updateValueAndValidity;
+            this.prepareOrgCat();
+        }
+    }
+    prepareOrgCat() {
+        let obj: vendorOrgCategoryModel = {
+            vendorMasterId: this.vendorApprovalInitDetails.vendorMasterDetails.vendorMasterId,
+            catogery: this.vendorForm.get('vendorOrgCatogery').value,
+            subCatogery: this.vendorForm.get('vendorOrgSubCategory').value
+        }
+        this.vendorDetails.vendorOrgCatogeryVO = obj;
+        console.log(this.vendorDetails.vendorOrgCatogeryVO);
+
+    }
+
+    setOrgType(orgType) {
+        this.vendorOrgTypesList = this.vendorDetails.vendorOrgTypesVO;
+        return this.vendorOrgTypesList.find(selectedOrgType => selectedOrgType.orgType == orgType);
+    }
+
+    prepareOrgTypeList(event, orgType, index) {
+        let obj: VendorOrgTypesModel = {
+            vendorMasterId: this.vendorDetails.vendorMasterId,
+            orgType: orgType,
+            vendorOrdTypeId: this.vendorDetails.vendorOrgTypesVO[index].vendorOrdTypeId ? this.vendorDetails.vendorOrgTypesVO[index].vendorOrdTypeId : null
+        }
+        if (event) {
+            this.vendorOrgTypesList = this.vendorOrgTypesList.concat(obj);
+        }
+        else {
+
+            this.vendorOrgTypesList.splice(index, 1);
+        }
+        this.vendorDetails.vendorOrgTypesVO = this.vendorOrgTypesList;
+
+    }
+
     updateUSFieldsValidation() {
         if (this._vendorApprovalService.vendorUS) {
             this.vendorForm.get('usVendorBusiness').setValidators([Validators.required]);
+            this.vendorForm.get('vendorOrgCatogery').setValidators([Validators.required]);
+            this.vendorForm.get('vendorOrgSubCategory').setValidators([Validators.required]);
+
             this.vendorForm.get('usVendorBusiness').updateValueAndValidity;
+            this.vendorForm.get('vendorOrgCatogery').updateValueAndValidity;
+            this.vendorForm.get('vendorOrgSubCategory').updateValueAndValidity;
+
+            this.vendorForm.get('panNum').setValidators([]);
+            this.vendorForm.get('panNum').updateValueAndValidity;
+
         }
         else {
             this.vendorForm.get('usVendorBusiness').setValidators([]);
+            this.vendorForm.get('vendorOrgCatogery').setValidators([]);
+            this.vendorForm.get('vendorOrgSubCategory').setValidators([]);
+
             this.vendorForm.get('usVendorBusiness').updateValueAndValidity;
+            this.vendorForm.get('vendorOrgCatogery').updateValueAndValidity;
+            this.vendorForm.get('vendorOrgSubCategory').updateValueAndValidity;
+
+            this.vendorForm.get('panNum').setValidators([Validators.required]);
+            this.vendorForm.get('panNum').updateValueAndValidity;
         }
 
+    }
+
+    updatePayeeIdentificatn() {
+
+        if (this.usPayeeIdentificatn == 'taxId') {
+            this.vendorForm.get("usSocialSecurity").setValidators([]);
+            this.vendorForm.get("usEinNumber").setValidators([]);
+            this.vendorForm.get("usW9").setValidators([]);
+
+            this.vendorForm.get("usTaxId").setValidators([Validators.required]);
+            this.vendorForm.get("usW8Bene").setValidators([Validators.required]);
+
+            this.vendorForm.get("usTaxId").updateValueAndValidity();
+            this.vendorForm.get("usW8Bene").updateValueAndValidity();
+            this.vendorForm.get("usSocialSecurity").updateValueAndValidity();
+            this.vendorForm.get("usEinNumber").updateValueAndValidity();
+            this.vendorForm.get("usW9").updateValueAndValidity();
+        }
+        else if (this.usPayeeIdentificatn == 'socialSec') {
+
+            this.vendorForm.get("usTaxId").setValidators([]);
+            this.vendorForm.get("usW8Bene").setValidators([]);
+            this.vendorForm.get("usEinNumber").setValidators([]);
+            this.vendorForm.get("usW9").setValidators([]);
+
+            this.vendorForm.get("usSocialSecurity").setValidators([Validators.required]);
+
+            this.vendorForm.get("usTaxId").updateValueAndValidity();
+            this.vendorForm.get("usW8Bene").updateValueAndValidity();
+            this.vendorForm.get("usSocialSecurity").updateValueAndValidity();
+            this.vendorForm.get("usEinNumber").updateValueAndValidity();
+            this.vendorForm.get("usW9").updateValueAndValidity();
+        }
+        else if (this.usPayeeIdentificatn == 'ein') {
+            this.vendorForm.get("usTaxId").setValidators([]);
+            this.vendorForm.get("usW8Bene").setValidators([]);
+            this.vendorForm.get("usSocialSecurity").setValidators([]);
+
+            this.vendorForm.get("usEinNumber").setValidators([Validators.required]);
+            this.vendorForm.get("usW9").setValidators([Validators.required]);
+
+            this.vendorForm.get("usTaxId").updateValueAndValidity();
+            this.vendorForm.get("usW8Bene").updateValueAndValidity();
+            this.vendorForm.get("usSocialSecurity").updateValueAndValidity();
+            this.vendorForm.get("usEinNumber").updateValueAndValidity();
+            this.vendorForm.get("usW9").updateValueAndValidity();
+        }
     }
     ngOnInit() {
 
@@ -882,11 +1064,13 @@ export class VendorApprovalComponent implements OnInit {
         }
 
         this.vendorForm = this._formBuilder.group({
-            vendorName: [{ value: null, disabled: true }, [Validators.required, Validators.nullValidator]],
+            vendorName: [{ value: null, disabled: true }, [Validators.required]],
             contactPerson: [{ value: null, disabled: true }],
-            mobileNum: [{ value: null, disabled: true }, [Validators.required, Validators.minLength(10), Validators.nullValidator, Validators.pattern("^[0-9]*$")]],
+            mobileNum: [{ value: null, disabled: true }, [Validators.required, Validators.minLength(10), Validators.pattern("^[0-9]*$")]],
             telephoneNum: [{ value: null, disabled: true }, [Validators.minLength(11), Validators.pattern("^[0-9]*$")]],
-            emailId: [{ value: null, disabled: true }, [Validators.required, Validators.email, Validators.nullValidator]],
+            emailId: [{ value: null, disabled: true }, [Validators.required, Validators.email]],
+
+            //For US in vendor details
             usVendorBusiness: [{ value: null, disabled: true }],
 
             address1: [{ value: null, disabled: true }, [Validators.required]],
@@ -897,6 +1081,7 @@ export class VendorApprovalComponent implements OnInit {
             stateCode: [{ value: null, disabled: true }, [Validators.required]],
             countryCode: [{ value: null, disabled: true }, [Validators.required]],
 
+            //For India in vendor documents
             panNum: [{ value: null, disabled: true }, [Validators.required, Validators.minLength(10)]],
             gstNum: [{ value: null, disabled: true }, [Validators.minLength(15)]],
             pfNum: [{ value: null, disabled: true }],
@@ -910,6 +1095,17 @@ export class VendorApprovalComponent implements OnInit {
             lutDate: [{ value: null, disabled: true }],
             otherDocDesc: [{ value: null, disabled: true }],
 
+            //For US in vendor documents
+            vendorOrgCatogery: [{ value: null, disabled: true }, [Validators.required]],
+            vendorOrgSubCategory: [{ value: null, disabled: true }],
+            vendorOrgTypes: [{ value: null, disabled: true }],
+            usTaxId: [{ value: null, disabled: true }],
+            usSocialSecurity: [{ value: null, disabled: true }],
+            usEinNumber: [{ value: null, disabled: true }, [Validators.minLength(15), Validators.maxLength(15), Validators.pattern(/^[a-zA-Z0-9]*([a-zA-Z]+[0-9]+|[0-9]+[a-zA-Z]+)[a-zA-Z0-9]*$/)]],
+            usW8Bene: [{ value: null, disabled: true }],
+            usW9: [{ value: null, disabled: true }],
+            usMinorityCertificate: [false],
+
             selectedVendorGroup: null,
             selectedCompanyCode: null,
             selectedCurrency: null,
@@ -917,8 +1113,6 @@ export class VendorApprovalComponent implements OnInit {
             withholdTax: null,
             remarks: null
         });
-
-        this.updateUSFieldsValidation();
 
         setTimeout(() => {
             this.loadInitData();

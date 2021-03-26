@@ -272,8 +272,8 @@ export class VendorDocumentsComponent implements OnInit {
         this._appService.vendorRegistrationDetails.lutDate = this._datePipe.transform(this.vendorDocumentForm.get("lutDate").value, this._appService.dbDateFormat);
         this._appService.vendorRegistrationDetails.otherDocDesc = this.vendorDocumentForm.get("otherDocDesc").value;
         // US fields
-        this._appService.vendorOrgCatogery.catogery = this.vendorDocumentForm.get("vendorOrgCatogery").value;
-        this._appService.vendorOrgCatogery.subCatogery = this.vendorDocumentForm.get("vendorOrgSubCategory").value;
+        this._appService.vendorRegistrationDetails.vendorOrgCatogeryVO.catogery = this.vendorDocumentForm.get("vendorOrgCatogery").value;
+        this._appService.vendorRegistrationDetails.vendorOrgCatogeryVO.subCatogery = this.vendorDocumentForm.get("vendorOrgSubCategory").value;
         this._appService.vendorRegistrationDetails.usTaxId = this.vendorDocumentForm.get("usTaxId").value;
         this._appService.vendorRegistrationDetails.usSocialSecurity = this.vendorDocumentForm.get("usSocialSecurity").value;
         this._appService.vendorRegistrationDetails.usEinNumber = this.vendorDocumentForm.get("usEinNumber").value;
@@ -282,7 +282,7 @@ export class VendorDocumentsComponent implements OnInit {
         this._appService.vendorRegistrationDetails.usMinorityCertificate = this.vendorDocumentForm.get("usMinorityCertificate").value;
 
         this._appService.usPayeeIdentificatn = this.usPayeeIdentificatn;
-        this._appService.vendorOrgTypes = this.vendorOrgTypesList;
+        this._appService.vendorRegistrationDetails.vendorOrgTypesVO = this.vendorOrgTypesList;
     }
 
     onPrevClick() {
@@ -313,9 +313,7 @@ export class VendorDocumentsComponent implements OnInit {
 
             let req: VendorRegistrationRequestModel = {
                 action: this._appService.updateOperations.submit,
-                vendorMasterDetails: this._appService.vendorRegistrationDetails,
-                vendorOrgCatogery: this._appService.vendorOrgCatogery,
-                vendorOrgTypes: this._appService.vendorOrgTypes
+                vendorMasterDetails: this._appService.vendorRegistrationDetails
             }
 
             this._vendorRegistrationService.updateBusy(<BusyDataModel>{ isBusy: true, msg: null });
@@ -398,8 +396,8 @@ export class VendorDocumentsComponent implements OnInit {
         this.vendorDocumentForm.get("lutDate").setValue(this._appService.vendorRegistrationDetails.lutDate ? new Date(this._appService.vendorRegistrationDetails.lutDate) : null);
         this.vendorDocumentForm.get("otherDocDesc").setValue(this._appService.vendorRegistrationDetails.otherDocDesc);
         // US fields
-        this.vendorDocumentForm.get("vendorOrgCatogery").setValue(this._appService.vendorOrgCatogery.catogery);
-        this.vendorDocumentForm.get("vendorOrgSubCategory").setValue(this._appService.vendorOrgCatogery.subCatogery);
+        this.vendorDocumentForm.get("vendorOrgCatogery").setValue(this._appService.vendorRegistrationDetails.vendorOrgCatogeryVO.catogery);
+        this.vendorDocumentForm.get("vendorOrgSubCategory").setValue(this._appService.vendorRegistrationDetails.vendorOrgCatogeryVO.subCatogery);
         this.vendorDocumentForm.get("usTaxId").setValue(this._appService.vendorRegistrationDetails.usTaxId);
         this.vendorDocumentForm.get("usSocialSecurity").setValue(this._appService.vendorRegistrationDetails.usSocialSecurity);
         this.vendorDocumentForm.get("usEinNumber").setValue(this._appService.vendorRegistrationDetails.usEinNumber);
@@ -409,7 +407,7 @@ export class VendorDocumentsComponent implements OnInit {
 
         this.usPayeeIdentificatn = this._appService.usPayeeIdentificatn;
 
-        this.vendorOrgTypesList = this._appService.vendorOrgTypes;
+        this.vendorOrgTypesList = this._appService.vendorRegistrationDetails.vendorOrgTypesVO;
 
         this.filesMap = this._appService.selectedFileMap;
 
@@ -553,27 +551,28 @@ export class VendorDocumentsComponent implements OnInit {
         }
     }
     setOrgType(orgType) {
-        this.vendorOrgTypesList = this._appService.vendorOrgTypes;
+        this.vendorOrgTypesList = this._appService.vendorRegistrationDetails.vendorOrgTypesVO;
         return this.vendorOrgTypesList.find(selectedOrgType => selectedOrgType.orgType == orgType);
     }
 
-    prepareOrgTypeList(event, orgType) {
+    prepareOrgTypeList(event, orgType, index) {
         let obj: VendorOrgTypesModel = {
             vendorMasterId: this._appService.vendorRegistrationDetails.vendorMasterId,
-            orgType: orgType
+            orgType: orgType,
+            vendorOrdTypeId: this._appService.vendorRegistrationDetails.vendorOrgTypesVO[index].vendorOrdTypeId ? this._appService.vendorRegistrationDetails.vendorOrgTypesVO[index].vendorOrdTypeId : null
+
         }
         if (event) {
             this.vendorOrgTypesList = this.vendorOrgTypesList.concat(obj);
         }
         else {
-            let i = this.vendorOrgTypesList.findIndex(e => e.orgType == orgType);
-            this.vendorOrgTypesList.splice(i, 1);
+            this.vendorOrgTypesList.splice(index, 1);
         }
-        this._appService.vendorOrgTypes = this.vendorOrgTypesList;
+        this._appService.vendorRegistrationDetails.vendorOrgTypesVO = this.vendorOrgTypesList;
     }
 
     onOrgCatChange() {
-        this._appService.vendorOrgCatogery = null;
+        this._appService.vendorRegistrationDetails.vendorOrgCatogeryVO = null;
         this.vendorDocumentForm.get('vendorOrgSubCategory').setValue(null);
         let selectedOrgCat = this.vendorDocumentForm.get('vendorOrgCatogery').value
         let i = this.organizationCategoryMasterVO.findIndex(orgCat => orgCat.catogery == selectedOrgCat);
@@ -593,8 +592,8 @@ export class VendorDocumentsComponent implements OnInit {
             catogery: this.vendorDocumentForm.get('vendorOrgCatogery').value,
             subCatogery: this.vendorDocumentForm.get('vendorOrgSubCategory').value
         }
-        this._appService.vendorOrgCatogery = obj;
-        console.log(this._appService.vendorOrgCatogery);
+        this._appService.vendorRegistrationDetails.vendorOrgCatogeryVO = obj;
+        console.log(this._appService.vendorRegistrationDetails.vendorOrgCatogeryVO);
 
     }
 

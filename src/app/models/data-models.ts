@@ -97,9 +97,6 @@ export class POSearchResultModel {
 export class VendorRegistrationRequestModel {
     action: string;
     vendorMasterDetails: VendorMasterDetailsModel;
-    // canRaiseNotification: boolean;
-    vendorOrgCatogery: vendorOrgCategoryModel;
-    vendorOrgTypes: VendorOrgTypesModel[];
 }
 export class vendorOrgCategoryModel {
     vendorMasterId: number;
@@ -109,6 +106,7 @@ export class vendorOrgCategoryModel {
 export class VendorOrgTypesModel {
     vendorMasterId: number;
     orgType: string;
+    vendorOrdTypeId: number;
 }
 
 export class VendorRegistrationDetailRequestModel {
@@ -201,6 +199,8 @@ export class VendorMasterDetailsModel {
     usW9: boolean = false;
     usMinorityCertificate: string;
     vendorCountry: string;
+    vendorOrgTypesVO: VendorOrgTypesModel[];
+    vendorOrgCatogeryVO: vendorOrgCategoryModel;
 }
 
 export interface FileMap {
@@ -452,6 +452,8 @@ export class VendorApprovalInitResultModel {
     vendorOrgCatogery: vendorOrgCategoryModel;
     vendorOrgTypes: VendorOrgTypesModel[];
     bankAccountTypeList: BankAccountTypeModel[];
+    organizationCategoryMasterVO: organizationCategoryMasterVO[];
+    organizationTypeMasterVO: organizationTypeMasterVO[]
 }
 
 export class VendorApprovalInitReqModel {

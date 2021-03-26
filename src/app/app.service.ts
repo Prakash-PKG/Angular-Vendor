@@ -18,8 +18,8 @@ import * as _ from 'underscore';
 })
 export class AppService {
 
-    // readonly domain = "http://localhost:8080";
-     readonly domain = "https://mvendor-dev.marlabs.com"; 
+    readonly domain = "http://localhost:8080";
+    //  readonly domain = "https://mvendor-dev.marlabs.com"; 
     // readonly domain = "https://mvendor-stg.marlabs.com";     
     readonly baseUrl = this.domain + "/mvendor/";
     readonly customerAuthUrl = this.domain + "/customerAuth/oauth/token";
@@ -229,18 +229,21 @@ export class AppService {
         usW8Bene: false,
         usW9: false,
         usMinorityCertificate: null,
-        vendorCountry: null
+        vendorCountry: null,
+        vendorOrgTypesVO: null,
+        vendorOrgCatogeryVO: null
     };
-    vendorOrgCatogery: vendorOrgCategoryModel = {
-        vendorMasterId: null,
-        catogery: null,
-        subCatogery: null
+    // vendorOrgCatogery: vendorOrgCategoryModel = {
+    //     vendorMasterId: null,
+    //     catogery: null,
+    //     subCatogery: null
 
-    };
-    vendorOrgTypes: VendorOrgTypesModel[] = [{
-        vendorMasterId: null,
-        orgType: null
-    }];
+    // };
+    // vendorOrgTypes: VendorOrgTypesModel[] = [{
+    //     vendorMasterId: null,
+    //     orgType: null,
+    //     vendorOrdTypeId:null
+    // }];
 
     selectedFileMap: FileMap = {};
 
@@ -327,27 +330,14 @@ export class AppService {
             usW8Bene: false,
             usW9: false,
             usMinorityCertificate: null,
-            vendorCountry: null
+            vendorCountry: null,
+            vendorOrgTypesVO: null,
+            vendorOrgCatogeryVO: null
         };
 
         return regDetails;
     }
-    resetVendorOrgCatogery() {
-        let vendorOrgCatogery: vendorOrgCategoryModel = {
-            vendorMasterId: null,
-            catogery: null,
-            subCatogery: null
 
-        };
-        return vendorOrgCatogery;
-    }
-    resetVendorOrgTypes() {
-        let vendorOrgTypes: VendorOrgTypesModel[] = [{
-            vendorMasterId: null,
-            orgType: null
-        }];
-        return vendorOrgTypes;
-    }
     isEmpty(obj) {
         return Object.keys(obj).length === 0;
     }

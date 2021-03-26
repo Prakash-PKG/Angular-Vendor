@@ -698,9 +698,9 @@ flex-wrap: wrap;">
         </div>
         <div class="col-7 doc-form-field">
             <ul class="orgType">
-                <li *ngFor="let orgType of organizationTypeMasterVO">
+                <li *ngFor="let orgType of organizationTypeMasterVO;let i =index">
                     <mat-checkbox formControlName="vendorOrgTypes"
-                        (change)="prepareOrgTypeList($event.checked,orgType.orgType)"
+                        (change)="prepareOrgTypeList($event.checked,orgType.orgType,i)"
                         [checked]="setOrgType(orgType.orgType)">
                         {{orgType.orgType}}
                     </mat-checkbox>
