@@ -645,8 +645,8 @@ export class VendorDocumentsComponent implements OnInit {
                 usTaxId: [null],
                 usSocialSecurity: [null],
                 usEinNumber: [null, [Validators.minLength(15), Validators.maxLength(15), Validators.pattern(/^[a-zA-Z0-9]*([a-zA-Z]+[0-9]+|[0-9]+[a-zA-Z]+)[a-zA-Z0-9]*$/)]],
-                usW8Bene: [null],
-                usW9: [null],
+                usW8Bene: [false],
+                usW9: [false],
                 usMinorityCertificate: [null]
 
             });
