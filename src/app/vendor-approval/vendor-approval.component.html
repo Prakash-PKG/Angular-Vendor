@@ -267,7 +267,7 @@
                     <mat-divider style="margin: -1em 0px 2em 15.5em"></mat-divider>
                 </div>
                 <!--------------- India vendor Documents Details -------------------------->
-                <div class="Rtable Rtable--2cols Rtable--collapse">
+                <div class="Rtable Rtable--2cols Rtable--collapse" *ngIf="!showUSField()">
 
                     <div class="Rtable-cell Rtable-cell--head">Incorporation Certificate</div>
                     <div class="Rtable-cell">
@@ -825,7 +825,9 @@
                 <div class="Rtable Rtable--2cols Rtable--collapse" *ngIf="showUSField()">
 
                     <div class="Rtable-cell Rtable-cell--head">Payee Identification </div>
-                    <div class="Rtable-cell" *ngIf="!isEditable"></div>
+                    <div class="Rtable-cell" *ngIf="!isEditable">
+                        {{usPayeeIdentificatn=='taxId'?'Tax ID No.' : (usPayeeIdentificatn=='ein'?'EIN No.' : 'Social Security')}}
+                    </div>
                     <div class="Rtable-cell" *ngIf="isEditable">
                         <mat-radio-group [(ngModel)]="usPayeeIdentificatn" (change)="updatePayeeIdentificatn()"
                             [ngModelOptions]="{standalone: true}">

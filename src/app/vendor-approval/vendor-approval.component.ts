@@ -673,6 +673,7 @@ export class VendorApprovalComponent implements OnInit {
             };
             this.vendorApprovalInitDetails = await this._vendorApprovalService.getVendorApprovalInitData(req);
             this.vendorDetails = this.vendorApprovalInitDetails.vendorMasterDetails;
+            this.usPayeeIdentificatn = this.vendorDetails.usTaxId ? 'taxId' : (this.vendorDetails.usEinNumber ? 'ein' : 'socialSec')
         }
         this.loadDropDown();
         this.updateVendorFields();
@@ -744,8 +745,8 @@ export class VendorApprovalComponent implements OnInit {
             this.vendorForm.get("usW9").setValue(this.vendorDetails.usW9);
             this.vendorForm.get("usMinorityCertificate").setValue(this.vendorDetails.usMinorityCertificate);
 
-            this.vendorForm.get("vendorOrgCatogery").setValue(this.vendorDetails.vendorOrgCatogeryVO.catogery);
-            this.vendorForm.get("vendorOrgSubCategory").setValue(this.vendorDetails.vendorOrgCatogeryVO.subCatogery);
+            this.vendorForm.get("vendorOrgCatogery").setValue(this.vendorDetails.vendorOrgCatogeryVO ? this.vendorDetails.vendorOrgCatogeryVO.catogery : null);
+            this.vendorForm.get("vendorOrgSubCategory").setValue(this.vendorDetails.vendorOrgCatogeryVO ? this.vendorDetails.vendorOrgCatogeryVO.subCatogery : null);
 
             this.vendorForm.get("selectedVendorGroup").setValue(this.vendorDetails.groupCode ? this.vendorDetails.groupCode : null);
             this.vendorForm.get("selectedCompanyCode").setValue(this.vendorDetails.companyCode ? this.vendorDetails.companyCode : null);
@@ -944,14 +945,14 @@ export class VendorApprovalComponent implements OnInit {
 
     setOrgType(orgType) {
         this.vendorOrgTypesList = this.vendorDetails.vendorOrgTypesVO;
-        return this.vendorOrgTypesList.find(selectedOrgType => selectedOrgType.orgType == orgType);
+        return this.vendorOrgTypesList ? this.vendorOrgTypesList.find(selectedOrgType => selectedOrgType.orgType == orgType) : false;
     }
 
     prepareOrgTypeList(event, orgType, index) {
         let obj: VendorOrgTypesModel = {
             vendorMasterId: this.vendorDetails.vendorMasterId,
             orgType: orgType,
-            vendorOrdTypeId: this.vendorDetails.vendorOrgTypesVO[index].vendorOrdTypeId ? this.vendorDetails.vendorOrgTypesVO[index].vendorOrdTypeId : null
+            vendorOrdTypeId: this.vendorDetails.vendorOrgTypesVO[index] ? this.vendorDetails.vendorOrgTypesVO[index].vendorOrdTypeId : null
         }
         if (event) {
             this.vendorOrgTypesList = this.vendorOrgTypesList.concat(obj);

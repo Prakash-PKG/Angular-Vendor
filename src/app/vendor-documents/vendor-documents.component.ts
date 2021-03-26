@@ -612,7 +612,7 @@ export class VendorDocumentsComponent implements OnInit {
             this.maxLutDate.setDate(this.maxLutDate.getDate() + 1);
 
             this.organizationTypeMasterVO = [];
-            if (this._appService.vendorRegistrationDetails && this._appService.vendorRegistrationInitDetails.organizationTypeMasterVO &&
+            if (this._appService.vendorRegistrationInitDetails && this._appService.vendorRegistrationInitDetails.organizationTypeMasterVO &&
                 this._appService.vendorRegistrationInitDetails.organizationTypeMasterVO.length > 0) {
                 this.organizationTypeMasterVO = this._appService.vendorRegistrationInitDetails.organizationTypeMasterVO;
             }
