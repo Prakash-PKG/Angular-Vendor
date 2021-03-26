@@ -12,9 +12,9 @@ import {
     WithholdTypeList,
     WithholdTaxList,
     VendorRegistrationDetailRequestModel, VendorDocumentResultModel, FileDetailsModel,
-    VendorMasterDocumentModel, VendorDocumentReqModel, CountryDataModel, regionMasterVOList, fileDetailsVendorDocumentModel, organizationTypeMasterVO, organizationCategoryMasterVO, VendorOrgTypesModel, vendorOrgCategoryModel
+    VendorMasterDocumentModel, VendorDocumentReqModel, CountryDataModel, regionMasterVOList, organizationTypeMasterVO, organizationCategoryMasterVO, VendorOrgTypesModel, vendorOrgCategoryModel
 } from './../models/data-models';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, HostListener } from '@angular/core';
 import { HomeService } from '../home/home.service';
 import { VendorRegistrationService } from '../vendor-registration/vendor-registration.service';
 import { Subscription, BehaviorSubject } from 'rxjs';
@@ -152,6 +152,7 @@ export class VendorApprovalComponent implements OnInit {
         private _datePipe: DatePipe,
         private _formBuilder: FormBuilder,
         private _router: Router) { }
+
 
     omit_special_char(event) {
         var k;
@@ -1108,7 +1109,7 @@ export class VendorApprovalComponent implements OnInit {
             usTaxId: [{ value: null, disabled: true }],
             usSocialSecurity: [{ value: null, disabled: true }],
             usEinNumber: [{ value: null, disabled: true }, [Validators.minLength(15), Validators.maxLength(15), Validators.pattern(/^[a-zA-Z0-9]*([a-zA-Z]+[0-9]+|[0-9]+[a-zA-Z]+)[a-zA-Z0-9]*$/)]],
-            usW8Bene:[false],
+            usW8Bene: [false],
             usW9: [false],
             usMinorityCertificate: [false],
 

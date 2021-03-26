@@ -72,9 +72,9 @@
                     <div class="Rtable-cell Rtable-cell--head" *ngIf="showUSField()">Doing Business As*</div>
                     <div class="Rtable-cell" *ngIf="showUSField()">
                         <mat-form-field class="full-width">
-                            <input type="text" matInput formControlName="emailId" autocomplete="off" required>
+                            <input type="text" matInput formControlName="usVendorBusiness" autocomplete="off" required>
                         </mat-form-field>
-                        <mat-error class="errortxt" *ngIf="( isSubmitted ) && f?.emailId?.errors?.required">Doing
+                        <mat-error class="errortxt" *ngIf="( isSubmitted ) && f?.usVendorBusiness?.errors?.required">Doing
                             Business is
                             required</mat-error>
 
@@ -228,8 +228,8 @@
                     <div class="Rtable-cell Rtable-cell--head" *ngIf="showUSField()">Bank Country</div>
                     <div class="Rtable-cell" *ngIf="showUSField()">{{ vendorDetails?.usBankSector }}</div>
 
-                    <div class="Rtable-cell Rtable-cell--head" *ngIf="showUSField()">Bank Country</div>
-                    <div class="Rtable-cell" *ngIf="showUSField()">{{ vendorDetails?.usBankSector }}</div>
+                    <div class="Rtable-cell Rtable-cell--head" *ngIf="showUSField()">Cheque mailing address</div>
+                    <div class="Rtable-cell" *ngIf="showUSField()">{{ vendorDetails?.usChecqueMailingAddress }}</div>
                 </div>
 
                 <div class="section-title" style="margin-top:1em">
@@ -836,290 +836,292 @@
                             <mat-radio-button value='ein'>EIN</mat-radio-button>
                         </mat-radio-group>
                     </div>
-                    <!-- <div class="Rtable-cell Rtable-cell--head"></div>
+                    <div class="Rtable-cell Rtable-cell--head"></div>
                     <div class="Rtable-cell">
-                    </div> -->
+                    </div>
 
                     <!-- ----------------------------------------------Tax Id-------------------------------------------- -->
-                    <span *ngIf="(usPayeeIdentificatn=='taxId')">
-                        <div class="Rtable-cell Rtable-cell--head">Tax ID No.</div>
-                        <div class="Rtable-cell">
-                            <mat-form-field class="full-width">
-                                <input type="text" matInput formControlName="usTaxId" autocomplete="off"
-                                    (blur)="onTextFieldValueChange('usTaxId',vendorDocCtrl.taxIdNoCtrl.documentTypeId);">
-                            </mat-form-field>
-                            <mat-error class="errortxt" *ngIf="isSubmitted == true && f?.usTaxId?.errors?.required">Tax
-                                ID
-                                is required</mat-error>
 
-                        </div>
+                    <div class="Rtable-cell Rtable-cell--head" *ngIf="(usPayeeIdentificatn=='taxId')">Tax ID No.</div>
+                    <div class="Rtable-cell" *ngIf="(usPayeeIdentificatn=='taxId')">
+                        <mat-form-field class="full-width">
+                            <input type="text" matInput formControlName="usTaxId" autocomplete="off"
+                                (blur)="onTextFieldValueChange('usTaxId',vendorDocCtrl.taxIdNoCtrl.documentTypeId);">
+                        </mat-form-field>
+                        <mat-error class="errortxt" *ngIf="isSubmitted == true && f?.usTaxId?.errors?.required">Tax
+                            ID
+                            is required</mat-error>
 
-                        <div class="Rtable-cell Rtable-cell--head">Attachments</div>
-                        <div class="Rtable-cell">
-                            <div class="attachments">
-                                <div class="flex-item">
-                                    <div *ngFor="let file of filesMap[vendorDocCtrl.taxIdNoCtrl.documentTypeId]?.filesList; let i = index"
-                                        class="filename">
-                                        <button mat-button mat-icon-button aria-label="Download"
-                                            (click)="downloadFile(file)">
-                                            <mat-icon matTooltip="{{ file.actualFileName }}">description</mat-icon>
-                                        </button>
-                                        <button mat-button mat-icon-button aria-label="Delete"
-                                            *ngIf="isProcurement == true && isEditable == true"
-                                            (click)="onDeleteFileClick(file, i,vendorDocCtrl.taxIdNoCtrl.documentTypeId)">
-                                            <mat-icon>delete_outline</mat-icon>
-                                        </button>
-                                    </div>
-                                </div>
-                                <div class="flex-item">
-                                    <div *ngIf="isEditable">
-                                        <input style="display: none" [attr.id]="vendorDocCtrl.taxIdNoCtrl.browserId"
-                                            type="file" multiple accept=".xls,.xlsx,.doc,.docx,.pdf,.png,.jpg,.zip"
-                                            (change)="onFileChange($event, vendorDocCtrl.taxIdNoCtrl.documentTypeId)" />
-                                        <button mat-button mat-icon-button aria-label="Attach" class="attach-btn"
-                                            (click)="onBrowseFileClick($event, vendorDocCtrl.taxIdNoCtrl.browserId)"
-                                            [disabled]="!this.vendorForm.get('usTaxId').value">
-                                            <mat-icon>attachment</mat-icon>
-                                        </button>
-                                    </div>
+                    </div>
+
+                    <div class="Rtable-cell Rtable-cell--head" *ngIf="(usPayeeIdentificatn=='taxId')">Attachments</div>
+                    <div class="Rtable-cell" *ngIf="(usPayeeIdentificatn=='taxId')">
+                        <div class="attachments">
+                            <div class="flex-item">
+                                <div *ngFor="let file of filesMap[vendorDocCtrl.taxIdNoCtrl.documentTypeId]?.filesList; let i = index"
+                                    class="filename">
+                                    <button mat-button mat-icon-button aria-label="Download"
+                                        (click)="downloadFile(file)">
+                                        <mat-icon matTooltip="{{ file.actualFileName }}">description</mat-icon>
+                                    </button>
+                                    <button mat-button mat-icon-button aria-label="Delete"
+                                        *ngIf="isProcurement == true && isEditable == true"
+                                        (click)="onDeleteFileClick(file, i,vendorDocCtrl.taxIdNoCtrl.documentTypeId)">
+                                        <mat-icon>delete_outline</mat-icon>
+                                    </button>
                                 </div>
                             </div>
-                            <div class="errortxt"
-                                *ngIf="isSubmitted && filesMap[vendorDocCtrl.taxIdNoCtrl.documentTypeId]?.isError">This
-                                attachment is mandatory if Tax ID is enetered</div>
-                            <div *ngIf="filesMap[vendorDocCtrl.taxIdNoCtrl.documentTypeId]?.isAttachWithoutValue"
-                                class="errortxt">
-                                Tax ID and attachment both are mandatory.
+                            <div class="flex-item">
+                                <div *ngIf="isEditable">
+                                    <input style="display: none" [attr.id]="vendorDocCtrl.taxIdNoCtrl.browserId"
+                                        type="file" multiple accept=".xls,.xlsx,.doc,.docx,.pdf,.png,.jpg,.zip"
+                                        (change)="onFileChange($event, vendorDocCtrl.taxIdNoCtrl.documentTypeId)" />
+                                    <button mat-button mat-icon-button aria-label="Attach" class="attach-btn"
+                                        (click)="onBrowseFileClick($event, vendorDocCtrl.taxIdNoCtrl.browserId)"
+                                        [disabled]="!this.vendorForm.get('usTaxId').value">
+                                        <mat-icon>attachment</mat-icon>
+                                    </button>
+                                </div>
                             </div>
                         </div>
-                    </span>
+                        <div class="errortxt"
+                            *ngIf="isSubmitted && filesMap[vendorDocCtrl.taxIdNoCtrl.documentTypeId]?.isError">This
+                            attachment is mandatory if Tax ID is enetered</div>
+                        <div *ngIf="filesMap[vendorDocCtrl.taxIdNoCtrl.documentTypeId]?.isAttachWithoutValue"
+                            class="errortxt">
+                            Tax ID and attachment both are mandatory.
+                        </div>
+                    </div>
+
                     <!-- ---------------------------------------Tax ID --  (w8 BENE)  ------------------ -->
-                    <span *ngIf="(usPayeeIdentificatn=='taxId')">
-                        <div class="Rtable-cell Rtable-cell--head">w8 - BENE/BEN
-                        </div>
-                        <div class="Rtable-cell" *ngIf="!isEditable">
-                            {{ vendorDetails?.usW8Bene == true ? 'Yes' : 'No' }}
-                        </div>
-                        <div class="Rtable-cell" *ngIf="isEditable">
-                            <mat-radio-group formControlName="usW8Bene">
-                                <mat-radio-button
-                                    (change)="onRadioBtnSelectionChange($event,vendorDocCtrl.w8Ctrl.documentTypeId)"
-                                    [value]=true>Yes</mat-radio-button>
-                                <mat-radio-button
-                                    (change)="onRadioBtnSelectionChange($event,vendorDocCtrl.w8Ctrl.documentTypeId)"
-                                    [value]=false>No</mat-radio-button>
-                            </mat-radio-group>
-                        </div>
 
-                        <div class="Rtable-cell Rtable-cell--head">Attachments</div>
-                        <div class="Rtable-cell">
-                            <div class="attachments">
-                                <div class="flex-item">
-                                    <div *ngFor="let file of filesMap[vendorDocCtrl.w8Ctrl.documentTypeId]?.filesList; let i = index"
-                                        class="filename">
-                                        <button mat-button mat-icon-button aria-label="Download"
-                                            (click)="downloadFile(file)">
-                                            <mat-icon matTooltip="{{ file.actualFileName }}">description</mat-icon>
-                                        </button>
-                                        <button mat-button mat-icon-button aria-label="Delete"
-                                            *ngIf="isProcurement == true && isEditable == true"
-                                            (click)="onDeleteFileClick(file, i,vendorDocCtrl.w8Ctrl.documentTypeId)">
-                                            <mat-icon>delete_outline</mat-icon>
-                                        </button>
-                                    </div>
-                                </div>
-                                <div class="flex-item">
-                                    <div *ngIf="isEditable">
-                                        <input style="display: none" [attr.id]="vendorDocCtrl.w8Ctrl.browserId"
-                                            type="file" multiple accept=".xls,.xlsx,.doc,.docx,.pdf,.png,.jpg,.zip"
-                                            (change)="onFileChange($event, vendorDocCtrl.w8Ctrl.documentTypeId)" />
-                                        <button mat-button mat-icon-button aria-label="Attach" class="attach-btn"
-                                            [disabled]="!this.vendorForm.get('usW8Bene').value"
-                                            (click)="onBrowseFileClick($event, vendorDocCtrl.w8Ctrl.browserId)">
-                                            <mat-icon>attachment</mat-icon>
-                                        </button>
-                                    </div>
+                    <div class="Rtable-cell Rtable-cell--head" *ngIf="(usPayeeIdentificatn=='taxId')">w8 - BENE/BEN
+                    </div>
+                    <div class="Rtable-cell" *ngIf="!isEditable && (usPayeeIdentificatn=='taxId')">
+                        {{ vendorDetails?.usW8Bene == true ? 'Yes' : 'No' }}
+                    </div>
+                    <div class="Rtable-cell" *ngIf="isEditable && (usPayeeIdentificatn=='taxId')">
+                        <mat-radio-group formControlName="usW8Bene">
+                            <mat-radio-button
+                                (change)="onRadioBtnSelectionChange($event,vendorDocCtrl.w8Ctrl.documentTypeId)"
+                                [value]=true>Yes</mat-radio-button>
+                            <mat-radio-button
+                                (change)="onRadioBtnSelectionChange($event,vendorDocCtrl.w8Ctrl.documentTypeId)"
+                                [value]=false>No</mat-radio-button>
+                        </mat-radio-group>
+                    </div>
+
+                    <div class="Rtable-cell Rtable-cell--head" *ngIf="(usPayeeIdentificatn=='taxId')">Attachments
+                    </div>
+                    <div class="Rtable-cell" *ngIf="(usPayeeIdentificatn=='taxId')">
+                        <div class="attachments">
+                            <div class="flex-item">
+                                <div *ngFor="let file of filesMap[vendorDocCtrl.w8Ctrl.documentTypeId]?.filesList; let i = index"
+                                    class="filename">
+                                    <button mat-button mat-icon-button aria-label="Download"
+                                        (click)="downloadFile(file)">
+                                        <mat-icon matTooltip="{{ file.actualFileName }}">description</mat-icon>
+                                    </button>
+                                    <button mat-button mat-icon-button aria-label="Delete"
+                                        *ngIf="isProcurement == true && isEditable == true"
+                                        (click)="onDeleteFileClick(file, i,vendorDocCtrl.w8Ctrl.documentTypeId)">
+                                        <mat-icon>delete_outline</mat-icon>
+                                    </button>
                                 </div>
                             </div>
-                            <div class="errortxt"
-                                *ngIf="isSubmitted && filesMap[vendorDocCtrl.w8Ctrl.documentTypeId]?.isError">This
-                                attachment is mandatory if w8 - BENE/BEN is available</div>
-                            <div *ngIf="filesMap[vendorDocCtrl.w8Ctrl.documentTypeId]?.isAttachWithoutValue"
-                                class="errortxt">
-                                Select w8 - BENE/BEN or delete the attachment.
+                            <div class="flex-item">
+                                <div *ngIf="isEditable">
+                                    <input style="display: none" [attr.id]="vendorDocCtrl.w8Ctrl.browserId" type="file"
+                                        multiple accept=".xls,.xlsx,.doc,.docx,.pdf,.png,.jpg,.zip"
+                                        (change)="onFileChange($event, vendorDocCtrl.w8Ctrl.documentTypeId)" />
+                                    <button mat-button mat-icon-button aria-label="Attach" class="attach-btn"
+                                        [disabled]="!this.vendorForm.get('usW8Bene').value"
+                                        (click)="onBrowseFileClick($event, vendorDocCtrl.w8Ctrl.browserId)">
+                                        <mat-icon>attachment</mat-icon>
+                                    </button>
+                                </div>
                             </div>
                         </div>
-                    </span>
+                        <div class="errortxt"
+                            *ngIf="isSubmitted && filesMap[vendorDocCtrl.w8Ctrl.documentTypeId]?.isError">This
+                            attachment is mandatory if w8 - BENE/BEN is available</div>
+                        <div *ngIf="filesMap[vendorDocCtrl.w8Ctrl.documentTypeId]?.isAttachWithoutValue"
+                            class="errortxt">
+                            Select w8 - BENE/BEN or delete the attachment.
+                        </div>
+                    </div>
+
                     <!-- ----------------------------------------------Social Security-------------------------------------------- -->
-                    <span *ngIf="(usPayeeIdentificatn=='socialSec')">
-                        <div class="Rtable-cell Rtable-cell--head" *ngIf=" (usPayeeIdentificatn =='socialSec')">Social
-                            security No.</div>
-                        <div class="Rtable-cell">
-                            <mat-form-field class="full-width">
-                                <input type="text" matInput formControlName="usSocialSecurity" autocomplete="off"
-                                    (blur)="onTextFieldValueChange('usSocialSecurity',vendorDocCtrl.socialSecNoCtrl.documentTypeId);">
-                            </mat-form-field>
-                            <mat-error class="errortxt"
-                                *ngIf="isSubmitted == true && f?.usSocialSecurity?.errors?.required">Social security is
-                                required</mat-error>
-                        </div>
 
-                        <div class="Rtable-cell Rtable-cell--head" *ngIf=" (usPayeeIdentificatn =='socialSec')">
-                            Attachments</div>
-                        <div class="Rtable-cell">
-                            <div class="attachments">
-                                <div class="flex-item">
-                                    <div *ngFor="let file of filesMap[vendorDocCtrl.socialSecNoCtrl.documentTypeId]?.filesList; let i = index"
-                                        class="filename">
-                                        <button mat-button mat-icon-button aria-label="Download"
-                                            (click)="downloadFile(file)">
-                                            <mat-icon matTooltip="{{ file.actualFileName }}">description</mat-icon>
-                                        </button>
-                                        <button mat-button mat-icon-button aria-label="Delete"
-                                            *ngIf="isProcurement == true && isEditable == true"
-                                            (click)="onDeleteFileClick(file, i,vendorDocCtrl.socialSecNoCtrl.documentTypeId)">
-                                            <mat-icon>delete_outline</mat-icon>
-                                        </button>
-                                    </div>
-                                </div>
-                                <div class="flex-item">
-                                    <div *ngIf="isEditable">
-                                        <input style="display: none" [attr.id]="vendorDocCtrl.socialSecNoCtrl.browserId"
-                                            type="file" multiple accept=".xls,.xlsx,.doc,.docx,.pdf,.png,.jpg,.zip"
-                                            (change)="onFileChange($event, vendorDocCtrl.socialSecNoCtrl.documentTypeId)" />
-                                        <button mat-button mat-icon-button aria-label="Attach" class="attach-btn"
-                                            (click)="onBrowseFileClick($event, vendorDocCtrl.socialSecNoCtrl.browserId)"
-                                            [disabled]="!this.vendorForm.get('usSocialSecurity').value">
-                                            <mat-icon>attachment</mat-icon>
-                                        </button>
-                                    </div>
+                    <div class="Rtable-cell Rtable-cell--head" *ngIf=" (usPayeeIdentificatn =='socialSec')">Social
+                        security No.</div>
+                    <div class="Rtable-cell" *ngIf="(usPayeeIdentificatn=='socialSec')">
+                        <mat-form-field class="full-width">
+                            <input type="text" matInput formControlName="usSocialSecurity" autocomplete="off"
+                                (blur)="onTextFieldValueChange('usSocialSecurity',vendorDocCtrl.socialSecNoCtrl.documentTypeId);">
+                        </mat-form-field>
+                        <mat-error class="errortxt"
+                            *ngIf="isSubmitted == true && f?.usSocialSecurity?.errors?.required">Social security is
+                            required</mat-error>
+                    </div>
+
+                    <div class="Rtable-cell Rtable-cell--head" *ngIf=" (usPayeeIdentificatn =='socialSec')">
+                        Attachments</div>
+                    <div class="Rtable-cell" *ngIf="(usPayeeIdentificatn=='socialSec')">
+                        <div class="attachments">
+                            <div class="flex-item">
+                                <div *ngFor="let file of filesMap[vendorDocCtrl.socialSecNoCtrl.documentTypeId]?.filesList; let i = index"
+                                    class="filename">
+                                    <button mat-button mat-icon-button aria-label="Download"
+                                        (click)="downloadFile(file)">
+                                        <mat-icon matTooltip="{{ file.actualFileName }}">description</mat-icon>
+                                    </button>
+                                    <button mat-button mat-icon-button aria-label="Delete"
+                                        *ngIf="isProcurement == true && isEditable == true"
+                                        (click)="onDeleteFileClick(file, i,vendorDocCtrl.socialSecNoCtrl.documentTypeId)">
+                                        <mat-icon>delete_outline</mat-icon>
+                                    </button>
                                 </div>
                             </div>
-                            <div class="errortxt"
-                                *ngIf="isSubmitted && filesMap[vendorDocCtrl.socialSecNoCtrl.documentTypeId]?.isError">
-                                This
-                                attachment is mandatory if Social security is entered</div>
-                            <div *ngIf="filesMap[vendorDocCtrl.socialSecNoCtrl.documentTypeId]?.isAttachWithoutValue"
-                                class="errortxt">
-                                Social security and attachment both are mandatory.
+                            <div class="flex-item">
+                                <div *ngIf="isEditable">
+                                    <input style="display: none" [attr.id]="vendorDocCtrl.socialSecNoCtrl.browserId"
+                                        type="file" multiple accept=".xls,.xlsx,.doc,.docx,.pdf,.png,.jpg,.zip"
+                                        (change)="onFileChange($event, vendorDocCtrl.socialSecNoCtrl.documentTypeId)" />
+                                    <button mat-button mat-icon-button aria-label="Attach" class="attach-btn"
+                                        (click)="onBrowseFileClick($event, vendorDocCtrl.socialSecNoCtrl.browserId)"
+                                        [disabled]="!this.vendorForm.get('usSocialSecurity').value">
+                                        <mat-icon>attachment</mat-icon>
+                                    </button>
+                                </div>
                             </div>
                         </div>
-                    </span>
+                        <div class="errortxt"
+                            *ngIf="isSubmitted && filesMap[vendorDocCtrl.socialSecNoCtrl.documentTypeId]?.isError">
+                            This
+                            attachment is mandatory if Social security is entered</div>
+                        <div *ngIf="filesMap[vendorDocCtrl.socialSecNoCtrl.documentTypeId]?.isAttachWithoutValue"
+                            class="errortxt">
+                            Social security and attachment both are mandatory.
+                        </div>
+                    </div>
+
                     <!-- ----------------------------------------------EIN No.-------------------------------------------- -->
-                    <span *ngIf="(usPayeeIdentificatn=='ein')">
-                        <div class="Rtable-cell Rtable-cell--head">
-                            Ein No.</div>
-                        <div class="Rtable-cell">
-                            <mat-form-field class="full-width">
-                                <input type="text" matInput formControlName="usEinNumber" autocomplete="off"
-                                    (blur)="onTextFieldValueChange('usEinNumber',vendorDocCtrl.einCtrl.documentTypeId);">
-                            </mat-form-field>
-                            <mat-error class="errortxt" *ngIf="isSubmitted == true && f?.usEinNumber?.errors?.required">
-                                EIN
-                                no.
-                                is required</mat-error>
 
-                        </div>
+                    <div class="Rtable-cell Rtable-cell--head" *ngIf="(usPayeeIdentificatn=='ein')">
+                        Ein No.</div>
+                    <div class="Rtable-cell" *ngIf="(usPayeeIdentificatn=='ein')">
+                        <mat-form-field class="full-width">
+                            <input type="text" matInput formControlName="usEinNumber" autocomplete="off"
+                                (blur)="onTextFieldValueChange('usEinNumber',vendorDocCtrl.einCtrl.documentTypeId);">
+                        </mat-form-field>
+                        <mat-error class="errortxt" *ngIf="isSubmitted == true && f?.usEinNumber?.errors?.required">
+                            EIN
+                            no.
+                            is required</mat-error>
 
-                        <div class="Rtable-cell Rtable-cell--head">Attachments</div>
-                        <div class="Rtable-cell">
-                            <div class="attachments">
-                                <div class="flex-item">
-                                    <div *ngFor="let file of filesMap[vendorDocCtrl.einCtrl.documentTypeId]?.filesList; let i = index"
-                                        class="filename">
-                                        <button mat-button mat-icon-button aria-label="Download"
-                                            (click)="downloadFile(file)">
-                                            <mat-icon matTooltip="{{ file.actualFileName }}">description</mat-icon>
-                                        </button>
-                                        <button mat-button mat-icon-button aria-label="Delete"
-                                            *ngIf="isProcurement == true && isEditable == true"
-                                            (click)="onDeleteFileClick(file, i,vendorDocCtrl.einCtrl.documentTypeId)">
-                                            <mat-icon>delete_outline</mat-icon>
-                                        </button>
-                                    </div>
-                                </div>
-                                <div class="flex-item">
-                                    <div *ngIf="isEditable">
-                                        <input style="display: none" [attr.id]="vendorDocCtrl.einCtrl.browserId"
-                                            type="file" multiple accept=".xls,.xlsx,.doc,.docx,.pdf,.png,.jpg,.zip"
-                                            (change)="onFileChange($event, vendorDocCtrl.einCtrl.documentTypeId)" />
-                                        <button mat-button mat-icon-button aria-label="Attach" class="attach-btn"
-                                            (click)="onBrowseFileClick($event, vendorDocCtrl.einCtrl.browserId)"
-                                            [disabled]="!this.vendorForm.get('usEinNumber').value">
-                                            <mat-icon>attachment</mat-icon>
-                                        </button>
-                                    </div>
+                    </div>
+
+                    <div class="Rtable-cell Rtable-cell--head" *ngIf="(usPayeeIdentificatn=='ein')">Attachments</div>
+                    <div class="Rtable-cell" *ngIf="(usPayeeIdentificatn=='ein')">
+                        <div class="attachments">
+                            <div class="flex-item">
+                                <div *ngFor="let file of filesMap[vendorDocCtrl.einCtrl.documentTypeId]?.filesList; let i = index"
+                                    class="filename">
+                                    <button mat-button mat-icon-button aria-label="Download"
+                                        (click)="downloadFile(file)">
+                                        <mat-icon matTooltip="{{ file.actualFileName }}">description</mat-icon>
+                                    </button>
+                                    <button mat-button mat-icon-button aria-label="Delete"
+                                        *ngIf="isProcurement == true && isEditable == true"
+                                        (click)="onDeleteFileClick(file, i,vendorDocCtrl.einCtrl.documentTypeId)">
+                                        <mat-icon>delete_outline</mat-icon>
+                                    </button>
                                 </div>
                             </div>
-                            <div class="errortxt"
-                                *ngIf="isSubmitted && filesMap[vendorDocCtrl.einCtrl.documentTypeId]?.isError">This
-                                attachment is mandatory if EIN No is enetered</div>
-                            <div *ngIf="filesMap[vendorDocCtrl.einCtrl.documentTypeId]?.isAttachWithoutValue"
-                                class="errortxt">
-                                EIN no and attachment both are mandatory.
+                            <div class="flex-item">
+                                <div *ngIf="isEditable">
+                                    <input style="display: none" [attr.id]="vendorDocCtrl.einCtrl.browserId" type="file"
+                                        multiple accept=".xls,.xlsx,.doc,.docx,.pdf,.png,.jpg,.zip"
+                                        (change)="onFileChange($event, vendorDocCtrl.einCtrl.documentTypeId)" />
+                                    <button mat-button mat-icon-button aria-label="Attach" class="attach-btn"
+                                        (click)="onBrowseFileClick($event, vendorDocCtrl.einCtrl.browserId)"
+                                        [disabled]="!this.vendorForm.get('usEinNumber').value">
+                                        <mat-icon>attachment</mat-icon>
+                                    </button>
+                                </div>
                             </div>
                         </div>
-                    </span>
+                        <div class="errortxt"
+                            *ngIf="isSubmitted && filesMap[vendorDocCtrl.einCtrl.documentTypeId]?.isError">This
+                            attachment is mandatory if EIN No is enetered</div>
+                        <div *ngIf="filesMap[vendorDocCtrl.einCtrl.documentTypeId]?.isAttachWithoutValue"
+                            class="errortxt">
+                            EIN no and attachment both are mandatory.
+                        </div>
+                    </div>
+
                     <!-- ---------------------------------------EIN  --  (w9)  ------------------ -->
-                    <span *ngIf="(usPayeeIdentificatn=='ein')">
-                        <div class="Rtable-cell Rtable-cell--head">w9</div>
-                        <div class="Rtable-cell" *ngIf="!isEditable"> {{ vendorDetails?.usW9 == true ? 'Yes' : 'No' }}
-                        </div>
-                        <div class="Rtable-cell" *ngIf="isEditable">
-                            <mat-radio-group formControlName="usW9">
-                                <mat-radio-button
-                                    (change)="onRadioBtnSelectionChange($event,vendorDocCtrl.w9Ctrl.documentTypeId)"
-                                    [value]=true>Yes</mat-radio-button>
-                                <mat-radio-button
-                                    (change)="onRadioBtnSelectionChange($event,vendorDocCtrl.w9Ctrl.documentTypeId)"
-                                    [value]=false>No</mat-radio-button>
-                            </mat-radio-group>
-                        </div>
 
-                        <div class="Rtable-cell Rtable-cell--head">Attachments</div>
-                        <div class="Rtable-cell">
-                            <div class="attachments">
-                                <div class="flex-item">
-                                    <div *ngFor="let file of filesMap[vendorDocCtrl.w9Ctrl.documentTypeId]?.filesList; let i = index"
-                                        class="filename">
-                                        <button mat-button mat-icon-button aria-label="Download"
-                                            (click)="downloadFile(file)">
-                                            <mat-icon matTooltip="{{ file.actualFileName }}">description</mat-icon>
-                                        </button>
-                                        <button mat-button mat-icon-button aria-label="Delete"
-                                            *ngIf="isProcurement == true && isEditable == true"
-                                            (click)="onDeleteFileClick(file, i,vendorDocCtrl.w9Ctrl.documentTypeId)">
-                                            <mat-icon>delete_outline</mat-icon>
-                                        </button>
-                                    </div>
-                                </div>
-                                <div class="flex-item">
-                                    <div *ngIf="isEditable">
-                                        <input style="display: none" [attr.id]="vendorDocCtrl.w9Ctrl.browserId"
-                                            type="file" multiple accept=".xls,.xlsx,.doc,.docx,.pdf,.png,.jpg,.zip"
-                                            (change)="onFileChange($event, vendorDocCtrl.w9Ctrl.documentTypeId)" />
-                                        <button mat-button mat-icon-button aria-label="Attach" class="attach-btn"
-                                            [disabled]="!this.vendorForm.get('usW9').value"
-                                            (click)="onBrowseFileClick($event, vendorDocCtrl.w9Ctrl.browserId)">
-                                            <mat-icon>attachment</mat-icon>
-                                        </button>
-                                    </div>
+                    <div class="Rtable-cell Rtable-cell--head" *ngIf="(usPayeeIdentificatn=='ein')">w9</div>
+                    <div class="Rtable-cell" *ngIf="!isEditable && (usPayeeIdentificatn=='ein')">
+                        {{ vendorDetails?.usW9 == true ? 'Yes' : 'No' }}
+                    </div>
+                    <div class="Rtable-cell" *ngIf="isEditable && (usPayeeIdentificatn=='ein')">
+                        <mat-radio-group formControlName="usW9">
+                            <mat-radio-button
+                                (change)="onRadioBtnSelectionChange($event,vendorDocCtrl.w9Ctrl.documentTypeId)"
+                                [value]=true>Yes</mat-radio-button>
+                            <mat-radio-button
+                                (change)="onRadioBtnSelectionChange($event,vendorDocCtrl.w9Ctrl.documentTypeId)"
+                                [value]=false>No</mat-radio-button>
+                        </mat-radio-group>
+                    </div>
+
+                    <div class="Rtable-cell Rtable-cell--head" *ngIf="(usPayeeIdentificatn=='ein')">Attachments</div>
+                    <div class="Rtable-cell" *ngIf="(usPayeeIdentificatn=='ein')">
+                        <div class="attachments">
+                            <div class="flex-item">
+                                <div *ngFor="let file of filesMap[vendorDocCtrl.w9Ctrl.documentTypeId]?.filesList; let i = index"
+                                    class="filename">
+                                    <button mat-button mat-icon-button aria-label="Download"
+                                        (click)="downloadFile(file)">
+                                        <mat-icon matTooltip="{{ file.actualFileName }}">description</mat-icon>
+                                    </button>
+                                    <button mat-button mat-icon-button aria-label="Delete"
+                                        *ngIf="isProcurement == true && isEditable == true"
+                                        (click)="onDeleteFileClick(file, i,vendorDocCtrl.w9Ctrl.documentTypeId)">
+                                        <mat-icon>delete_outline</mat-icon>
+                                    </button>
                                 </div>
                             </div>
-                            <div class="errortxt"
-                                *ngIf="isSubmitted && filesMap[vendorDocCtrl.w9Ctrl.documentTypeId]?.isError">This
-                                attachment is mandatory if w9 is available</div>
-                            <div *ngIf="filesMap[vendorDocCtrl.w9Ctrl.documentTypeId]?.isAttachWithoutValue"
-                                class="errortxt">
-                                Select w9 or delete the attachment.
+                            <div class="flex-item">
+                                <div *ngIf="isEditable">
+                                    <input style="display: none" [attr.id]="vendorDocCtrl.w9Ctrl.browserId" type="file"
+                                        multiple accept=".xls,.xlsx,.doc,.docx,.pdf,.png,.jpg,.zip"
+                                        (change)="onFileChange($event, vendorDocCtrl.w9Ctrl.documentTypeId)" />
+                                    <button mat-button mat-icon-button aria-label="Attach" class="attach-btn"
+                                        [disabled]="!this.vendorForm.get('usW9').value"
+                                        (click)="onBrowseFileClick($event, vendorDocCtrl.w9Ctrl.browserId)">
+                                        <mat-icon>attachment</mat-icon>
+                                    </button>
+                                </div>
                             </div>
                         </div>
-                    </span>
+                        <div class="errortxt"
+                            *ngIf="isSubmitted && filesMap[vendorDocCtrl.w9Ctrl.documentTypeId]?.isError">This
+                            attachment is mandatory if w9 is available</div>
+                        <div *ngIf="filesMap[vendorDocCtrl.w9Ctrl.documentTypeId]?.isAttachWithoutValue"
+                            class="errortxt">
+                            Select w9 or delete the attachment.
+                        </div>
+                    </div>
+
                     <!-- --------------------------------------Organisation Category ------------------ -->
                     <div class="Rtable-cell Rtable-cell--head">Organisation Category</div>
 
                     <div class="Rtable-cell" *ngIf="!isEditable">
-                        {{ vendorOrgCategory?.vendorOrgCatogery }} - {{ vendorOrgCategory?.vendorOrgSubCategory}}
+                        {{ vendorDetails?.vendorOrgCatogeryVO?.catogery }} - {{ vendorDetails?.vendorOrgCatogeryVO?.subCatogery }}
                     </div>
                     <div class="Rtable-cell" *ngIf="isEditable">
                         <mat-radio-group formControlName="vendorOrgCatogery" (change)="onOrgCatChange()">
@@ -1142,11 +1144,12 @@
                                 </div>
                             </div>
                         </mat-radio-group>
+                        <div *ngIf="( isSubmitted ) && vendorForm.get('vendorOrgCatogery').errors?.required"
+                            class="errortxt">
+                            Organisation Category is not selected
+                        </div>
                     </div>
-                    <div *ngIf="( isSubmitted ) && vendorForm.get('vendorOrgCatogery').errors?.required"
-                        class="errortxt">
-                        Organisation Category is not selected
-                    </div>
+
 
                     <!-- --------------------------------------Organisation Types ------------------ -->
                     <div class="Rtable-cell Rtable-cell--head">Organisation Types</div>

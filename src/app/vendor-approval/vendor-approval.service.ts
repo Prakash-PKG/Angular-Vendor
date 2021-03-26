@@ -17,7 +17,7 @@ import { HttpClient } from '@angular/common/http';
 export class VendorApprovalService {
 
     vendorUS: boolean = false;
-    
+
     constructor(private _appService: AppService,
         private _http: HttpClient) { }
 
@@ -48,6 +48,8 @@ export class VendorApprovalService {
             detailsModel.countriesList = data["countryDataVOList"];
             detailsModel.regionMasterVOList = data["regionMasterVOList"];
             detailsModel.bankAccountTypeList = data["bankAccountTypeVOList"];
+            detailsModel.organizationTypeMasterVO = data["organizationTypeMasterVO"];
+            detailsModel.organizationCategoryMasterVO = data["organizationCategoryMasterVO"];
         }
         this.vendorUS = detailsModel.vendorMasterDetails.vendorCountry == 'US' ? true : false;
         return detailsModel;
