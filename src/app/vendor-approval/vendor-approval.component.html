@@ -74,7 +74,8 @@
                         <mat-form-field class="full-width">
                             <input type="text" matInput formControlName="usVendorBusiness" autocomplete="off" required>
                         </mat-form-field>
-                        <mat-error class="errortxt" *ngIf="( isSubmitted ) && f?.usVendorBusiness?.errors?.required">Doing
+                        <mat-error class="errortxt" *ngIf="( isSubmitted ) && f?.usVendorBusiness?.errors?.required">
+                            Doing
                             Business is
                             required</mat-error>
 
@@ -1121,7 +1122,8 @@
                     <div class="Rtable-cell Rtable-cell--head">Organisation Category</div>
 
                     <div class="Rtable-cell" *ngIf="!isEditable">
-                        {{ vendorDetails?.vendorOrgCatogeryVO?.catogery }} - {{ vendorDetails?.vendorOrgCatogeryVO?.subCatogery }}
+                        {{ vendorDetails?.vendorOrgCatogeryVO?.catogery }} -
+                        {{ vendorDetails?.vendorOrgCatogeryVO?.subCatogery }}
                     </div>
                     <div class="Rtable-cell" *ngIf="isEditable">
                         <mat-radio-group formControlName="vendorOrgCatogery" (change)="onOrgCatChange()">
@@ -1164,9 +1166,8 @@
                     <div class="Rtable-cell" *ngIf="isEditable">
                         <ul class="orgType">
                             <li *ngFor="let orgType of organizationTypeMasterVO;let i =index">
-                                <mat-checkbox formControlName="vendorOrgTypes"
-                                    (change)="prepareOrgTypeList($event.checked,orgType.orgType,i )"
-                                    [checked]="setOrgType(orgType.orgType)">
+                                <mat-checkbox (change)="prepareOrgTypeList($event.checked,orgType.orgType,i )"
+                                    [checked]='setOrgType(orgType.orgType)'>
                                     {{orgType.orgType}}
                                 </mat-checkbox>
                             </li>

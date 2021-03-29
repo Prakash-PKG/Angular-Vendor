@@ -680,6 +680,21 @@ export class VendorApprovalComponent implements OnInit {
         this.updateVendorFields();
         this.updateFileDetails();
         this._homeService.updateBusy(<BusyDataModel>{ isBusy: false, msg: null });
+        // this.vendorOrgTypesList = this.vendorDetails.vendorOrgTypesVO;
+        // if (this.vendorOrgTypesList) {
+        //     this.vendorOrgTypesList.forEach(selectedOrgType => {
+        //         this.organizationTypeMasterVO.some((masterOrgType) => {
+        //             if(masterOrgType.orgType === selectedOrgType.orgType){
+        //                 return masterOrgType.isChecked = true;
+        //             }else{
+        //                 return masterOrgType.isChecked
+        //             }
+
+        //         })
+        //     });
+        //     console.log(this.organizationTypeMasterVO);
+        // }
+
     }
 
     updateStates() {
@@ -940,13 +955,17 @@ export class VendorApprovalComponent implements OnInit {
             subCatogery: this.vendorForm.get('vendorOrgSubCategory').value
         }
         this.vendorDetails.vendorOrgCatogeryVO = obj;
-        console.log(this.vendorDetails.vendorOrgCatogeryVO);
-
     }
 
-    setOrgType(orgType) {
+    setOrgType(selectedOrgType) {
         this.vendorOrgTypesList = this.vendorDetails.vendorOrgTypesVO;
-        return this.vendorOrgTypesList ? this.vendorOrgTypesList.find(selectedOrgType => selectedOrgType.orgType == orgType) : false;
+        console.log('entered');
+
+        if (this.vendorOrgTypesList) {
+            return this.vendorOrgTypesList.some(orgType => orgType.orgType == selectedOrgType);
+        }
+        else return false;
+
     }
 
     prepareOrgTypeList(event, orgType, index) {
@@ -1003,46 +1022,67 @@ export class VendorApprovalComponent implements OnInit {
     updatePayeeIdentificatn() {
 
         if (this.usPayeeIdentificatn == 'taxId') {
+
+            this.vendorForm.get("usSocialSecurity").setValue(null);
+            this.vendorForm.get("usEinNumber").setValue(null);
+            this.vendorForm.get("usW9").setValue(false);
+
             this.vendorForm.get("usSocialSecurity").setValidators([]);
+            this.vendorForm.get("usSocialSecurity").updateValueAndValidity();
+
             this.vendorForm.get("usEinNumber").setValidators([]);
+            this.vendorForm.get("usEinNumber").updateValueAndValidity();
+
             this.vendorForm.get("usW9").setValidators([]);
+            this.vendorForm.get("usW9").updateValueAndValidity();
 
             this.vendorForm.get("usTaxId").setValidators([Validators.required]);
-            this.vendorForm.get("usW8Bene").setValidators([Validators.required]);
-
             this.vendorForm.get("usTaxId").updateValueAndValidity();
+
+            this.vendorForm.get("usW8Bene").setValidators([Validators.required]);
             this.vendorForm.get("usW8Bene").updateValueAndValidity();
-            this.vendorForm.get("usSocialSecurity").updateValueAndValidity();
-            this.vendorForm.get("usEinNumber").updateValueAndValidity();
-            this.vendorForm.get("usW9").updateValueAndValidity();
         }
         else if (this.usPayeeIdentificatn == 'socialSec') {
 
+            this.vendorForm.get("usTaxId").setValue(null);
+            this.vendorForm.get("usW8Bene").setValue(false);
+            this.vendorForm.get("usEinNumber").setValue(null);
+            this.vendorForm.get("usW9").setValue(false);
+
             this.vendorForm.get("usTaxId").setValidators([]);
+            this.vendorForm.get("usTaxId").updateValueAndValidity();
+
             this.vendorForm.get("usW8Bene").setValidators([]);
+            this.vendorForm.get("usW8Bene").updateValueAndValidity();
+
             this.vendorForm.get("usEinNumber").setValidators([]);
+            this.vendorForm.get("usEinNumber").updateValueAndValidity();
+
             this.vendorForm.get("usW9").setValidators([]);
+            this.vendorForm.get("usW9").updateValueAndValidity();
 
             this.vendorForm.get("usSocialSecurity").setValidators([Validators.required]);
-
-            this.vendorForm.get("usTaxId").updateValueAndValidity();
-            this.vendorForm.get("usW8Bene").updateValueAndValidity();
             this.vendorForm.get("usSocialSecurity").updateValueAndValidity();
-            this.vendorForm.get("usEinNumber").updateValueAndValidity();
-            this.vendorForm.get("usW9").updateValueAndValidity();
         }
         else if (this.usPayeeIdentificatn == 'ein') {
+            
+            this.vendorForm.get("usTaxId").setValue(null);
+            this.vendorForm.get("usW8Bene").setValue(false);
+            this.vendorForm.get("usSocialSecurity").setValue(null);
+
             this.vendorForm.get("usTaxId").setValidators([]);
+            this.vendorForm.get("usTaxId").updateValueAndValidity();
+
             this.vendorForm.get("usW8Bene").setValidators([]);
+            this.vendorForm.get("usW8Bene").updateValueAndValidity();
+
             this.vendorForm.get("usSocialSecurity").setValidators([]);
+            this.vendorForm.get("usSocialSecurity").updateValueAndValidity();
 
             this.vendorForm.get("usEinNumber").setValidators([Validators.required]);
-            this.vendorForm.get("usW9").setValidators([Validators.required]);
-
-            this.vendorForm.get("usTaxId").updateValueAndValidity();
-            this.vendorForm.get("usW8Bene").updateValueAndValidity();
-            this.vendorForm.get("usSocialSecurity").updateValueAndValidity();
             this.vendorForm.get("usEinNumber").updateValueAndValidity();
+
+            this.vendorForm.get("usW9").setValidators([Validators.required]);
             this.vendorForm.get("usW9").updateValueAndValidity();
         }
     }

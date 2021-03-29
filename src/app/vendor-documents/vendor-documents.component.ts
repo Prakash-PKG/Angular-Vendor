@@ -272,8 +272,10 @@ export class VendorDocumentsComponent implements OnInit {
         this._appService.vendorRegistrationDetails.lutDate = this._datePipe.transform(this.vendorDocumentForm.get("lutDate").value, this._appService.dbDateFormat);
         this._appService.vendorRegistrationDetails.otherDocDesc = this.vendorDocumentForm.get("otherDocDesc").value;
         // US fields
-        this._appService.vendorRegistrationDetails.vendorOrgCatogeryVO.catogery = this.vendorDocumentForm.get("vendorOrgCatogery").value;
-        this._appService.vendorRegistrationDetails.vendorOrgCatogeryVO.subCatogery = this.vendorDocumentForm.get("vendorOrgSubCategory").value;
+        if (this._appService.vendorRegistrationDetails.vendorOrgCatogeryVO) {
+            this._appService.vendorRegistrationDetails.vendorOrgCatogeryVO.catogery = this.vendorDocumentForm.get("vendorOrgCatogery").value;
+            this._appService.vendorRegistrationDetails.vendorOrgCatogeryVO.subCatogery = this.vendorDocumentForm.get("vendorOrgSubCategory").value;
+        }
         this._appService.vendorRegistrationDetails.usTaxId = this.vendorDocumentForm.get("usTaxId").value;
         this._appService.vendorRegistrationDetails.usSocialSecurity = this.vendorDocumentForm.get("usSocialSecurity").value;
         this._appService.vendorRegistrationDetails.usEinNumber = this.vendorDocumentForm.get("usEinNumber").value;
@@ -510,6 +512,10 @@ export class VendorDocumentsComponent implements OnInit {
     updatePayeeIdentificatn() {
 
         if (this.usPayeeIdentificatn == 'taxId') {
+            this.vendorDocumentForm.get("usSocialSecurity").setValue(null);
+            this.vendorDocumentForm.get("usEinNumber").setValue(null);
+            this.vendorDocumentForm.get("usW9").setValue(false);
+
             this.vendorDocumentForm.get("usSocialSecurity").setValidators([]);
             this.vendorDocumentForm.get("usEinNumber").setValidators([]);
             this.vendorDocumentForm.get("usW9").setValidators([]);
@@ -524,6 +530,10 @@ export class VendorDocumentsComponent implements OnInit {
             this.vendorDocumentForm.get("usW9").updateValueAndValidity();
         }
         else if (this.usPayeeIdentificatn == 'socialSec') {
+            this.vendorDocumentForm.get("usTaxId").setValue(null);
+            this.vendorDocumentForm.get("usW8Bene").setValue(false);
+            this.vendorDocumentForm.get("usEinNumber").setValue(null);
+            this.vendorDocumentForm.get("usW9").setValue(false);
 
             this.vendorDocumentForm.get("usTaxId").setValidators([]);
             this.vendorDocumentForm.get("usW8Bene").setValidators([]);
@@ -539,6 +549,10 @@ export class VendorDocumentsComponent implements OnInit {
             this.vendorDocumentForm.get("usW9").updateValueAndValidity();
         }
         else if (this.usPayeeIdentificatn == 'ein') {
+            this.vendorDocumentForm.get("usTaxId").setValue(null);
+            this.vendorDocumentForm.get("usW8Bene").setValue(false);
+            this.vendorDocumentForm.get("usSocialSecurity").setValue(null);
+
             this.vendorDocumentForm.get("usTaxId").setValidators([]);
             this.vendorDocumentForm.get("usW8Bene").setValidators([]);
             this.vendorDocumentForm.get("usSocialSecurity").setValidators([]);
@@ -554,14 +568,18 @@ export class VendorDocumentsComponent implements OnInit {
         }
     }
     setOrgType(orgType) {
+
         this.vendorOrgTypesList = this._appService.vendorRegistrationDetails.vendorOrgTypesVO;
-        return this.vendorOrgTypesList ? this.vendorOrgTypesList.find(selectedOrgType => selectedOrgType.orgType == orgType) : false;
+        if (this.vendorOrgTypesList) {
+            return this.vendorOrgTypesList.some(selectedOrgType => selectedOrgType.orgType == orgType);
+        }
+        else return false;
     }
 
     prepareOrgTypeList(event, orgType, index) {
         this.vendorOrgTypesList = this.vendorOrgTypesList || [];
         let vendorOrgTypeId: number = null;
-        if (this._appService.vendorRegistrationDetails && this._appService.vendorRegistrationDetails.vendorOrgTypesVO && this._appService.vendorRegistrationDetails.vendorOrgTypesVO[index] ) {
+        if (this._appService.vendorRegistrationDetails && this._appService.vendorRegistrationDetails.vendorOrgTypesVO && this._appService.vendorRegistrationDetails.vendorOrgTypesVO[index]) {
             vendorOrgTypeId = this._appService.vendorRegistrationDetails.vendorOrgTypesVO[index].vendorOrgTypeId ? this._appService.vendorRegistrationDetails.vendorOrgTypesVO[index].vendorOrgTypeId : null
         }
         let obj: VendorOrgTypesModel = {
@@ -600,8 +618,6 @@ export class VendorDocumentsComponent implements OnInit {
             subCatogery: this.vendorDocumentForm.get('vendorOrgSubCategory').value
         }
         this._appService.vendorRegistrationDetails.vendorOrgCatogeryVO = obj;
-        console.log(this._appService.vendorRegistrationDetails.vendorOrgCatogeryVO);
-
     }
 
     ngOnInit() {

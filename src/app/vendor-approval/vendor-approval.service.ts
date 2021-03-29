@@ -23,6 +23,7 @@ export class VendorApprovalService {
 
     async getVendorApprovalInitData(req: VendorApprovalInitReqModel) {
         let url = this._appService.baseUrl + "venApprovalDetails";
+      
         try {
             let response = await this._http.post(url, req).toPromise();
             return this.prepareVendorRegistrationInitData(response);
