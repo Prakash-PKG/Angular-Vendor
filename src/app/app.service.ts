@@ -231,7 +231,7 @@ export class AppService {
         usMinorityCertificate: null,
         vendorCountry: null,
         vendorOrgTypesVO: [],
-        vendorOrgCatogeryVO: null
+        vendorOrgCatogeryVO: new vendorOrgCategoryModel
     };
 
 
@@ -322,7 +322,7 @@ export class AppService {
             usMinorityCertificate: null,
             vendorCountry: null,
             vendorOrgTypesVO: [],
-            vendorOrgCatogeryVO: null
+            vendorOrgCatogeryVO: new vendorOrgCategoryModel
         };
 
         return regDetails;

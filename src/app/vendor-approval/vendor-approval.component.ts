@@ -1020,7 +1020,6 @@ export class VendorApprovalComponent implements OnInit {
     }
 
     updatePayeeIdentificatn() {
-
         if (this.usPayeeIdentificatn == 'taxId') {
 
             this.vendorForm.get("usSocialSecurity").setValue(null);
@@ -1041,6 +1040,15 @@ export class VendorApprovalComponent implements OnInit {
 
             this.vendorForm.get("usW8Bene").setValidators([Validators.required]);
             this.vendorForm.get("usW8Bene").updateValueAndValidity();
+            if(this.filesMap[this.vendorDocCtrl.socialSecNoCtrl.documentTypeId].filesList.length){
+                this.msg = 'Remove document from Social security if Social security is not selected as payee identification proof'
+            }
+            if(this.filesMap[this.vendorDocCtrl.einCtrl.documentTypeId].filesList.length){
+                this.msg = 'Remove document from EIN if EIN is not selected as payee identification proof'
+            }
+            if(this.filesMap[this.vendorDocCtrl.w9Ctrl.documentTypeId].filesList.length){
+                this.msg = 'Remove document from w9 if EIN is not selected as payee identification proof'
+            }
         }
         else if (this.usPayeeIdentificatn == 'socialSec') {
 
@@ -1063,6 +1071,19 @@ export class VendorApprovalComponent implements OnInit {
 
             this.vendorForm.get("usSocialSecurity").setValidators([Validators.required]);
             this.vendorForm.get("usSocialSecurity").updateValueAndValidity();
+
+            if(this.filesMap[this.vendorDocCtrl.taxIdNoCtrl.documentTypeId].filesList.length){
+                this.msg = 'Remove document from Tax ID if Tax ID is not selected as payee identification proof'
+            }
+            if(this.filesMap[this.vendorDocCtrl.w8Ctrl.documentTypeId].filesList.length){
+                this.msg = 'Remove document from w8 if Tax ID is not selected as payee identification proof'
+            }
+            if(this.filesMap[this.vendorDocCtrl.einCtrl.documentTypeId].filesList.length){
+                this.msg = 'Remove document from EIN if EIN is not selected as payee identification proof'
+            }
+            if(this.filesMap[this.vendorDocCtrl.socialSecNoCtrl.documentTypeId].filesList.length){
+                this.msg = 'Remove document from social security if social security is not selected as payee identification proof'
+            }
         }
         else if (this.usPayeeIdentificatn == 'ein') {
             
@@ -1084,6 +1105,16 @@ export class VendorApprovalComponent implements OnInit {
 
             this.vendorForm.get("usW9").setValidators([Validators.required]);
             this.vendorForm.get("usW9").updateValueAndValidity();
+
+            if(this.filesMap[this.vendorDocCtrl.taxIdNoCtrl.documentTypeId].filesList.length){
+                this.msg = 'Remove document from Tax ID if Tax ID is not selected as payee identification proof'
+            }
+            if(this.filesMap[this.vendorDocCtrl.w8Ctrl.documentTypeId].filesList.length){
+                this.msg = 'Remove document from w8 if Tax ID is not selected as payee identification proof'
+            }
+            if(this.filesMap[this.vendorDocCtrl.einCtrl.documentTypeId].filesList.length){
+                this.msg = 'Remove document from EIN if EIN is not selected as payee identification proof'
+            }
         }
     }
     ngOnInit() {
