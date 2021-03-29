@@ -29,6 +29,7 @@ export class EmpanelmentInitDataModel {
 export class EmpanelmentSubmitReqModel {
     emailId: string;
     sentBy: string;
+    countryCode: String;
 }
 
 export class EmpanelmentSubmitResultModel {
@@ -97,6 +98,17 @@ export class VendorRegistrationRequestModel {
     action: string;
     vendorMasterDetails: VendorMasterDetailsModel;
 }
+export class vendorOrgCategoryModel {
+    vendorMasterId: number;
+    catogery: string;
+    subCatogery: string;
+}
+export class VendorOrgTypesModel {
+    vendorMasterId: number;
+    orgType: string;
+    vendorOrgTypeId: number;
+}
+
 export class VendorRegistrationDetailRequestModel {
     vendorMasterId: number;
 }
@@ -176,6 +188,19 @@ export class VendorMasterDetailsModel {
     withHoldTypeCode: string;
     withholdTaxCode: string;
     fileDetails: FileDetailsModel[];
+    usVendorBusiness: string;
+    usBankSector: string;
+    usChequePayableTo: string;
+    usChecqueMailingAddress: string;
+    usTaxId: string;
+    usSocialSecurity: string;
+    usEinNumber: string;
+    usW8Bene: boolean = false;
+    usW9: boolean = false;
+    usMinorityCertificate:  boolean = false;
+    vendorCountry: string;
+    vendorOrgTypesVO: VendorOrgTypesModel[];
+    vendorOrgCatogeryVO: vendorOrgCategoryModel;
 }
 
 export interface FileMap {
@@ -200,6 +225,16 @@ export class VendorRegistrationInitDataModel {
     documentDetailsList: VendorMasterDocumentModel[];
     regionMasterVOList: regionMasterVOList[];
     bankAccountTypeList: BankAccountTypeModel[];
+    vendorCounty: string;
+    organizationTypeMasterVO: organizationTypeMasterVO[];
+    organizationCategoryMasterVO: organizationCategoryMasterVO[];
+}
+export class organizationCategoryMasterVO {
+    catogery: string;
+    subCatogeries: string[];
+}
+export class organizationTypeMasterVO {
+    orgType: string;
 }
 
 export class InvoiceSearchResultModel {
@@ -414,13 +449,18 @@ export class VendorApprovalInitResultModel {
     vendorMasterDocumentVOList: VendorMasterDocumentModel[];
     countriesList: CountryDataModel[];
     regionMasterVOList: regionMasterVOList[];
+    vendorOrgCatogery: vendorOrgCategoryModel;
+    vendorOrgTypes: VendorOrgTypesModel[];
     bankAccountTypeList: BankAccountTypeModel[];
+    organizationCategoryMasterVO: organizationCategoryMasterVO[];
+    organizationTypeMasterVO: organizationTypeMasterVO[]
 }
 
 export class VendorApprovalInitReqModel {
     vendorMasterId: number;
     departmentCode: string;
     approvalId: number;
+    // employeeId: string;
 }
 
 export class vendorApprovalDetails {

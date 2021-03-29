@@ -8,6 +8,7 @@ import { ActivatedRoute, ActivatedRouteSnapshot, Router } from '@angular/router'
 import { flatMap, debounceTime } from 'rxjs/operators';
 import { Route } from '@angular/compiler/src/core';
 import { Subscription } from 'rxjs';
+import { CryptoService } from '../common/crypto.service';
 
 @Component({
     selector: 'app-vendor-registration',
@@ -25,12 +26,18 @@ export class VendorRegistrationComponent implements OnInit {
 
     vendorRegistrationInitDataModel: VendorRegistrationInitDataModel = null;
     constructor(private _appService: AppService,
-        private _spinner: NgxSpinnerService,
+        private _spinner: NgxSpinnerService, private cryptoService: CryptoService,
         private _vendorRegistrationService: VendorRegistrationService) { }
 
     async loadInitData() {
+        let user = localStorage.getItem('user');
+        user = this.cryptoService.decrypt(user);
+        const userDetails = JSON.parse(user);
+        let userEmail = userDetails.userEmail;
+        console.log(userEmail);
+
         this._vendorRegistrationService.updateBusy(<BusyDataModel>{ isBusy: true, msg: "Loading..." });
-        this.vendorRegistrationInitDataModel = await this._vendorRegistrationService.getVendorRegistrationInitData();
+        this.vendorRegistrationInitDataModel = await this._vendorRegistrationService.getVendorRegistrationInitData(userEmail);
         this._appService.vendorRegistrationInitDetails = this.vendorRegistrationInitDataModel;
         this._vendorRegistrationService.updateBusy(<BusyDataModel>{ isBusy: false, msg: null });
     }
@@ -48,7 +55,6 @@ export class VendorRegistrationComponent implements OnInit {
             if (data && data.isBusy == true) {
                 spin.show();
                 this.spinnerCls = "overlay";
-                //this.busyMsg = (data.msg) ? data.msg : "Please wait...";
                 this.busyMsg = "Please wait...";
             }
             else {
@@ -62,6 +68,7 @@ export class VendorRegistrationComponent implements OnInit {
         });
 
         this._appService.vendorRegistrationDetails = this._appService.resetVendorRegistrationDetails();
+
         this._appService.selectedFileMap = {};
 
         setTimeout(() => {

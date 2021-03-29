@@ -50,11 +50,18 @@ export class VendorBankDetailsComponent implements OnInit {
         this._appService.vendorRegistrationDetails.swiftIbanCode = this.vendorBankForm.get("swiftIbanCode").value;
         this._appService.vendorRegistrationDetails.routingBank = this.vendorBankForm.get("routingBank").value;
         this._appService.vendorRegistrationDetails.swiftInterm = this.vendorBankForm.get("swiftInterm").value;
+        this._appService.vendorRegistrationDetails.usBankSector = this.vendorBankForm.get("usBankSector").value;
+        this._appService.vendorRegistrationDetails.usChequePayableTo = this.vendorBankForm.get("usChequePayableTo").value;
+        this._appService.vendorRegistrationDetails.usChecqueMailingAddress = this.vendorBankForm.get("usChecqueMailingAddress").value;
     }
 
     onPrevClick() {
         this.updateControlsData();
         this._router.navigate([this._appService.routingConstants.vendorAddressDetails]);
+    }
+    showUSField() {
+        return this._vendorRegistrationService.vendorUS;
+        // return true;
     }
 
     onNextClick() {
@@ -62,7 +69,7 @@ export class VendorBankDetailsComponent implements OnInit {
 
         this.failureMsg = "";
         this.isSubmitted = true;
-
+        this.updateUSFieldsValidation();
         if (this.vendorBankForm.valid) {
 
             // this._appService.vendorRegistrationDetails.bankAddress = this.vendorBankForm.get("bankAddress").value;
@@ -103,8 +110,7 @@ export class VendorBankDetailsComponent implements OnInit {
     }
 
     updateVendorDetails() {
-        // this.vendorBankForm.get("bankAddress").setValue(this._appService.vendorRegistrationDetails.bankAddress);
-      
+
         this.vendorBankForm.get("accountNum").setValue(this._appService.vendorRegistrationDetails.accountNum);
         this.vendorBankForm.get("accountType").setValue(this._appService.vendorRegistrationDetails.bankAccountTypeId);
         this.vendorBankForm.get("accountName").setValue(this._appService.vendorRegistrationDetails.accountName);
@@ -114,11 +120,24 @@ export class VendorBankDetailsComponent implements OnInit {
         this.vendorBankForm.get("bankCity").setValue(this._appService.vendorRegistrationDetails.bankCity);
         this.vendorBankForm.get("bankRegion").setValue(this._appService.vendorRegistrationDetails.bankRegion);
         this.vendorBankForm.get("bankCountry").setValue(this._appService.vendorRegistrationDetails.bankCountry);
+        this.vendorBankForm.get("usBankSector").setValue(this._appService.vendorRegistrationDetails.usBankSector);
+        this.vendorBankForm.get("usChequePayableTo").setValue(this._appService.vendorRegistrationDetails.usChequePayableTo);
+        this.vendorBankForm.get("usChecqueMailingAddress").setValue(this._appService.vendorRegistrationDetails.usChecqueMailingAddress);
         this.vendorBankForm.get("swiftIbanCode").setValue(this._appService.vendorRegistrationDetails.swiftIbanCode);
         this.vendorBankForm.get("routingBank").setValue(this._appService.vendorRegistrationDetails.routingBank);
         this.vendorBankForm.get("swiftInterm").setValue(this._appService.vendorRegistrationDetails.swiftInterm);
-      
+
         this.updateRegion();
+    }
+    updateUSFieldsValidation() {
+        if (this._vendorRegistrationService.vendorUS) {
+            this.vendorBankForm.get("usBankSector").setValidators([Validators.required]);
+            this.vendorBankForm.get("usChequePayableTo").setValidators([Validators.required]);
+            this.vendorBankForm.get("usChecqueMailingAddress").setValidators([Validators.required]);
+            this.vendorBankForm.get("usBankSector").updateValueAndValidity();
+            this.vendorBankForm.get("usChequePayableTo").updateValueAndValidity();
+            this.vendorBankForm.get("usChecqueMailingAddress").updateValueAndValidity();
+        }
     }
 
     updateRegion() {
@@ -137,37 +156,44 @@ export class VendorBankDetailsComponent implements OnInit {
 
     ngOnInit() {
         this.isSubmitted = false;
-
-        this.countryList = [];
-        if (this._appService.vendorRegistrationInitDetails && this._appService.vendorRegistrationInitDetails.countriesList &&
-            this._appService.vendorRegistrationInitDetails.countriesList.length > 0) {
-            this.countryList = this._appService.vendorRegistrationInitDetails.countriesList;
+        if (this._appService.vendorRegistrationDetails && this._appService.vendorRegistrationDetails.vendorMasterId == null) {
+            this._router.navigate([this._appService.routingConstants.vendorDetails]);
         }
 
-        this.bankAccountTypeList = [];
-        if (this._appService.vendorRegistrationInitDetails && this._appService.vendorRegistrationInitDetails.bankAccountTypeList &&
-            this._appService.vendorRegistrationInitDetails.bankAccountTypeList.length > 0) {
-            this.bankAccountTypeList = this._appService.vendorRegistrationInitDetails.bankAccountTypeList;
+        else {
+            this.countryList = [];
+            if (this._appService.vendorRegistrationInitDetails && this._appService.vendorRegistrationInitDetails.countriesList &&
+                this._appService.vendorRegistrationInitDetails.countriesList.length > 0) {
+                this.countryList = this._appService.vendorRegistrationInitDetails.countriesList;
+            }
+
+            this.bankAccountTypeList = [];
+            if (this._appService.vendorRegistrationInitDetails && this._appService.vendorRegistrationInitDetails.bankAccountTypeList &&
+                this._appService.vendorRegistrationInitDetails.bankAccountTypeList.length > 0) {
+                this.bankAccountTypeList = this._appService.vendorRegistrationInitDetails.bankAccountTypeList;
+            }
+
+            this.vendorBankForm = this._formBuilder.group({
+                // bankAddress: [null, [Validators.required]],
+                accountNum: [null, [Validators.required]],
+                accountType: [null, [Validators.required]],
+                accountName: [null, [Validators.required]],
+                ifscCode: [null, [Validators.required, Validators.maxLength(11), Validators.minLength(11), Validators.pattern(/^[a-zA-Z0-9]*([a-zA-Z]+[0-9]+|[0-9]+[a-zA-Z]+)[a-zA-Z0-9]*$/)]],
+                bankName: [null, [Validators.required]],
+                bankBranch: [null, [Validators.required]],
+                bankCity: [null, [Validators.required]],
+                bankRegion: [null, [Validators.required]],
+                bankCountry: [null, [Validators.required]],
+                swiftIbanCode: [null],
+                routingBank: [null],
+                swiftInterm: [null],
+                usBankSector: [null],
+                usChequePayableTo: [null],
+                usChecqueMailingAddress: [null],
+            });
+
+            this._vendorRegistrationService.updateCurrentPageDetails({ pageName: 'venBank' });
+            this.updateVendorDetails();
         }
-
-        this.vendorBankForm = this._formBuilder.group({
-            // bankAddress: [null, [Validators.required]],
-            accountNum: [null, [Validators.required]],
-            accountType: [null, [Validators.required]],
-            accountName: [null, [Validators.required]],
-            ifscCode: [null, [Validators.required, Validators.maxLength(11), Validators.minLength(11),Validators.pattern(/^[a-zA-Z0-9]*([a-zA-Z]+[0-9]+|[0-9]+[a-zA-Z]+)[a-zA-Z0-9]*$/)]],
-            bankName: [null, [Validators.required]],
-            bankBranch: [null, [Validators.required]],
-            bankCity: [null, [Validators.required]],
-            bankRegion: [null, [Validators.required]],
-            bankCountry: [null, [Validators.required]],
-            swiftIbanCode: [null],
-            routingBank: [null],
-            swiftInterm: [null],
-        });
-
-        this._vendorRegistrationService.updateCurrentPageDetails({ pageName: 'venBank' });
-        this.updateVendorDetails();
     }
-
 }

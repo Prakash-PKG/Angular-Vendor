@@ -41,7 +41,9 @@ export class LoginVendorComponent implements OnInit {
         if (this.loginForm.valid) {
             let userId: string = this.loginForm.get("userId").value;
             let password: string = this.loginForm.get("password").value;
-            this._loginVendorService.login(userId, password).subscribe(
+            // localStorage.setItem("userId",userId);
+            this._appService.vendorUserId=userId;
+           this._loginVendorService.login(userId, password).subscribe(
                 (response) => {
                     this.isSignIn = false;
                     this._loginVendorService.storeUserData(response);

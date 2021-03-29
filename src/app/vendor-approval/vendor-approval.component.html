@@ -16,7 +16,7 @@
 
                 <div class="Rtable Rtable--2cols Rtable--collapse">
 
-                    <div class="Rtable-cell Rtable-cell--head">Supplier Name *</div>
+                    <div class="Rtable-cell Rtable-cell--head">Supplier Name </div>
                     <div class="Rtable-cell">
                         <mat-form-field class="full-width">
                             <input type="text" matInput formControlName="vendorName" autocomplete="off" required>
@@ -32,7 +32,7 @@
                         </mat-form-field>
                     </div>
 
-                    <div class="Rtable-cell Rtable-cell--head">Mobile No. *</div>
+                    <div class="Rtable-cell Rtable-cell--head">Mobile No. </div>
                     <div class="Rtable-cell">
                         <mat-form-field class="full-width">
                             <input type="text" matInput onkeypress='return event.charCode >= 48 && event.charCode <= 57'
@@ -58,7 +58,7 @@
                             Mobile No. only accepts numeric values</mat-error>
                     </div>
 
-                    <div class="Rtable-cell Rtable-cell--head">Email Id *</div>
+                    <div class="Rtable-cell Rtable-cell--head">Email Id </div>
                     <div class="Rtable-cell">
                         <mat-form-field class="full-width">
                             <input type="text" matInput formControlName="emailId" autocomplete="off" required>
@@ -67,6 +67,18 @@
                             required</mat-error>
                         <mat-error class="errortxt" *ngIf="( isSubmitted ) && f?.emailId?.errors?.email">Email Id is not
                             valid</mat-error>
+                    </div>
+
+                    <div class="Rtable-cell Rtable-cell--head" *ngIf="showUSField()">Doing Business As*</div>
+                    <div class="Rtable-cell" *ngIf="showUSField()">
+                        <mat-form-field class="full-width">
+                            <input type="text" matInput formControlName="usVendorBusiness" autocomplete="off" required>
+                        </mat-form-field>
+                        <mat-error class="errortxt" *ngIf="( isSubmitted ) && f?.usVendorBusiness?.errors?.required">
+                            Doing
+                            Business is
+                            required</mat-error>
+
                     </div>
 
                 </div>
@@ -116,15 +128,17 @@
                             <input type="text" matInput formControlName="city" autocomplete="off" required>
                         </mat-form-field> -
                         <mat-form-field class="full-width" style="width:45%">
-                            <input type="text" matInput onkeypress='return event.charCode >= 48 && event.charCode <= 57'
+                            <input type="text" placeholder="{{showUSField()?'Zipcode':'Pincode'}}" matInput
+                                onkeypress='return event.charCode >= 48 && event.charCode <= 57'
                                 formControlName="pincode" autocomplete="off" maxlength="6" required>
                         </mat-form-field>
 
                         <mat-error class="errortxt" *ngIf="( isSubmitted ) && f?.pincode?.errors?.pattern">
-                            Pincode only accepts numeric values</mat-error>
+                            {{showUSField()?'Zipcode':'Pincode'}} only accepts numeric values</mat-error>
                         <mat-error class="errortxt" *ngIf="( isSubmitted ) && f?.city?.errors?.required">Town / City is
                             required</mat-error>
-                        <mat-error class="errortxt" *ngIf="( isSubmitted ) && f?.pincode?.errors?.required">Pincode is
+                        <mat-error class="errortxt" *ngIf="( isSubmitted ) && f?.pincode?.errors?.required">
+                            {{showUSField()?'Zipcode':'Pincode'}} is
                             required</mat-error>
                         <mat-error class="errortxt" *ngIf="( isSubmitted ) && f?.pincode?.errors?.minlength">Minimum
                             {{ f?.pincode?.errors?.minlength?.requiredLength }} characters are required</mat-error>
@@ -134,7 +148,7 @@
 
                     <div class="Rtable-cell Rtable-cell--head">Country</div>
                     <div class="Rtable-cell">
-                        <mat-form-field class="full-width"  *ngIf="!isExistingVendor">
+                        <mat-form-field class="full-width" *ngIf="!isExistingVendor">
                             <mat-select formControlName="countryCode" required (selectionChange)="updateStates()">
                                 <mat-option *ngFor="let c of countriesList" [value]="c.countryCode">
                                     {{ c.countryName }}
@@ -143,7 +157,7 @@
                         </mat-form-field>
                         <mat-form-field class="full-width" *ngIf="isExistingVendor">
                             <input type="text" matInput [disabled]=true value=" {{vendorDetails?.countryName }}"
-                            autocomplete="off">
+                                autocomplete="off">
                         </mat-form-field>
                         <mat-error class="errortxt" *ngIf="( isSubmitted ) && f?.countryCode?.errors?.required">Country
                             is required</mat-error>
@@ -160,9 +174,9 @@
                         </mat-form-field>
                         <mat-form-field class="full-width" *ngIf="isExistingVendor">
                             <input type="text" matInput [disabled]=true value=" {{vendorDetails?.stateName }}"
-                             autocomplete="off">
+                                autocomplete="off">
                         </mat-form-field>
-                                                 <mat-error class="errortxt" *ngIf="( isSubmitted ) && f?.stateCode?.errors?.required">State is
+                        <mat-error class="errortxt" *ngIf="( isSubmitted ) && f?.stateCode?.errors?.required">State is
                             required</mat-error>
                     </div>
                 </div>
@@ -181,7 +195,8 @@
 
                 <div class="Rtable Rtable--2cols Rtable--collapse">
 
-                    <div class="Rtable-cell Rtable-cell--head">Account No.</div>
+                    <div class="Rtable-cell Rtable-cell--head">{{showUSField()?'Account Number/IBAN':'Account Number'}}
+                    </div>
                     <div class="Rtable-cell">{{ vendorDetails?.accountNum }}</div>
 
                     <div class="Rtable-cell Rtable-cell--head">Account Name</div>
@@ -190,7 +205,7 @@
                     <div class="Rtable-cell Rtable-cell--head">Account Type</div>
                     <div class="Rtable-cell">{{ vendorDetails?.accountType }}</div>
 
-                    <div class="Rtable-cell Rtable-cell--head">IFSC Code</div>
+                    <div class="Rtable-cell Rtable-cell--head">{{showUSField()?'ABA-RTN':'IFSC code'}}</div>
                     <div class="Rtable-cell">{{ vendorDetails?.ifscCode }}</div>
 
                     <div class="Rtable-cell Rtable-cell--head">Bank Name</div>
@@ -207,6 +222,15 @@
 
                     <div class="Rtable-cell Rtable-cell--head">Region</div>
                     <div class="Rtable-cell">{{ vendorDetails?.bankRegionName }}</div>
+
+                    <div class="Rtable-cell Rtable-cell--head" *ngIf="showUSField()">Cheque payable to</div>
+                    <div class="Rtable-cell" *ngIf="showUSField()">{{ vendorDetails?.usChequePayableTo }}</div>
+
+                    <div class="Rtable-cell Rtable-cell--head" *ngIf="showUSField()">Bank Country</div>
+                    <div class="Rtable-cell" *ngIf="showUSField()">{{ vendorDetails?.usBankSector }}</div>
+
+                    <div class="Rtable-cell Rtable-cell--head" *ngIf="showUSField()">Cheque mailing address</div>
+                    <div class="Rtable-cell" *ngIf="showUSField()">{{ vendorDetails?.usChecqueMailingAddress }}</div>
                 </div>
 
                 <div class="section-title" style="margin-top:1em">
@@ -227,7 +251,8 @@
                         Intermediatry/routing Bank</div>
                     <div class="Rtable-cell" style="width: 70%;">{{ vendorDetails?.swiftInterm }}</div>
 
-                    <div class="Rtable-cell Rtable-cell--head" style="width: 30%; max-width: 30%;">Swift Code/BAN</div>
+                    <div class="Rtable-cell Rtable-cell--head" style="width: 30%; max-width: 30%;">
+                        {{showUSField()?'SWIFT code/BIC':'SWIFT Code/IBAN'}}</div>
                     <div class="Rtable-cell" style="width: 70%;">{{ vendorDetails?.swiftIbanCode }}</div>
                 </div>
 
@@ -242,8 +267,8 @@
                     <span>Vendor Documents Details</span>
                     <mat-divider style="margin: -1em 0px 2em 15.5em"></mat-divider>
                 </div>
-
-                <div class="Rtable Rtable--2cols Rtable--collapse">
+                <!--------------- India vendor Documents Details -------------------------->
+                <div class="Rtable Rtable--2cols Rtable--collapse" *ngIf="!showUSField()">
 
                     <div class="Rtable-cell Rtable-cell--head">Incorporation Certificate</div>
                     <div class="Rtable-cell">
@@ -287,15 +312,15 @@
                                         <mat-icon matTooltip="{{ file.actualFileName }}">description</mat-icon>
                                     </button>
                                     <button mat-button mat-icon-button aria-label="Delete"
-                                    *ngIf="isProcurement == true && isEditable == true"
-                                    (click)="onDeleteFileClick(file, i,vendorDocCtrl.canChqCtrl.documentTypeId)">
-                                    <mat-icon>delete_outline</mat-icon>
-                                </button>
+                                        *ngIf="isProcurement == true && isEditable == true"
+                                        (click)="onDeleteFileClick(file, i,vendorDocCtrl.canChqCtrl.documentTypeId)">
+                                        <mat-icon>delete_outline</mat-icon>
+                                    </button>
                                 </div>
                             </div>
                             <div class="flex-item">
                                 <div *ngIf="isEditable">
-                                                                       <input style="display: none" [attr.id]="vendorDocCtrl.canChqCtrl.browserId"
+                                    <input style="display: none" [attr.id]="vendorDocCtrl.canChqCtrl.browserId"
                                         type="file" multiple accept=".xls,.xlsx,.doc,.docx,.pdf,.png,.jpg,.zip"
                                         (change)="onFileChange($event, vendorDocCtrl.canChqCtrl.documentTypeId)" />
                                     <button mat-button mat-icon-button aria-label="Attach" class="attach-btn"
@@ -305,7 +330,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="error-txt"
+                        <div class="errortxt"
                             *ngIf="isSubmitted && filesMap[vendorDocCtrl.canChqCtrl.documentTypeId]?.isError">
                             This attachment is mandatory</div>
                     </div>
@@ -333,10 +358,10 @@
                                         <mat-icon matTooltip="{{ file.actualFileName }}">description</mat-icon>
                                     </button>
                                     <button mat-button mat-icon-button aria-label="Delete"
-                                    *ngIf="isProcurement == true && isEditable == true"
-                                    (click)="onDeleteFileClick(file, i,vendorDocCtrl.gstCtrl.documentTypeId)">
-                                    <mat-icon>delete_outline</mat-icon>
-                                </button>
+                                        *ngIf="isProcurement == true && isEditable == true"
+                                        (click)="onDeleteFileClick(file, i,vendorDocCtrl.gstCtrl.documentTypeId)">
+                                        <mat-icon>delete_outline</mat-icon>
+                                    </button>
                                 </div>
                             </div>
                             <div class="flex-item">
@@ -352,7 +377,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="error-txt"
+                        <div class="errortxt"
                             *ngIf="isSubmitted && filesMap[vendorDocCtrl.gstCtrl.documentTypeId]?.isError">This
                             attachment is mandatory if GST Registered</div>
                         <div *ngIf="filesMap[vendorDocCtrl.gstCtrl.documentTypeId]?.isAttachWithoutValue"
@@ -405,7 +430,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="error-txt"
+                        <div class="errortxt"
                             *ngIf="isSubmitted && filesMap[vendorDocCtrl.panCtrl.documentTypeId]?.isError">This
                             attachment is mandatory.
                         </div>
@@ -449,7 +474,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="error-txt"
+                        <div class="errortxt"
                             *ngIf="isSubmitted && filesMap[vendorDocCtrl.lutNoCtrl.documentTypeId]?.isError">This
                             attachment is mandatory.
                         </div>
@@ -463,8 +488,9 @@
                     <div class="Rtable-cell Rtable-cell--head">LUT Date</div>
                     <div class="Rtable-cell">
                         <mat-form-field style="width:9em;">
-                            <input matInput [matDatepicker]="picker" formControlName="lutDate" autocomplete="off"  [max]="maxLutDate">
-                            <mat-datepicker-toggle matSuffix [for]="picker" ></mat-datepicker-toggle>
+                            <input matInput [matDatepicker]="picker" formControlName="lutDate" autocomplete="off"
+                                [max]="maxLutDate">
+                            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                             <mat-datepicker #picker></mat-datepicker>
                         </mat-form-field>
                         <div *ngIf="isSubmitted && f?.lutDate?.errors?.required" class="errortxt">
@@ -518,7 +544,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="error-txt"
+                        <div class="errortxt"
                             *ngIf="isSubmitted && filesMap[vendorDocCtrl.pfCtrl.documentTypeId]?.isError">This
                             attachment is mandatory if PF exists.</div>
                         <div *ngIf="filesMap[vendorDocCtrl.pfCtrl.documentTypeId]?.isAttachWithoutValue"
@@ -565,7 +591,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="error-txt"
+                        <div class="errortxt"
                             *ngIf="isSubmitted && filesMap[vendorDocCtrl.esiCtrl.documentTypeId]?.isError">This
                             attachment is mandatory if ESI exists.</div>
                         <div *ngIf="filesMap[vendorDocCtrl.esiCtrl.documentTypeId]?.isAttachWithoutValue"
@@ -620,7 +646,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="error-txt"
+                        <div class="errortxt"
                             *ngIf="isSubmitted && filesMap[vendorDocCtrl.msmeCtrl.documentTypeId]?.isError"> This
                             attachment is mandatory if MSME.</div>
                         <div *ngIf="filesMap[vendorDocCtrl.msmeCtrl.documentTypeId]?.isAttachWithoutValue"
@@ -673,7 +699,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="error-txt"
+                        <div class="errortxt"
                             *ngIf="isSubmitted && filesMap[vendorDocCtrl.tdsCtrl.documentTypeId]?.isError">This
                             attachment is mandatory if TDS available</div>
                         <div *ngIf="filesMap[vendorDocCtrl.tdsCtrl.documentTypeId]?.isAttachWithoutValue"
@@ -727,7 +753,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="error-txt"
+                        <div class="errortxt"
                             *ngIf="isSubmitted && filesMap[vendorDocCtrl.sezCtrl.documentTypeId]?.isError">This
                             attachment is mandatory if SEZ is available</div>
                         <div *ngIf="filesMap[vendorDocCtrl.sezCtrl.documentTypeId]?.isAttachWithoutValue"
@@ -789,13 +815,423 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="error-txt"
+                        <div class="errortxt"
                             *ngIf="isSubmitted && filesMap[vendorDocCtrl.otherCtrl.documentTypeId]?.isError">This
                             attachment is mandatory if others value exists.</div>
                     </div>
 
                 </div>
+
+                <!--------------- US vendor Documents Details -------------------------->
+                <div class="Rtable Rtable--2cols Rtable--collapse" *ngIf="showUSField()">
+
+                    <div class="Rtable-cell Rtable-cell--head">Payee Identification </div>
+                    <div class="Rtable-cell" *ngIf="!isEditable">
+                        {{usPayeeIdentificatn=='taxId'?'Tax ID No.' : (usPayeeIdentificatn=='ein'?'EIN No.' : 'Social Security')}}
+                    </div>
+                    <div class="Rtable-cell" *ngIf="isEditable">
+                        <mat-radio-group [(ngModel)]="usPayeeIdentificatn" (change)="updatePayeeIdentificatn()"
+                            [ngModelOptions]="{standalone: true}">
+                            <mat-radio-button value='taxId'>Tax ID No.</mat-radio-button>
+                            <mat-radio-button value='socialSec'>Social Security No.</mat-radio-button>
+                            <mat-radio-button value='ein'>EIN</mat-radio-button>
+                        </mat-radio-group>
+                    </div>
+                    <div class="Rtable-cell Rtable-cell--head"></div>
+                    <div class="Rtable-cell">
+                    </div>
+
+                    <!-- ----------------------------------------------Tax Id-------------------------------------------- -->
+
+                    <div class="Rtable-cell Rtable-cell--head" *ngIf="(usPayeeIdentificatn=='taxId')">Tax ID No.</div>
+                    <div class="Rtable-cell" *ngIf="(usPayeeIdentificatn=='taxId')">
+                        <mat-form-field class="full-width">
+                            <input type="text" matInput formControlName="usTaxId" autocomplete="off"
+                                (blur)="onTextFieldValueChange('usTaxId',vendorDocCtrl.taxIdNoCtrl.documentTypeId);">
+                        </mat-form-field>
+                        <mat-error class="errortxt" *ngIf="isSubmitted == true && f?.usTaxId?.errors?.required">Tax
+                            ID
+                            is required</mat-error>
+
+                    </div>
+
+                    <div class="Rtable-cell Rtable-cell--head" *ngIf="(usPayeeIdentificatn=='taxId')">Attachments</div>
+                    <div class="Rtable-cell" *ngIf="(usPayeeIdentificatn=='taxId')">
+                        <div class="attachments">
+                            <div class="flex-item">
+                                <div *ngFor="let file of filesMap[vendorDocCtrl.taxIdNoCtrl.documentTypeId]?.filesList; let i = index"
+                                    class="filename">
+                                    <button mat-button mat-icon-button aria-label="Download"
+                                        (click)="downloadFile(file)">
+                                        <mat-icon matTooltip="{{ file.actualFileName }}">description</mat-icon>
+                                    </button>
+                                    <button mat-button mat-icon-button aria-label="Delete"
+                                        *ngIf="isProcurement == true && isEditable == true"
+                                        (click)="onDeleteFileClick(file, i,vendorDocCtrl.taxIdNoCtrl.documentTypeId)">
+                                        <mat-icon>delete_outline</mat-icon>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="flex-item">
+                                <div *ngIf="isEditable">
+                                    <input style="display: none" [attr.id]="vendorDocCtrl.taxIdNoCtrl.browserId"
+                                        type="file" multiple accept=".xls,.xlsx,.doc,.docx,.pdf,.png,.jpg,.zip"
+                                        (change)="onFileChange($event, vendorDocCtrl.taxIdNoCtrl.documentTypeId)" />
+                                    <button mat-button mat-icon-button aria-label="Attach" class="attach-btn"
+                                        (click)="onBrowseFileClick($event, vendorDocCtrl.taxIdNoCtrl.browserId)"
+                                        [disabled]="!this.vendorForm.get('usTaxId').value">
+                                        <mat-icon>attachment</mat-icon>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="errortxt"
+                            *ngIf="isSubmitted && filesMap[vendorDocCtrl.taxIdNoCtrl.documentTypeId]?.isError">This
+                            attachment is mandatory if Tax ID is enetered</div>
+                        <div *ngIf="filesMap[vendorDocCtrl.taxIdNoCtrl.documentTypeId]?.isAttachWithoutValue"
+                            class="errortxt">
+                            Tax ID and attachment both are mandatory.
+                        </div>
+                    </div>
+
+                    <!-- ---------------------------------------Tax ID --  (w8 BENE)  ------------------ -->
+
+                    <div class="Rtable-cell Rtable-cell--head" *ngIf="(usPayeeIdentificatn=='taxId')">w8 - BENE/BEN
+                    </div>
+                    <div class="Rtable-cell" *ngIf="!isEditable && (usPayeeIdentificatn=='taxId')">
+                        {{ vendorDetails?.usW8Bene == true ? 'Yes' : 'No' }}
+                    </div>
+                    <div class="Rtable-cell" *ngIf="isEditable && (usPayeeIdentificatn=='taxId')">
+                        <mat-radio-group formControlName="usW8Bene">
+                            <mat-radio-button
+                                (change)="onRadioBtnSelectionChange($event,vendorDocCtrl.w8Ctrl.documentTypeId)"
+                                [value]=true>Yes</mat-radio-button>
+                            <mat-radio-button
+                                (change)="onRadioBtnSelectionChange($event,vendorDocCtrl.w8Ctrl.documentTypeId)"
+                                [value]=false>No</mat-radio-button>
+                        </mat-radio-group>
+                    </div>
+
+                    <div class="Rtable-cell Rtable-cell--head" *ngIf="(usPayeeIdentificatn=='taxId')">Attachments
+                    </div>
+                    <div class="Rtable-cell" *ngIf="(usPayeeIdentificatn=='taxId')">
+                        <div class="attachments">
+                            <div class="flex-item">
+                                <div *ngFor="let file of filesMap[vendorDocCtrl.w8Ctrl.documentTypeId]?.filesList; let i = index"
+                                    class="filename">
+                                    <button mat-button mat-icon-button aria-label="Download"
+                                        (click)="downloadFile(file)">
+                                        <mat-icon matTooltip="{{ file.actualFileName }}">description</mat-icon>
+                                    </button>
+                                    <button mat-button mat-icon-button aria-label="Delete"
+                                        *ngIf="isProcurement == true && isEditable == true"
+                                        (click)="onDeleteFileClick(file, i,vendorDocCtrl.w8Ctrl.documentTypeId)">
+                                        <mat-icon>delete_outline</mat-icon>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="flex-item">
+                                <div *ngIf="isEditable">
+                                    <input style="display: none" [attr.id]="vendorDocCtrl.w8Ctrl.browserId" type="file"
+                                        multiple accept=".xls,.xlsx,.doc,.docx,.pdf,.png,.jpg,.zip"
+                                        (change)="onFileChange($event, vendorDocCtrl.w8Ctrl.documentTypeId)" />
+                                    <button mat-button mat-icon-button aria-label="Attach" class="attach-btn"
+                                        [disabled]="!this.vendorForm.get('usW8Bene').value"
+                                        (click)="onBrowseFileClick($event, vendorDocCtrl.w8Ctrl.browserId)">
+                                        <mat-icon>attachment</mat-icon>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="errortxt"
+                            *ngIf="isSubmitted && filesMap[vendorDocCtrl.w8Ctrl.documentTypeId]?.isError">This
+                            attachment is mandatory if w8 - BENE/BEN is available</div>
+                        <div *ngIf="filesMap[vendorDocCtrl.w8Ctrl.documentTypeId]?.isAttachWithoutValue"
+                            class="errortxt">
+                            Select w8 - BENE/BEN or delete the attachment.
+                        </div>
+                    </div>
+
+                    <!-- ----------------------------------------------Social Security-------------------------------------------- -->
+
+                    <div class="Rtable-cell Rtable-cell--head" *ngIf=" (usPayeeIdentificatn =='socialSec')">Social
+                        security No.</div>
+                    <div class="Rtable-cell" *ngIf="(usPayeeIdentificatn=='socialSec')">
+                        <mat-form-field class="full-width">
+                            <input type="text" matInput formControlName="usSocialSecurity" autocomplete="off"
+                                (blur)="onTextFieldValueChange('usSocialSecurity',vendorDocCtrl.socialSecNoCtrl.documentTypeId);">
+                        </mat-form-field>
+                        <mat-error class="errortxt"
+                            *ngIf="isSubmitted == true && f?.usSocialSecurity?.errors?.required">Social security is
+                            required</mat-error>
+                    </div>
+
+                    <div class="Rtable-cell Rtable-cell--head" *ngIf=" (usPayeeIdentificatn =='socialSec')">
+                        Attachments</div>
+                    <div class="Rtable-cell" *ngIf="(usPayeeIdentificatn=='socialSec')">
+                        <div class="attachments">
+                            <div class="flex-item">
+                                <div *ngFor="let file of filesMap[vendorDocCtrl.socialSecNoCtrl.documentTypeId]?.filesList; let i = index"
+                                    class="filename">
+                                    <button mat-button mat-icon-button aria-label="Download"
+                                        (click)="downloadFile(file)">
+                                        <mat-icon matTooltip="{{ file.actualFileName }}">description</mat-icon>
+                                    </button>
+                                    <button mat-button mat-icon-button aria-label="Delete"
+                                        *ngIf="isProcurement == true && isEditable == true"
+                                        (click)="onDeleteFileClick(file, i,vendorDocCtrl.socialSecNoCtrl.documentTypeId)">
+                                        <mat-icon>delete_outline</mat-icon>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="flex-item">
+                                <div *ngIf="isEditable">
+                                    <input style="display: none" [attr.id]="vendorDocCtrl.socialSecNoCtrl.browserId"
+                                        type="file" multiple accept=".xls,.xlsx,.doc,.docx,.pdf,.png,.jpg,.zip"
+                                        (change)="onFileChange($event, vendorDocCtrl.socialSecNoCtrl.documentTypeId)" />
+                                    <button mat-button mat-icon-button aria-label="Attach" class="attach-btn"
+                                        (click)="onBrowseFileClick($event, vendorDocCtrl.socialSecNoCtrl.browserId)"
+                                        [disabled]="!this.vendorForm.get('usSocialSecurity').value">
+                                        <mat-icon>attachment</mat-icon>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="errortxt"
+                            *ngIf="isSubmitted && filesMap[vendorDocCtrl.socialSecNoCtrl.documentTypeId]?.isError">
+                            This
+                            attachment is mandatory if Social security is entered</div>
+                        <div *ngIf="filesMap[vendorDocCtrl.socialSecNoCtrl.documentTypeId]?.isAttachWithoutValue"
+                            class="errortxt">
+                            Social security and attachment both are mandatory.
+                        </div>
+                    </div>
+
+                    <!-- ----------------------------------------------EIN No.-------------------------------------------- -->
+
+                    <div class="Rtable-cell Rtable-cell--head" *ngIf="(usPayeeIdentificatn=='ein')">
+                        Ein No.</div>
+                    <div class="Rtable-cell" *ngIf="(usPayeeIdentificatn=='ein')">
+                        <mat-form-field class="full-width">
+                            <input type="text" matInput formControlName="usEinNumber" autocomplete="off"
+                                (blur)="onTextFieldValueChange('usEinNumber',vendorDocCtrl.einCtrl.documentTypeId);">
+                        </mat-form-field>
+                        <mat-error class="errortxt" *ngIf="isSubmitted == true && f?.usEinNumber?.errors?.required">
+                            EIN
+                            no.
+                            is required</mat-error>
+
+                    </div>
+
+                    <div class="Rtable-cell Rtable-cell--head" *ngIf="(usPayeeIdentificatn=='ein')">Attachments</div>
+                    <div class="Rtable-cell" *ngIf="(usPayeeIdentificatn=='ein')">
+                        <div class="attachments">
+                            <div class="flex-item">
+                                <div *ngFor="let file of filesMap[vendorDocCtrl.einCtrl.documentTypeId]?.filesList; let i = index"
+                                    class="filename">
+                                    <button mat-button mat-icon-button aria-label="Download"
+                                        (click)="downloadFile(file)">
+                                        <mat-icon matTooltip="{{ file.actualFileName }}">description</mat-icon>
+                                    </button>
+                                    <button mat-button mat-icon-button aria-label="Delete"
+                                        *ngIf="isProcurement == true && isEditable == true"
+                                        (click)="onDeleteFileClick(file, i,vendorDocCtrl.einCtrl.documentTypeId)">
+                                        <mat-icon>delete_outline</mat-icon>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="flex-item">
+                                <div *ngIf="isEditable">
+                                    <input style="display: none" [attr.id]="vendorDocCtrl.einCtrl.browserId" type="file"
+                                        multiple accept=".xls,.xlsx,.doc,.docx,.pdf,.png,.jpg,.zip"
+                                        (change)="onFileChange($event, vendorDocCtrl.einCtrl.documentTypeId)" />
+                                    <button mat-button mat-icon-button aria-label="Attach" class="attach-btn"
+                                        (click)="onBrowseFileClick($event, vendorDocCtrl.einCtrl.browserId)"
+                                        [disabled]="!this.vendorForm.get('usEinNumber').value">
+                                        <mat-icon>attachment</mat-icon>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="errortxt"
+                            *ngIf="isSubmitted && filesMap[vendorDocCtrl.einCtrl.documentTypeId]?.isError">This
+                            attachment is mandatory if EIN No is enetered</div>
+                        <div *ngIf="filesMap[vendorDocCtrl.einCtrl.documentTypeId]?.isAttachWithoutValue"
+                            class="errortxt">
+                            EIN no and attachment both are mandatory.
+                        </div>
+                    </div>
+
+                    <!-- ---------------------------------------EIN  --  (w9)  ------------------ -->
+
+                    <div class="Rtable-cell Rtable-cell--head" *ngIf="(usPayeeIdentificatn=='ein')">w9</div>
+                    <div class="Rtable-cell" *ngIf="!isEditable && (usPayeeIdentificatn=='ein')">
+                        {{ vendorDetails?.usW9 == true ? 'Yes' : 'No' }}
+                    </div>
+                    <div class="Rtable-cell" *ngIf="isEditable && (usPayeeIdentificatn=='ein')">
+                        <mat-radio-group formControlName="usW9">
+                            <mat-radio-button
+                                (change)="onRadioBtnSelectionChange($event,vendorDocCtrl.w9Ctrl.documentTypeId)"
+                                [value]=true>Yes</mat-radio-button>
+                            <mat-radio-button
+                                (change)="onRadioBtnSelectionChange($event,vendorDocCtrl.w9Ctrl.documentTypeId)"
+                                [value]=false>No</mat-radio-button>
+                        </mat-radio-group>
+                    </div>
+
+                    <div class="Rtable-cell Rtable-cell--head" *ngIf="(usPayeeIdentificatn=='ein')">Attachments</div>
+                    <div class="Rtable-cell" *ngIf="(usPayeeIdentificatn=='ein')">
+                        <div class="attachments">
+                            <div class="flex-item">
+                                <div *ngFor="let file of filesMap[vendorDocCtrl.w9Ctrl.documentTypeId]?.filesList; let i = index"
+                                    class="filename">
+                                    <button mat-button mat-icon-button aria-label="Download"
+                                        (click)="downloadFile(file)">
+                                        <mat-icon matTooltip="{{ file.actualFileName }}">description</mat-icon>
+                                    </button>
+                                    <button mat-button mat-icon-button aria-label="Delete"
+                                        *ngIf="isProcurement == true && isEditable == true"
+                                        (click)="onDeleteFileClick(file, i,vendorDocCtrl.w9Ctrl.documentTypeId)">
+                                        <mat-icon>delete_outline</mat-icon>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="flex-item">
+                                <div *ngIf="isEditable">
+                                    <input style="display: none" [attr.id]="vendorDocCtrl.w9Ctrl.browserId" type="file"
+                                        multiple accept=".xls,.xlsx,.doc,.docx,.pdf,.png,.jpg,.zip"
+                                        (change)="onFileChange($event, vendorDocCtrl.w9Ctrl.documentTypeId)" />
+                                    <button mat-button mat-icon-button aria-label="Attach" class="attach-btn"
+                                        [disabled]="!this.vendorForm.get('usW9').value"
+                                        (click)="onBrowseFileClick($event, vendorDocCtrl.w9Ctrl.browserId)">
+                                        <mat-icon>attachment</mat-icon>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="errortxt"
+                            *ngIf="isSubmitted && filesMap[vendorDocCtrl.w9Ctrl.documentTypeId]?.isError">This
+                            attachment is mandatory if w9 is available</div>
+                        <div *ngIf="filesMap[vendorDocCtrl.w9Ctrl.documentTypeId]?.isAttachWithoutValue"
+                            class="errortxt">
+                            Select w9 or delete the attachment.
+                        </div>
+                    </div>
+
+                    <!-- --------------------------------------Organisation Category ------------------ -->
+                    <div class="Rtable-cell Rtable-cell--head">Organisation Category</div>
+
+                    <div class="Rtable-cell" *ngIf="!isEditable">
+                        {{ vendorDetails?.vendorOrgCatogeryVO?.catogery }} -
+                        {{ vendorDetails?.vendorOrgCatogeryVO?.subCatogery }}
+                    </div>
+                    <div class="Rtable-cell" *ngIf="isEditable">
+                        <mat-radio-group formControlName="vendorOrgCatogery" (change)="onOrgCatChange()">
+                            <div *ngFor="let orgCat of organizationCategoryMasterVO; let i=index">
+                                <mat-radio-button [value]="orgCat.catogery" class="orgCategory">
+                                    {{orgCat.catogery}}
+                                </mat-radio-button>
+                                <div *ngIf="((orgCat.subCatogeries.length>1) && (vendorForm.get('vendorOrgCatogery').value == orgCat.catogery))"
+                                    style="margin-left: 2em;">
+                                    <mat-radio-group formControlName="vendorOrgSubCategory" (change)=prepareOrgCat()>
+                                        <mat-radio-button *ngFor="let orgSubCat of orgCat.subCatogeries;let sub=index"
+                                            [value]="orgSubCat" class="orgCategory">
+                                            {{orgSubCat}}
+                                        </mat-radio-button>
+                                    </mat-radio-group>
+                                    <div *ngIf="isSubmitted && (vendorForm.get('vendorOrgSubCategory').errors?.required)"
+                                        class="errortxt">
+                                        Organisation Sub Category is not selected
+                                    </div>
+                                </div>
+                            </div>
+                        </mat-radio-group>
+                        <div *ngIf="( isSubmitted ) && vendorForm.get('vendorOrgCatogery').errors?.required"
+                            class="errortxt">
+                            Organisation Category is not selected
+                        </div>
+                    </div>
+
+
+                    <!-- --------------------------------------Organisation Types ------------------ -->
+                    <div class="Rtable-cell Rtable-cell--head">Organisation Types</div>
+
+                    <div class="Rtable-cell" *ngIf="!isEditable">
+                        <ul class="orgType">
+                            <li *ngFor="let orgType of vendorOrgTypesList">
+                                {{orgType.orgType}}
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="Rtable-cell" *ngIf="isEditable">
+                        <ul class="orgType">
+                            <li *ngFor="let orgType of organizationTypeMasterVO;let i =index">
+                                <mat-checkbox (change)="prepareOrgTypeList($event.checked,orgType.orgType,i )"
+                                    [checked]='setOrgType(orgType.orgType)'>
+                                    {{orgType.orgType}}
+                                </mat-checkbox>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <!-- --------------------------------------Minority Certificate  ------------------ -->
+                    <div class="Rtable-cell Rtable-cell--head" *ngIf="showUSField()">Minority Certificate</div>
+                    <div class="Rtable-cell" *ngIf="!isEditable">
+                        {{ vendorDetails?.usMinorityCertificate == true ? 'Yes' : 'No' }}
+                    </div>
+                    <div class="Rtable-cell" *ngIf="isEditable">
+                        <mat-radio-group formControlName="usMinorityCertificate">
+                            <mat-radio-button
+                                (change)="onRadioBtnSelectionChange($event,vendorDocCtrl.minorityCertCtrl.documentTypeId)"
+                                [value]=true>Yes</mat-radio-button>
+                            <mat-radio-button
+                                (change)="onRadioBtnSelectionChange($event,vendorDocCtrl.minorityCertCtrl.documentTypeId)"
+                                [value]=false>No</mat-radio-button>
+                        </mat-radio-group>
+                    </div>
+
+                    <div class="Rtable-cell Rtable-cell--head">Attachments</div>
+                    <div class="Rtable-cell">
+                        <div class="attachments">
+                            <div class="flex-item">
+                                <div *ngFor="let file of filesMap[vendorDocCtrl.minorityCertCtrl.documentTypeId]?.filesList; let i = index"
+                                    class="filename">
+                                    <button mat-button mat-icon-button aria-label="Download"
+                                        (click)="downloadFile(file)">
+                                        <mat-icon matTooltip="{{ file.actualFileName }}">description</mat-icon>
+                                    </button>
+                                    <button mat-button mat-icon-button aria-label="Delete"
+                                        *ngIf="isProcurement == true && isEditable == true"
+                                        (click)="onDeleteFileClick(file, i,vendorDocCtrl.minorityCertCtrl.documentTypeId)">
+                                        <mat-icon>delete_outline</mat-icon>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="flex-item">
+                                <div *ngIf="isEditable">
+                                    <input style="display: none" [attr.id]="vendorDocCtrl.minorityCertCtrl.browserId"
+                                        type="file" multiple accept=".xls,.xlsx,.doc,.docx,.pdf,.png,.jpg,.zip"
+                                        (change)="onFileChange($event, vendorDocCtrl.minorityCertCtrl.documentTypeId)" />
+                                    <button mat-button mat-icon-button aria-label="Attach" class="attach-btn"
+                                        [disabled]="!this.vendorForm.get('usMinorityCertificate').value"
+                                        (click)="onBrowseFileClick($event, vendorDocCtrl.minorityCertCtrl.browserId)">
+                                        <mat-icon>attachment</mat-icon>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="errortxt"
+                            *ngIf="isSubmitted && filesMap[vendorDocCtrl.minorityCertCtrl.documentTypeId]?.isError">This
+                            attachment is mandatory if minority certificate is available</div>
+                        <div *ngIf="filesMap[vendorDocCtrl.minorityCertCtrl.documentTypeId]?.isAttachWithoutValue"
+                            class="errortxt">
+                            Select minority certificate or delete the attachment.
+                        </div>
+                    </div>
+
+                </div>
             </div>
+
 
             <div class="approver-section">
                 <div class="search-row">
@@ -811,7 +1247,7 @@
                         <mat-form-field class="field" *ngIf="isExistingVendor">
                             <mat-label>Account Group</mat-label>
                             <input type="text" matInput [disabled]=true value=" {{vendorDetails?.groupCodeDesc }}"
-                             autocomplete="off">
+                                autocomplete="off">
                         </mat-form-field>
                         <mat-error class="errortxt" *ngIf="( isSubmitted ) && f?.selectedVendorGroup?.errors?.required">
                             Account Group is required</mat-error>
@@ -828,13 +1264,13 @@
                         <mat-form-field class="field" *ngIf="isExistingVendor">
                             <mat-label>Company Code</mat-label>
                             <input type="text" matInput [disabled]=true value=" {{vendorDetails?.companyCodeDesc }}"
-                             autocomplete="off">
+                                autocomplete="off">
                         </mat-form-field>
                         <mat-error class="errortxt" *ngIf="( isSubmitted ) && f?.selectedCompanyCode?.errors?.required">
                             Company Code is required</mat-error>
                     </div>
                     <div class=" search-row-element">
-                        <mat-form-field class="field"  *ngIf="!isExistingVendor">
+                        <mat-form-field class="field" *ngIf="!isExistingVendor">
                             <mat-label>Currency</mat-label>
                             <mat-select formControlName="selectedCurrency">
                                 <mat-option *ngFor="let currency of currencyList" [value]="currency.currencyCode">
@@ -845,13 +1281,13 @@
                         <mat-form-field class="field" *ngIf="isExistingVendor">
                             <mat-label>Currency</mat-label>
                             <input type="text" matInput [disabled]=true value=" {{vendorDetails?.currencyCodeDesc }}"
-                             autocomplete="off">
+                                autocomplete="off">
                         </mat-form-field>
                         <mat-error class="errortxt" *ngIf="( isSubmitted ) && f?.selectedCurrency?.errors?.required">
                             Currency is required</mat-error>
                     </div>
                     <div class=" search-row-element" *ngIf="isFinance || isExistingVendor">
-                        <mat-form-field class="field"  *ngIf="!isExistingVendor">
+                        <mat-form-field class="field" *ngIf="!isExistingVendor">
                             <mat-label>WithHold Type</mat-label>
                             <mat-select formControlName="withholdType" (selectionChange)="onHoldTypeSelected($event)">
                                 <mat-option *ngFor="let withholdType of withholdTypeList"
@@ -863,7 +1299,7 @@
                         <mat-form-field class="field" *ngIf="isExistingVendor">
                             <mat-label>WithHold Type</mat-label>
                             <input type="text" matInput [disabled]=true value=" {{vendorDetails?.withHoldTypeCode }}"
-                             autocomplete="off">
+                                autocomplete="off">
                         </mat-form-field>
                     </div>
                     <div class=" search-row-element" *ngIf="isFinance || isExistingVendor">
@@ -879,7 +1315,7 @@
                         <mat-form-field class="field" *ngIf="isExistingVendor">
                             <mat-label>WithHold Tax</mat-label>
                             <input type="text" matInput [disabled]=true value=" {{vendorDetails?.withholdTaxCode }}"
-                             autocomplete="off">
+                                autocomplete="off">
                         </mat-form-field>
                         <mat-error class="errortxt" *ngIf="( isSubmitted ) && f?.withholdTax?.errors?.required">
                             WithHold Tax is required if tax type selected</mat-error>
@@ -926,7 +1362,7 @@
                         <textarea matInput placeholder="Remarks" formControlName="remarks"
                             autocomplete="off"></textarea>
                     </mat-form-field>
-                    
+
                     <mat-error class="errortxt" *ngIf="( isSubmitted ) && f?.remarks?.errors?.required">Remarks is
                         required</mat-error>
                 </div>

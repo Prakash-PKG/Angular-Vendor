@@ -4,11 +4,14 @@ import { AppService } from './../app.service';
 import { HttpClient } from '@angular/common/http';
 import { BusyDataModel } from './../models/data-models';
 import { BehaviorSubject, Observable } from 'rxjs';
+import { _MatChipListMixinBase } from '@angular/material';
 
 @Injectable({
     providedIn: 'root'
 })
 export class VendorRegistrationService {
+
+    vendorUS: boolean = false;
 
     // Based on this, Busy icon will show
     private busy = new BehaviorSubject<BusyDataModel>(<BusyDataModel>{ isBusy: false, msg: null });
@@ -26,8 +29,9 @@ export class VendorRegistrationService {
         this.busy.next(obj)
     }
 
-    async getVendorRegistrationInitData() {
-        let url = this._appService.baseUrl + "venRegInitData";
+    async getVendorRegistrationInitData(vendorUserId) {
+
+        let url = this._appService.baseUrl + "venRegInitData/" + vendorUserId;
         try {
             let response = await this._http.get(url).toPromise();
             return this.prepareVendorRegistrationInitData(response);
@@ -43,9 +47,12 @@ export class VendorRegistrationService {
             initModel.countriesList = data["countryDataVOList"];
             initModel.documentDetailsList = data["vendorMasterDocumentVOList"];
             initModel.regionMasterVOList = data["regionMasterVOList"];
-            initModel.bankAccountTypeList = data ["bankAccountTypeVOList"]
+            initModel.bankAccountTypeList = data["bankAccountTypeVOList"];
+            initModel.vendorCounty = data["vendorCounty"];
+            initModel.organizationCategoryMasterVO = data["organizationCategoryMasterVO"];
+            initModel.organizationTypeMasterVO = data["organizationTypeMasterVO"]
         }
-
+        this.vendorUS = initModel.vendorCounty == 'US' ? true : false;
         return initModel;
     }
 

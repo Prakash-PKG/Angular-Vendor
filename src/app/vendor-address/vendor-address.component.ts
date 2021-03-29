@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, HostListener } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
@@ -50,7 +50,7 @@ export class VendorAddressComponent implements OnInit {
         this.isSubmitted = true;
 
         if (this.vendorAddressForm.valid) {
-            
+
             this.updateControlsData();
 
             let req: VendorRegistrationRequestModel = {
@@ -116,41 +116,49 @@ export class VendorAddressComponent implements OnInit {
 
     updatePincodeValidation() {
         let countryCodeVal = this.vendorAddressForm.get("countryCode").value;
-        if(countryCodeVal == "US") {
+        if (countryCodeVal == "US") {
             this.vendorAddressForm.get("pincode").setValidators([Validators.required, Validators.minLength(5), Validators.maxLength(10)]);
         }
         else {
-            this.vendorAddressForm.get("pincode").setValidators([Validators.required, Validators.minLength(6),  Validators.maxLength(6)]);
+            this.vendorAddressForm.get("pincode").setValidators([Validators.required, Validators.minLength(6), Validators.maxLength(6)]);
         }
 
         this.vendorAddressForm.get("pincode").updateValueAndValidity();
+    }
+    showUSField() {
+        return this._vendorRegistrationService.vendorUS;
     }
 
     ngOnInit() {
         this.isSubmitted = false;
 
-        this.countryList = [];
-        if (this._appService.vendorRegistrationInitDetails && this._appService.vendorRegistrationInitDetails.countriesList &&
-            this._appService.vendorRegistrationInitDetails.countriesList.length > 0) {
-            this.countryList = this._appService.vendorRegistrationInitDetails.countriesList;
+        if (this._appService.vendorRegistrationDetails && this._appService.vendorRegistrationDetails.vendorMasterId == null) {
+            this._router.navigate([this._appService.routingConstants.vendorDetails]);
         }
-        this.regionMasterVOList = [];
-        if (this._appService.vendorRegistrationInitDetails && this._appService.vendorRegistrationInitDetails.regionMasterVOList &&
-            this._appService.vendorRegistrationInitDetails.regionMasterVOList.length > 0) {
-            this.regionMasterVOList = this._appService.vendorRegistrationInitDetails.regionMasterVOList;
-        }
-        this.vendorAddressForm = this._formBuilder.group({
-            address1: [null, [Validators.required]],
-            address2: [null],
-            city: [null, [Validators.required]],
-            street: [null, [Validators.required]],
-            pincode: [null, [Validators.required, Validators.maxLength(6),Validators.pattern("^[0-9]*$")]],
-            stateCode: [null, [Validators.required]],
-            countryCode: [null, [Validators.required]]
-        });
 
-        this._vendorRegistrationService.updateCurrentPageDetails({ pageName: 'venAdd' });
-        this.updateVendorDetails();
+        else {
+            this.countryList = [];
+            if (this._appService.vendorRegistrationInitDetails && this._appService.vendorRegistrationInitDetails.countriesList &&
+                this._appService.vendorRegistrationInitDetails.countriesList.length > 0) {
+                this.countryList = this._appService.vendorRegistrationInitDetails.countriesList;
+            }
+            this.regionMasterVOList = [];
+            if (this._appService.vendorRegistrationInitDetails && this._appService.vendorRegistrationInitDetails.regionMasterVOList &&
+                this._appService.vendorRegistrationInitDetails.regionMasterVOList.length > 0) {
+                this.regionMasterVOList = this._appService.vendorRegistrationInitDetails.regionMasterVOList;
+            }
+            this.vendorAddressForm = this._formBuilder.group({
+                address1: [null, [Validators.required]],
+                address2: [null],
+                city: [null, [Validators.required]],
+                street: [null, [Validators.required]],
+                pincode: [null, [Validators.required, Validators.maxLength(6), Validators.pattern("^[0-9]*$")]],
+                stateCode: [null, [Validators.required]],
+                countryCode: [null, [Validators.required]]
+            });
+
+            this._vendorRegistrationService.updateCurrentPageDetails({ pageName: 'venAdd' });
+            this.updateVendorDetails();
+        }
     }
-
 }
