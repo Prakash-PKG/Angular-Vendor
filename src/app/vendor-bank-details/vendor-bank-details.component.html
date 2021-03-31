@@ -8,11 +8,13 @@
         <div class="col-3 form-group">
             <mat-form-field class="full-width">
                 <input type="text" matInput placeholder="{{showUSField()?'Account Number/IBAN':'Account Number'}}"
-                    maxlength="20" formControlName="accountNum" autocomplete="off" required>
+                    formControlName="accountNum" autocomplete="off" required>
             </mat-form-field>
             <mat-error class="errortxt" *ngIf="( isSubmitted ) && f?.accountNum?.errors?.required">
                 {{showUSField()?'Account Number/IBAN':'Account Number'}} is
                 required</mat-error>
+            <mat-error class="errortxt" *ngIf="( isSubmitted ) && f?.accountNum?.errors?.maxlength">
+                {{showUSField()?'Account Number/IBAN':'Account Number'}} can be maximum 50 characters</mat-error>
         </div>
         <div class="col-6 form-group">
             <mat-form-field class="full-width">
@@ -25,16 +27,17 @@
         <div class="col-3 form-group">
             <mat-form-field class="full-width">
                 <input type="text" matInput placeholder="{{showUSField()?'ABA-RTN':'IFSC code'}}"
-                    formControlName="ifscCode" autocomplete="off" (blur)="onIFSCblur()" maxlength="11" minlength="11"
-                    required>
+                    formControlName="ifscCode" autocomplete="off" (blur)="onIFSCblur()" required>
             </mat-form-field>
             <mat-error class="errortxt" *ngIf="( isSubmitted ) && f?.ifscCode?.errors?.required">
                 {{showUSField()?'ABA-RTN':'IFSC code'}} is required
             </mat-error>
             <mat-error class="errortxt" *ngIf="( isSubmitted ) && f?.ifscCode?.errors?.pattern">
-                {{showUSField()?'ABA-RTN':'IFSC code'}} accepts
-                combination of alphanumeric</mat-error>
-            <mat-error class="errortxt" *ngIf="( isSubmitted ) && f?.ifscCode?.errors?.minlength">Minimum 11 characters
+                {{showUSField()?'ABA-RTN accepts only numeric, alphabetic and alphanumeric characters':'IFSC code accepts
+                combination of alphanumeric'}} </mat-error>
+            <mat-error class="errortxt" *ngIf="( isSubmitted ) && f?.ifscCode?.errors?.minlength"> {{showUSField()?'Minimum 9 characters
+                are required':'Minimum 11 characters are required'}}</mat-error>
+            <mat-error class="errortxt" *ngIf="( isSubmitted ) && f?.ifscCode?.errors?.maxlength">Maximum 11 characters
                 are required</mat-error>
         </div>
 
@@ -127,11 +130,11 @@
     </div>
     <div class="row field" *ngIf="showUSField()">
         <div class="col-6 form-group">
-                <mat-label>Bank Country   </mat-label>
-                <mat-radio-group formControlName="usBankSector">
-                    <mat-radio-button value='Foreign'>Foreign</mat-radio-button>
-                    <mat-radio-button value='Domestic'>Domestic</mat-radio-button>
-                </mat-radio-group>
+            <mat-label>Bank Country </mat-label>
+            <mat-radio-group formControlName="usBankSector">
+                <mat-radio-button value='Foreign'>Foreign</mat-radio-button>
+                <mat-radio-button value='Domestic'>Domestic</mat-radio-button>
+            </mat-radio-group>
             <mat-error class="errortxt" *ngIf="( isSubmitted ) && f?.usBankSector?.errors?.required">Bank country is
                 required</mat-error>
         </div>
@@ -156,6 +159,13 @@
                 <input type="text" matInput placeholder="{{showUSField()?'SWIFT code/BIC':'SWIFT Code/IBAN'}}"
                     formControlName="swiftIbanCode" autocomplete="off">
             </mat-form-field>
+            <mat-error class="errortxt" *ngIf="( isSubmitted ) && f?.swiftIbanCode?.errors?.pattern">
+                {{showUSField()?'SWIFT code/BIC accepts only numeric, alphabetic and alphanumeric characters':''}}
+            </mat-error>
+            <mat-error class="errortxt" *ngIf="( isSubmitted ) && f?.swiftIbanCode?.errors?.minlength">Minimum 8
+                characters are required</mat-error>
+            <mat-error class="errortxt" *ngIf="( isSubmitted ) && f?.swiftIbanCode?.errors?.maxlength">Maximum 11
+                characters are required</mat-error>
         </div>
         <div class="col-6 form-group">
             <mat-form-field class="full-width">

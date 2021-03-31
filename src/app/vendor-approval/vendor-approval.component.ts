@@ -706,21 +706,19 @@ export class VendorApprovalComponent implements OnInit {
                 this.regionMasterVOList = this.vendorApprovalInitDetails.regionMasterVOList.filter(r => r.countryCode == cntryCode);
             }
         }
-
-        this.updatePincodeValidation();
+        // this.updatePincodeValidation();
     }
 
-    updatePincodeValidation() {
-        let countryCodeVal = this.vendorForm.get("countryCode").value;
-        if (countryCodeVal == "US") {
-            this.vendorForm.get("pincode").setValidators([Validators.required, Validators.minLength(5), Validators.maxLength(5)]);
-        }
-        else {
-            this.vendorForm.get("pincode").setValidators([Validators.required, Validators.minLength(6), Validators.maxLength(6)]);
-        }
-
-        this.vendorForm.get("pincode").updateValueAndValidity();
-    }
+    // ----------------------------------------region based pincode checking----------------do not remove------------------
+    // updatePincodeValidation() {
+    //     if (this._vendorApprovalService.vendorUS) {
+    //         this.vendorForm.get("pincode").setValidators([Validators.required, Validators.pattern("^[0-9]{5}(?:-[0-9]{4})?$"), Validators.minLength(5), Validators.maxLength(10)]);
+    //     }
+    //     else {
+    //         this.vendorForm.get("pincode").setValidators([Validators.required, Validators.minLength(6), Validators.maxLength(6)]);
+    //     }
+    //     this.vendorForm.get("pincode").updateValueAndValidity();
+    // }
 
     updateVendorFields() {
         if (this.vendorDetails) {
@@ -782,7 +780,7 @@ export class VendorApprovalComponent implements OnInit {
             this.vendorForm.get("remarks").updateValueAndValidity();
         }
 
-        this.updatePincodeValidation();
+        // this.updatePincodeValidation();
 
         this.updateLUTValidations(this.vendorForm.get("lutNum").value);
 
@@ -1001,6 +999,9 @@ export class VendorApprovalComponent implements OnInit {
             this.vendorForm.get('panNum').setValidators([]);
             this.vendorForm.get('panNum').updateValueAndValidity;
 
+            this.vendorForm.get("pincode").setValidators([Validators.required, Validators.pattern("^[0-9]{5}(?:-[0-9]{4})?$"), Validators.minLength(5), Validators.maxLength(10)]);
+            this.vendorForm.get('pincode').updateValueAndValidity;
+
         }
         else {
             this.vendorForm.get('usVendorBusiness').setValidators([]);
@@ -1013,6 +1014,10 @@ export class VendorApprovalComponent implements OnInit {
 
             this.vendorForm.get('panNum').setValidators([Validators.required]);
             this.vendorForm.get('panNum').updateValueAndValidity;
+
+            this.vendorForm.get("pincode").setValidators([Validators.required, Validators.minLength(6), Validators.pattern("^[0-9]*$"), Validators.maxLength(6)]);
+            this.vendorForm.get('pincode').updateValueAndValidity;
+
         }
 
     }
@@ -1023,6 +1028,9 @@ export class VendorApprovalComponent implements OnInit {
             this.vendorForm.get("usSocialSecurity").setValue(null);
             this.vendorForm.get("usEinNumber").setValue(null);
             this.vendorForm.get("usW9").setValue(false);
+            this.vendorForm.get("usW8Bene").setValue(true);
+            this.updateMandatoryDocs(true, this.vendorDocCtrl.w8Ctrl.documentTypeId);
+            this.updateMandatoryDocs(false, this.vendorDocCtrl.w9Ctrl.documentTypeId);
 
             this.vendorForm.get("usSocialSecurity").setValidators([]);
             this.vendorForm.get("usSocialSecurity").updateValueAndValidity();
@@ -1036,15 +1044,15 @@ export class VendorApprovalComponent implements OnInit {
             this.vendorForm.get("usTaxId").setValidators([Validators.required]);
             this.vendorForm.get("usTaxId").updateValueAndValidity();
 
-            this.vendorForm.get("usW8Bene").setValidators([Validators.required]);
-            this.vendorForm.get("usW8Bene").updateValueAndValidity();
-            if(this.filesMap[this.vendorDocCtrl.socialSecNoCtrl.documentTypeId].filesList.length){
+            // this.vendorForm.get("usW8Bene").setValidators([Validators.required]);
+            // this.vendorForm.get("usW8Bene").updateValueAndValidity();
+            if (this.filesMap[this.vendorDocCtrl.socialSecNoCtrl.documentTypeId].filesList.length) {
                 this.msg = 'Remove document from Social security if Social security is not selected as payee identification proof'
             }
-            if(this.filesMap[this.vendorDocCtrl.einCtrl.documentTypeId].filesList.length){
+            if (this.filesMap[this.vendorDocCtrl.einCtrl.documentTypeId].filesList.length) {
                 this.msg = 'Remove document from EIN if EIN is not selected as payee identification proof'
             }
-            if(this.filesMap[this.vendorDocCtrl.w9Ctrl.documentTypeId].filesList.length){
+            if (this.filesMap[this.vendorDocCtrl.w9Ctrl.documentTypeId].filesList.length) {
                 this.msg = 'Remove document from w9 if EIN is not selected as payee identification proof'
             }
         }
@@ -1054,6 +1062,9 @@ export class VendorApprovalComponent implements OnInit {
             this.vendorForm.get("usW8Bene").setValue(false);
             this.vendorForm.get("usEinNumber").setValue(null);
             this.vendorForm.get("usW9").setValue(false);
+
+            this.updateMandatoryDocs(false, this.vendorDocCtrl.w8Ctrl.documentTypeId);
+            this.updateMandatoryDocs(false, this.vendorDocCtrl.w9Ctrl.documentTypeId);
 
             this.vendorForm.get("usTaxId").setValidators([]);
             this.vendorForm.get("usTaxId").updateValueAndValidity();
@@ -1070,24 +1081,28 @@ export class VendorApprovalComponent implements OnInit {
             this.vendorForm.get("usSocialSecurity").setValidators([Validators.required]);
             this.vendorForm.get("usSocialSecurity").updateValueAndValidity();
 
-            if(this.filesMap[this.vendorDocCtrl.taxIdNoCtrl.documentTypeId].filesList.length){
+            if (this.filesMap[this.vendorDocCtrl.taxIdNoCtrl.documentTypeId].filesList.length) {
                 this.msg = 'Remove document from Tax ID if Tax ID is not selected as payee identification proof'
             }
-            if(this.filesMap[this.vendorDocCtrl.w8Ctrl.documentTypeId].filesList.length){
+            if (this.filesMap[this.vendorDocCtrl.w8Ctrl.documentTypeId].filesList.length) {
                 this.msg = 'Remove document from w8 if Tax ID is not selected as payee identification proof'
             }
-            if(this.filesMap[this.vendorDocCtrl.einCtrl.documentTypeId].filesList.length){
+            if (this.filesMap[this.vendorDocCtrl.einCtrl.documentTypeId].filesList.length) {
                 this.msg = 'Remove document from EIN if EIN is not selected as payee identification proof'
             }
-            if(this.filesMap[this.vendorDocCtrl.socialSecNoCtrl.documentTypeId].filesList.length){
+            if (this.filesMap[this.vendorDocCtrl.socialSecNoCtrl.documentTypeId].filesList.length) {
                 this.msg = 'Remove document from social security if social security is not selected as payee identification proof'
             }
         }
         else if (this.usPayeeIdentificatn == 'ein') {
-            
+
             this.vendorForm.get("usTaxId").setValue(null);
             this.vendorForm.get("usW8Bene").setValue(false);
             this.vendorForm.get("usSocialSecurity").setValue(null);
+            this.vendorForm.get("usW9").setValue(true);
+
+            this.updateMandatoryDocs(false, this.vendorDocCtrl.w8Ctrl.documentTypeId);
+            this.updateMandatoryDocs(true, this.vendorDocCtrl.w9Ctrl.documentTypeId);
 
             this.vendorForm.get("usTaxId").setValidators([]);
             this.vendorForm.get("usTaxId").updateValueAndValidity();
@@ -1101,16 +1116,16 @@ export class VendorApprovalComponent implements OnInit {
             this.vendorForm.get("usEinNumber").setValidators([Validators.required]);
             this.vendorForm.get("usEinNumber").updateValueAndValidity();
 
-            this.vendorForm.get("usW9").setValidators([Validators.required]);
-            this.vendorForm.get("usW9").updateValueAndValidity();
+            // this.vendorForm.get("usW9").setValidators([Validators.required]);
+            // this.vendorForm.get("usW9").updateValueAndValidity();
 
-            if(this.filesMap[this.vendorDocCtrl.taxIdNoCtrl.documentTypeId].filesList.length){
+            if (this.filesMap[this.vendorDocCtrl.taxIdNoCtrl.documentTypeId].filesList.length) {
                 this.msg = 'Remove document from Tax ID if Tax ID is not selected as payee identification proof'
             }
-            if(this.filesMap[this.vendorDocCtrl.w8Ctrl.documentTypeId].filesList.length){
+            if (this.filesMap[this.vendorDocCtrl.w8Ctrl.documentTypeId].filesList.length) {
                 this.msg = 'Remove document from w8 if Tax ID is not selected as payee identification proof'
             }
-            if(this.filesMap[this.vendorDocCtrl.einCtrl.documentTypeId].filesList.length){
+            if (this.filesMap[this.vendorDocCtrl.einCtrl.documentTypeId].filesList.length) {
                 this.msg = 'Remove document from EIN if EIN is not selected as payee identification proof'
             }
         }
@@ -1153,7 +1168,7 @@ export class VendorApprovalComponent implements OnInit {
             address2: [{ value: null, disabled: true }],
             city: [{ value: null, disabled: true }, [Validators.required]],
             street: [{ value: null, disabled: true }, [Validators.required]],
-            pincode: [{ value: null, disabled: true }, [Validators.required, Validators.minLength(5), Validators.maxLength(6), Validators.pattern("^[0-9]*$")]],
+            pincode: [{ value: null, disabled: true }, [Validators.required,]],
             stateCode: [{ value: null, disabled: true }, [Validators.required]],
             countryCode: [{ value: null, disabled: true }, [Validators.required]],
 
@@ -1175,9 +1190,9 @@ export class VendorApprovalComponent implements OnInit {
             vendorOrgCatogery: [{ value: null, disabled: true }, [Validators.required]],
             vendorOrgSubCategory: [{ value: null, disabled: true }],
             vendorOrgTypes: [{ value: null, disabled: true }],
-            usTaxId: [{ value: null, disabled: true }],
-            usSocialSecurity: [{ value: null, disabled: true }],
-            usEinNumber: [{ value: null, disabled: true }, [Validators.minLength(15), Validators.maxLength(15), Validators.pattern(/^[a-zA-Z0-9]*([a-zA-Z]+[0-9]+|[0-9]+[a-zA-Z]+)[a-zA-Z0-9]*$/)]],
+            usTaxId: [{ value: null, disabled: true }, [Validators.minLength(9), Validators.maxLength(11)]],
+            usSocialSecurity: [{ value: null, disabled: true }, [Validators.minLength(9), Validators.maxLength(11)]],
+            usEinNumber: [{ value: null, disabled: true }, [Validators.minLength(9), Validators.maxLength(11)]],
             usW8Bene: [false],
             usW9: [false],
             usMinorityCertificate: [false],

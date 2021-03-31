@@ -468,10 +468,16 @@
         <div class="col-5 doc-form-field form-group">
             <mat-form-field class="full-width">
                 <input type="text" matInput placeholder="{{vendorDocCtrl.taxIdNoCtrl.placeholder}}"
-                    formControlName="usTaxId" minlength="10" maxlength="20" autocomplete="off"
+                    formControlName="usTaxId" minlength="9" maxlength="11" autocomplete="off"
                     (blur)="updateMandatory('usTaxId',vendorDocCtrl.taxIdNoCtrl.documentTypeId)">
                 <mat-error class="errortxt" *ngIf="( isSubmitted ) && vdf?.usTaxId?.errors?.required">Tax ID no. is
                     required
+                </mat-error>
+                <mat-error class="errortxt" *ngIf="( isSubmitted ) && vdf?.usTaxId?.errors?.minlength">Minimum 9
+                    characters are required
+                </mat-error>
+                <mat-error class="errortxt" *ngIf="( isSubmitted ) && vdf?.usTaxId?.errors?.maxlength">Maximum 11
+                    characters are required
                 </mat-error>
             </mat-form-field>
         </div>
@@ -558,10 +564,16 @@ flex-wrap: wrap;">
         <div class="col-5 doc-form-field form-group">
             <mat-form-field class="full-width">
                 <input type="text" matInput placeholder="{{vendorDocCtrl.socialSecNoCtrl.placeholder}}"
-                    formControlName="usSocialSecurity" minlength="8" maxlength="15" autocomplete="off"
+                    formControlName="usSocialSecurity" minlength="9" maxlength="11" autocomplete="off"
                     (blur)="updateMandatory('usSocialSecurity',vendorDocCtrl.socialSecNoCtrl.documentTypeId)">
                 <mat-error class="errortxt" *ngIf="( isSubmitted ) && vdf?.usSocialSecurity?.errors?.required">Social
                     Security no. is required
+                </mat-error>
+                <mat-error class="errortxt" *ngIf="( isSubmitted ) && vdf?.usSocialSecurity?.errors?.minlength">Minimum 9
+                    characters are required
+                </mat-error>
+                <mat-error class="errortxt" *ngIf="( isSubmitted ) && vdf?.usSocialSecurity?.errors?.maxlength">Maximum 11
+                    characters are required
                 </mat-error>
             </mat-form-field>
         </div>
@@ -602,19 +614,18 @@ flex-wrap: wrap;">
             <mat-form-field class="full-width">
                 <input type="text" matInput (keypress)="omit_special_char($event)"
                     placeholder="{{vendorDocCtrl.einCtrl.placeholder}}" formControlName="usEinNumber" autocomplete="off"
-                    minlength="15" maxlength="15"
+                    minlength="9" maxlength="11"
                     (blur)="updateMandatory('usEinNumber',vendorDocCtrl.einCtrl.documentTypeId)">
                 <mat-error class="errortxt" *ngIf="( isSubmitted ) && vdf?.usEinNumber?.errors?.required">EIN no. is
                     required
                 </mat-error>
-                <mat-error class="errortxt" *ngIf="( isSubmitted ) && vdf?.usEinNumber?.errors?.minlength">Minimum 15
+                <mat-error class="errortxt" *ngIf="( isSubmitted ) && vdf?.usEinNumber?.errors?.minlength">Minimum 9
                     characters are required
                 </mat-error>
-                <mat-error class="errortxt" *ngIf="( isSubmitted ) && vdf?.usEinNumber?.errors?.maxlength">Maximum 15
+                <mat-error class="errortxt" *ngIf="( isSubmitted ) && vdf?.usEinNumber?.errors?.maxlength">Maximum 11
                     characters are required
                 </mat-error>
-                <mat-error class="errortxt" *ngIf="( isSubmitted ) && vdf?.usEinNumber?.errors?.pattern">EIN No. accepts
-                    combination of alphanumeric</mat-error>
+                
             </mat-form-field>
         </div>
         <div class="col-7 actions">
@@ -741,6 +752,38 @@ flex-wrap: wrap;">
                 </li>
             </ul>
         </div>
+    </div>
+    <!------------------------------------- Cancelled Chequed---------------------- -->
+    <div class="row doc-field" *ngIf="showUSField()">
+        <div class="col-5 doc-form-field">
+            <mat-label> {{vendorDocCtrl.canChqCtrl.placeholder}} * :</mat-label>
+        </div>
+        <div class="col-7 actions">
+            <input style="display: none" [attr.id]="vendorDocCtrl.canChqCtrl.browserId" type="file" multiple
+                accept=".xls,.xlsx,.doc,.docx,.pdf,.png,.jpg,.zip"
+                (change)="onFileChange($event, vendorDocCtrl.canChqCtrl.documentTypeId)" />
+            <button mat-raised-button class="footer-actions"
+                (click)="onBrowseFileClick($event, vendorDocCtrl.canChqCtrl.browserId)">Attach</button>
+            <div *ngIf="filesMap[vendorDocCtrl.canChqCtrl.documentTypeId]?.isAttached" style="display: flex;
+        flex-wrap: wrap;">
+                <span class="filename"
+                    *ngFor="let f of filesMap[vendorDocCtrl.canChqCtrl.documentTypeId]?.filesList; let fInd = index">
+                    <span>
+                        <mat-icon matTooltip="{{ f.actualFileName }}" (click)="downloadFile(f)">description</mat-icon>
+                        <button mat-button mat-icon-button aria-label="Delete" *ngIf="!disableSubmit"
+                            (click)="onDeleteFileClick(f, fInd, vendorDocCtrl.canChqCtrl.documentTypeId)">
+                            <mat-icon>delete_outline</mat-icon>
+                        </button>
+                    </span>
+                </span>
+
+            </div>
+            <div *ngIf="filesMap[vendorDocCtrl.canChqCtrl.documentTypeId] && 
+                filesMap[vendorDocCtrl.canChqCtrl.documentTypeId]?.isError" class="errortxt">
+                Please attach the Document
+            </div>
+        </div>
+
     </div>
     <!-- ---------------------------------------minority certificate------------------ -->
     <div class=" row doc-field" *ngIf="showUSField()">

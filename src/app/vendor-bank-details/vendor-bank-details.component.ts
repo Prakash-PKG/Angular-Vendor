@@ -65,23 +65,18 @@ export class VendorBankDetailsComponent implements OnInit {
     }
 
     onNextClick() {
-        // this._router.navigate([this._appService.routingConstants.vendorDocuments]);
 
         this.failureMsg = "";
         this.isSubmitted = true;
-        this.updateUSFieldsValidation();
+        
         if (this.vendorBankForm.valid) {
 
-            // this._appService.vendorRegistrationDetails.bankAddress = this.vendorBankForm.get("bankAddress").value;
             this.updateControlsData();
 
             let req: VendorRegistrationRequestModel = {
                 action: this._appService.updateOperations.save,
                 vendorMasterDetails: this._appService.vendorRegistrationDetails
             }
-
-            // console.log(req);
-            // this._router.navigate([this._appService.routingConstants.vendorDocuments]);
 
             this._vendorRegistrationService.updateBusy(<BusyDataModel>{ isBusy: true, msg: null });
             this._vendorRegistrationService.updateVendorRegistrationDetails(req)
@@ -134,9 +129,16 @@ export class VendorBankDetailsComponent implements OnInit {
             this.vendorBankForm.get("usBankSector").setValidators([Validators.required]);
             this.vendorBankForm.get("usChequePayableTo").setValidators([Validators.required]);
             this.vendorBankForm.get("usChecqueMailingAddress").setValidators([Validators.required]);
+            this.vendorBankForm.get("ifscCode").setValidators([Validators.maxLength(11), Validators.minLength(9), Validators.pattern(/^[a-zA-Z0-9]*$/)]);
+            this.vendorBankForm.get("accountNum").setValidators([Validators.maxLength(50)]);
+            this.vendorBankForm.get("swiftIbanCode").setValidators([Validators.maxLength(11), Validators.minLength(8), Validators.pattern(/^[a-zA-Z0-9]*$/)]);
+
             this.vendorBankForm.get("usBankSector").updateValueAndValidity();
             this.vendorBankForm.get("usChequePayableTo").updateValueAndValidity();
             this.vendorBankForm.get("usChecqueMailingAddress").updateValueAndValidity();
+            this.vendorBankForm.get("ifscCode").updateValueAndValidity();
+            this.vendorBankForm.get("accountNum").updateValueAndValidity();
+            this.vendorBankForm.get("swiftIbanCode").updateValueAndValidity();
         }
     }
 
@@ -174,7 +176,6 @@ export class VendorBankDetailsComponent implements OnInit {
             }
 
             this.vendorBankForm = this._formBuilder.group({
-                // bankAddress: [null, [Validators.required]],
                 accountNum: [null, [Validators.required]],
                 accountType: [null, [Validators.required]],
                 accountName: [null, [Validators.required]],
@@ -194,6 +195,7 @@ export class VendorBankDetailsComponent implements OnInit {
 
             this._vendorRegistrationService.updateCurrentPageDetails({ pageName: 'venBank' });
             this.updateVendorDetails();
+            this.updateUSFieldsValidation();
         }
     }
 }
