@@ -849,10 +849,12 @@
                             <input type="text" matInput formControlName="usTaxId" autocomplete="off"
                                 (blur)="onTextFieldValueChange('usTaxId',vendorDocCtrl.taxIdNoCtrl.documentTypeId);">
                         </mat-form-field>
-                        <mat-error class="errortxt" *ngIf="isSubmitted == true && f?.usTaxId?.errors?.required">Tax
-                            ID
+                        <mat-error class="errortxt" *ngIf="isSubmitted == true && f?.usTaxId?.errors?.required">Tax ID
                             is required</mat-error>
-
+                        <mat-error class="errortxt" *ngIf="isSubmitted == true && f?.usTaxId?.errors?.minlength">
+                            Minimum 9 characters are required</mat-error>
+                        <mat-error class="errortxt" *ngIf="isSubmitted == true && f?.usTaxId?.errors?.maxlength">
+                            Maximum 11 characters are required </mat-error>
                     </div>
 
                     <div class="Rtable-cell Rtable-cell--head" *ngIf="(usPayeeIdentificatn=='taxId')">Attachments</div>
@@ -964,6 +966,12 @@
                         <mat-error class="errortxt"
                             *ngIf="isSubmitted == true && f?.usSocialSecurity?.errors?.required">Social security is
                             required</mat-error>
+                        <mat-error class="errortxt"
+                            *ngIf="isSubmitted == true && f?.usSocialSecurity?.errors?.minlength">
+                            Minimum 9 characters are required</mat-error>
+                        <mat-error class="errortxt"
+                            *ngIf="isSubmitted == true && f?.usSocialSecurity?.errors?.maxlength">
+                            Maximum 11 characters are required </mat-error>
                     </div>
 
                     <div class="Rtable-cell Rtable-cell--head" *ngIf=" (usPayeeIdentificatn =='socialSec')">
@@ -1017,9 +1025,11 @@
                                 (blur)="onTextFieldValueChange('usEinNumber',vendorDocCtrl.einCtrl.documentTypeId);">
                         </mat-form-field>
                         <mat-error class="errortxt" *ngIf="isSubmitted == true && f?.usEinNumber?.errors?.required">
-                            EIN
-                            no.
-                            is required</mat-error>
+                            EIN no. is required</mat-error>
+                        <mat-error class="errortxt" *ngIf="isSubmitted == true && f?.usEinNumber?.errors?.minlength">
+                            Minimum 9 characters are required</mat-error>
+                        <mat-error class="errortxt" *ngIf="isSubmitted == true && f?.usEinNumber?.errors?.maxlength">
+                            Maximum 11 characters are required </mat-error>
 
                     </div>
 
@@ -1172,6 +1182,41 @@
                                 </mat-checkbox>
                             </li>
                         </ul>
+                    </div>
+
+                    <!-- --------------------------------------Cancelled Cheque ------------------ -->
+                    <div class="Rtable-cell Rtable-cell--head">Cancelled Cheque *</div>
+                    <div class="Rtable-cell">
+                        <div class="attachments">
+                            <div class="flex-item">
+                                <div *ngFor="let file of filesMap[vendorDocCtrl.canChqCtrl.documentTypeId]?.filesList; let i = index"
+                                    class="filename">
+                                    <button mat-button mat-icon-button aria-label="Download"
+                                        (click)="downloadFile(file)">
+                                        <mat-icon matTooltip="{{ file.actualFileName }}">description</mat-icon>
+                                    </button>
+                                    <button mat-button mat-icon-button aria-label="Delete"
+                                        *ngIf="isProcurement == true && isEditable == true"
+                                        (click)="onDeleteFileClick(file, i,vendorDocCtrl.canChqCtrl.documentTypeId)">
+                                        <mat-icon>delete_outline</mat-icon>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="flex-item">
+                                <div *ngIf="isEditable">
+                                    <input style="display: none" [attr.id]="vendorDocCtrl.canChqCtrl.browserId"
+                                        type="file" multiple accept=".xls,.xlsx,.doc,.docx,.pdf,.png,.jpg,.zip"
+                                        (change)="onFileChange($event, vendorDocCtrl.canChqCtrl.documentTypeId)" />
+                                    <button mat-button mat-icon-button aria-label="Attach" class="attach-btn"
+                                        (click)="onBrowseFileClick($event, vendorDocCtrl.canChqCtrl.browserId)">
+                                        <mat-icon>attachment</mat-icon>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="errortxt"
+                            *ngIf="isSubmitted && filesMap[vendorDocCtrl.canChqCtrl.documentTypeId]?.isError">
+                            This attachment is mandatory</div>
                     </div>
 
                     <!-- --------------------------------------Minority Certificate  ------------------ -->

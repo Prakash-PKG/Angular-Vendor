@@ -105,28 +105,27 @@ export class VendorAddressComponent implements OnInit {
             this.regionMasterVOList = this._appService.vendorRegistrationInitDetails.regionMasterVOList;
         }
         this.regionMasterVOList = this.regionMasterVOList.filter(r => r.countryCode == this.vendorAddressForm.get('countryCode').value);
-        if (this._vendorRegistrationService.vendorUS) this.updateUSFieldsValidation();
-        else this.updatePincodeValidation();
+        this.updatePincodeValidation();
     }
 
     onCountryChange() {
         this.vendorAddressForm.get("stateCode").setValue(null);
         this.updateRegion();
     }
-    updateUSFieldsValidation() {
-        if (this._vendorRegistrationService.vendorUS) {
-            this.vendorAddressForm.get("pincode").setValidators([Validators.required, Validators.pattern("^[0-9]{5}(?:-[0-9]{4})?$"), Validators.minLength(5), Validators.maxLength(10)]);
-            this.vendorAddressForm.get("pincode").updateValueAndValidity();
-        }
-    }
+
 
     updatePincodeValidation() {
-        let countryCodeVal = this.vendorAddressForm.get("countryCode").value;
-        if (countryCodeVal == "US") {
+        if (this._vendorRegistrationService.vendorUS) {
             this.vendorAddressForm.get("pincode").setValidators([Validators.required, Validators.pattern("^[0-9]{5}(?:-[0-9]{4})?$"), Validators.minLength(5), Validators.maxLength(10)]);
         }
         else {
-            this.vendorAddressForm.get("pincode").setValidators([Validators.minLength(6), Validators.maxLength(6)]);
+            let countryCodeVal = this.vendorAddressForm.get("countryCode").value;
+            if (countryCodeVal == "US") {
+                this.vendorAddressForm.get("pincode").setValidators([Validators.required, Validators.minLength(5), Validators.maxLength(5)]);
+            }
+            else {
+                this.vendorAddressForm.get("pincode").setValidators([Validators.required, Validators.minLength(6), Validators.maxLength(6)]);
+            }
         }
         this.vendorAddressForm.get("pincode").updateValueAndValidity();
     }
@@ -164,7 +163,6 @@ export class VendorAddressComponent implements OnInit {
 
             this._vendorRegistrationService.updateCurrentPageDetails({ pageName: 'venAdd' });
             this.updateVendorDetails();
-            this.updateUSFieldsValidation();
         }
     }
 }
