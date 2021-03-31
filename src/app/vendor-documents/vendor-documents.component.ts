@@ -516,6 +516,8 @@ export class VendorDocumentsComponent implements OnInit {
             this.vendorDocumentForm.get("usEinNumber").setValue(null);
             this.vendorDocumentForm.get("usW9").setValue(false);
             this.vendorDocumentForm.get("usW8Bene").setValue(true);
+            this.updateMandatory('usW8Bene',this.vendorDocCtrl.w8Ctrl.documentTypeId);
+            this.updateMandatory('usW9',this.vendorDocCtrl.w9Ctrl.documentTypeId);
 
             this.vendorDocumentForm.get("usSocialSecurity").setValidators([]);
             this.vendorDocumentForm.get("usSocialSecurity").updateValueAndValidity();
@@ -547,6 +549,8 @@ export class VendorDocumentsComponent implements OnInit {
             this.vendorDocumentForm.get("usW8Bene").setValue(false);
             this.vendorDocumentForm.get("usEinNumber").setValue(null);
             this.vendorDocumentForm.get("usW9").setValue(false);
+            this.updateMandatory('usW8Bene',this.vendorDocCtrl.w8Ctrl.documentTypeId);
+            this.updateMandatory('usW9',this.vendorDocCtrl.w9Ctrl.documentTypeId);
 
             this.vendorDocumentForm.get("usTaxId").setValidators([]);
             this.vendorDocumentForm.get("usTaxId").updateValueAndValidity();
@@ -582,6 +586,8 @@ export class VendorDocumentsComponent implements OnInit {
             this.vendorDocumentForm.get("usW8Bene").setValue(false);
             this.vendorDocumentForm.get("usSocialSecurity").setValue(null);
             this.vendorDocumentForm.get("usW9").setValue(true);
+            this.updateMandatory('usW8Bene',this.vendorDocCtrl.w8Ctrl.documentTypeId);
+            this.updateMandatory('usW9',this.vendorDocCtrl.w9Ctrl.documentTypeId);
 
             this.vendorDocumentForm.get("usTaxId").setValidators([]);
             this.vendorDocumentForm.get("usTaxId").updateValueAndValidity();
