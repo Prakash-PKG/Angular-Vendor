@@ -56,6 +56,8 @@
                 {{ f?.pincode?.errors?.minlength?.requiredLength }} characters are required</mat-error>
             <mat-error class="errortxt" *ngIf="( isSubmitted ) && f?.pincode?.errors?.maxlength">Maximum
                 {{ f?.pincode?.errors?.maxlength?.requiredLength }} characters are required</mat-error>
+            <mat-error class="errortxt" *ngIf="( isSubmitted ) && f?.pincode?.errors?.pattern">Invalid Zipcode
+            </mat-error>
         </div>
 
     </div>
