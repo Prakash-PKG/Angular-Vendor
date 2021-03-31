@@ -68,7 +68,7 @@ export class VendorBankDetailsComponent implements OnInit {
 
         this.failureMsg = "";
         this.isSubmitted = true;
-        this.updateUSFieldsValidation();
+        
         if (this.vendorBankForm.valid) {
 
             this.updateControlsData();
@@ -195,6 +195,7 @@ export class VendorBankDetailsComponent implements OnInit {
 
             this._vendorRegistrationService.updateCurrentPageDetails({ pageName: 'venBank' });
             this.updateVendorDetails();
+            this.updateUSFieldsValidation();
         }
     }
 }

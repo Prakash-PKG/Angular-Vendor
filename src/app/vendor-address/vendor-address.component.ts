@@ -105,13 +105,19 @@ export class VendorAddressComponent implements OnInit {
             this.regionMasterVOList = this._appService.vendorRegistrationInitDetails.regionMasterVOList;
         }
         this.regionMasterVOList = this.regionMasterVOList.filter(r => r.countryCode == this.vendorAddressForm.get('countryCode').value);
-
-        this.updatePincodeValidation();
+        if (this._vendorRegistrationService.vendorUS) this.updateUSFieldsValidation();
+        else this.updatePincodeValidation();
     }
 
     onCountryChange() {
         this.vendorAddressForm.get("stateCode").setValue(null);
         this.updateRegion();
+    }
+    updateUSFieldsValidation() {
+        if (this._vendorRegistrationService.vendorUS) {
+            this.vendorAddressForm.get("pincode").setValidators([Validators.required, Validators.pattern("^[0-9]{5}(?:-[0-9]{4})?$"), Validators.minLength(5), Validators.maxLength(10)]);
+            this.vendorAddressForm.get("pincode").updateValueAndValidity();
+        }
     }
 
     updatePincodeValidation() {
@@ -122,7 +128,6 @@ export class VendorAddressComponent implements OnInit {
         else {
             this.vendorAddressForm.get("pincode").setValidators([Validators.minLength(6), Validators.maxLength(6)]);
         }
-
         this.vendorAddressForm.get("pincode").updateValueAndValidity();
     }
     showUSField() {
@@ -159,6 +164,7 @@ export class VendorAddressComponent implements OnInit {
 
             this._vendorRegistrationService.updateCurrentPageDetails({ pageName: 'venAdd' });
             this.updateVendorDetails();
+            this.updateUSFieldsValidation();
         }
     }
 }

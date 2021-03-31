@@ -21,7 +21,7 @@ export class VendorDetailsComponent implements OnInit {
     failureMsg: string = "";
     requiredErrorMsg: string = "This field is mandatory";
     isSubmitted: boolean = false;
-    strMsg: string=" ";
+    strMsg: string = " ";
     constructor(private _appService: AppService,
         private _vendorRegistrationService: VendorRegistrationService,
         private _router: Router, private _dialog: MatDialog,
@@ -91,7 +91,7 @@ export class VendorDetailsComponent implements OnInit {
 
         this.failureMsg = "";
         this.isSubmitted = true;
-        // this.updateUSFieldsValidation();
+
         if (this.vendorDetailsForm.valid) {
             this._appService.vendorRegistrationDetails.vendorName = this.vendorDetailsForm.get("vendorName").value;
             this._appService.vendorRegistrationDetails.contactPerson = this.vendorDetailsForm.get("contactPerson").value;
@@ -160,45 +160,37 @@ export class VendorDetailsComponent implements OnInit {
     showUSField() {
         return this._vendorRegistrationService.vendorUS;
     }
-    // updateUSFieldsValidation() {
-    //     if (this._vendorRegistrationService.vendorUS) {
-    //         this.vendorDetailsForm.get("usVendorBusiness").setValidators([Validators.required]);
-    //     }
-    //     this.vendorDetailsForm.get("usVendorBusiness").updateValueAndValidity();
-    // }
+    updateUSFieldsValidation() {
+        if (this._vendorRegistrationService.vendorUS) {
+            this.strMsg = "Doing Business As is required";
+            this.vendorDetailsForm.get('usVendorBusiness').setValidators([Validators.required]);
+            this.vendorDetailsForm.get('usVendorBusiness').updateValueAndValidity();
+        }
+        else {
+            this.vendorDetailsForm.get('usVendorBusiness').setValidators([]);
+            this.vendorDetailsForm.get('usVendorBusiness').updateValueAndValidity();
+        }
+    }
 
     ngOnInit() {
         this.isSubmitted = false;
-        // if (this._appService.vendorRegistrationDetails && this._appService.vendorRegistrationDetails.vendorMasterId == null) {
-        //     this._router.navigate([this._appService.routingConstants.vendorTempLogin]);
-        // }
 
-        // else {
+        this.vendorDetailsForm = this._formBuilder.group({
+            vendorName: [null, [Validators.required, Validators.nullValidator]],
+            contactPerson: [null],
+            mobileNum: [null, [Validators.required, Validators.minLength(10), Validators.maxLength(10), Validators.nullValidator, Validators.pattern("^[0-9]*$")]],
+            telephoneNum: [null, [Validators.maxLength(12), Validators.minLength(11), Validators.pattern("^[0-9]*$")]],
+            emailId: [null, [Validators.required, Validators.email, Validators.nullValidator]],
+            password: [null, [Validators.required, Validators.nullValidator, Validators.pattern(/^(?:(?:(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z]))|(?:(?=.*[a-z])(?=.*[A-Z])(?=.*[*.!@$%^&(){}[]:;<>,.?~_+-=|\]))|(?:(?=.*[0-9])(?=.*[A-Z])(?=.*[*.!@$%^&(){}[]:;<>,.?~_+-=|\]))|(?:(?=.*[0-9])(?=.*[a-z])(?=.*[*.!@$%^&(){}[]:;<>,.?~_+-=|\]))).{8,}$/)]],
+            confirmPassword: [null, [Validators.required, Validators.nullValidator]],
+            usVendorBusiness: [null]
+        },
+            { validator: equalValueValidator('password', 'confirmPassword') }
+        );
+        this._vendorRegistrationService.updateCurrentPageDetails({ pageName: 'venDetails' });
+        this.updateVendorDetails();
+        this.updateUSFieldsValidation();
 
-            this.vendorDetailsForm = this._formBuilder.group({
-                vendorName: [null, [Validators.required, Validators.nullValidator]],
-                contactPerson: [null],
-                mobileNum: [null, [Validators.required, Validators.minLength(10), Validators.maxLength(10), Validators.nullValidator, Validators.pattern("^[0-9]*$")]],
-                telephoneNum: [null, [Validators.maxLength(12), Validators.minLength(11), Validators.pattern("^[0-9]*$")]],
-                emailId: [null, [Validators.required, Validators.email, Validators.nullValidator]],
-                password: [null, [Validators.required, Validators.nullValidator, Validators.pattern(/^(?:(?:(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z]))|(?:(?=.*[a-z])(?=.*[A-Z])(?=.*[*.!@$%^&(){}[]:;<>,.?~_+-=|\]))|(?:(?=.*[0-9])(?=.*[A-Z])(?=.*[*.!@$%^&(){}[]:;<>,.?~_+-=|\]))|(?:(?=.*[0-9])(?=.*[a-z])(?=.*[*.!@$%^&(){}[]:;<>,.?~_+-=|\]))).{8,}$/)]],
-                confirmPassword: [null, [Validators.required, Validators.nullValidator]],
-                usVendorBusiness: [null]
-            },
-                { validator: equalValueValidator('password', 'confirmPassword') }
-            );
-            this._vendorRegistrationService.updateCurrentPageDetails({ pageName: 'venDetails' });
-            this.updateVendorDetails();
-
-            if (this._vendorRegistrationService.vendorUS) {
-                this.strMsg="Doing Business As is required";
-                this.vendorDetailsForm.get('usVendorBusiness').setValidators([Validators.required]);
-                this.vendorDetailsForm.get('usVendorBusiness').updateValueAndValidity();
-            }
-            else {
-                this.vendorDetailsForm.get('usVendorBusiness').setValidators([]);
-                this.vendorDetailsForm.get('usVendorBusiness').updateValueAndValidity();
-            }
-        }
+    }
     // }
 }
