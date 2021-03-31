@@ -742,6 +742,38 @@ flex-wrap: wrap;">
             </ul>
         </div>
     </div>
+    <!------------------------------------- Cancelled Chequed---------------------- -->
+    <div class="row doc-field" *ngIf="showUSField()">
+        <div class="col-5 doc-form-field">
+            <mat-label> {{vendorDocCtrl.canChqCtrl.placeholder}} * :</mat-label>
+        </div>
+        <div class="col-7 actions">
+            <input style="display: none" [attr.id]="vendorDocCtrl.canChqCtrl.browserId" type="file" multiple
+                accept=".xls,.xlsx,.doc,.docx,.pdf,.png,.jpg,.zip"
+                (change)="onFileChange($event, vendorDocCtrl.canChqCtrl.documentTypeId)" />
+            <button mat-raised-button class="footer-actions"
+                (click)="onBrowseFileClick($event, vendorDocCtrl.canChqCtrl.browserId)">Attach</button>
+            <div *ngIf="filesMap[vendorDocCtrl.canChqCtrl.documentTypeId]?.isAttached" style="display: flex;
+        flex-wrap: wrap;">
+                <span class="filename"
+                    *ngFor="let f of filesMap[vendorDocCtrl.canChqCtrl.documentTypeId]?.filesList; let fInd = index">
+                    <span>
+                        <mat-icon matTooltip="{{ f.actualFileName }}" (click)="downloadFile(f)">description</mat-icon>
+                        <button mat-button mat-icon-button aria-label="Delete" *ngIf="!disableSubmit"
+                            (click)="onDeleteFileClick(f, fInd, vendorDocCtrl.canChqCtrl.documentTypeId)">
+                            <mat-icon>delete_outline</mat-icon>
+                        </button>
+                    </span>
+                </span>
+
+            </div>
+            <div *ngIf="filesMap[vendorDocCtrl.canChqCtrl.documentTypeId] && 
+                filesMap[vendorDocCtrl.canChqCtrl.documentTypeId]?.isError" class="errortxt">
+                Please attach the Document
+            </div>
+        </div>
+
+    </div>
     <!-- ---------------------------------------minority certificate------------------ -->
     <div class=" row doc-field" *ngIf="showUSField()">
         <div class="col-3 doc-form-field">
