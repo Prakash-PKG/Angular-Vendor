@@ -708,24 +708,19 @@ export class VendorApprovalComponent implements OnInit {
                 this.regionMasterVOList = this.vendorApprovalInitDetails.regionMasterVOList.filter(r => r.countryCode == cntryCode);
             }
         }
-        this.updatePincodeValidation();
+        // this.updatePincodeValidation();
     }
 
-    updatePincodeValidation() {
-        if (this._vendorApprovalService.vendorUS) {
-            this.vendorForm.get("pincode").setValidators([Validators.required, Validators.pattern("^[0-9]{5}(?:-[0-9]{4})?$"), Validators.minLength(5), Validators.maxLength(10)]);
-        }
-        else {
-            let countryCodeVal = this.vendorForm.get("countryCode").value;
-            if (countryCodeVal == "US") {
-                this.vendorForm.get("pincode").setValidators([Validators.required, Validators.minLength(5), Validators.maxLength(5)]);
-            }
-            else {
-                this.vendorForm.get("pincode").setValidators([Validators.required, Validators.minLength(6), Validators.maxLength(6)]);
-            }
-        }
-        this.vendorForm.get("pincode").updateValueAndValidity();
-    }
+// ----------------------------------------region based pincode checking----------------do not remove------------------
+    // updatePincodeValidation() {
+    //     if (this._vendorApprovalService.vendorUS) {
+    //         this.vendorForm.get("pincode").setValidators([Validators.required, Validators.pattern("^[0-9]{5}(?:-[0-9]{4})?$"), Validators.minLength(5), Validators.maxLength(10)]);
+    //     }
+    //     else {
+    //         this.vendorForm.get("pincode").setValidators([Validators.required, Validators.minLength(6), Validators.maxLength(6)]);
+    //     }
+    //     this.vendorForm.get("pincode").updateValueAndValidity();
+    // }
 
     updateVendorFields() {
         if (this.vendorDetails) {
@@ -787,7 +782,7 @@ export class VendorApprovalComponent implements OnInit {
             this.vendorForm.get("remarks").updateValueAndValidity();
         }
 
-        this.updatePincodeValidation();
+        // this.updatePincodeValidation();
 
         this.updateLUTValidations(this.vendorForm.get("lutNum").value);
 
@@ -1006,6 +1001,9 @@ export class VendorApprovalComponent implements OnInit {
             this.vendorForm.get('panNum').setValidators([]);
             this.vendorForm.get('panNum').updateValueAndValidity;
 
+            this.vendorForm.get("pincode").setValidators([Validators.required, Validators.pattern("^[0-9]{5}(?:-[0-9]{4})?$"), Validators.minLength(5), Validators.maxLength(10)]);
+            this.vendorForm.get('pincode').updateValueAndValidity;
+
         }
         else {
             this.vendorForm.get('usVendorBusiness').setValidators([]);
@@ -1018,6 +1016,10 @@ export class VendorApprovalComponent implements OnInit {
 
             this.vendorForm.get('panNum').setValidators([Validators.required]);
             this.vendorForm.get('panNum').updateValueAndValidity;
+
+            this.vendorForm.get("pincode").setValidators([Validators.required, Validators.minLength(6), Validators.maxLength(6)]);
+            this.vendorForm.get('pincode').updateValueAndValidity;
+
         }
 
     }

@@ -684,6 +684,19 @@ export class VendorDocumentsComponent implements OnInit {
                 this.organizationCategoryMasterVO = this._appService.vendorRegistrationInitDetails.organizationCategoryMasterVO;
             }
 
+            // this.organizationTypeMasterVO = [{ orgType: "Service" },
+            // { orgType: "R&D Firm" },
+            // { orgType: "University" },
+            // { orgType: "United States Government Agency" },
+            // { orgType: "Consulting" },
+            // { orgType: "Utility" },
+            // { orgType: "Foreign Gov't Agency" },
+            // { orgType: "Manufacturing" },
+            // { orgType: "Retailer" },
+            // { orgType: "Staffing/Temp Agency" },
+            // { orgType: "Construction" },
+            // { orgType: "Others" }]
+
             this.initializeFilesList();
 
             this.vendorDocumentForm = this._formBuilder.group({
