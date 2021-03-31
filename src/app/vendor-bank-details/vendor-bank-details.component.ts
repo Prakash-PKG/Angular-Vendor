@@ -130,10 +130,15 @@ export class VendorBankDetailsComponent implements OnInit {
             this.vendorBankForm.get("usChequePayableTo").setValidators([Validators.required]);
             this.vendorBankForm.get("usChecqueMailingAddress").setValidators([Validators.required]);
             this.vendorBankForm.get("ifscCode").setValidators([Validators.maxLength(11), Validators.minLength(9), Validators.pattern(/^[a-zA-Z0-9]*$/)]);
+            this.vendorBankForm.get("accountNum").setValidators([Validators.maxLength(50)]);
+            this.vendorBankForm.get("swiftIbanCode").setValidators([Validators.maxLength(11), Validators.minLength(8), Validators.pattern(/^[a-zA-Z0-9]*$/)]);
+
             this.vendorBankForm.get("usBankSector").updateValueAndValidity();
             this.vendorBankForm.get("usChequePayableTo").updateValueAndValidity();
             this.vendorBankForm.get("usChecqueMailingAddress").updateValueAndValidity();
             this.vendorBankForm.get("ifscCode").updateValueAndValidity();
+            this.vendorBankForm.get("accountNum").updateValueAndValidity();
+            this.vendorBankForm.get("swiftIbanCode").updateValueAndValidity();
         }
     }
 
