@@ -63,4 +63,9 @@
 ul.orgType {
   list-style-type: none;
   margin-top: 4px;
+  width: 100%;
+}
+ul.orgType li {
+  min-width: 50%;
+  display: inline-flex;
 }

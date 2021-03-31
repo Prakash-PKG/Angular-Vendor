@@ -118,7 +118,7 @@ export class VendorAddressComponent implements OnInit {
             this.vendorAddressForm.get("pincode").setValidators([Validators.required, Validators.pattern("^[0-9]{5}(?:-[0-9]{4})?$"), Validators.minLength(5), Validators.maxLength(10)]);
         }
         else {
-            this.vendorAddressForm.get("pincode").setValidators([Validators.required, Validators.minLength(6), Validators.maxLength(6)]);
+            this.vendorAddressForm.get("pincode").setValidators([Validators.required, Validators.minLength(6), Validators.pattern("^[0-9]*$"), Validators.maxLength(6)]);
         }
         this.vendorAddressForm.get("pincode").updateValueAndValidity();
     }
@@ -149,7 +149,7 @@ export class VendorAddressComponent implements OnInit {
                 address2: [null],
                 city: [null, [Validators.required]],
                 street: [null, [Validators.required]],
-                pincode: [null, [Validators.required, Validators.pattern("^[0-9]*$")]],
+                pincode: [null, [Validators.required]],
                 stateCode: [null, [Validators.required]],
                 countryCode: [null, [Validators.required]]
             });

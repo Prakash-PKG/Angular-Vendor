@@ -711,7 +711,7 @@ export class VendorApprovalComponent implements OnInit {
         // this.updatePincodeValidation();
     }
 
-// ----------------------------------------region based pincode checking----------------do not remove------------------
+    // ----------------------------------------region based pincode checking----------------do not remove------------------
     // updatePincodeValidation() {
     //     if (this._vendorApprovalService.vendorUS) {
     //         this.vendorForm.get("pincode").setValidators([Validators.required, Validators.pattern("^[0-9]{5}(?:-[0-9]{4})?$"), Validators.minLength(5), Validators.maxLength(10)]);
@@ -1017,7 +1017,7 @@ export class VendorApprovalComponent implements OnInit {
             this.vendorForm.get('panNum').setValidators([Validators.required]);
             this.vendorForm.get('panNum').updateValueAndValidity;
 
-            this.vendorForm.get("pincode").setValidators([Validators.required, Validators.minLength(6), Validators.maxLength(6)]);
+            this.vendorForm.get("pincode").setValidators([Validators.required, Validators.minLength(6), Validators.pattern("^[0-9]*$"), Validators.maxLength(6)]);
             this.vendorForm.get('pincode').updateValueAndValidity;
 
         }
@@ -1162,7 +1162,7 @@ export class VendorApprovalComponent implements OnInit {
             address2: [{ value: null, disabled: true }],
             city: [{ value: null, disabled: true }, [Validators.required]],
             street: [{ value: null, disabled: true }, [Validators.required]],
-            pincode: [{ value: null, disabled: true }, [Validators.required, Validators.minLength(5), Validators.maxLength(6), Validators.pattern("^[0-9]*$")]],
+            pincode: [{ value: null, disabled: true }, [Validators.required,]],
             stateCode: [{ value: null, disabled: true }, [Validators.required]],
             countryCode: [{ value: null, disabled: true }, [Validators.required]],
 

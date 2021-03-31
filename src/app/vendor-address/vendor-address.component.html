@@ -43,21 +43,20 @@
             <mat-form-field class="full-width">
 
                 <input type="text" placeholder="{{showUSField()?'Zipcode':'Pincode'}}" required
-                    onkeypress='return event.charCode >= 48 && event.charCode <= 57' matInput formControlName="pincode"
+                    matInput formControlName="pincode"
                     autocomplete="off" maxlength="10" required>
             </mat-form-field>
             <mat-error class="errortxt" *ngIf="( isSubmitted ) && f?.pincode?.errors?.required">
                 {{showUSField()?'Zipcode':'Pincode'}} is required
             </mat-error>
             <mat-error class="errortxt" *ngIf="( isSubmitted ) && f?.pincode?.errors?.pattern">
-                {{showUSField()?'Zipcode':'Pincode'}} accepts only
-                numeric values</mat-error>
+                {{showUSField()?'Invalid Zipcode':'Pincode accepts only
+                numeric values'}} </mat-error>
             <mat-error class="errortxt" *ngIf="( isSubmitted ) && f?.pincode?.errors?.minlength">Minimum
                 {{ f?.pincode?.errors?.minlength?.requiredLength }} characters are required</mat-error>
             <mat-error class="errortxt" *ngIf="( isSubmitted ) && f?.pincode?.errors?.maxlength">Maximum
                 {{ f?.pincode?.errors?.maxlength?.requiredLength }} characters are required</mat-error>
-            <mat-error class="errortxt" *ngIf="( isSubmitted ) && f?.pincode?.errors?.pattern">Invalid Zipcode
-            </mat-error>
+           
         </div>
 
     </div>
