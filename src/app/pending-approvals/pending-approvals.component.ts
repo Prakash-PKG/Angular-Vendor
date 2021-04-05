@@ -137,7 +137,6 @@ export class PendingApprovalsComponent implements OnInit {
     }
 
     onTabChange(tabChangeEvt) {
-        //console.log(tabChangeEvt);
     }
 
 }

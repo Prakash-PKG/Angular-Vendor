@@ -27,7 +27,7 @@
         <div class="col-3 form-group">
             <mat-form-field class="full-width">
                 <input type="text" matInput placeholder="{{showUSField()?'ABA-RTN':'IFSC code'}}"
-                    formControlName="ifscCode" autocomplete="off" (blur)="onIFSCblur()" required>
+                    formControlName="ifscCode" autocomplete="off" (blur)="onIFSCblur()" required maxlength="11">
             </mat-form-field>
             <mat-error class="errortxt" *ngIf="( isSubmitted ) && f?.ifscCode?.errors?.required">
                 {{showUSField()?'ABA-RTN':'IFSC code'}} is required
