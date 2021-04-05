@@ -101,7 +101,6 @@ export class InvoiceSlaReportComponent implements OnInit {
 
         let invoiceStatusVal = this.invoiceSearchForm.get("invoiceStatus").value;
         let lcInvoiceStatusVal = (invoiceStatusVal) ? invoiceStatusVal.toLowerCase() : "";
-        console.log(lcInvoiceStatusVal);
 
         this.invoiceList = this.totalInvoiceList.filter(function (req) {
             if ((req.invoiceNumber && req.invoiceNumber.toString().toLowerCase().indexOf(lcInvoiceNumberVal) > -1) &&

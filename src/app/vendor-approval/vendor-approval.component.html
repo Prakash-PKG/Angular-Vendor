@@ -1425,6 +1425,9 @@
             <div class="errortxt">
                 {{ msg }}
             </div>
+            <div class="errortxt">
+                {{ usFieldErrMsg }}
+            </div>
             <button mat-raised-button class="footer-actions" (click)="onBackClick()">Back</button>
             <button mat-raised-button class="footer-actions" [disabled]="isEditable" (click)="onEditClick()"
                 *ngIf="canEdit">Edit</button>

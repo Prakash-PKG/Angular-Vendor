@@ -33,6 +33,7 @@ export class VendorDocumentsComponent implements OnInit {
 
     vendorDocumentForm: FormGroup;
     failureMsg: string = "";
+    usFieldErrMsg: string = '';
     documentsList: VendorMasterDocumentModel[] = [];
     filesMap: FileMap = {};
     disableSubmit: boolean = false;
@@ -62,9 +63,9 @@ export class VendorDocumentsComponent implements OnInit {
         otherCtrl: { documentTypeId: 13, browserId: 'otherFileCtrl', placeholder: 'Document Description', controlName: 'otherDocDesc' },
 
         // us fields
-        taxIdNoCtrl: { documentTypeId: 14, browserId: 'taxIdNoFileCtrl', placeholder: 'Tax ID No.', controlName: 'usTaxId' },
-        socialSecNoCtrl: { documentTypeId: 15, browserId: 'socialSecoFileCtrl', placeholder: 'Social Security No.', controlName: 'usSocialSecurity' },
-        einCtrl: { documentTypeId: 16, browserId: 'einFileCtrl', placeholder: 'EIN', controlName: 'usEinNumber' },
+        taxIdNoCtrl: { documentTypeId: 14, browserId: 'taxIdNoFileCtrl', placeholder: 'Tax ID No.*', controlName: 'usTaxId' },
+        socialSecNoCtrl: { documentTypeId: 15, browserId: 'socialSecoFileCtrl', placeholder: 'Social Security No.*', controlName: 'usSocialSecurity' },
+        einCtrl: { documentTypeId: 16, browserId: 'einFileCtrl', placeholder: 'EIN', controlName: 'usEinNumber*' },
         w8Ctrl: { documentTypeId: 17, browserId: 'w8FileCtrl', placeholder: 'W8 - BENE / W8 BEN', controlName: 'usW8Bene' },
         w9Ctrl: { documentTypeId: 18, browserId: 'w9FileCtrl', placeholder: 'W9', controlName: 'usW9' },
         minorityCertCtrl: { documentTypeId: 19, browserId: 'minorityCertFileCtrl', placeholder: 'Minority Certificate', controlName: 'usMinorityCertificate' },
@@ -409,7 +410,7 @@ export class VendorDocumentsComponent implements OnInit {
             this.vendorDocumentForm.get("usW9").setValue(this._appService.vendorRegistrationDetails.usW9);
             this.vendorDocumentForm.get("usMinorityCertificate").setValue(this._appService.vendorRegistrationDetails.usMinorityCertificate);
 
-            this.usPayeeIdentificatn = this._appService.usPayeeIdentificatn;
+            this.usPayeeIdentificatn = this._appService.usPayeeIdentificatn ? this._appService.usPayeeIdentificatn : 'taxId';
 
             this.vendorOrgTypesList = this._appService.vendorRegistrationDetails.vendorOrgTypesVO;
 
@@ -509,15 +510,35 @@ export class VendorDocumentsComponent implements OnInit {
         return this._vendorRegistrationService.vendorUS;
         // return true;
     }
+    upatePayeeIdentificationFiles(documentTypeId) {
+        this.filesMap[documentTypeId].filesList.forEach((file, fInd) => {
+            this.onDeleteFileClick(file, fInd, documentTypeId);
+        });
+        this.filesMap[documentTypeId].isMandatory = false;
+        this.filesMap[documentTypeId].isAttached = false;
+    }
     updatePayeeIdentificatn() {
+        this.usFieldErrMsg = '';
         if (this.usPayeeIdentificatn == 'taxId') {
 
-            this.vendorDocumentForm.get("usSocialSecurity").setValue(null);
-            this.vendorDocumentForm.get("usEinNumber").setValue(null);
-            this.vendorDocumentForm.get("usW9").setValue(false);
+            this.vendorDocumentForm.get("usTaxId").setValidators([Validators.required]);
+            this.vendorDocumentForm.get("usTaxId").updateValueAndValidity();
+            this.filesMap[this.vendorDocCtrl.taxIdNoCtrl.documentTypeId].isMandatory = true;
+
             this.vendorDocumentForm.get("usW8Bene").setValue(true);
-            this.updateMandatory('usW8Bene',this.vendorDocCtrl.w8Ctrl.documentTypeId);
-            this.updateMandatory('usW9',this.vendorDocCtrl.w9Ctrl.documentTypeId);
+            this.updateMandatory('usW8Bene', this.vendorDocCtrl.w8Ctrl.documentTypeId);
+
+            this.vendorDocumentForm.get("usEinNumber").setValue(null);
+            this.upatePayeeIdentificationFiles(this.vendorDocCtrl.einCtrl.documentTypeId);
+
+
+            this.vendorDocumentForm.get("usW9").setValue(false);
+            this.upatePayeeIdentificationFiles(this.vendorDocCtrl.w9Ctrl.documentTypeId);
+            this.updateMandatory('usW9', this.vendorDocCtrl.w9Ctrl.documentTypeId);
+
+            this.vendorDocumentForm.get("usSocialSecurity").setValue(null);
+            this.upatePayeeIdentificationFiles(this.vendorDocCtrl.socialSecNoCtrl.documentTypeId);
+
 
             this.vendorDocumentForm.get("usSocialSecurity").setValidators([]);
             this.vendorDocumentForm.get("usSocialSecurity").updateValueAndValidity();
@@ -525,93 +546,89 @@ export class VendorDocumentsComponent implements OnInit {
             this.vendorDocumentForm.get("usEinNumber").setValidators([]);
             this.vendorDocumentForm.get("usEinNumber").updateValueAndValidity();
 
-            this.vendorDocumentForm.get("usW9").setValidators([]);
-            this.vendorDocumentForm.get("usW9").updateValueAndValidity();
-
-            this.vendorDocumentForm.get("usTaxId").setValidators([Validators.required]);
-            this.vendorDocumentForm.get("usTaxId").updateValueAndValidity();
-
-            // this.vendorDocumentForm.get("usW8Bene").setValidators([Validators.required]);
-            // this.vendorDocumentForm.get("usW8Bene").updateValueAndValidity();
             if (this.filesMap[this.vendorDocCtrl.socialSecNoCtrl.documentTypeId].filesList.length) {
-                this.failureMsg = 'Remove document from Social security if Social security is not selected as payee identification proof'
+                this.usFieldErrMsg = 'Remove document from Social security if Social security is not selected as payee identification proof'
             }
             if (this.filesMap[this.vendorDocCtrl.einCtrl.documentTypeId].filesList.length) {
-                this.failureMsg = 'Remove document from EIN if EIN is not selected as payee identification proof'
+                this.usFieldErrMsg = 'Remove document from EIN if EIN is not selected as payee identification proof'
             }
             if (this.filesMap[this.vendorDocCtrl.w9Ctrl.documentTypeId].filesList.length) {
-                this.failureMsg = 'Remove document from w9 if EIN is not selected as payee identification proof'
+                this.usFieldErrMsg = 'Remove document from w9 if EIN is not selected as payee identification proof'
             }
         }
         else if (this.usPayeeIdentificatn == 'socialSec') {
 
-            this.vendorDocumentForm.get("usTaxId").setValue(null);
-            this.vendorDocumentForm.get("usW8Bene").setValue(false);
-            this.vendorDocumentForm.get("usEinNumber").setValue(null);
-            this.vendorDocumentForm.get("usW9").setValue(false);
-            this.updateMandatory('usW8Bene',this.vendorDocCtrl.w8Ctrl.documentTypeId);
-            this.updateMandatory('usW9',this.vendorDocCtrl.w9Ctrl.documentTypeId);
-
-            this.vendorDocumentForm.get("usTaxId").setValidators([]);
-            this.vendorDocumentForm.get("usTaxId").updateValueAndValidity();
-
-            this.vendorDocumentForm.get("usW8Bene").setValidators([]);
-            this.vendorDocumentForm.get("usW8Bene").updateValueAndValidity();
-
-            this.vendorDocumentForm.get("usEinNumber").setValidators([]);
-            this.vendorDocumentForm.get("usEinNumber").updateValueAndValidity();
-
-            this.vendorDocumentForm.get("usW9").setValidators([]);
-            this.vendorDocumentForm.get("usW9").updateValueAndValidity();
 
             this.vendorDocumentForm.get("usSocialSecurity").setValidators([Validators.required]);
             this.vendorDocumentForm.get("usSocialSecurity").updateValueAndValidity();
+            this.filesMap[this.vendorDocCtrl.socialSecNoCtrl.documentTypeId].isMandatory = true;
+
+
+            this.vendorDocumentForm.get("usTaxId").setValue(null);
+            this.upatePayeeIdentificationFiles(this.vendorDocCtrl.taxIdNoCtrl.documentTypeId);
+            this.vendorDocumentForm.get("usTaxId").setValidators([]);
+            this.vendorDocumentForm.get("usTaxId").updateValueAndValidity();
+
+            this.vendorDocumentForm.get("usW8Bene").setValue(false);
+            this.upatePayeeIdentificationFiles(this.vendorDocCtrl.w8Ctrl.documentTypeId);
+            this.updateMandatory('usW8Bene', this.vendorDocCtrl.w8Ctrl.documentTypeId);
+
+
+            this.vendorDocumentForm.get("usEinNumber").setValue(null);
+            this.upatePayeeIdentificationFiles(this.vendorDocCtrl.einCtrl.documentTypeId);
+            this.vendorDocumentForm.get("usEinNumber").setValidators([]);
+            this.vendorDocumentForm.get("usEinNumber").updateValueAndValidity();
+
+            this.vendorDocumentForm.get("usW9").setValue(false);
+            this.upatePayeeIdentificationFiles(this.vendorDocCtrl.w9Ctrl.documentTypeId);
+            this.updateMandatory('usW9', this.vendorDocCtrl.w9Ctrl.documentTypeId);
+
 
             if (this.filesMap[this.vendorDocCtrl.taxIdNoCtrl.documentTypeId].filesList.length) {
-                this.failureMsg = 'Remove document from Tax ID if Tax ID is not selected as payee identification proof'
+                this.usFieldErrMsg = 'Remove document from Tax ID if Tax ID is not selected as payee identification proof'
             }
             if (this.filesMap[this.vendorDocCtrl.w8Ctrl.documentTypeId].filesList.length) {
-                this.failureMsg = 'Remove document from w8 if Tax ID is not selected as payee identification proof'
+                this.usFieldErrMsg = 'Remove document from w8 if Tax ID is not selected as payee identification proof'
             }
             if (this.filesMap[this.vendorDocCtrl.einCtrl.documentTypeId].filesList.length) {
-                this.failureMsg = 'Remove document from EIN if EIN is not selected as payee identification proof'
+                this.usFieldErrMsg = 'Remove document from EIN if EIN is not selected as payee identification proof'
             }
-            if (this.filesMap[this.vendorDocCtrl.socialSecNoCtrl.documentTypeId].filesList.length) {
-                this.failureMsg = 'Remove document from social security if social security is not selected as payee identification proof'
+            if (this.filesMap[this.vendorDocCtrl.w9Ctrl.documentTypeId].filesList.length) {
+                this.usFieldErrMsg = 'Remove document from w9 if EIN is not selected as payee identification proof'
             }
         }
         else if (this.usPayeeIdentificatn == 'ein') {
 
-            this.vendorDocumentForm.get("usTaxId").setValue(null);
-            this.vendorDocumentForm.get("usW8Bene").setValue(false);
-            this.vendorDocumentForm.get("usSocialSecurity").setValue(null);
-            this.vendorDocumentForm.get("usW9").setValue(true);
-            this.updateMandatory('usW8Bene',this.vendorDocCtrl.w8Ctrl.documentTypeId);
-            this.updateMandatory('usW9',this.vendorDocCtrl.w9Ctrl.documentTypeId);
+            this.vendorDocumentForm.get("usEinNumber").setValidators([Validators.required]);
+            this.vendorDocumentForm.get("usEinNumber").updateValueAndValidity();
+            this.filesMap[this.vendorDocCtrl.einCtrl.documentTypeId].isMandatory = true;
 
+            this.vendorDocumentForm.get("usW9").setValue(true);
+            this.updateMandatory('usW9', this.vendorDocCtrl.w9Ctrl.documentTypeId);
+
+            this.vendorDocumentForm.get("usTaxId").setValue(null);
+            this.upatePayeeIdentificationFiles(this.vendorDocCtrl.taxIdNoCtrl.documentTypeId);
             this.vendorDocumentForm.get("usTaxId").setValidators([]);
             this.vendorDocumentForm.get("usTaxId").updateValueAndValidity();
 
-            this.vendorDocumentForm.get("usW8Bene").setValidators([]);
-            this.vendorDocumentForm.get("usW8Bene").updateValueAndValidity();
+            this.vendorDocumentForm.get("usW8Bene").setValue(false);
+            this.upatePayeeIdentificationFiles(this.vendorDocCtrl.w8Ctrl.documentTypeId);
+            this.updateMandatory('usW8Bene', this.vendorDocCtrl.w8Ctrl.documentTypeId);
 
+            this.vendorDocumentForm.get("usSocialSecurity").setValue(null);
+            this.upatePayeeIdentificationFiles(this.vendorDocCtrl.socialSecNoCtrl.documentTypeId);
             this.vendorDocumentForm.get("usSocialSecurity").setValidators([]);
             this.vendorDocumentForm.get("usSocialSecurity").updateValueAndValidity();
 
-            this.vendorDocumentForm.get("usEinNumber").setValidators([Validators.required]);
-            this.vendorDocumentForm.get("usEinNumber").updateValueAndValidity();
-
-            // this.vendorDocumentForm.get("usW9").setValidators([Validators.required]);
-            // this.vendorDocumentForm.get("usW9").updateValueAndValidity();
 
             if (this.filesMap[this.vendorDocCtrl.taxIdNoCtrl.documentTypeId].filesList.length) {
-                this.failureMsg = 'Remove document from Tax ID if Tax ID is not selected as payee identification proof'
+                this.usFieldErrMsg = 'Remove document from Tax ID if Tax ID is not selected as payee identification proof'
             }
             if (this.filesMap[this.vendorDocCtrl.w8Ctrl.documentTypeId].filesList.length) {
-                this.failureMsg = 'Remove document from w8 if Tax ID is not selected as payee identification proof'
+                this.usFieldErrMsg = 'Remove document from w8 if Tax ID is not selected as payee identification proof'
             }
-            if (this.filesMap[this.vendorDocCtrl.einCtrl.documentTypeId].filesList.length) {
-                this.failureMsg = 'Remove document from EIN if EIN is not selected as payee identification proof'
+            if (this.filesMap[this.vendorDocCtrl.socialSecNoCtrl.documentTypeId].filesList.length) {
+                this.usFieldErrMsg = 'Remove document from social security if social security is not selected as payee identification proof'
             }
         }
     }

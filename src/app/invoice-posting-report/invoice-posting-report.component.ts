@@ -45,7 +45,6 @@ export class InvoicePostingReportComponent implements OnInit {
 
     downloadInvoiceDump(req: invoicePostingReportReqModel, fileName: string) {
         this._homeService.updateBusy(<BusyDataModel>{ isBusy: true, msg: "Loading..." });
-        console.log(req);
         this._invoiceReportService.getFileData(req).subscribe(
             (data) => {
                 this._homeService.updateBusy(<BusyDataModel>{ isBusy: false, msg: null });

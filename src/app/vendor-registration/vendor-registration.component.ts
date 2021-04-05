@@ -34,7 +34,6 @@ export class VendorRegistrationComponent implements OnInit {
         user = this.cryptoService.decrypt(user);
         const userDetails = JSON.parse(user);
         let userEmail = userDetails.userEmail;
-        console.log(userEmail);
 
         this._vendorRegistrationService.updateBusy(<BusyDataModel>{ isBusy: true, msg: "Loading..." });
         this.vendorRegistrationInitDataModel = await this._vendorRegistrationService.getVendorRegistrationInitData(userEmail);
