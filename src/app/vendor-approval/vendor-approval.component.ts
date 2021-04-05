@@ -675,7 +675,7 @@ export class VendorApprovalComponent implements OnInit {
             };
             this.vendorApprovalInitDetails = await this._vendorApprovalService.getVendorApprovalInitData(req);
             this.vendorDetails = this.vendorApprovalInitDetails.vendorMasterDetails;
-            this.usPayeeIdentificatn = this.vendorDetails.usTaxId ? 'taxId' : (this.vendorDetails.usEinNumber ? 'ein' : 'socialSec')
+            this.usPayeeIdentificatn = this.vendorDetails.usSocialSecurity ? 'socialSec' : (this.vendorDetails.usEinNumber ? 'ein' : 'taxId')
         }
         this.loadDropDown();
         this.updateVendorFields();
