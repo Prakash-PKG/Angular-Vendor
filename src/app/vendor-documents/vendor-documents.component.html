@@ -671,7 +671,8 @@ flex-wrap: wrap;">
     </div>
 
     <!-- ---------------------------------------EIN No. --  (w9)  ------------------ -->
-    <div class="row doc-field" *ngIf="(showUSField() && (usPayeeIdentificatn =='ein' || usPayeeIdentificatn =='socialSec'))">
+    <div class="row doc-field"
+        *ngIf="(showUSField() && (usPayeeIdentificatn =='ein' || usPayeeIdentificatn =='socialSec'))">
         <div class="col-3 doc-form-field">
             <mat-label>{{vendorDocCtrl.w9Ctrl.placeholder}}</mat-label>
         </div>
@@ -765,13 +766,14 @@ flex-wrap: wrap;">
                 </li>
             </ul>
             <mat-form-field class="full-width" *ngIf="otherOrgTypeSel" formControlName="orgTypeOthersData">
-                <input type="text" matInput placeholder="Please specify organisation type"
-                 autocomplete="off" maxlength="50" (blur)="prepareOthersData()">
+                <input type="text" matInput placeholder="Please specify organisation type" autocomplete="off"
+                    maxlength="50" (blur)="prepareOthersData()">
+                <mat-error *ngIf="( isSubmitted ) && vendorDocumentForm.get('orgTypeOthersData')?.errors?.required"
+                    class="errortxt">
+                    Mention organisation type
+                </mat-error>
             </mat-form-field>
-            <div *ngIf="( isSubmitted ) && vendorDocumentForm.get('orgTypeOthersData').errors?.required"
-                class="errortxt">
-                Mention organisation type 
-            </div>
+
         </div>
     </div>
     <!------------------------------------- Cancelled Chequed---------------------- -->
