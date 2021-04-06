@@ -1192,7 +1192,7 @@
                                 autocomplete="off" maxlength="50" (blur)="prepareOthersData()">
                         </mat-form-field>
                         <mat-error class="errortxt"
-                            *ngIf="( isSubmitted ) && vendorForm.get('orgTypeOthersData').errors?.required">
+                            *ngIf="( isSubmitted ) && vendorForm.get('orgTypeOthersData')?.errors?.required">
                             Mention organisation type </mat-error>
                     </div>
 

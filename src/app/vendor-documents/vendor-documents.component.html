@@ -765,7 +765,7 @@ flex-wrap: wrap;">
                     </mat-checkbox>
                 </li>
             </ul>
-            <mat-form-field class="full-width" *ngIf="otherOrgTypeSel" formControlName="orgTypeOthersData">
+            <mat-form-field class="full-width" style="display: block;" *ngIf="otherOrgTypeSel" formControlName="orgTypeOthersData">
                 <input type="text" matInput placeholder="Please specify organisation type" autocomplete="off"
                     maxlength="50" (blur)="prepareOthersData()">
                 <mat-error *ngIf="( isSubmitted ) && vendorDocumentForm.get('orgTypeOthersData')?.errors?.required"
@@ -775,6 +775,7 @@ flex-wrap: wrap;">
             </mat-form-field>
 
         </div>
+        
     </div>
     <!------------------------------------- Cancelled Chequed---------------------- -->
     <div class="row doc-field" *ngIf="showUSField()">
