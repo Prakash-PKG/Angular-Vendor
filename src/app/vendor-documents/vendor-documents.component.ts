@@ -654,7 +654,7 @@ export class VendorDocumentsComponent implements OnInit {
         if (this._appService.vendorRegistrationDetails && this._appService.vendorRegistrationDetails.vendorOrgTypesVO && this._appService.vendorRegistrationDetails.vendorOrgTypesVO[index]) {
             vendorOrgTypeId = this._appService.vendorRegistrationDetails.vendorOrgTypesVO[index].vendorOrgTypeId ? this._appService.vendorRegistrationDetails.vendorOrgTypesVO[index].vendorOrgTypeId : null
         }
-        this.otherOrgTypeSel = (orgType == 'Others') ? true : false;
+        console.log(event);
         let obj: VendorOrgTypesModel = {
             vendorMasterId: this._appService.vendorRegistrationDetails.vendorMasterId,
             orgType: orgType,
@@ -663,14 +663,16 @@ export class VendorDocumentsComponent implements OnInit {
         }
         if (event) {
             this.vendorOrgTypesList.push(obj);
-            if (this.otherOrgTypeSel) {
+            if (orgType == 'Others') {
+                this.otherOrgTypeSel = true;
                 this.vendorDocumentForm.get("orgTypeOthersData").setValidators([Validators.required]);
                 this.vendorDocumentForm.get("orgTypeOthersData").updateValueAndValidity();
             }
         }
         else {
             this.vendorOrgTypesList.splice(index, 1);
-            if (this.otherOrgTypeSel) {
+            if (orgType == 'Others') {
+                this.otherOrgTypeSel = false;
                 this.vendorDocumentForm.get("orgTypeOthersData").setValidators([]);
                 this.vendorDocumentForm.get("orgTypeOthersData").updateValueAndValidity();
             }
@@ -762,7 +764,7 @@ export class VendorDocumentsComponent implements OnInit {
                 usW8Bene: [false],
                 usW9: [false],
                 usMinorityCertificate: [null],
-                orgTypeOthersData:[null]
+                orgTypeOthersData: [null]
 
             });
 
