@@ -1074,12 +1074,15 @@
 
                     <!-- ---------------------------------------EIN  --  (w9)  ------------------ -->
 
-                    <div class="Rtable-cell Rtable-cell--head" *ngIf="(usPayeeIdentificatn=='ein || socialSec')">w9
+                    <div class="Rtable-cell Rtable-cell--head"
+                        *ngIf="(usPayeeIdentificatn =='ein' || usPayeeIdentificatn =='socialSec')">w9
                     </div>
-                    <div class="Rtable-cell" *ngIf="!isEditable && (usPayeeIdentificatn=='ein || socialSec')">
+                    <div class="Rtable-cell"
+                        *ngIf="!isEditable && (usPayeeIdentificatn =='ein' || usPayeeIdentificatn =='socialSec')">
                         {{ vendorDetails?.usW9 == true ? 'Yes' : 'No' }}
                     </div>
-                    <div class="Rtable-cell" *ngIf="isEditable && (usPayeeIdentificatn=='ein || socialSec')">
+                    <div class="Rtable-cell"
+                        *ngIf="isEditable && (usPayeeIdentificatn =='ein' || usPayeeIdentificatn =='socialSec')">
                         <mat-radio-group formControlName="usW9">
                             <mat-radio-button
                                 (change)="onRadioBtnSelectionChange($event,vendorDocCtrl.w9Ctrl.documentTypeId)"
@@ -1090,8 +1093,9 @@
                         </mat-radio-group>
                     </div>
 
-                    <div class="Rtable-cell Rtable-cell--head" *ngIf="(usPayeeIdentificatn=='ein')">Attachments</div>
-                    <div class="Rtable-cell" *ngIf="(usPayeeIdentificatn=='ein || socialSec')">
+                    <div class="Rtable-cell Rtable-cell--head"
+                        *ngIf="(usPayeeIdentificatn =='ein' || usPayeeIdentificatn =='socialSec')">Attachments</div>
+                    <div class="Rtable-cell" *ngIf="(usPayeeIdentificatn =='ein' || usPayeeIdentificatn =='socialSec')">
                         <div class="attachments">
                             <div class="flex-item">
                                 <div *ngFor="let file of filesMap[vendorDocCtrl.w9Ctrl.documentTypeId]?.filesList; let i = index"
@@ -1187,7 +1191,8 @@
                             <input type="text" matInput placeholder="Please specify organisation type"
                                 autocomplete="off" maxlength="50" (blur)="prepareOthersData()">
                         </mat-form-field>
-                        <mat-error class="errortxt" *ngIf="( isSubmitted ) && vendorForm.get('orgTypeOthersData').errors?.required">
+                        <mat-error class="errortxt"
+                            *ngIf="( isSubmitted ) && vendorForm.get('orgTypeOthersData').errors?.required">
                             Mention organisation type </mat-error>
                     </div>
 

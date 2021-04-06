@@ -671,7 +671,7 @@ flex-wrap: wrap;">
     </div>
 
     <!-- ---------------------------------------EIN No. --  (w9)  ------------------ -->
-    <div class="row doc-field" *ngIf="(showUSField() && (usPayeeIdentificatn =='ein || socialSec'))">
+    <div class="row doc-field" *ngIf="(showUSField() && (usPayeeIdentificatn =='ein' || usPayeeIdentificatn =='socialSec'))">
         <div class="col-3 doc-form-field">
             <mat-label>{{vendorDocCtrl.w9Ctrl.placeholder}}</mat-label>
         </div>
