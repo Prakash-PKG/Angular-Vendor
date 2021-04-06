@@ -1066,7 +1066,7 @@ export class VendorApprovalComponent implements OnInit {
                 this.usFieldErrMsg = 'Remove document from EIN if EIN is not selected as payee identification proof'
             }
             if (this.filesMap[this.vendorDocCtrl.w9Ctrl.documentTypeId].filesList.length) {
-                this.usFieldErrMsg = 'Remove document from w9 if EIN is not selected as payee identification proof'
+                this.usFieldErrMsg = 'Remove document from w9 if EIN / SSN is not selected as payee identification proof'
             }
         }
         else if (this.usPayeeIdentificatn == 'socialSec') {
@@ -1092,9 +1092,9 @@ export class VendorApprovalComponent implements OnInit {
             this.vendorForm.get("usEinNumber").setValidators([]);
             this.vendorForm.get("usEinNumber").updateValueAndValidity();
 
-            this.vendorForm.get("usW9").setValue(false);
-            this.upatePayeeIdentificationFiles(this.vendorDocCtrl.w9Ctrl.documentTypeId);
-            this.updateMandatoryDocs(false, this.vendorDocCtrl.w9Ctrl.documentTypeId);
+            this.vendorForm.get("usW9").setValue(true);
+            // this.upatePayeeIdentificationFiles(this.vendorDocCtrl.w9Ctrl.documentTypeId);
+            this.updateMandatoryDocs(true, this.vendorDocCtrl.w9Ctrl.documentTypeId);
 
 
             if (this.filesMap[this.vendorDocCtrl.taxIdNoCtrl.documentTypeId].filesList.length) {
@@ -1106,9 +1106,9 @@ export class VendorApprovalComponent implements OnInit {
             if (this.filesMap[this.vendorDocCtrl.einCtrl.documentTypeId].filesList.length) {
                 this.usFieldErrMsg = 'Remove document from EIN if EIN is not selected as payee identification proof'
             }
-            if (this.filesMap[this.vendorDocCtrl.w9Ctrl.documentTypeId].filesList.length) {
-                this.usFieldErrMsg = 'Remove document from w9 if EIN is not selected as payee identification proof'
-            }
+            // if (this.filesMap[this.vendorDocCtrl.w9Ctrl.documentTypeId].filesList.length) {
+            //     this.usFieldErrMsg = 'Remove document from w9 if EIN is not selected as payee identification proof'
+            // }
         }
         else if (this.usPayeeIdentificatn == 'ein') {
 

@@ -579,8 +579,8 @@ export class VendorDocumentsComponent implements OnInit {
             this.vendorDocumentForm.get("usEinNumber").setValidators([]);
             this.vendorDocumentForm.get("usEinNumber").updateValueAndValidity();
 
-            this.vendorDocumentForm.get("usW9").setValue(false);
-            this.upatePayeeIdentificationFiles(this.vendorDocCtrl.w9Ctrl.documentTypeId);
+            this.vendorDocumentForm.get("usW9").setValue(true);
+            // this.upatePayeeIdentificationFiles(this.vendorDocCtrl.w9Ctrl.documentTypeId);
             this.updateMandatory('usW9', this.vendorDocCtrl.w9Ctrl.documentTypeId);
 
 
@@ -591,11 +591,11 @@ export class VendorDocumentsComponent implements OnInit {
                 this.usFieldErrMsg = 'Remove document from w8 if Tax ID is not selected as payee identification proof'
             }
             if (this.filesMap[this.vendorDocCtrl.einCtrl.documentTypeId].filesList.length) {
-                this.usFieldErrMsg = 'Remove document from EIN if EIN is not selected as payee identification proof'
+                this.usFieldErrMsg = 'Remove document from EIN if EIN / SSN is not selected as payee identification proof'
             }
-            if (this.filesMap[this.vendorDocCtrl.w9Ctrl.documentTypeId].filesList.length) {
-                this.usFieldErrMsg = 'Remove document from w9 if EIN is not selected as payee identification proof'
-            }
+            // if (this.filesMap[this.vendorDocCtrl.w9Ctrl.documentTypeId].filesList.length) {
+            //     this.usFieldErrMsg = 'Remove document from w9 if EIN is not selected as payee identification proof'
+            // }
         }
         else if (this.usPayeeIdentificatn == 'ein') {
 

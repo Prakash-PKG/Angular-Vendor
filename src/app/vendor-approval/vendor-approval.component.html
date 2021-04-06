@@ -1074,11 +1074,11 @@
 
                     <!-- ---------------------------------------EIN  --  (w9)  ------------------ -->
 
-                    <div class="Rtable-cell Rtable-cell--head" *ngIf="(usPayeeIdentificatn=='ein')">w9</div>
-                    <div class="Rtable-cell" *ngIf="!isEditable && (usPayeeIdentificatn=='ein')">
+                    <div class="Rtable-cell Rtable-cell--head" *ngIf="(usPayeeIdentificatn=='ein || socialSec')">w9</div>
+                    <div class="Rtable-cell" *ngIf="!isEditable && (usPayeeIdentificatn=='ein || socialSec')">
                         {{ vendorDetails?.usW9 == true ? 'Yes' : 'No' }}
                     </div>
-                    <div class="Rtable-cell" *ngIf="isEditable && (usPayeeIdentificatn=='ein')">
+                    <div class="Rtable-cell" *ngIf="isEditable && (usPayeeIdentificatn=='ein || socialSec')">
                         <mat-radio-group formControlName="usW9">
                             <mat-radio-button
                                 (change)="onRadioBtnSelectionChange($event,vendorDocCtrl.w9Ctrl.documentTypeId)"
@@ -1090,7 +1090,7 @@
                     </div>
 
                     <div class="Rtable-cell Rtable-cell--head" *ngIf="(usPayeeIdentificatn=='ein')">Attachments</div>
-                    <div class="Rtable-cell" *ngIf="(usPayeeIdentificatn=='ein')">
+                    <div class="Rtable-cell" *ngIf="(usPayeeIdentificatn=='ein || socialSec')">
                         <div class="attachments">
                             <div class="flex-item">
                                 <div *ngFor="let file of filesMap[vendorDocCtrl.w9Ctrl.documentTypeId]?.filesList; let i = index"
