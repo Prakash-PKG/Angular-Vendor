@@ -620,7 +620,7 @@ flex-wrap: wrap;">
     <div class="row doc-field" *ngIf="(showUSField() && (usPayeeIdentificatn =='ein'))">
         <div class="col-5 doc-form-field form-group">
             <mat-form-field class="full-width">
-                <input type="text" matInput (keypress)="omit_special_char($event)"
+                <input type="text" matInput
                     placeholder="{{vendorDocCtrl.einCtrl.placeholder}}" formControlName="usEinNumber" autocomplete="off"
                     minlength="9" maxlength="11"
                     (blur)="updateMandatory('usEinNumber',vendorDocCtrl.einCtrl.documentTypeId)">
