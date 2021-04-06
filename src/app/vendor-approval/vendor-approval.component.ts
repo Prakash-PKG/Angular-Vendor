@@ -53,7 +53,8 @@ export class VendorApprovalComponent implements OnInit {
     vendorOrgTypesList: VendorOrgTypesModel[] = [];
     originalVendorDetails: VendorMasterDetailsModel = new VendorMasterDetailsModel();
 
-    // exVendFileDetails: VendorApprovalInitResultModel;
+    orgTypeOthersData: string = '';
+    otherOrgTypeSel: boolean = false;
 
     vendoraccGroupList: AccGroupMasterList[] = [];
     companyCodeList: CompanyCodeMasterList[] = [];
@@ -962,7 +963,12 @@ export class VendorApprovalComponent implements OnInit {
             return this.vendorOrgTypesList.some(orgType => orgType.orgType == selectedOrgType);
         }
         else return false;
+    }
 
+    prepareOthersData() {
+        this.orgTypeOthersData = this.otherOrgTypeSel ? this.vendorForm.get("orgTypeOthersData").value : null
+        let i = this.vendorOrgTypesList.findIndex((org) => org.orgType == 'Others');
+        this.vendorOrgTypesList[i].orgTypesOthersData = this.orgTypeOthersData
     }
 
     prepareOrgTypeList(event, orgType, index) {
@@ -971,17 +977,28 @@ export class VendorApprovalComponent implements OnInit {
         if (this.vendorDetails && this.vendorDetails.vendorOrgTypesVO && this.vendorDetails.vendorOrgTypesVO[index]) {
             vendorOrgTypeId = this.vendorDetails.vendorOrgTypesVO[index].vendorOrgTypeId ? this.vendorDetails.vendorOrgTypesVO[index].vendorOrgTypeId : null
         }
+        this.otherOrgTypeSel = (orgType == 'Others' && event) ? true : false;
         let obj: VendorOrgTypesModel = {
             vendorMasterId: this.vendorDetails.vendorMasterId,
             orgType: orgType,
-            vendorOrgTypeId: vendorOrgTypeId
+            vendorOrgTypeId: vendorOrgTypeId,
+            orgTypesOthersData: this.orgTypeOthersData
+
         }
         if (event) {
             this.vendorOrgTypesList.push(obj);
+            if (this.otherOrgTypeSel) {
+                this.vendorForm.get("orgTypeOthersData").setValidators([Validators.required]);
+                this.vendorForm.get("orgTypeOthersData").updateValueAndValidity();
+            }
         }
         else {
 
             this.vendorOrgTypesList.splice(index, 1);
+            if (this.otherOrgTypeSel) {
+                this.vendorForm.get("orgTypeOthersData").setValidators([]);
+                this.vendorForm.get("orgTypeOthersData").updateValueAndValidity();
+            }
         }
         this.vendorDetails.vendorOrgTypesVO = this.vendorOrgTypesList;
 
@@ -1211,6 +1228,7 @@ export class VendorApprovalComponent implements OnInit {
             usW8Bene: [false],
             usW9: [false],
             usMinorityCertificate: [false],
+            orgTypeOthersData: [null],
 
             selectedVendorGroup: null,
             selectedCompanyCode: null,

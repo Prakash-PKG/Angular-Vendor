@@ -42,6 +42,8 @@ export class VendorDocumentsComponent implements OnInit {
 
     maxLutDate = new Date();
     usPayeeIdentificatn: string = "";
+    orgTypeOthersData: string = '';
+    otherOrgTypeSel: boolean = false;
 
     organizationTypeMasterVO: organizationTypeMasterVO[] = [];
     organizationCategoryMasterVO: organizationCategoryMasterVO[] = [];
@@ -640,6 +642,11 @@ export class VendorDocumentsComponent implements OnInit {
         }
         else return false;
     }
+    prepareOthersData() {
+        this.orgTypeOthersData = this.otherOrgTypeSel ? this.vendorDocumentForm.get("orgTypeOthersData").value : null
+        let i = this.vendorOrgTypesList.findIndex((org) => org.orgType == 'Others');
+        this.vendorOrgTypesList[i].orgTypesOthersData = this.orgTypeOthersData
+    }
 
     prepareOrgTypeList(event, orgType, index) {
         this.vendorOrgTypesList = this.vendorOrgTypesList ? this.vendorOrgTypesList : [];
@@ -647,16 +654,26 @@ export class VendorDocumentsComponent implements OnInit {
         if (this._appService.vendorRegistrationDetails && this._appService.vendorRegistrationDetails.vendorOrgTypesVO && this._appService.vendorRegistrationDetails.vendorOrgTypesVO[index]) {
             vendorOrgTypeId = this._appService.vendorRegistrationDetails.vendorOrgTypesVO[index].vendorOrgTypeId ? this._appService.vendorRegistrationDetails.vendorOrgTypesVO[index].vendorOrgTypeId : null
         }
+        this.otherOrgTypeSel = (orgType == 'Others' && event) ? true : false;
         let obj: VendorOrgTypesModel = {
             vendorMasterId: this._appService.vendorRegistrationDetails.vendorMasterId,
             orgType: orgType,
-            vendorOrgTypeId: vendorOrgTypeId
+            vendorOrgTypeId: vendorOrgTypeId,
+            orgTypesOthersData: this.orgTypeOthersData
         }
         if (event) {
             this.vendorOrgTypesList.push(obj);
+            if (this.otherOrgTypeSel) {
+                this.vendorDocumentForm.get("orgTypeOthersData").setValidators([Validators.required]);
+                this.vendorDocumentForm.get("orgTypeOthersData").updateValueAndValidity();
+            }
         }
         else {
             this.vendorOrgTypesList.splice(index, 1);
+            if (this.otherOrgTypeSel) {
+                this.vendorDocumentForm.get("orgTypeOthersData").setValidators([]);
+                this.vendorDocumentForm.get("orgTypeOthersData").updateValueAndValidity();
+            }
         }
         this._appService.vendorRegistrationDetails.vendorOrgTypesVO = this.vendorOrgTypesList;
     }
@@ -744,7 +761,8 @@ export class VendorDocumentsComponent implements OnInit {
                 usEinNumber: [null, [Validators.minLength(9), Validators.maxLength(11)]],
                 usW8Bene: [false],
                 usW9: [false],
-                usMinorityCertificate: [null]
+                usMinorityCertificate: [null],
+                orgTypeOthersData:[null]
 
             });
 

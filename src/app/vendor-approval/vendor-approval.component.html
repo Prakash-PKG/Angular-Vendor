@@ -1074,7 +1074,8 @@
 
                     <!-- ---------------------------------------EIN  --  (w9)  ------------------ -->
 
-                    <div class="Rtable-cell Rtable-cell--head" *ngIf="(usPayeeIdentificatn=='ein || socialSec')">w9</div>
+                    <div class="Rtable-cell Rtable-cell--head" *ngIf="(usPayeeIdentificatn=='ein || socialSec')">w9
+                    </div>
                     <div class="Rtable-cell" *ngIf="!isEditable && (usPayeeIdentificatn=='ein || socialSec')">
                         {{ vendorDetails?.usW9 == true ? 'Yes' : 'No' }}
                     </div>
@@ -1182,6 +1183,12 @@
                                 </mat-checkbox>
                             </li>
                         </ul>
+                        <mat-form-field class="full-width" *ngIf="otherOrgTypeSel" formControlName="orgTypeOthersData">
+                            <input type="text" matInput placeholder="Please specify organisation type"
+                                autocomplete="off" maxlength="50" (blur)="prepareOthersData()">
+                        </mat-form-field>
+                        <mat-error class="errortxt" *ngIf="( isSubmitted ) && vendorForm.get('orgTypeOthersData').errors?.required">
+                            Mention organisation type </mat-error>
                     </div>
 
                     <!-- --------------------------------------Cancelled Cheque ------------------ -->
