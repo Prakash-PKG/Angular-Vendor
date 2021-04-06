@@ -620,9 +620,8 @@ flex-wrap: wrap;">
     <div class="row doc-field" *ngIf="(showUSField() && (usPayeeIdentificatn =='ein'))">
         <div class="col-5 doc-form-field form-group">
             <mat-form-field class="full-width">
-                <input type="text" matInput
-                    placeholder="{{vendorDocCtrl.einCtrl.placeholder}}" formControlName="usEinNumber" autocomplete="off"
-                    minlength="9" maxlength="11"
+                <input type="text" matInput placeholder="{{vendorDocCtrl.einCtrl.placeholder}}"
+                    formControlName="usEinNumber" autocomplete="off" minlength="9" maxlength="11"
                     (blur)="updateMandatory('usEinNumber',vendorDocCtrl.einCtrl.documentTypeId)">
                 <mat-error class="errortxt"
                     *ngIf="isSubmitted && vendorDocumentForm.get('usEinNumber')?.errors?.required">EIN no. is
@@ -756,7 +755,7 @@ flex-wrap: wrap;">
         <div class="col-5 doc-form-field">
             <mat-label>Organisation Type</mat-label>
         </div>
-        <div class="col-7 doc-form-field">
+        <div class="col-7 doc-form-field" style="display: block;">
             <ul class="orgType">
                 <li *ngFor="let orgType of organizationTypeMasterVO;let i =index">
                     <mat-checkbox (change)="prepareOrgTypeList($event.checked,orgType.orgType,i)"
@@ -765,7 +764,11 @@ flex-wrap: wrap;">
                     </mat-checkbox>
                 </li>
             </ul>
-            <mat-form-field class="full-width" style="display: block;" *ngIf="otherOrgTypeSel" formControlName="orgTypeOthersData">
+        </div>
+        <div class="col-5"></div>
+        <div class="col-7">
+            <mat-form-field class="full-width" style="display: block;" *ngIf="otherOrgTypeSel"
+                formControlName="orgTypeOthersData" ngDefaultControl>
                 <input type="text" matInput placeholder="Please specify organisation type" autocomplete="off"
                     maxlength="50" (blur)="prepareOthersData()">
                 <mat-error *ngIf="( isSubmitted ) && vendorDocumentForm.get('orgTypeOthersData')?.errors?.required"
@@ -773,9 +776,8 @@ flex-wrap: wrap;">
                     Mention organisation type
                 </mat-error>
             </mat-form-field>
-
         </div>
-        
+
     </div>
     <!------------------------------------- Cancelled Chequed---------------------- -->
     <div class="row doc-field" *ngIf="showUSField()">

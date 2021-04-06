@@ -654,7 +654,7 @@ export class VendorDocumentsComponent implements OnInit {
         if (this._appService.vendorRegistrationDetails && this._appService.vendorRegistrationDetails.vendorOrgTypesVO && this._appService.vendorRegistrationDetails.vendorOrgTypesVO[index]) {
             vendorOrgTypeId = this._appService.vendorRegistrationDetails.vendorOrgTypesVO[index].vendorOrgTypeId ? this._appService.vendorRegistrationDetails.vendorOrgTypesVO[index].vendorOrgTypeId : null
         }
-        this.otherOrgTypeSel = (orgType == 'Others' && event) ? true : false;
+        this.otherOrgTypeSel = (orgType == 'Others') ? true : false;
         let obj: VendorOrgTypesModel = {
             vendorMasterId: this._appService.vendorRegistrationDetails.vendorMasterId,
             orgType: orgType,

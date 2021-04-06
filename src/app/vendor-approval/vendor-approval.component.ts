@@ -977,7 +977,7 @@ export class VendorApprovalComponent implements OnInit {
         if (this.vendorDetails && this.vendorDetails.vendorOrgTypesVO && this.vendorDetails.vendorOrgTypesVO[index]) {
             vendorOrgTypeId = this.vendorDetails.vendorOrgTypesVO[index].vendorOrgTypeId ? this.vendorDetails.vendorOrgTypesVO[index].vendorOrgTypeId : null
         }
-        this.otherOrgTypeSel = (orgType == 'Others' && event) ? true : false;
+        this.otherOrgTypeSel = (orgType == 'Others') ? true : false;
         let obj: VendorOrgTypesModel = {
             vendorMasterId: this.vendorDetails.vendorMasterId,
             orgType: orgType,
