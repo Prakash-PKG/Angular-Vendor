@@ -634,7 +634,7 @@ export class VendorDocumentsComponent implements OnInit {
     setOrgType(orgType) {
         // this.vendorOrgTypesList = this._appService.vendorOrgTypesListBackup;
         // this.vendorOrgTypesList = this._appService.vendorRegistrationDetails.vendorOrgTypesVO;
-        let otherOrg = this.vendorOrgTypesList.find((org) => org.orgType == 'Others');
+        let otherOrg = this.vendorOrgTypesList ? this.vendorOrgTypesList.find((org) => org.orgType == 'Others') : null;
         this.otherOrgTypeSel = otherOrg ? true : false;
         this.orgTypeOthersData = otherOrg ? otherOrg.orgTypesOthersData : null;
         this.vendorDocumentForm.get("orgTypeOthersData").setValue(this.orgTypeOthersData);
