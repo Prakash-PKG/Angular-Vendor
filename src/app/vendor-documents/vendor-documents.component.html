@@ -771,7 +771,7 @@ flex-wrap: wrap;">
                         maxlength="50" (blur)="prepareOthersData()">
                   
                 </mat-form-field>
-                <mat-error *ngIf="isSubmitted && !vendorDocumentForm.get('orgTypeOthersData').value" class="errortxt">
+                <mat-error *ngIf="isSubmitted && vendorDocumentForm.get('orgTypeOthersData')?.errors?.required" class="errortxt">
                     Mention organisation type
                 </mat-error>
             </div>
