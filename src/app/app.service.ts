@@ -126,6 +126,7 @@ export class AppService {
     isExistingVendor: boolean = false;
 
     vendorOrgTypesListBackup: VendorOrgTypesModel[] = [];
+    vendorOrgCatBackup: vendorOrgCategoryModel = null;
 
     getFormattedDate(dtStr: string) {
         if (dtStr) {

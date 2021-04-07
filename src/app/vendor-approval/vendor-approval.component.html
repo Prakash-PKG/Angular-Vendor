@@ -1186,16 +1186,17 @@
                             <li *ngFor="let orgType of organizationTypeMasterVO;let i =index">
                                 <mat-checkbox (change)="prepareOrgTypeList($event.checked,orgType.orgType,i )"
                                     [checked]='setOrgType(orgType.orgType)'>
-                                    {{orgType.orgType}}
+                                    {{orgType.orgType}} <span *ngIf="otherOrgTypeSel">- {{orgTypeOthersData}}</span>
                                 </mat-checkbox>
                             </li>
                         </ul>
-                        <mat-form-field class="full-width" *ngIf="otherOrgTypeSel" formControlName="orgTypeOthersData" ngDefaultControl>
+                        <mat-form-field class="full-width" *ngIf="otherOrgTypeSel" formControlName="orgTypeOthersData"
+                            ngDefaultControl>
                             <input type="text" matInput placeholder="Please specify organisation type"
                                 autocomplete="off" maxlength="50" (blur)="prepareOthersData()">
                         </mat-form-field>
                         <mat-error class="errortxt"
-                            *ngIf="( isSubmitted ) && vendorForm.get('orgTypeOthersData')?.errors?.required">
+                            *ngIf="( isSubmitted ) && vendorForm.get('orgTypeOthersData')?.hasError('required')">
                             Mention organisation type </mat-error>
                     </div>
 

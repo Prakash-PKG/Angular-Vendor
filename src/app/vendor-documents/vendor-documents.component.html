@@ -769,10 +769,11 @@ flex-wrap: wrap;">
                     ngDefaultControl>
                     <input type="text" matInput placeholder="Please specify organisation type" autocomplete="off"
                         maxlength="50" (blur)="prepareOthersData()">
-                    <mat-error *ngIf="isSubmitted && vdf?.orgTypeOthersData?.errors?.required" class="errortxt">
-                        Mention organisation type
-                    </mat-error>
+                  
                 </mat-form-field>
+                <mat-error *ngIf="isSubmitted && !vendorDocumentForm.get('orgTypeOthersData').value" class="errortxt">
+                    Mention organisation type
+                </mat-error>
             </div>
         </div>
 
