@@ -413,7 +413,7 @@ export class VendorDocumentsComponent implements OnInit {
             this.vendorDocumentForm.get("usMinorityCertificate").setValue(this._appService.vendorRegistrationDetails.usMinorityCertificate);
 
             this.usPayeeIdentificatn = this._appService.usPayeeIdentificatn ? this._appService.usPayeeIdentificatn : 'taxId';
-
+            this.vendorOrgTypesList = this._appService.vendorOrgTypesListBackup;
             // this._appService.vendorOrgTypesListBackup = this._appService.vendorRegistrationDetails.vendorOrgTypesVO;
 
             this.filesMap = this._appService.selectedFileMap;
@@ -594,7 +594,7 @@ export class VendorDocumentsComponent implements OnInit {
             if (this.filesMap[this.vendorDocCtrl.einCtrl.documentTypeId].filesList.length) {
                 this.usFieldErrMsg = 'Remove document from EIN if EIN / SSN is not selected as payee identification proof'
             }
-      
+
         }
         else if (this.usPayeeIdentificatn == 'ein') {
 
@@ -632,13 +632,13 @@ export class VendorDocumentsComponent implements OnInit {
         }
     }
     setOrgType(orgType) {
-        this.vendorOrgTypesList = this._appService.vendorOrgTypesListBackup;
+        // this.vendorOrgTypesList = this._appService.vendorOrgTypesListBackup;
         // this.vendorOrgTypesList = this._appService.vendorRegistrationDetails.vendorOrgTypesVO;
+        let otherOrg = this.vendorOrgTypesList.find((org) => org.orgType == 'Others');
+        this.otherOrgTypeSel = otherOrg ? true : false;
+        this.orgTypeOthersData = otherOrg ? otherOrg.orgTypesOthersData : null;
+        this.vendorDocumentForm.get("orgTypeOthersData").setValue(this.orgTypeOthersData);
         if (this.vendorOrgTypesList) {
-            let i = this.vendorOrgTypesList.findIndex((org) => org.orgType == 'Others');
-            this.otherOrgTypeSel = i > -1 ? true : false;
-            this.orgTypeOthersData = this.otherOrgTypeSel ? this.vendorOrgTypesList[i].orgTypesOthersData : null;
-            this.vendorDocumentForm.get("orgTypeOthersData").setValue(this.orgTypeOthersData);
             return this.vendorOrgTypesList.some(selectedOrgType => selectedOrgType.orgType == orgType);
         }
         else return false;
