@@ -961,8 +961,10 @@ export class VendorApprovalComponent implements OnInit {
         this.vendorOrgTypesList = this.vendorDetails.vendorOrgTypesVO;
         if (this.vendorOrgTypesList) {
             let i = this.vendorOrgTypesList.findIndex((org) => org.orgType == 'Others');
-            this.vendorForm.get("orgTypeOthersData").setValue(this.vendorOrgTypesList[i].orgTypesOthersData);
-            this.orgTypeOthersData = this.vendorOrgTypesList[i].orgTypesOthersData;
+            if (i > -1) {
+                this.vendorForm.get("orgTypeOthersData").setValue(this.vendorOrgTypesList[i].orgTypesOthersData);
+                this.orgTypeOthersData = this.vendorOrgTypesList[i].orgTypesOthersData;
+            }
             return this.vendorOrgTypesList.some(orgType => orgType.orgType == selectedOrgType);
         }
         else return false;
