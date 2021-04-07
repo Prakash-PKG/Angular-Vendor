@@ -49,7 +49,6 @@ export class VendorDocumentsComponent implements OnInit {
     organizationCategoryMasterVO: organizationCategoryMasterVO[] = [];
 
     vendorOrgTypesList: VendorOrgTypesModel[] = [];
-
     vendorDocCtrl = {
         incCerCtrl: { documentTypeId: 1, browserId: 'incCerFileCtrl', placeholder: 'Incorporation Certificate', controlName: '' },
         gstCtrl: { documentTypeId: 2, browserId: 'gstFileCtrl', placeholder: 'GST No.', controlName: 'gstNum' },
@@ -287,7 +286,8 @@ export class VendorDocumentsComponent implements OnInit {
         this._appService.vendorRegistrationDetails.usMinorityCertificate = this.vendorDocumentForm.get("usMinorityCertificate").value;
 
         this._appService.usPayeeIdentificatn = this.usPayeeIdentificatn;
-        // this._appService.vendorRegistrationDetails.vendorOrgTypesVO = this.vendorOrgTypesList;
+        // this._appService.vendorOrgTypesListBackup = this.vendorOrgTypesList;
+        this._appService.vendorRegistrationDetails.vendorOrgTypesVO = this._appService.vendorOrgTypesListBackup;
     }
 
     onPrevClick() {
@@ -414,7 +414,7 @@ export class VendorDocumentsComponent implements OnInit {
 
             this.usPayeeIdentificatn = this._appService.usPayeeIdentificatn ? this._appService.usPayeeIdentificatn : 'taxId';
 
-            this.vendorOrgTypesList = this._appService.vendorRegistrationDetails.vendorOrgTypesVO;
+            this._appService.vendorOrgTypesListBackup = this._appService.vendorRegistrationDetails.vendorOrgTypesVO;
 
             this.filesMap = this._appService.selectedFileMap;
 
@@ -635,8 +635,8 @@ export class VendorDocumentsComponent implements OnInit {
         }
     }
     setOrgType(orgType) {
-
-        this.vendorOrgTypesList = this._appService.vendorRegistrationDetails.vendorOrgTypesVO;
+        this.vendorOrgTypesList = this._appService.vendorOrgTypesListBackup;
+        // this.vendorOrgTypesList = this._appService.vendorRegistrationDetails.vendorOrgTypesVO;
         if (this.vendorOrgTypesList) {
             return this.vendorOrgTypesList.some(selectedOrgType => selectedOrgType.orgType == orgType);
         }
@@ -649,12 +649,15 @@ export class VendorDocumentsComponent implements OnInit {
     }
 
     prepareOrgTypeList(event, orgType, index) {
-        this.vendorOrgTypesList = this.vendorOrgTypesList ? this.vendorOrgTypesList : [];
+        this.vendorOrgTypesList = this._appService.vendorOrgTypesListBackup ? this._appService.vendorOrgTypesListBackup : [];
         let vendorOrgTypeId: number = null;
-        if (this._appService.vendorRegistrationDetails && this._appService.vendorRegistrationDetails.vendorOrgTypesVO && this._appService.vendorRegistrationDetails.vendorOrgTypesVO[index]) {
-            vendorOrgTypeId = this._appService.vendorRegistrationDetails.vendorOrgTypesVO[index].vendorOrgTypeId ? this._appService.vendorRegistrationDetails.vendorOrgTypesVO[index].vendorOrgTypeId : null
+        // if (this._appService.vendorRegistrationDetails && this._appService.vendorRegistrationDetails.vendorOrgTypesVO && this._appService.vendorRegistrationDetails.vendorOrgTypesVO[index]) {
+        //     vendorOrgTypeId = this._appService.vendorRegistrationDetails.vendorOrgTypesVO[index].vendorOrgTypeId ? this._appService.vendorRegistrationDetails.vendorOrgTypesVO[index].vendorOrgTypeId : null
+        // }
+        if (this._appService.vendorOrgTypesListBackup && this._appService.vendorOrgTypesListBackup[index]) {
+            vendorOrgTypeId = this._appService.vendorOrgTypesListBackup[index].vendorOrgTypeId ? this._appService.vendorOrgTypesListBackup[index].vendorOrgTypeId : null
         }
-        console.log(event);
+
         let obj: VendorOrgTypesModel = {
             vendorMasterId: this._appService.vendorRegistrationDetails.vendorMasterId,
             orgType: orgType,
@@ -677,7 +680,7 @@ export class VendorDocumentsComponent implements OnInit {
                 this.vendorDocumentForm.get("orgTypeOthersData").updateValueAndValidity();
             }
         }
-        this._appService.vendorRegistrationDetails.vendorOrgTypesVO = this.vendorOrgTypesList;
+        this._appService.vendorOrgTypesListBackup = this.vendorOrgTypesList;
     }
 
     onOrgCatChange() {
