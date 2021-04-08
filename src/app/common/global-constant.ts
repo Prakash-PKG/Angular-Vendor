@@ -18,7 +18,7 @@ export const globalConstant : any = {
     functionalHeadRoles: ["functional_head"],
     financeRoles: ["finance","finance-nonpo","finance-po"],
     empanelmentRoles: ["empanelment"],
-    procurementRoles: ["procurement"],
+    procurementRoles: ["procurement", "reviewer"],
     vendorRoles: ["vendor"],
     tempVendorRoles: ["vendor-temp"],
     vendorReportViewerRoles: ["vendor-report"],
