@@ -1188,7 +1188,7 @@
                             <li *ngFor="let orgType of organizationTypeMasterVO;let i =index">
                                 <mat-checkbox (change)="prepareOrgTypeList($event.checked,orgType.orgType,i )"
                                     [checked]='setOrgType(orgType.orgType)'>
-                                    {{orgType.orgType}} <span *ngIf="otherOrgTypeSel">- {{orgTypeOthersData}}</span>
+                                    {{orgType.orgType}} 
                                 </mat-checkbox>
                             </li>
                         </ul>
