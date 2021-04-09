@@ -1190,10 +1190,10 @@
                                 </mat-checkbox>
                             </li>
                         </ul>
-                        <mat-form-field class="full-width" *ngIf="otherOrgTypeSel" formControlName="orgTypeOthersData"
-                            ngDefaultControl>
+                        <mat-form-field class="full-width" *ngIf="otherOrgTypeSel">
                             <input type="text" matInput placeholder="Please specify organisation type"
-                                autocomplete="off" maxlength="50" (blur)="prepareOthersData()">
+                                autocomplete="off" maxlength="50" (blur)="prepareOthersData()"
+                                formControlName="orgTypeOthersData">
                         </mat-form-field>
                         <mat-error class="errortxt"
                             *ngIf="( isSubmitted ) && vendorForm.get('orgTypeOthersData')?.hasError('required')">
