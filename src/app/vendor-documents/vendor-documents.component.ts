@@ -1,7 +1,7 @@
 import { SidebarService } from './../sidebar/sidebar.service';
 import { Component, OnInit, HostListener } from '@angular/core';
 import { Router } from '@angular/router';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
 
 import { AppService } from '../app.service';
 import { VendorRegistrationService } from './../vendor-registration/vendor-registration.service';
@@ -286,7 +286,6 @@ export class VendorDocumentsComponent implements OnInit {
         this._appService.vendorRegistrationDetails.usMinorityCertificate = this.vendorDocumentForm.get("usMinorityCertificate").value;
 
         this._appService.usPayeeIdentificatn = this.usPayeeIdentificatn;
-        // this._appService.vendorOrgTypesListBackup = this.vendorOrgTypesList;
         this._appService.vendorRegistrationDetails.vendorOrgTypesVO = this._appService.vendorOrgTypesListBackup;
     }
 
@@ -414,7 +413,6 @@ export class VendorDocumentsComponent implements OnInit {
 
             this.usPayeeIdentificatn = this._appService.usPayeeIdentificatn ? this._appService.usPayeeIdentificatn : 'taxId';
             this.vendorOrgTypesList = this._appService.vendorOrgTypesListBackup;
-            // this._appService.vendorOrgTypesListBackup = this._appService.vendorRegistrationDetails.vendorOrgTypesVO;
 
             this.filesMap = this._appService.selectedFileMap;
 
@@ -632,12 +630,6 @@ export class VendorDocumentsComponent implements OnInit {
         }
     }
     setOrgType(orgType) {
-        // this.vendorOrgTypesList = this._appService.vendorOrgTypesListBackup;
-        // this.vendorOrgTypesList = this._appService.vendorRegistrationDetails.vendorOrgTypesVO;
-        let otherOrg = this.vendorOrgTypesList ? this.vendorOrgTypesList.find((org) => org.orgType == 'Others') : null;
-        this.otherOrgTypeSel = otherOrg ? true : false;
-        this.orgTypeOthersData = otherOrg ? otherOrg.orgTypesOthersData : null;
-        this.vendorDocumentForm.get("orgTypeOthersData").setValue(this.orgTypeOthersData);
         if (this.vendorOrgTypesList) {
             return this.vendorOrgTypesList.some(selectedOrgType => selectedOrgType.orgType == orgType);
         }
@@ -652,13 +644,12 @@ export class VendorDocumentsComponent implements OnInit {
     prepareOrgTypeList(event, orgType, index) {
         this.vendorOrgTypesList = this._appService.vendorOrgTypesListBackup ? this._appService.vendorOrgTypesListBackup : [];
         let vendorOrgTypeId: number = null;
-        // if (this._appService.vendorRegistrationDetails && this._appService.vendorRegistrationDetails.vendorOrgTypesVO && this._appService.vendorRegistrationDetails.vendorOrgTypesVO[index]) {
-        //     vendorOrgTypeId = this._appService.vendorRegistrationDetails.vendorOrgTypesVO[index].vendorOrgTypeId ? this._appService.vendorRegistrationDetails.vendorOrgTypesVO[index].vendorOrgTypeId : null
-        // }
+
         if (this._appService.vendorOrgTypesListBackup && this._appService.vendorOrgTypesListBackup[index]) {
             vendorOrgTypeId = this._appService.vendorOrgTypesListBackup[index].vendorOrgTypeId ? this._appService.vendorOrgTypesListBackup[index].vendorOrgTypeId : null
         }
 
+        this.orgTypeOthersData =  (orgType == 'Others')? this.vendorDocumentForm.get("orgTypeOthersData").value : null
         let obj: VendorOrgTypesModel = {
             vendorMasterId: this._appService.vendorRegistrationDetails.vendorMasterId,
             orgType: orgType,
@@ -669,14 +660,17 @@ export class VendorDocumentsComponent implements OnInit {
             this.vendorOrgTypesList.push(obj);
             if (orgType == 'Others') {
                 this.otherOrgTypeSel = true;
+
                 this.vendorDocumentForm.get("orgTypeOthersData").setValidators([Validators.required]);
                 this.vendorDocumentForm.get("orgTypeOthersData").updateValueAndValidity();
             }
         }
         else {
-            this.vendorOrgTypesList.splice(index, 1);
+            let i = this.vendorOrgTypesList.findIndex((org) => org.orgType == orgType);
+            this.vendorOrgTypesList.splice(i, 1);
             if (orgType == 'Others') {
                 this.otherOrgTypeSel = false;
+
                 this.vendorDocumentForm.get("orgTypeOthersData").setValidators([]);
                 this.vendorDocumentForm.get("orgTypeOthersData").updateValueAndValidity();
             }
@@ -685,8 +679,6 @@ export class VendorDocumentsComponent implements OnInit {
     }
 
     onOrgCatChange() {
-        // this._appService.vendorOrgCatBackup = null;
-        // this._appService.vendorRegistrationDetails.vendorOrgCatogeryVO = null;
         this.vendorDocumentForm.get('vendorOrgSubCategory').setValue(null);
         let selectedOrgCat = this.vendorDocumentForm.get('vendorOrgCatogery').value
         let i = this.organizationCategoryMasterVO.findIndex(orgCat => orgCat.catogery == selectedOrgCat);
@@ -770,7 +762,6 @@ export class VendorDocumentsComponent implements OnInit {
                 usW9: [false],
                 usMinorityCertificate: [null],
                 orgTypeOthersData: [null]
-
             });
 
             this.updateVendorDetails();
@@ -780,6 +771,15 @@ export class VendorDocumentsComponent implements OnInit {
             if (this._vendorRegistrationService.vendorUS) {
                 this.vendorDocumentForm.get('panNum').setValidators([]);
                 this.vendorDocumentForm.get('panNum').updateValueAndValidity;
+
+                let otherOrg = this.vendorOrgTypesList ? this.vendorOrgTypesList.find((org) => org.orgType == 'Others') : null;
+                this.otherOrgTypeSel = otherOrg ? true : false;
+                this.orgTypeOthersData = otherOrg ? otherOrg.orgTypesOthersData : null;
+                this.vendorDocumentForm.get("orgTypeOthersData").setValue(this.orgTypeOthersData);
+                if (this.otherOrgTypeSel) {
+                    this.vendorDocumentForm.get('orgTypeOthersData').setValidators([Validators.required]);
+                    this.vendorDocumentForm.get('orgTypeOthersData').updateValueAndValidity;
+                }
             }
             else {
                 this.vendorDocumentForm.get('vendorOrgCatogery').setValidators([]);
