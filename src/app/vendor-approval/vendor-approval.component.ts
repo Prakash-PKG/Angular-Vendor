@@ -83,6 +83,7 @@ export class VendorApprovalComponent implements OnInit {
     isServerError = false;
     disableSubmit: boolean = false;
     canApprove: boolean = false;
+    canReject: boolean = false;
 
     documentsList: VendorMasterDocumentModel[] = [];
     vendorDocList: FileDetailsModel[] = [];
@@ -101,6 +102,9 @@ export class VendorApprovalComponent implements OnInit {
     organizationCategoryMasterVO: organizationCategoryMasterVO[] = [];
 
     maxLutDate = new Date();
+
+    approveBtnTxt: string = "Approve";
+    isRejectVisible: boolean = false;
 
     vendorDocCtrl = {
         incCerCtrl: { documentTypeId: 1, browserId: 'incCerFileCtrl', placeholder: 'Incorporation Certificate' },
@@ -481,7 +485,11 @@ export class VendorApprovalComponent implements OnInit {
     onApproveClick() {
         this.isSubmitted = true;
         this.msg = '';
-        this.updateVendorApprovals(this._appService.updateOperations.approve);
+        if (globalConstant.userDetails.userRoles.find(r => r.roleCode == "reviewer")) {
+            this.updateVendorApprovals(this._appService.updateOperations.review);
+        } else {
+            this.updateVendorApprovals(this._appService.updateOperations.approve);
+        }
     }
     // onSaveClick() {
     //     this.isSubmitted = true;
@@ -1194,6 +1202,7 @@ export class VendorApprovalComponent implements OnInit {
         if (globalConstant.userDetails.isFinance) {
             this.isFinance = true;
             this.canApprove = true;
+            this.canReject = true;
             this.canEdit = false;
 
         }
@@ -1201,7 +1210,19 @@ export class VendorApprovalComponent implements OnInit {
         if (globalConstant.userDetails.isProcurement) {
             this.isProcurement = true;
             this.canApprove = true;
+            this.canReject = true;
             this.canEdit = true;
+        }
+
+        if (globalConstant.userDetails.userRoles.find(r => r.roleCode == "reviewer")) {
+            this.approveBtnTxt = "Review";
+            this.isRejectVisible = false;
+            this.canReject = false;
+        }
+        else {
+            this.approveBtnTxt = "Approve";
+            this.isRejectVisible = true;
+            this.canReject = true;
         }
 
         this.vendorForm = this._formBuilder.group({
