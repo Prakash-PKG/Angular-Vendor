@@ -958,7 +958,7 @@ export class VendorApprovalComponent implements OnInit {
     }
 
     setOrgType(selectedOrgType) {
-        // this.vendorOrgTypesList = this.vendorDetails.vendorOrgTypesVO;
+        this.vendorOrgTypesList = this.vendorDetails.vendorOrgTypesVO;
         if (this.vendorOrgTypesList) {
             // let i = this.vendorOrgTypesList.findIndex((org) => org.orgType == 'Others');
             // if (i > -1) {

@@ -274,10 +274,10 @@ export class VendorDocumentsComponent implements OnInit {
         this._appService.vendorRegistrationDetails.lutDate = this._datePipe.transform(this.vendorDocumentForm.get("lutDate").value, this._appService.dbDateFormat);
         this._appService.vendorRegistrationDetails.otherDocDesc = this.vendorDocumentForm.get("otherDocDesc").value;
         // US fields
-        if (this._appService.vendorRegistrationDetails.vendorOrgCatogeryVO) {
-            this._appService.vendorRegistrationDetails.vendorOrgCatogeryVO.catogery = this._appService.vendorOrgCatBackup.catogery;
-            this._appService.vendorRegistrationDetails.vendorOrgCatogeryVO.subCatogery = this._appService.vendorOrgCatBackup.subCatogery;
-        }
+        // if (this._appService.vendorRegistrationDetails.vendorOrgCatogeryVO) {
+        //     this._appService.vendorRegistrationDetails.vendorOrgCatogeryVO.catogery = this._appService.vendorOrgCatBackup.catogery;
+        //     this._appService.vendorRegistrationDetails.vendorOrgCatogeryVO.subCatogery = this._appService.vendorOrgCatBackup.subCatogery;
+        // }
         this._appService.vendorRegistrationDetails.usTaxId = this.vendorDocumentForm.get("usTaxId").value;
         this._appService.vendorRegistrationDetails.usSocialSecurity = this.vendorDocumentForm.get("usSocialSecurity").value;
         this._appService.vendorRegistrationDetails.usEinNumber = this.vendorDocumentForm.get("usEinNumber").value;
@@ -649,7 +649,7 @@ export class VendorDocumentsComponent implements OnInit {
             vendorOrgTypeId = this._appService.vendorOrgTypesListBackup[index].vendorOrgTypeId ? this._appService.vendorOrgTypesListBackup[index].vendorOrgTypeId : null
         }
 
-        this.orgTypeOthersData =  (orgType == 'Others')? this.vendorDocumentForm.get("orgTypeOthersData").value : null
+        this.orgTypeOthersData = (orgType == 'Others') ? this.vendorDocumentForm.get("orgTypeOthersData").value : null
         let obj: VendorOrgTypesModel = {
             vendorMasterId: this._appService.vendorRegistrationDetails.vendorMasterId,
             orgType: orgType,
@@ -679,6 +679,7 @@ export class VendorDocumentsComponent implements OnInit {
     }
 
     onOrgCatChange() {
+        this._appService.vendorRegistrationDetails.vendorOrgCatogeryVO = null;
         this.vendorDocumentForm.get('vendorOrgSubCategory').setValue(null);
         let selectedOrgCat = this.vendorDocumentForm.get('vendorOrgCatogery').value
         let i = this.organizationCategoryMasterVO.findIndex(orgCat => orgCat.catogery == selectedOrgCat);
@@ -699,6 +700,7 @@ export class VendorDocumentsComponent implements OnInit {
             subCatogery: this.vendorDocumentForm.get('vendorOrgSubCategory').value
         }
         this._appService.vendorOrgCatBackup = obj;
+        this._appService.vendorRegistrationDetails.vendorOrgCatogeryVO = this._appService.vendorOrgCatBackup;
     }
 
     ngOnInit() {
