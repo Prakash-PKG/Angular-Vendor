@@ -1140,7 +1140,8 @@
                     <div class="Rtable-cell Rtable-cell--head">Organisation Category</div>
 
                     <div class="Rtable-cell" *ngIf="!isEditable">
-                        {{ vendorDetails?.vendorOrgCatogeryVO?.catogery }} -
+                        {{ vendorDetails?.vendorOrgCatogeryVO?.catogery }}
+                        {{vendorDetails?.vendorOrgCatogeryVO?.subCatogery? '-':''}}
                         {{ vendorDetails?.vendorOrgCatogeryVO?.subCatogery }}
                     </div>
                     <div class="Rtable-cell" *ngIf="isEditable">
@@ -1177,7 +1178,8 @@
                     <div class="Rtable-cell" *ngIf="!isEditable">
                         <ul class="orgType">
                             <li *ngFor="let orgType of vendorOrgTypesList">
-                                {{orgType.orgType}}
+                                {{orgType.orgType}} {{orgType.orgTypesOthersData? '-':''}}
+                                {{orgType.orgTypesOthersData}}
                             </li>
                         </ul>
                     </div>
