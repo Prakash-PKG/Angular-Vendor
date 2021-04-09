@@ -77,11 +77,14 @@ div.actions {
 .inv-tab-container .card{
     border-left: 10px solid #F60BF6;
 }
+.reviewed {
+  color: #0bc70b;
+  font-size: large;
+  margin-right: 1em;
+}
+.title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
 
-// .clsVendorBorderColor {
-//     border-left: 10px solid #4397F6;
-// }
-
-// .clsInvoiceBorderColor {
-//     border-left: 10px solid #F60BF6;
-// }
