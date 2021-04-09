@@ -30,8 +30,10 @@
                                     </div>
                                     <div class="flex-item">
                                         <div class="title">
+                                            <div class="reviewed" *ngIf="appr?.statusCode == 'reviewed'"><img src="../../assets/animat-checkmark-color.gif" height="50px" width="50px"> Reviewed
+                                            </div>
                                             <h3> {{ getApprovalType(appr) }}</h3>
-                                        </div>
+                                        </div> 
                                     </div>
                                 </div>
                             </div>

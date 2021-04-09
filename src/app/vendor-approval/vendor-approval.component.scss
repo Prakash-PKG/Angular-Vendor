@@ -7,6 +7,9 @@
 }
 .title {
   margin-bottom: 1em;
+  // display: flex;
+  // align-items: center;
+  // justify-content: space-between;
 }
 .section-title {
   font-size: larger;
@@ -39,7 +42,7 @@
 // }
 .approver-section .search-row .mat-form-field {
   width: 94%;
- }
+}
 
 // ================css for table=================== */
 .Rtable {
@@ -150,3 +153,7 @@ ul.orgType {
   list-style-type: none;
   margin-top: 4px;
 }
+// .reviewed {
+//       color: #0bc70b;
+//       font-size: large;
+// }

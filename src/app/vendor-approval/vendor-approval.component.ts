@@ -53,7 +53,8 @@ export class VendorApprovalComponent implements OnInit {
     vendorOrgTypesList: VendorOrgTypesModel[] = [];
     originalVendorDetails: VendorMasterDetailsModel = new VendorMasterDetailsModel();
 
-    // exVendFileDetails: VendorApprovalInitResultModel;
+    orgTypeOthersData: string = '';
+    otherOrgTypeSel: boolean = false;
 
     vendoraccGroupList: AccGroupMasterList[] = [];
     companyCodeList: CompanyCodeMasterList[] = [];
@@ -81,6 +82,7 @@ export class VendorApprovalComponent implements OnInit {
     isServerError = false;
     disableSubmit: boolean = false;
     canApprove: boolean = false;
+    canReject: boolean = false;
 
     documentsList: VendorMasterDocumentModel[] = [];
     vendorDocList: FileDetailsModel[] = [];
@@ -99,6 +101,9 @@ export class VendorApprovalComponent implements OnInit {
     organizationCategoryMasterVO: organizationCategoryMasterVO[] = [];
 
     maxLutDate = new Date();
+
+    approveBtnTxt: string = "Approve";
+    isRejectVisible: boolean = false;
 
     vendorDocCtrl = {
         incCerCtrl: { documentTypeId: 1, browserId: 'incCerFileCtrl', placeholder: 'Incorporation Certificate' },
@@ -479,7 +484,11 @@ export class VendorApprovalComponent implements OnInit {
     onApproveClick() {
         this.isSubmitted = true;
         this.msg = '';
-        this.updateVendorApprovals(this._appService.updateOperations.approve);
+        if (globalConstant.userDetails.userRoles.find(r => r.roleCode == "reviewer")) {
+            this.updateVendorApprovals(this._appService.updateOperations.review);
+        } else {
+            this.updateVendorApprovals(this._appService.updateOperations.approve);
+        }
     }
     // onSaveClick() {
     //     this.isSubmitted = true;
@@ -788,7 +797,7 @@ export class VendorApprovalComponent implements OnInit {
         this.vendorForm.get("lutNum").valueChanges.subscribe(val => {
             this.updateLUTValidations(val);
         });
-
+        this.vendorOrgTypesList = this.vendorDetails.vendorOrgTypesVO;
         this.updateUSFieldsValidation();
     }
 
@@ -957,10 +966,20 @@ export class VendorApprovalComponent implements OnInit {
     setOrgType(selectedOrgType) {
         this.vendorOrgTypesList = this.vendorDetails.vendorOrgTypesVO;
         if (this.vendorOrgTypesList) {
+            // let i = this.vendorOrgTypesList.findIndex((org) => org.orgType == 'Others');
+            // if (i > -1) {
+            //     this.vendorForm.get("orgTypeOthersData").setValue(this.vendorOrgTypesList[i].orgTypesOthersData);
+            //     this.orgTypeOthersData = this.vendorOrgTypesList[i].orgTypesOthersData;
+            // }
             return this.vendorOrgTypesList.some(orgType => orgType.orgType == selectedOrgType);
         }
         else return false;
+    }
 
+    prepareOthersData() {
+        this.orgTypeOthersData = this.otherOrgTypeSel ? this.vendorForm.get("orgTypeOthersData").value : null
+        let i = this.vendorOrgTypesList.findIndex((org) => org.orgType == 'Others');
+        this.vendorOrgTypesList[i].orgTypesOthersData = this.orgTypeOthersData
     }
 
     prepareOrgTypeList(event, orgType, index) {
@@ -969,20 +988,32 @@ export class VendorApprovalComponent implements OnInit {
         if (this.vendorDetails && this.vendorDetails.vendorOrgTypesVO && this.vendorDetails.vendorOrgTypesVO[index]) {
             vendorOrgTypeId = this.vendorDetails.vendorOrgTypesVO[index].vendorOrgTypeId ? this.vendorDetails.vendorOrgTypesVO[index].vendorOrgTypeId : null
         }
+        this.orgTypeOthersData = (orgType == 'Others') ? this.vendorForm.get("orgTypeOthersData").value : null;
         let obj: VendorOrgTypesModel = {
             vendorMasterId: this.vendorDetails.vendorMasterId,
             orgType: orgType,
-            vendorOrgTypeId: vendorOrgTypeId
+            vendorOrgTypeId: vendorOrgTypeId,
+            orgTypesOthersData: this.orgTypeOthersData
+
         }
         if (event) {
             this.vendorOrgTypesList.push(obj);
+            if (orgType == 'Others') {
+                this.otherOrgTypeSel = true;
+                this.vendorForm.get("orgTypeOthersData").setValidators([Validators.required]);
+                this.vendorForm.get("orgTypeOthersData").updateValueAndValidity();
+            }
         }
         else {
-
-            this.vendorOrgTypesList.splice(index, 1);
+            let i = this.vendorOrgTypesList.findIndex((org) => org.orgType == orgType);
+            this.vendorOrgTypesList.splice(i, 1);
+            if (orgType == 'Others') {
+                this.otherOrgTypeSel = true;
+                this.vendorForm.get("orgTypeOthersData").setValidators([]);
+                this.vendorForm.get("orgTypeOthersData").updateValueAndValidity();
+            }
         }
         this.vendorDetails.vendorOrgTypesVO = this.vendorOrgTypesList;
-
     }
 
     updateUSFieldsValidation() {
@@ -1001,6 +1032,14 @@ export class VendorApprovalComponent implements OnInit {
             this.vendorForm.get("pincode").setValidators([Validators.required, Validators.pattern("^[0-9]{5}(?:-[0-9]{4})?$"), Validators.minLength(5), Validators.maxLength(10)]);
             this.vendorForm.get('pincode').updateValueAndValidity;
 
+            let otherOrg = this.vendorOrgTypesList ? this.vendorOrgTypesList.find((org) => org.orgType == 'Others') : null;
+            this.otherOrgTypeSel = otherOrg ? true : false;
+            this.orgTypeOthersData = otherOrg ? otherOrg.orgTypesOthersData : null;
+            this.vendorForm.get("orgTypeOthersData").setValue(this.orgTypeOthersData);
+            if (this.otherOrgTypeSel) {
+                this.vendorForm.get('orgTypeOthersData').setValidators([Validators.required]);
+                this.vendorForm.get('orgTypeOthersData').updateValueAndValidity;
+            }
         }
         else {
             this.vendorForm.get('usVendorBusiness').setValidators([]);
@@ -1019,6 +1058,10 @@ export class VendorApprovalComponent implements OnInit {
 
         }
 
+    }
+    isOthersSel() {
+        if (this.vendorOrgTypesList.find((org) => org.orgType == 'Others')) return true;
+        else return false;
     }
     upatePayeeIdentificationFiles(documentTypeId) {
         this.filesMap[documentTypeId].filesList.forEach((file, fInd) => {
@@ -1064,7 +1107,7 @@ export class VendorApprovalComponent implements OnInit {
                 this.usFieldErrMsg = 'Remove document from EIN if EIN is not selected as payee identification proof'
             }
             if (this.filesMap[this.vendorDocCtrl.w9Ctrl.documentTypeId].filesList.length) {
-                this.usFieldErrMsg = 'Remove document from w9 if EIN is not selected as payee identification proof'
+                this.usFieldErrMsg = 'Remove document from w9 if EIN / SSN is not selected as payee identification proof'
             }
         }
         else if (this.usPayeeIdentificatn == 'socialSec') {
@@ -1090,9 +1133,9 @@ export class VendorApprovalComponent implements OnInit {
             this.vendorForm.get("usEinNumber").setValidators([]);
             this.vendorForm.get("usEinNumber").updateValueAndValidity();
 
-            this.vendorForm.get("usW9").setValue(false);
-            this.upatePayeeIdentificationFiles(this.vendorDocCtrl.w9Ctrl.documentTypeId);
-            this.updateMandatoryDocs(false, this.vendorDocCtrl.w9Ctrl.documentTypeId);
+            this.vendorForm.get("usW9").setValue(true);
+            // this.upatePayeeIdentificationFiles(this.vendorDocCtrl.w9Ctrl.documentTypeId);
+            this.updateMandatoryDocs(true, this.vendorDocCtrl.w9Ctrl.documentTypeId);
 
 
             if (this.filesMap[this.vendorDocCtrl.taxIdNoCtrl.documentTypeId].filesList.length) {
@@ -1104,9 +1147,9 @@ export class VendorApprovalComponent implements OnInit {
             if (this.filesMap[this.vendorDocCtrl.einCtrl.documentTypeId].filesList.length) {
                 this.usFieldErrMsg = 'Remove document from EIN if EIN is not selected as payee identification proof'
             }
-            if (this.filesMap[this.vendorDocCtrl.w9Ctrl.documentTypeId].filesList.length) {
-                this.usFieldErrMsg = 'Remove document from w9 if EIN is not selected as payee identification proof'
-            }
+            // if (this.filesMap[this.vendorDocCtrl.w9Ctrl.documentTypeId].filesList.length) {
+            //     this.usFieldErrMsg = 'Remove document from w9 if EIN is not selected as payee identification proof'
+            // }
         }
         else if (this.usPayeeIdentificatn == 'ein') {
 
@@ -1157,6 +1200,7 @@ export class VendorApprovalComponent implements OnInit {
         if (globalConstant.userDetails.isFinance) {
             this.isFinance = true;
             this.canApprove = true;
+            this.canReject = true;
             this.canEdit = false;
 
         }
@@ -1164,7 +1208,19 @@ export class VendorApprovalComponent implements OnInit {
         if (globalConstant.userDetails.isProcurement) {
             this.isProcurement = true;
             this.canApprove = true;
+            this.canReject = true;
             this.canEdit = true;
+        }
+
+        if (globalConstant.userDetails.userRoles.find(r => r.roleCode == "reviewer")) {
+            this.approveBtnTxt = "Review";
+            this.isRejectVisible = false;
+            this.canReject = false;
+        }
+        else {
+            this.approveBtnTxt = "Approve";
+            this.isRejectVisible = true;
+            this.canReject = true;
         }
 
         this.vendorForm = this._formBuilder.group({
@@ -1209,6 +1265,7 @@ export class VendorApprovalComponent implements OnInit {
             usW8Bene: [false],
             usW9: [false],
             usMinorityCertificate: [false],
+            orgTypeOthersData: [null],
 
             selectedVendorGroup: null,
             selectedCompanyCode: null,

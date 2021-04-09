@@ -107,6 +107,7 @@ export class VendorOrgTypesModel {
     vendorMasterId: number;
     orgType: string;
     vendorOrgTypeId: number;
+    orgTypesOthersData:string;
 }
 
 export class VendorRegistrationDetailRequestModel {

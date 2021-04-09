@@ -1,7 +1,7 @@
 import { SidebarService } from './../sidebar/sidebar.service';
 import { Component, OnInit, HostListener } from '@angular/core';
 import { Router } from '@angular/router';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
 
 import { AppService } from '../app.service';
 import { VendorRegistrationService } from './../vendor-registration/vendor-registration.service';
@@ -42,12 +42,13 @@ export class VendorDocumentsComponent implements OnInit {
 
     maxLutDate = new Date();
     usPayeeIdentificatn: string = "";
+    orgTypeOthersData: string = '';
+    otherOrgTypeSel: boolean = false;
 
     organizationTypeMasterVO: organizationTypeMasterVO[] = [];
     organizationCategoryMasterVO: organizationCategoryMasterVO[] = [];
 
     vendorOrgTypesList: VendorOrgTypesModel[] = [];
-
     vendorDocCtrl = {
         incCerCtrl: { documentTypeId: 1, browserId: 'incCerFileCtrl', placeholder: 'Incorporation Certificate', controlName: '' },
         gstCtrl: { documentTypeId: 2, browserId: 'gstFileCtrl', placeholder: 'GST No.', controlName: 'gstNum' },
@@ -274,8 +275,8 @@ export class VendorDocumentsComponent implements OnInit {
         this._appService.vendorRegistrationDetails.otherDocDesc = this.vendorDocumentForm.get("otherDocDesc").value;
         // US fields
         if (this._appService.vendorRegistrationDetails.vendorOrgCatogeryVO) {
-            this._appService.vendorRegistrationDetails.vendorOrgCatogeryVO.catogery = this.vendorDocumentForm.get("vendorOrgCatogery").value;
-            this._appService.vendorRegistrationDetails.vendorOrgCatogeryVO.subCatogery = this.vendorDocumentForm.get("vendorOrgSubCategory").value;
+            this._appService.vendorRegistrationDetails.vendorOrgCatogeryVO.catogery = this._appService.vendorOrgCatBackup.catogery;
+            this._appService.vendorRegistrationDetails.vendorOrgCatogeryVO.subCatogery = this._appService.vendorOrgCatBackup.subCatogery;
         }
         this._appService.vendorRegistrationDetails.usTaxId = this.vendorDocumentForm.get("usTaxId").value;
         this._appService.vendorRegistrationDetails.usSocialSecurity = this.vendorDocumentForm.get("usSocialSecurity").value;
@@ -285,7 +286,7 @@ export class VendorDocumentsComponent implements OnInit {
         this._appService.vendorRegistrationDetails.usMinorityCertificate = this.vendorDocumentForm.get("usMinorityCertificate").value;
 
         this._appService.usPayeeIdentificatn = this.usPayeeIdentificatn;
-        // this._appService.vendorRegistrationDetails.vendorOrgTypesVO = this.vendorOrgTypesList;
+        this._appService.vendorRegistrationDetails.vendorOrgTypesVO = this._appService.vendorOrgTypesListBackup;
     }
 
     onPrevClick() {
@@ -401,8 +402,8 @@ export class VendorDocumentsComponent implements OnInit {
             this.vendorDocumentForm.get("otherDocDesc").setValue(this._appService.vendorRegistrationDetails.otherDocDesc);
             // US fields
 
-            this.vendorDocumentForm.get("vendorOrgCatogery").setValue(this._appService.vendorRegistrationDetails.vendorOrgCatogeryVO ? this._appService.vendorRegistrationDetails.vendorOrgCatogeryVO.catogery : null);
-            this.vendorDocumentForm.get("vendorOrgSubCategory").setValue(this._appService.vendorRegistrationDetails.vendorOrgCatogeryVO ? this._appService.vendorRegistrationDetails.vendorOrgCatogeryVO.subCatogery : null);
+            this.vendorDocumentForm.get("vendorOrgCatogery").setValue(this._appService.vendorOrgCatBackup ? this._appService.vendorOrgCatBackup.catogery : null);
+            this.vendorDocumentForm.get("vendorOrgSubCategory").setValue(this._appService.vendorOrgCatBackup ? this._appService.vendorOrgCatBackup.subCatogery : null);
             this.vendorDocumentForm.get("usTaxId").setValue(this._appService.vendorRegistrationDetails.usTaxId);
             this.vendorDocumentForm.get("usSocialSecurity").setValue(this._appService.vendorRegistrationDetails.usSocialSecurity);
             this.vendorDocumentForm.get("usEinNumber").setValue(this._appService.vendorRegistrationDetails.usEinNumber);
@@ -411,8 +412,7 @@ export class VendorDocumentsComponent implements OnInit {
             this.vendorDocumentForm.get("usMinorityCertificate").setValue(this._appService.vendorRegistrationDetails.usMinorityCertificate);
 
             this.usPayeeIdentificatn = this._appService.usPayeeIdentificatn ? this._appService.usPayeeIdentificatn : 'taxId';
-
-            this.vendorOrgTypesList = this._appService.vendorRegistrationDetails.vendorOrgTypesVO;
+            this.vendorOrgTypesList = this._appService.vendorOrgTypesListBackup;
 
             this.filesMap = this._appService.selectedFileMap;
 
@@ -579,8 +579,7 @@ export class VendorDocumentsComponent implements OnInit {
             this.vendorDocumentForm.get("usEinNumber").setValidators([]);
             this.vendorDocumentForm.get("usEinNumber").updateValueAndValidity();
 
-            this.vendorDocumentForm.get("usW9").setValue(false);
-            this.upatePayeeIdentificationFiles(this.vendorDocCtrl.w9Ctrl.documentTypeId);
+            this.vendorDocumentForm.get("usW9").setValue(true);
             this.updateMandatory('usW9', this.vendorDocCtrl.w9Ctrl.documentTypeId);
 
 
@@ -591,11 +590,9 @@ export class VendorDocumentsComponent implements OnInit {
                 this.usFieldErrMsg = 'Remove document from w8 if Tax ID is not selected as payee identification proof'
             }
             if (this.filesMap[this.vendorDocCtrl.einCtrl.documentTypeId].filesList.length) {
-                this.usFieldErrMsg = 'Remove document from EIN if EIN is not selected as payee identification proof'
+                this.usFieldErrMsg = 'Remove document from EIN if EIN / SSN is not selected as payee identification proof'
             }
-            if (this.filesMap[this.vendorDocCtrl.w9Ctrl.documentTypeId].filesList.length) {
-                this.usFieldErrMsg = 'Remove document from w9 if EIN is not selected as payee identification proof'
-            }
+
         }
         else if (this.usPayeeIdentificatn == 'ein') {
 
@@ -633,32 +630,52 @@ export class VendorDocumentsComponent implements OnInit {
         }
     }
     setOrgType(orgType) {
-
-        this.vendorOrgTypesList = this._appService.vendorRegistrationDetails.vendorOrgTypesVO;
         if (this.vendorOrgTypesList) {
             return this.vendorOrgTypesList.some(selectedOrgType => selectedOrgType.orgType == orgType);
         }
         else return false;
     }
+    prepareOthersData() {
+        this.orgTypeOthersData = this.otherOrgTypeSel ? this.vendorDocumentForm.get("orgTypeOthersData").value : null
+        let i = this.vendorOrgTypesList.findIndex((org) => org.orgType == 'Others');
+        this.vendorOrgTypesList[i].orgTypesOthersData = this.orgTypeOthersData
+    }
 
     prepareOrgTypeList(event, orgType, index) {
-        this.vendorOrgTypesList = this.vendorOrgTypesList ? this.vendorOrgTypesList : [];
+        this.vendorOrgTypesList = this._appService.vendorOrgTypesListBackup ? this._appService.vendorOrgTypesListBackup : [];
         let vendorOrgTypeId: number = null;
-        if (this._appService.vendorRegistrationDetails && this._appService.vendorRegistrationDetails.vendorOrgTypesVO && this._appService.vendorRegistrationDetails.vendorOrgTypesVO[index]) {
-            vendorOrgTypeId = this._appService.vendorRegistrationDetails.vendorOrgTypesVO[index].vendorOrgTypeId ? this._appService.vendorRegistrationDetails.vendorOrgTypesVO[index].vendorOrgTypeId : null
+
+        if (this._appService.vendorOrgTypesListBackup && this._appService.vendorOrgTypesListBackup[index]) {
+            vendorOrgTypeId = this._appService.vendorOrgTypesListBackup[index].vendorOrgTypeId ? this._appService.vendorOrgTypesListBackup[index].vendorOrgTypeId : null
         }
+
+        this.orgTypeOthersData = (orgType == 'Others') ? this.vendorDocumentForm.get("orgTypeOthersData").value : null
         let obj: VendorOrgTypesModel = {
             vendorMasterId: this._appService.vendorRegistrationDetails.vendorMasterId,
             orgType: orgType,
-            vendorOrgTypeId: vendorOrgTypeId
+            vendorOrgTypeId: vendorOrgTypeId,
+            orgTypesOthersData: this.orgTypeOthersData
         }
         if (event) {
             this.vendorOrgTypesList.push(obj);
+            if (orgType == 'Others') {
+                this.otherOrgTypeSel = true;
+
+                this.vendorDocumentForm.get("orgTypeOthersData").setValidators([Validators.required]);
+                this.vendorDocumentForm.get("orgTypeOthersData").updateValueAndValidity();
+            }
         }
         else {
-            this.vendorOrgTypesList.splice(index, 1);
+            let i = this.vendorOrgTypesList.findIndex((org) => org.orgType == orgType);
+            this.vendorOrgTypesList.splice(i, 1);
+            if (orgType == 'Others') {
+                this.otherOrgTypeSel = false;
+
+                this.vendorDocumentForm.get("orgTypeOthersData").setValidators([]);
+                this.vendorDocumentForm.get("orgTypeOthersData").updateValueAndValidity();
+            }
         }
-        this._appService.vendorRegistrationDetails.vendorOrgTypesVO = this.vendorOrgTypesList;
+        this._appService.vendorOrgTypesListBackup = this.vendorOrgTypesList;
     }
 
     onOrgCatChange() {
@@ -682,7 +699,8 @@ export class VendorDocumentsComponent implements OnInit {
             catogery: this.vendorDocumentForm.get('vendorOrgCatogery').value,
             subCatogery: this.vendorDocumentForm.get('vendorOrgSubCategory').value
         }
-        this._appService.vendorRegistrationDetails.vendorOrgCatogeryVO = obj;
+        this._appService.vendorOrgCatBackup = obj;
+        this._appService.vendorRegistrationDetails.vendorOrgCatogeryVO = this._appService.vendorOrgCatBackup;
     }
 
     ngOnInit() {
@@ -744,8 +762,8 @@ export class VendorDocumentsComponent implements OnInit {
                 usEinNumber: [null, [Validators.minLength(9), Validators.maxLength(11)]],
                 usW8Bene: [false],
                 usW9: [false],
-                usMinorityCertificate: [null]
-
+                usMinorityCertificate: [null],
+                orgTypeOthersData: [null]
             });
 
             this.updateVendorDetails();
@@ -755,6 +773,15 @@ export class VendorDocumentsComponent implements OnInit {
             if (this._vendorRegistrationService.vendorUS) {
                 this.vendorDocumentForm.get('panNum').setValidators([]);
                 this.vendorDocumentForm.get('panNum').updateValueAndValidity;
+
+                let otherOrg = this.vendorOrgTypesList ? this.vendorOrgTypesList.find((org) => org.orgType == 'Others') : null;
+                this.otherOrgTypeSel = otherOrg ? true : false;
+                this.orgTypeOthersData = otherOrg ? otherOrg.orgTypesOthersData : null;
+                this.vendorDocumentForm.get("orgTypeOthersData").setValue(this.orgTypeOthersData);
+                if (this.otherOrgTypeSel) {
+                    this.vendorDocumentForm.get('orgTypeOthersData').setValidators([Validators.required]);
+                    this.vendorDocumentForm.get('orgTypeOthersData').updateValueAndValidity;
+                }
             }
             else {
                 this.vendorDocumentForm.get('vendorOrgCatogery').setValidators([]);

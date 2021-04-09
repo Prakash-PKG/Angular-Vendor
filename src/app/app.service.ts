@@ -79,7 +79,8 @@ export class AppService {
         onhold: 'onhold',
         sendBack: "sendBack",
         rectified: "rectified",
-        proSave: 'proSave'
+        proSave: 'proSave',
+        review: 'reviewed'
     };
 
     readonly statusNames: any = {
@@ -124,6 +125,9 @@ export class AppService {
     isInvoiceDetailsForPayments: boolean = false;
 
     isExistingVendor: boolean = false;
+
+    vendorOrgTypesListBackup: VendorOrgTypesModel[] = [];
+    vendorOrgCatBackup: vendorOrgCategoryModel = null;
 
     getFormattedDate(dtStr: string) {
         if (dtStr) {
