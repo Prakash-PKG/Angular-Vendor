@@ -274,10 +274,10 @@ export class VendorDocumentsComponent implements OnInit {
         this._appService.vendorRegistrationDetails.lutDate = this._datePipe.transform(this.vendorDocumentForm.get("lutDate").value, this._appService.dbDateFormat);
         this._appService.vendorRegistrationDetails.otherDocDesc = this.vendorDocumentForm.get("otherDocDesc").value;
         // US fields
-        // if (this._appService.vendorRegistrationDetails.vendorOrgCatogeryVO) {
-        //     this._appService.vendorRegistrationDetails.vendorOrgCatogeryVO.catogery = this._appService.vendorOrgCatBackup.catogery;
-        //     this._appService.vendorRegistrationDetails.vendorOrgCatogeryVO.subCatogery = this._appService.vendorOrgCatBackup.subCatogery;
-        // }
+        if (this._appService.vendorRegistrationDetails.vendorOrgCatogeryVO) {
+            this._appService.vendorRegistrationDetails.vendorOrgCatogeryVO.catogery = this._appService.vendorOrgCatBackup.catogery;
+            this._appService.vendorRegistrationDetails.vendorOrgCatogeryVO.subCatogery = this._appService.vendorOrgCatBackup.subCatogery;
+        }
         this._appService.vendorRegistrationDetails.usTaxId = this.vendorDocumentForm.get("usTaxId").value;
         this._appService.vendorRegistrationDetails.usSocialSecurity = this.vendorDocumentForm.get("usSocialSecurity").value;
         this._appService.vendorRegistrationDetails.usEinNumber = this.vendorDocumentForm.get("usEinNumber").value;
