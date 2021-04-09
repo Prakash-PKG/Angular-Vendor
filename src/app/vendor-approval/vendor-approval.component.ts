@@ -485,9 +485,9 @@ export class VendorApprovalComponent implements OnInit {
     onApproveClick() {
         this.isSubmitted = true;
         this.msg = '';
-        if(globalConstant.userDetails.userRoles.find(r => r.roleCode == "reviewer")){
+        if (globalConstant.userDetails.userRoles.find(r => r.roleCode == "reviewer")) {
             this.updateVendorApprovals(this._appService.updateOperations.review);
-        }else{
+        } else {
             this.updateVendorApprovals(this._appService.updateOperations.approve);
         }
     }
@@ -1197,7 +1197,7 @@ export class VendorApprovalComponent implements OnInit {
         }
 
         if (globalConstant.userDetails.userRoles.find(r => r.roleCode == "reviewer")) {
-            this.approveBtnTxt = "Reviewed";
+            this.approveBtnTxt = "Review";
             this.isRejectVisible = false;
             this.canReject = false;
         }
