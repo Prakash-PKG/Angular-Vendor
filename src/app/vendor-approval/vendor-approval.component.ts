@@ -799,7 +799,7 @@ export class VendorApprovalComponent implements OnInit {
         this.vendorForm.get("lutNum").valueChanges.subscribe(val => {
             this.updateLUTValidations(val);
         });
-
+        this.vendorOrgTypesList = this.vendorDetails.vendorOrgTypesVO;
         this.updateUSFieldsValidation();
     }
 
@@ -968,6 +968,11 @@ export class VendorApprovalComponent implements OnInit {
     setOrgType(selectedOrgType) {
         this.vendorOrgTypesList = this.vendorDetails.vendorOrgTypesVO;
         if (this.vendorOrgTypesList) {
+            // let i = this.vendorOrgTypesList.findIndex((org) => org.orgType == 'Others');
+            // if (i > -1) {
+            //     this.vendorForm.get("orgTypeOthersData").setValue(this.vendorOrgTypesList[i].orgTypesOthersData);
+            //     this.orgTypeOthersData = this.vendorOrgTypesList[i].orgTypesOthersData;
+            // }
             return this.vendorOrgTypesList.some(orgType => orgType.orgType == selectedOrgType);
         }
         else return false;
@@ -985,7 +990,7 @@ export class VendorApprovalComponent implements OnInit {
         if (this.vendorDetails && this.vendorDetails.vendorOrgTypesVO && this.vendorDetails.vendorOrgTypesVO[index]) {
             vendorOrgTypeId = this.vendorDetails.vendorOrgTypesVO[index].vendorOrgTypeId ? this.vendorDetails.vendorOrgTypesVO[index].vendorOrgTypeId : null
         }
-        this.otherOrgTypeSel = (orgType == 'Others') ? true : false;
+        this.orgTypeOthersData = (orgType == 'Others') ? this.vendorForm.get("orgTypeOthersData").value : null;
         let obj: VendorOrgTypesModel = {
             vendorMasterId: this.vendorDetails.vendorMasterId,
             orgType: orgType,
@@ -995,21 +1000,22 @@ export class VendorApprovalComponent implements OnInit {
         }
         if (event) {
             this.vendorOrgTypesList.push(obj);
-            if (this.otherOrgTypeSel) {
+            if (orgType == 'Others') {
+                this.otherOrgTypeSel = true;
                 this.vendorForm.get("orgTypeOthersData").setValidators([Validators.required]);
                 this.vendorForm.get("orgTypeOthersData").updateValueAndValidity();
             }
         }
         else {
-
-            this.vendorOrgTypesList.splice(index, 1);
-            if (this.otherOrgTypeSel) {
+            let i = this.vendorOrgTypesList.findIndex((org) => org.orgType == orgType);
+            this.vendorOrgTypesList.splice(i, 1);
+            if (orgType == 'Others') {
+                this.otherOrgTypeSel = true;
                 this.vendorForm.get("orgTypeOthersData").setValidators([]);
                 this.vendorForm.get("orgTypeOthersData").updateValueAndValidity();
             }
         }
         this.vendorDetails.vendorOrgTypesVO = this.vendorOrgTypesList;
-
     }
 
     updateUSFieldsValidation() {
@@ -1028,6 +1034,14 @@ export class VendorApprovalComponent implements OnInit {
             this.vendorForm.get("pincode").setValidators([Validators.required, Validators.pattern("^[0-9]{5}(?:-[0-9]{4})?$"), Validators.minLength(5), Validators.maxLength(10)]);
             this.vendorForm.get('pincode').updateValueAndValidity;
 
+            let otherOrg = this.vendorOrgTypesList ? this.vendorOrgTypesList.find((org) => org.orgType == 'Others') : null;
+            this.otherOrgTypeSel = otherOrg ? true : false;
+            this.orgTypeOthersData = otherOrg ? otherOrg.orgTypesOthersData : null;
+            this.vendorForm.get("orgTypeOthersData").setValue(this.orgTypeOthersData);
+            if (this.otherOrgTypeSel) {
+                this.vendorForm.get('orgTypeOthersData').setValidators([Validators.required]);
+                this.vendorForm.get('orgTypeOthersData').updateValueAndValidity;
+            }
         }
         else {
             this.vendorForm.get('usVendorBusiness').setValidators([]);

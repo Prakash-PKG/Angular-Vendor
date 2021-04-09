@@ -764,18 +764,17 @@ flex-wrap: wrap;">
                     </mat-checkbox>
                 </li>
             </ul>
-        </div>
-        <div class="col-5"></div>
-        <div class="col-7">
-            <mat-form-field class="full-width" style="display: block;" *ngIf="otherOrgTypeSel"
-                formControlName="orgTypeOthersData" ngDefaultControl>
-                <input type="text" matInput placeholder="Please specify organisation type" autocomplete="off"
-                    maxlength="50" (blur)="prepareOthersData()">
-                <mat-error *ngIf="( isSubmitted ) && vendorDocumentForm.get('orgTypeOthersData')?.errors?.required"
+            <div *ngIf="otherOrgTypeSel">
+                <mat-form-field class="full-width" style="display: block;">
+                    <input type="text" matInput placeholder="Please specify organisation type" autocomplete="off"
+                        maxlength="50" (blur)="prepareOthersData()" formControlName="orgTypeOthersData">
+
+                </mat-form-field>
+                <mat-error *ngIf="isSubmitted && vendorDocumentForm.get('orgTypeOthersData')?.errors?.required"
                     class="errortxt">
                     Mention organisation type
                 </mat-error>
-            </mat-form-field>
+            </div>
         </div>
 
     </div>

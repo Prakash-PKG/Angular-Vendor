@@ -67,6 +67,8 @@ export class VendorRegistrationComponent implements OnInit {
         });
 
         this._appService.vendorRegistrationDetails = this._appService.resetVendorRegistrationDetails();
+        this._appService.vendorOrgTypesListBackup = null;
+        this._appService.vendorOrgCatBackup = null;
 
         this._appService.selectedFileMap = {};
 
