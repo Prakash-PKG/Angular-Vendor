@@ -1061,6 +1061,10 @@ export class VendorApprovalComponent implements OnInit {
         }
 
     }
+    isOthersSel() {
+        if (this.vendorOrgTypesList.find((org) => org.orgType == 'Others')) return true;
+        else return false;
+    }
     upatePayeeIdentificationFiles(documentTypeId) {
         this.filesMap[documentTypeId].filesList.forEach((file, fInd) => {
             this.onDeleteFileClick(file, fInd, documentTypeId);
