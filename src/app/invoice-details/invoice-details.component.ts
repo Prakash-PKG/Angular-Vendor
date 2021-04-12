@@ -194,7 +194,7 @@ export class InvoiceDetailsComponent implements OnInit {
         if (isValid && this.selectedPaymentStatus == "paid") {
             if (+this.invoiceDetails.totalAmt != +this.amountPaid) {
                 isValid = false;
-                this.amountPaidErrMsg = "If Payment status is Paid, Amount Paid(Incl Tax) must equal to Invoice Total Amount(Incl Tax).";
+                this.amountPaidErrMsg = "If Payment status is Paid, Payment Initiated(Incl Tax) must equal to Invoice Total Amount(Incl Tax).";
             }
         }
 
